@@ -19,7 +19,7 @@
 body[data-track="en"]{--acc:#9D7CD8}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{min-height:100%}
-body{background:radial-gradient(120% 60% at 50% -10%,#232541 0%,var(--bg) 55%,var(--bg2) 100%) fixed;color:var(--text);font-family:"Plus Jakarta Sans",Inter,-apple-system,"SF Pro Text","Segoe UI",Roboto,Arial,sans-serif,"Noto Color Emoji";line-height:1.5;padding-bottom:100px;overflow-x:hidden;-webkit-user-select:none;user-select:none}
+body{background:radial-gradient(120% 60% at 50% -10%,#232541 0%,var(--bg) 55%,var(--bg2) 100%) fixed;color:var(--text);font-family:"Plus Jakarta Sans",Inter,-apple-system,"SF Pro Text","Segoe UI",Roboto,Arial,sans-serif,"Noto Color Emoji";line-height:1.5;padding-bottom:calc(112px + env(safe-area-inset-bottom));overflow-x:hidden;-webkit-user-select:none;user-select:none}
 b{font-weight:800;color:var(--acc)}
 .screen{display:none;padding:18px 16px 24px;animation:fade .28s ease}
 .screen.active{display:block}
@@ -29,8 +29,22 @@ b{font-weight:800;color:var(--acc)}
 /* ===== ГЛАВНАЯ ===== */
 .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .user{display:flex;align-items:center;gap:12px}
-.avatar{width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,var(--es),var(--en));display:grid;place-items:center;font-weight:800;font-size:19px;color:#1A1B26}
-.hello{font-size:13px;color:var(--muted)}.name{font-weight:800;font-size:18px}
+.avatar{position:relative;isolation:isolate;width:50px;height:50px;flex:none;border-radius:50%;display:grid;place-items:center;cursor:pointer;transition:transform .15s}
+.avatar::before{content:"";position:absolute;inset:-2px;border-radius:50%;background:conic-gradient(var(--es),var(--en),var(--ok),var(--es));animation:spin 6s linear infinite;z-index:-1}
+.avatar::after{content:"";position:absolute;inset:-9px;border-radius:50%;background:radial-gradient(circle,rgba(247,160,70,.45),rgba(157,124,216,.32) 50%,transparent 70%);filter:blur(7px);z-index:-2;animation:breathe 3.4s ease-in-out infinite}
+.avatar:active{transform:scale(.9)}
+.av-in{width:46px;height:46px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,var(--es),var(--en));display:grid;place-items:center;font-weight:800;font-size:19px;color:#1A1B26;border:2px solid var(--bg)}
+.av-in img{width:100%;height:100%;object-fit:cover;display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes breathe{0%,100%{opacity:.55;transform:scale(.95)}50%{opacity:1;transform:scale(1.07)}}
+.hello{font-size:13px;color:var(--muted)}.name{font-weight:800;font-size:18px;max-width:46vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* мягкие «огоньки» на фоне */
+.orb{position:fixed;width:260px;height:260px;border-radius:50%;filter:blur(70px);opacity:.16;pointer-events:none;z-index:-1;animation:drift 18s ease-in-out infinite alternate}
+.orb.o1{background:var(--es);top:-80px;left:-90px}
+.orb.o2{background:var(--en);bottom:40px;right:-110px;animation-delay:-9s}
+@keyframes drift{to{transform:translate(40px,60px) scale(1.15)}}
+html{scrollbar-width:none}::-webkit-scrollbar{display:none}
+@media (prefers-reduced-motion:reduce){.avatar::before,.avatar::after,.orb{animation:none}}
 .chips{display:flex;gap:8px}
 .chip{padding:7px 12px;border-radius:999px;font-weight:800;font-size:14px;display:flex;gap:6px;align-items:center}
 .goal{padding:16px;display:flex;align-items:center;gap:16px;margin-bottom:14px}
@@ -149,13 +163,14 @@ body.focus .nav{display:none}
 </style>
 </head>
 <body data-track="es">
+<div class="orb o1"></div><div class="orb o2"></div>
 <div class="toast" id="toast"></div>
 <canvas id="confetti"></canvas>
 
 <!-- ГЛАВНАЯ -->
 <section class="screen active" id="scr_home">
   <div class="top">
-    <div class="user"><div class="avatar" id="avatar">A</div><div><div class="hello" id="hello">Привет 👋</div><div class="name" id="uname">друг</div></div></div>
+    <div class="user"><div class="avatar" id="avatar" onclick="poke()"><div class="av-in" id="avIn">A</div></div><div><div class="hello" id="hello">Привет 👋</div><div class="name" id="uname">друг</div></div></div>
     <div class="chips"><div class="chip glass">🔥 <span id="streak">0</span></div><div class="chip glass">⚡ <span id="xp">0</span></div></div>
   </div>
   <div class="goal glass">
@@ -531,7 +546,7 @@ function renderProfile() {
   var lvl = Math.floor(S.xp / 200) + 1, inL = S.xp % 200;
   $("pLvl").textContent = "Уровень " + lvl; $("pLvlTxt").textContent = "до следующего: " + (200 - inL) + " XP";
   $("pLvlDots").innerHTML = dots(Math.floor(inL / 40), 5);
-  var w = $("week"), names = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]; w.innerHTML = "";
+  var w = $("week"), names = ["Вс", "Пн", "Вт", "Ср", "��т", "Пт", "Сб"]; w.innerHTML = "";
   for (var i = 6; i >= 0; i--) { var d = new Date(); d.setDate(d.getDate() - i); var el = document.createElement("div"); el.className = "day" + (S.days.indexOf(dayStr(d)) >= 0 ? " on" : ""); el.textContent = names[d.getDay()]; w.appendChild(el); }
 }
 
@@ -556,9 +571,25 @@ function confetti() {
 
 // ================= СТАРТ =================
 var user = null;
-if (tg) { tg.ready(); tg.expand(); if (ver("6.1")) { tg.setHeaderColor("#1A1B26"); tg.setBackgroundColor("#1A1B26"); tg.BackButton.onClick(goBack); } user = tg.initDataUnsafe && tg.initDataUnsafe.user; }
+if (tg) {
+  tg.ready(); tg.expand();
+  if (ver("6.1")) { tg.setHeaderColor("#1A1B26"); tg.setBackgroundColor("#1A1B26"); tg.BackButton.onClick(goBack); }
+  if (ver("7.7") && tg.disableVerticalSwipes) tg.disableVerticalSwipes(); // свайп вниз не закрывает приложение при скролле
+  if (ver("7.10") && tg.setBottomBarColor) tg.setBottomBarColor("#12131C");
+  user = tg.initDataUnsafe && tg.initDataUnsafe.user;
+}
 var nm = (user && user.first_name) || "друг";
-$("uname").textContent = nm; $("avatar").textContent = nm.charAt(0).toUpperCase();
+$("uname").textContent = nm;
+function setInitial() { var ch = Array.from(nm.trim())[0] || "🙂"; $("avIn").textContent = ch.toUpperCase(); }
+setInitial();
+if (user && user.photo_url) {
+  var im = new Image(); im.alt = ""; im.referrerPolicy = "no-referrer";
+  im.onload = function () { $("avIn").textContent = ""; $("avIn").appendChild(im); };
+  im.onerror = setInitial;
+  im.src = user.photo_url;
+}
+var POKES = ["Ты зашёл — это уже победа 💛", "Привет-привет 👋", "Мозг, мы справимся 🧠", "2 минуты — и ты красавчик ⚡", "Горжусь тобой 🔥"];
+function poke() { haptic("soft"); toast(pick(POKES)); }
 var hr = new Date().getHours();
 $("hello").textContent = hr < 12 ? "Доброе утро ☀️" : hr < 18 ? "Привет 👋" : "Добрый вечер 🌙";
 renderHome(); cloudLoad();
