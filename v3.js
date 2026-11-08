@@ -1,7 +1,7 @@
 /* Lingo Brain v3: каталог тем, «Нет сил», Surprise Box, заморозка серии,
    тренажёр уха, конструктор фраз, шпаргалки и сценарии. Контент: content/*.json */
 (function () {
-  var VER = "11";
+  var VER = "12";
   var V = { cat: null, cfg: null, sur: null, topics: {}, failed: false, track: "es", run: null, lastRun: null };
   var DEF_LANG = { es: "es-ES", en: "en-US" };
   var ACCENT = { "es-ES": "🇪🇸 Кастилья", "es-MX": "🇲🇽 Латино", "es-US": "🌎 Латино", "en-GB": "🇬🇧 Британский", "en-US": "🇺🇸 Американский" };
@@ -260,6 +260,7 @@
     if (!text) return;
     lang = lang || "es-ES";
     if (VS.neural !== false) { var u = url || audioFor(text, lang); if (u) { playUrl(u, text, lang, rate); return; } }
+    try { if (SAY_OK && speechSynthesis.getVoices().length && !voicesFor(lang).length) { if (window.toast) toast("🔇 " + text); return; } } catch (e) {}
     ttsSay(text, lang, rate);
   }
   // старые экраны (v1/v2) тоже говорят через новый движок
@@ -386,6 +387,10 @@
   var SAMPLE = { es: "Hola, ¿qué tal? Me alegro mucho de verte.", en: "Hi! Nice to meet you. How's your day going?" };
   function renderVoiceBox() {
     var vb = document.getElementById("voiceBox"); if (!vb) return;
+    var r0 = VS.rate || 1;
+    vb.innerHTML = '<div class="vrow" style="margin:0"><span>🐢 Темп речи</span><div class="vrate">' + [[0.8, "медленно"], [1, "норм"], [1.15, "быстро"]].map(function (x) { return '<button data-vr="' + x[0] + '" class="' + (Math.abs(r0 - x[0]) < 0.01 ? "on" : "") + '">' + x[1] + "</button>"; }).join("") + "</div></div>";
+    Array.prototype.forEach.call(vb.querySelectorAll("[data-vr]"), function (b) { b.onclick = function () { VS.rate = parseFloat(b.getAttribute("data-vr")); vsSave(); renderVoiceBox(); say(SAMPLE.es, "es-ES", 1); }; });
+    return;
     if (!SAY_OK) { vb.innerHTML = '<div class="label">🎙 Голос</div><p class="vhint">В этом браузере озвучки нет 😕</p>'; return; }
     var h = '<div class="label">🎙 Голос озвучки</div>';
     [["es", "es-ES", "Испанский"], ["en", "en-US", "Английский"]].forEach(function (L) {
@@ -426,7 +431,7 @@
       ".v3msg.me .sp{background:rgba(0,0,0,.14);color:#1A1B26;border:none}";
     document.head.appendChild(st);
   })();
-  window.__v3.say = say; window.__v3.wordMark = wordMark; window.__v3.wCounts = wCounts; window.__v3.WD = function () { return WD; }; window.__v3.wMerge = wMerge; window.__v3.aKey = aKey; window.__v3.audioFor = audioFor; window.__v3.audioInfo = function () { return { count: AUD_N }; }; window.__v3.setNeural = function (on) { VS.neural = !!on; vsSave(); }; loadAudioMap(); window.__v3.wEntry = wEntry; window.__v3.voicesFor = voicesFor; window.__v3.pickVoice = pickVoice; window.__v3.VS = function () { return VS; };
+  window.__v3.say = say; window.__v3.wordMark = wordMark; window.__v3.wCounts = wCounts; window.__v3.WD = function () { return WD; }; window.__v3.wMerge = wMerge; window.__v3.startRun = startRun; window.__v3.aKey = aKey; window.__v3.audioFor = audioFor; window.__v3.audioInfo = function () { return { count: AUD_N }; }; window.__v3.setNeural = function (on) { VS.neural = !!on; vsSave(); }; loadAudioMap(); window.__v3.wEntry = wEntry; window.__v3.voicesFor = voicesFor; window.__v3.pickVoice = pickVoice; window.__v3.VS = function () { return VS; };
 
   // ---------- стили ----------
   var css = "" +
@@ -648,30 +653,42 @@
   var timerT = null;
   function stopTimer() { if (timerT) { clearInterval(timerT); timerT = null; } }
   function startRun(r) {
-    r.pos = 0; r.score = 0; r.xp = 0; r.combo = 0; V.run = r;
+    r.pos = 0; r.score = 0; r.xp = 0; r.combo = 0; r.mistakes = []; r.review = false; r.hadReview = false; r.fixed = 0; r.mainN = r.cards.length; V.run = r;
     stopTimer();
     var tm = $("v3timer");
     if (r.seconds) {
       r.left = r.seconds; tm.textContent = r.left; tm.style.color = "var(--ok)";
-      timerT = setInterval(function () { r.left--; tm.textContent = Math.max(0, r.left); if (r.left <= 10) tm.style.color = "var(--es)"; if (r.left <= 0) { stopTimer(); toast("⏱ Время! Ты всё равно молодец 💛"); finishRun(); } }, 1000);
+      timerT = setInterval(function () { r.left--; tm.textContent = Math.max(0, r.left); if (r.left <= 10) tm.style.color = "var(--es)"; if (r.left <= 0) { stopTimer(); toast("⏱ Время! Ты всё равно молодец 💛"); endMain(); } }, 1000);
     } else tm.textContent = "⚡";
     show("play"); haptic("medium"); renderStep();
   }
   function finishRun() {
     var r = V.run; stopTimer(); if (window.speechSynthesis) speechSynthesis.cancel(); wSaveCloud();
-    var n = Math.max(1, r.cards.length);
+    var n = Math.max(1, r.mainN || r.cards.length);
     var un = (r.topicId && V.topics[r.topicId]) ? checkUnlock(r.topicId, r.score / n) : null;
     complete(r.score, n, Math.round(r.xp * (r.mult || 1)));
+    if (r.hadReview) { try { $("resTitle").textContent = "Идеально! 💪"; $("resEmoji").textContent = "⚡️"; $("resSub").textContent = "Сразу верно " + r.score + " из " + n + " · ошибки исправлены: " + r.fixed + ". Так и запоминается!"; } catch (e) {} }
     if (un) setTimeout(function () { haptic("success"); toast("🔓 Открыта новая тема: " + un.emoji + " " + un.title); }, 1600); else if (V.nextHint) { var nh = V.nextHint; V.nextHint = null; setTimeout(function () { toast("👉 Дальше по порядку: " + nh.emoji + " " + nh.title); }, 1600); }
     renderFreeze();
   }
-  function nextStep() { var r = V.run; haptic("light"); r.pos++; if (r.pos >= r.cards.length) finishRun(); else renderStep(); }
+  function endMain() {
+    var r = V.run; if (!r) return;
+    stopTimer();
+    if (r.mistakes && r.mistakes.length) {
+      r.review = true; r.hadReview = true; r.cards = r.mistakes; r.mistakes = []; r.pos = 0;
+      var tm = $("v3timer"); if (tm) { tm.textContent = "⚡"; tm.style.color = "var(--es)"; }
+      haptic("medium"); toast("⚡️ Работа над ошибками — закрепи результат");
+      try { trk("mistake_review", { n: r.cards.length }); } catch (e) {}
+      renderStep();
+    } else finishRun();
+  }
+  function nextStep() { var r = V.run; haptic("light"); r.pos++; if (r.pos >= r.cards.length) endMain(); else renderStep(); }
   function feedback(ok, title, tip, sayIt) {
     var r = V.run, body = $("v3body");
     var fb = E("div", "v3fb " + (ok ? "ok" : "bad"), "<h3></h3>" + (tip ? "<p></p>" : "") + '<div class="v3row2">' + (sayIt ? '<button class="btn ghost sayb" style="flex:0 0 64px;margin:0">🔊</button>' : "") + '<button class="btn ' + (ok ? "ok" : "err") + '"></button></div>');
     fb.querySelector("h3").innerHTML = title; if (tip) fb.querySelector("p").innerHTML = tip;
     var btns = fb.querySelectorAll("button"), nx = btns[btns.length - 1];
-    nx.textContent = r.pos + 1 >= r.cards.length ? "🏁 Итог" : "Дальше →"; nx.onclick = nextStep;
+    nx.textContent = r.pos + 1 >= r.cards.length ? (r.mistakes && r.mistakes.length ? "⚡️ Работа над ошибками" : "🏁 Итог") : "Дальше →"; nx.onclick = nextStep;
     if (sayIt) btns[0].onclick = sayIt;
     body.appendChild(fb);
     $("v3dots").innerHTML = dots(r.pos + 1, r.cards.length, false);
@@ -679,7 +696,9 @@
   }
   function grade(ok, pts) {
     try { wordMark(V.run && V.run.cards && V.run.cards[V.run.pos], ok); } catch (e) {}
-    var r = V.run;
+    var r = V.run, cur = r.cards && r.cards[r.pos];
+    if (!ok && r.mistakes && cur && r.mistakes.indexOf(cur) < 0) r.mistakes.push(cur);
+    if (ok && r.review) { r.fixed++; r.combo++; r.xp += Math.round(cfgXp("correct", 10) / 2); haptic("success"); return; }
     if (ok) { r.score++; r.combo++; r.xp += pts || cfgXp("correct", 10); haptic("success"); if (r.combo >= 3) toast("🔥 Комбо x" + r.combo + "!"); }
     else { r.combo = 0; r.xp += cfgXp("wrongButTried", 3); haptic("error"); }
   }
@@ -704,7 +723,7 @@
     $("v3dots").innerHTML = dots(r.pos, r.cards.length, true);
     var card = E("div", "qcard glass"); body.appendChild(card);
     var label = { choice: "🎯 Выбери", flash: "🃏 Вспомни", listen: "👂 Тренажёр уха", build: "🧩 Собери фразу", speak: "🎙 Скажи вслух" }[c.type] || "";
-    card.appendChild(E("div", "qlabel", label + " · " + esc(r.title)));
+    card.appendChild(E("div", "qlabel", r.review ? "⚡️ Работа над ошибками (закрепи результат) · " + label : label + " · " + esc(r.title))); if (r.review) card.style.boxShadow = "0 0 0 2px var(--es) inset";
 
     if (c.type === "choice") {
       card.appendChild(E("div", "qtext", c.q));

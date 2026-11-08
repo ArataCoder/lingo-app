@@ -1,4 +1,4 @@
-/* Lingo Brain v3.6: друзья + рейтинг, реф-ссылки, карточка игрока, тумблер нейроголоса */
+/* Lingo Brain v3.6/3.7: друзья + рейтинг, реф-ссылки, карточка игрока, тумблер нейроголоса */
 (function () {
   "use strict";
   var BOT = "LingoBrainBOT", API = "https://lingo-brain-bot.lingobrain.workers.dev";
@@ -13,6 +13,10 @@
   function ver(v) { try { return !!(tg && tg.isVersionAtLeast && tg.isVersionAtLeast(v)); } catch (e) { return false; } }
   function base() { try { var u = window.__v3.V.cfg.analytics.statsUrl; if (u) return u.replace("/api/event", ""); } catch (e) {} return API; }
   function refLink() { return "https://t.me/" + BOT + (me ? "?start=ref_" + me.id : ""); }
+  function avaUrl(p) { if (p.me && me && me.photo_url) return me.photo_url; return base() + "/ava/" + p.id + ".jpg"; }
+  var AVA = null;
+  function loadAva() { if (!me) return; var im = new Image(); im.crossOrigin = "anonymous"; im.onload = function () { AVA = im; }; im.src = base() + "/ava/" + me.id + ".jpg"; }
+  setTimeout(loadAva, 1500);
   function trk(n, p) { try { if (window.lbTrack) window.lbTrack(n, p || {}); } catch (e) {} }
   function note(t) { try { if (window.toast) return window.toast(t); } catch (e) {} try { if (tg && tg.showAlert) tg.showAlert(t); } catch (e) {} }
   function post(path, body) {
@@ -35,7 +39,7 @@
     ".seg button.on{background:rgba(255,255,255,.1);color:var(--text)}",
     ".frow{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;margin-bottom:8px}",
     ".frow.me{outline:2px solid rgba(247,160,70,.6)}.frk{width:30px;text-align:center;font-weight:900;font-size:18px;color:var(--dim)}",
-    ".fav{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#12131C;flex:none}",
+    ".fav{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#12131C;flex:none;position:relative;overflow:hidden}", ".fav img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover}",
     ".fnm{flex:1;min-width:0}.fnm b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fnm span{color:var(--dim);font-size:13px}",
     ".fxp{text-align:right;font-weight:900;font-size:18px}.fxp span{display:block;color:var(--dim);font-size:11px;font-weight:700}",
     ".frempty{text-align:center;color:var(--dim);padding:22px 8px;line-height:1.5}.frhint{color:var(--dim);font-size:13px;text-align:center;line-height:1.45;margin-top:10px}",
@@ -72,7 +76,7 @@
     list.forEach(function (p, i) {
       var nm = p.me ? "Ты" : (p.name || "Игрок"), letter = String(p.name || "?").charAt(0).toUpperCase();
       h += '<div class="frow glass' + (p.me ? " me" : "") + '"><div class="frk">' + (i < 3 && p[key] > 0 ? medals[i] : (i + 1)) + '</div>' +
-        '<div class="fav" style="background:' + pal[Math.abs(p.id) % pal.length] + '">' + esc(letter) + '</div>' +
+        '<div class="fav" style="background:' + pal[Math.abs(p.id) % pal.length] + '">' + esc(letter) + '<img alt="" src="' + esc(avaUrl(p)) + '" onerror="this.remove()"></div>' +
         '<div class="fnm"><b>' + esc(nm) + '</b><span>🔥 ' + (p.streak || 0) + ' · 🎓 ' + (p.learned || 0) + ' слов · LVL ' + (Math.floor((p.xp || 0) / 200) + 1) + '</span></div>' +
         '<div class="fxp">' + (p[key] || 0) + '<span>' + (MODE === "week" ? "XP за неделю" : "XP всего") + '</span></div></div>';
     });
@@ -115,6 +119,7 @@
 
   // ---------- тумблер нейроголоса (mp3) ----------
   function neuralBox() {
+    var old = $("neuralBox"); if (old) old.remove(); return;
     var vb = $("voiceBox"); if (!vb || !window.__v3 || !window.__v3.audioInfo) return;
     var nb = $("neuralBox");
     if (!nb) { nb = document.createElement("div"); nb.id = "neuralBox"; nb.className = "glass"; nb.style.cssText = "padding:12px 14px;border-radius:18px;margin:10px 0"; vb.parentNode.insertBefore(nb, vb); }
@@ -150,6 +155,7 @@
     var ag = c.createLinearGradient(120, 250, 280, 410); ag.addColorStop(0, A); ag.addColorStop(1, OK);
     c.beginPath(); c.arc(200, 330, 80, 0, Math.PI * 2); c.fillStyle = ag; c.fill();
     c.textAlign = "center"; c.fillStyle = "#12131C"; c.font = "900 80px " + FONT; c.fillText(String(name).charAt(0).toUpperCase(), 200, 334);
+    if (AVA) { try { c.save(); c.beginPath(); c.arc(200, 330, 80, 0, Math.PI * 2); c.clip(); c.drawImage(AVA, 120, 250, 160, 160); c.restore(); } catch (e) {} }
     rr(c, 145, 392, 110, 46, 23); c.fillStyle = "#12131C"; c.fill(); c.strokeStyle = A; c.lineWidth = 3; c.stroke(); c.fillStyle = "#EEEEFF"; c.font = "900 24px " + FONT; c.fillText("LVL " + lvl, 200, 416);
     c.textAlign = "left"; c.fillStyle = "#EEEEFF"; fit(c, name, 640, 62, "900"); c.fillText(name, 320, 305);
     c.fillStyle = "#8A91B4"; c.font = "700 32px " + FONT; c.fillText(L === "en" ? "прокачивает английский" : "прокачивает испанский", 320, 365);

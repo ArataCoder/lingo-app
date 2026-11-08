@@ -71,7 +71,7 @@ async function loaded(page) {
   ok(await page.evaluate(() => { window.__v3.setNeural(false); window.__v3.say('¡Hola! ¿Qué tal?', 'es-ES'); const r = window.__played.length === 1; window.__v3.setNeural(true); return r; }), 'neural toggle off -> TTS only');
   await page.evaluate(() => show('words'));
   await page.waitForTimeout(200);
-  ok(await page.evaluate(() => !!document.getElementById('neuralChk') && document.getElementById('neuralBox').textContent.includes('1')), 'neural toggle visible in Words');
+  ok(await page.evaluate(() => !document.getElementById('neuralChk')), 'neural toggle hidden from users (v3.7)');
   await page.evaluate(() => show('friends'));
   await page.waitForFunction(() => document.querySelectorAll('#frList .frow').length === 3, null, { timeout: 5000 }).catch(() => {});
   const fr = await page.evaluate(() => [...document.querySelectorAll('#frList .frow')].map(x => ({ t: x.textContent, me: x.classList.contains('me') })));

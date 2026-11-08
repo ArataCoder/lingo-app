@@ -153,3 +153,5 @@ def save(path, manifest, items):
 
 if __name__ == "__main__":
     main()
+
+# rev 3.7: full neural audio for all ready topics

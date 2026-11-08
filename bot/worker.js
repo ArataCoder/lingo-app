@@ -7,7 +7,7 @@
 // Binding D1 (имя DB): база lingo-brain-db для статистики (users, events)
 // Настройка одним кликом: открой https://<твой-воркер>.workers.dev/setup?key=<SETUP_KEY>
 
-const APP_URL = "https://aratacoder.github.io/lingo-app/?v=11";
+const APP_URL = "https://aratacoder.github.io/lingo-app/?v=12";
 const BOT_USERNAME = "LingoBrainBOT";
 const APP_ORIGIN = "https://aratacoder.github.io";
 const EVENTS = ["app_opened", "topic_selected", "round_completed", "energy_mode_used"];
@@ -182,6 +182,23 @@ async function verifyInitData(initData, env) {
   } catch (e) {
     return null;
   }
+}
+
+// GET /ava/<id>.jpg — фото профиля игрока из Telegram (через бота, токен наружу не уходит)
+async function onAva(id, env) {
+  const h = { "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=43200" };
+  if (!/^[0-9]{1,15}$/.test(id)) return new Response("bad id", { status: 400, headers: h });
+  const row = await env.DB.prepare("SELECT id FROM players WHERE id = ?").bind(Number(id)).first();
+  if (!row) return new Response("not found", { status: 404, headers: h });
+  const ph = await tg(env, "getUserProfilePhotos", { user_id: Number(id), limit: 1 });
+  const sizes = ph && ph.ok && ph.result && ph.result.photos && ph.result.photos[0];
+  if (!sizes || !sizes.length) return new Response("no photo", { status: 404, headers: { ...h, "Cache-Control": "public, max-age=3600" } });
+  const ps = sizes.filter(s => s.width >= 160)[0] || sizes[sizes.length - 1];
+  const f = await tg(env, "getFile", { file_id: ps.file_id });
+  if (!f || !f.ok || !f.result || !f.result.file_path) return new Response("no file", { status: 404, headers: h });
+  const img = await fetch("https://api.telegram.org/file/bot" + token(env) + "/" + f.result.file_path);
+  if (!img.ok) return new Response("fetch fail", { status: 502, headers: h });
+  return new Response(await img.arrayBuffer(), { status: 200, headers: { ...h, "content-type": "image/jpeg" } });
 }
 
 function cors(status) {
@@ -511,6 +528,9 @@ export default {
       if (request.method !== "POST") return cors(405);
       try { return url.pathname === "/api/sync" ? await onSync(request, env) : await onCard(request, env); }
       catch (e) { console.log("api error", e && e.stack); return json({ ok: false, error: "server" }, 500); }
+    }
+    if (url.pathname.startsWith("/ava/") && request.method === "GET") {
+      try { return await onAva(url.pathname.slice(5).replace(".jpg", ""), env); } catch (e) { return new Response("err", { status: 500, headers: { "Access-Control-Allow-Origin": "*" } }); }
     }
     if (url.pathname.startsWith("/card/") && request.method === "GET") {
       return onCardGet(url.pathname.slice(6).replace(".jpg", ""), env);
