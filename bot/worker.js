@@ -76,8 +76,26 @@ function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+// Чистим токен от пробелов, кавычек, переносов и лишнего префикса bot
+function token(env) {
+  let t = String(env.BOT_TOKEN || "").trim().replace(/["'`]/g, "").split(" ").join("").trim();
+  if (t.toLowerCase().startsWith("bot")) t = t.slice(3);
+  return t;
+}
+
+function tokenCheck(env) {
+  const raw = String(env.BOT_TOKEN || "");
+  const t = token(env);
+  return {
+    rawLength: raw.length,
+    cleanLength: t.length,
+    hasColon: t.indexOf(":") > 0,
+    looksValid: /^[0-9]{6,}:[A-Za-z0-9_-]{30,}$/.test(t)
+  };
+}
+
 async function tg(env, method, body) {
-  const r = await fetch("https://api.telegram.org/bot" + env.BOT_TOKEN + "/" + method, {
+  const r = await fetch("https://api.telegram.org/bot" + token(env) + "/" + method, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(body)
@@ -128,6 +146,13 @@ async function onUpdate(update, env) {
 
 async function setup(url, env) {
   if (url.searchParams.get("key") !== env.SETUP_KEY) return new Response("forbidden", { status: 403 });
+  const check = tokenCheck(env);
+  const me = await tg(env, "getMe", {});
+  if (!me.ok) {
+    return new Response(JSON.stringify({ allOk: false, tokenCheck: check, getMe: me }, null, 2), {
+      headers: { "content-type": "application/json; charset=utf-8" }
+    });
+  }
   const out = {};
   out.setWebhook = await tg(env, "setWebhook", {
     url: url.origin + "/webhook",
@@ -142,7 +167,7 @@ async function setup(url, env) {
     menu_button: { type: "web_app", text: BOT.menuButtonText, web_app: { url: APP_URL } }
   });
   const allOk = Object.values(out).every((x) => x && x.ok);
-  return new Response(JSON.stringify({ allOk: allOk, results: out }, null, 2), {
+  return new Response(JSON.stringify({ allOk: allOk, bot: "@" + me.result.username, results: out }, null, 2), {
     headers: { "content-type": "application/json; charset=utf-8" }
   });
 }
