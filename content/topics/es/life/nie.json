@@ -1,0 +1,288 @@
+{
+  "id": "es.life.nie",
+  "track": "es",
+  "level": "A1",
+  "title": "Полиция, NIE и cita previa",
+  "emoji": "🪪",
+  "estMinutes": 2,
+  "cheatsheet": [
+    {
+      "term": "la cita previa",
+      "tr": "запись на приём",
+      "ex": "Necesito una cita previa."
+    },
+    {
+      "term": "el NIE",
+      "tr": "номер иностранца",
+      "ex": "Vengo a recoger mi NIE."
+    },
+    {
+      "term": "rellenar",
+      "tr": "заполнить",
+      "ex": "Rellene este formulario."
+    },
+    {
+      "term": "la tasa",
+      "tr": "госпошлина",
+      "ex": "Pague la tasa en el banco."
+    },
+    {
+      "term": "el justificante",
+      "tr": "квитанция, подтверждение",
+      "ex": "Traiga el justificante."
+    },
+    {
+      "term": "la huella",
+      "tr": "отпечаток пальца",
+      "ex": "Ponga la huella aquí."
+    },
+    {
+      "term": "Aquí tiene.",
+      "tr": "Вот, пожалуйста (даю вещь).",
+      "ex": "—Su pasaporte. —Aquí tiene."
+    },
+    {
+      "term": "¿Me lo puede repetir?",
+      "tr": "Можете повторить?",
+      "ex": "Perdón, ¿me lo puede repetir?"
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "«Cita previa» — это…",
+      "options": [
+        "Запись на приём",
+        "Штраф",
+        "Паспорт"
+      ],
+      "answer": 0,
+      "explain": "Без cita previa в госорганах Испании почти никуда."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Тебе говорят: «Rellene este formulario». Что делать?",
+      "options": [
+        "Заполнить форму",
+        "Подписать договор",
+        "Заплатить"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "la huella",
+      "back": "отпечаток пальца 🖐️"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Tiene que pagar la tasa en el banco.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Что нужно сделать?",
+      "options": [
+        "Оплатить пошлину в банке",
+        "Прийти завтра",
+        "Принести фото"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Necesito una copia de su pasaporte, por favor.",
+        "lang": "es-MX",
+        "rate": 1
+      },
+      "q": "Что просят? (латино-акцент)",
+      "options": [
+        "Копию паспорта",
+        "Твой адрес",
+        "Отпечаток пальца"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Мне нужна запись на приём.",
+      "tokens": [
+        "Necesito",
+        "una",
+        "cita",
+        "previa"
+      ],
+      "distractors": [
+        "tengo",
+        "el"
+      ],
+      "pattern": "Necesito + [что нужно]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Я пришёл забрать свой NIE.",
+      "tokens": [
+        "Vengo",
+        "a",
+        "recoger",
+        "mi",
+        "NIE"
+      ],
+      "distractors": [
+        "soy",
+        "la"
+      ],
+      "pattern": "Vengo a + [глагол] → «я пришёл, чтобы…»"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "¿Me lo puede repetir, por favor?",
+      "tr": "Можете повторить, пожалуйста?",
+      "lang": "es-ES"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "No entiendo. ¿Puede hablar más despacio?",
+      "tr": "Не понимаю. Можете говорить медленнее?",
+      "lang": "es-ES"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "es.life.nie.s1",
+      "title": "Окошко в полиции",
+      "emoji": "🚓",
+      "userRole": "Ты",
+      "botRole": "Funcionario",
+      "voice": "es-ES",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Buenos días. ¿Tiene cita previa?",
+          "tr": "Добрый день. У вас есть запись?",
+          "choices": [
+            {
+              "text": "Sí, a las diez. Vengo por el NIE.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Идеально: ответил и сразу сказал цель."
+            },
+            {
+              "text": "Sí.",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Ок! Можно добавить цель: «Vengo por el NIE»."
+            },
+            {
+              "text": "Perdón, no hablo bien español.",
+              "next": "n1b",
+              "score": 1,
+              "feedback": "Это нормально и честно. Дальше проще."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Tranquilo. ¿Tiene cita? ¿Sí o no?",
+          "tr": "Спокойно. Запись есть? Да или нет?",
+          "choices": [
+            {
+              "text": "Sí, tengo cita.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Вот! Коротко и понятно."
+            }
+          ]
+        },
+        "n2": {
+          "say": "Vale. Necesito su pasaporte y el formulario rellenado.",
+          "tr": "Хорошо. Нужен ваш паспорт и заполненная форма.",
+          "choices": [
+            {
+              "text": "Aquí tiene.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "«Aquí tiene» — супер-фраза, когда что-то отдаёшь."
+            },
+            {
+              "text": "¿Qué formulario?",
+              "next": "n2b",
+              "score": 1,
+              "feedback": "Переспросить — это сила, а не слабость."
+            }
+          ]
+        },
+        "n2b": {
+          "say": "El EX-15. ¿Lo tiene?",
+          "tr": "Форма EX-15. Она у вас есть?",
+          "choices": [
+            {
+              "text": "Sí, aquí está.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Отлично!"
+            },
+            {
+              "text": "No, lo siento. ¿Dónde lo consigo?",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Спас ситуацию вопросом. Так и надо."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Perfecto. Ahora pague la tasa en el banco y vuelva con el justificante.",
+          "tr": "Отлично. Оплатите пошлину в банке и вернитесь с квитанцией.",
+          "choices": [
+            {
+              "text": "Vale. ¿Me lo puede repetir, por favor?",
+              "next": "end",
+              "score": 2,
+              "feedback": "Вежливо переспросил — уровень «местный»."
+            },
+            {
+              "text": "Vale, gracias.",
+              "next": "end",
+              "score": 2,
+              "feedback": "Чётко!"
+            }
+          ]
+        },
+        "end": {
+          "say": "¡Hasta luego!",
+          "tr": "До свидания!",
+          "end": true,
+          "choices": []
+        }
+      },
+      "ai": {
+        "enabled": false,
+        "persona": "Уставший, но вежливый сотрудник полиции в Испании. Говорит простыми фразами A1.",
+        "goals": [
+          "Сказать, что есть cita previa",
+          "Отдать документы",
+          "Понять, где оплатить tasa"
+        ],
+        "maxTurns": 8
+      }
+    }
+  ]
+}

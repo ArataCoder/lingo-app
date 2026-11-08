@@ -1,0 +1,19 @@
+{
+  "id": "es.life.rent",
+  "track": "es",
+  "level": "A1",
+  "title": "Аренда и лендлорд",
+  "emoji": "🔑",
+  "estMinutes": 2,
+  "cheatsheet": [
+    { "term": "el casero", "tr": "хозяин квартиры", "ex": "Voy a llamar al casero." }
+  ],
+  "cards": [
+    { "id": "c1", "type": "choice", "energy": "low", "q": "«La fianza» — это…", "options": ["Залог", "Скидка", "Ключ"], "answer": 0, "explain": "Обычно 1–2 месяца аренды." },
+    { "id": "c2", "type": "flash", "energy": "low", "front": "el contrato", "back": "договор" },
+    { "id": "c3", "type": "listen", "energy": "normal", "audio": { "text": "El alquiler son seiscientos euros al mes.", "lang": "es-ES", "rate": 0.85 }, "q": "Сколько стоит аренда?", "options": ["600 € в месяц", "60 € в неделю", "1600 €"], "answer": 0 },
+    { "id": "c4", "type": "build", "energy": "normal", "prompt": "Не работает отопление.", "tokens": ["La", "calefacción", "no", "funciona"], "distractors": ["es"], "pattern": "[вещь] + no funciona" },
+    { "id": "c5", "type": "speak", "energy": "normal", "text": "¿Están incluidos los gastos?", "tr": "Коммуналка включена?", "lang": "es-ES" }
+  ],
+  "scenarios": []
+}

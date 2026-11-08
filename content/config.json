@@ -1,0 +1,57 @@
+{
+  "energyModes": {
+    "low": {
+      "label": "🪫 Нет сил",
+      "seconds": 45,
+      "cards": 3,
+      "cardEnergy": [
+        "low"
+      ],
+      "countsForStreak": true,
+      "xpMultiplier": 1
+    },
+    "normal": {
+      "label": "⚡ Быстрый раунд",
+      "seconds": 120,
+      "cards": 5,
+      "cardEnergy": [
+        "low",
+        "normal"
+      ],
+      "countsForStreak": true,
+      "xpMultiplier": 1
+    },
+    "boost": {
+      "label": "🚀 Гиперфокус",
+      "seconds": 300,
+      "cards": 10,
+      "cardEnergy": [
+        "low",
+        "normal",
+        "boost"
+      ],
+      "countsForStreak": true,
+      "xpMultiplier": 1.5
+    }
+  },
+  "xp": {
+    "correct": 10,
+    "wrongButTried": 3,
+    "speak": 10,
+    "scenarioChoicePerPoint": 5,
+    "roundComplete": 15
+  },
+  "streakFreeze": {
+    "costXp": 50,
+    "maxStored": 2,
+    "autoApply": true,
+    "message": "Вчера был выходной — серия заморожена 🧊 Ты молодец, что вернулся."
+  },
+  "surpriseBox": {
+    "cooldownMinutes": 0,
+    "xp": 5
+  },
+  "dailyGoal": {
+    "rounds": 1
+  }
+}

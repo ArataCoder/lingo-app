@@ -1,0 +1,72 @@
+{
+  "items": [
+    {
+      "id": "s1",
+      "track": "es",
+      "type": "fact",
+      "text": "«Embarazada» — не «смущённая», а «беременная» 😅 Смущённый — «avergonzado»."
+    },
+    {
+      "id": "s2",
+      "track": "es",
+      "type": "meme",
+      "text": "«Ahora» — сейчас… может быть. «Ahora mismo» — прямо сейчас. «Ahorita» в Мексике — когда-нибудь 🙃"
+    },
+    {
+      "id": "s3",
+      "track": "es",
+      "type": "question",
+      "q": "Что значит «¡Qué guay!»?",
+      "options": [
+        "Как круто!",
+        "Какой ужас!",
+        "Как дорого!"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "s4",
+      "track": "es",
+      "type": "question",
+      "q": "Испанец говорит «Vale». Это…",
+      "options": [
+        "Окей",
+        "Стоит (цена)",
+        "Пока"
+      ],
+      "answer": 0,
+      "explain": "Хотя «¿Cuánto vale?» — «сколько стоит?». Одно слово — две жизни."
+    },
+    {
+      "id": "s5",
+      "track": "en",
+      "type": "question",
+      "q": "Что НЕ значит «я устал»?",
+      "options": [
+        "I'm knackered",
+        "I'm beat",
+        "I'm stoked"
+      ],
+      "answer": 2,
+      "explain": "Stoked = в восторге 🤩"
+    },
+    {
+      "id": "s6",
+      "track": "en",
+      "type": "meme",
+      "text": "«Let's circle back on this» = «давай никогда к этому не вернёмся» 🙂"
+    },
+    {
+      "id": "s7",
+      "track": "en",
+      "type": "fact",
+      "text": "«Quite good» у британца часто значит «так себе». У американца — «довольно хорошо». Контекст — всё ☕"
+    },
+    {
+      "id": "s8",
+      "track": "en",
+      "type": "challenge",
+      "text": "30 секунд: опиши свою комнату вслух на английском. Без пауз длиннее 3 секунд. Go! 🎙"
+    }
+  ]
+}

@@ -1,0 +1,717 @@
+{
+  "schemaVersion": 1,
+  "appUrl": "https://aratacoder.github.io/lingo-app/",
+  "tracks": [
+    {
+      "id": "es",
+      "title": "Испанский",
+      "subtitle": "С нуля → A2/B1",
+      "color": "#F7A046",
+      "levels": [
+        "A0",
+        "A1",
+        "A2",
+        "B1"
+      ],
+      "voices": {
+        "default": "es-ES",
+        "variants": [
+          {
+            "lang": "es-ES",
+            "label": "🇪🇸 Кастильский"
+          },
+          {
+            "lang": "es-MX",
+            "label": "🇲🇽 Латино"
+          }
+        ]
+      },
+      "blocks": [
+        {
+          "id": "es.survive",
+          "title": "Выживание",
+          "emoji": "🆘",
+          "order": 1,
+          "levelRange": "A0–A1",
+          "topics": [
+            {
+              "id": "es.survive.hello",
+              "title": "Привет и «я не понимаю»",
+              "emoji": "👋",
+              "level": "A0",
+              "tags": [
+                "basics"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.survive.numbers",
+              "title": "Числа, цены, время",
+              "emoji": "🔢",
+              "level": "A0",
+              "tags": [
+                "basics"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.survive.super",
+              "title": "Супермаркет",
+              "emoji": "🛒",
+              "level": "A0",
+              "tags": [
+                "shopping"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.survive.cafe",
+              "title": "Кафе и бар: заказ",
+              "emoji": "☕",
+              "level": "A0",
+              "tags": [
+                "food"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.survive.transport",
+              "title": "Автобус и такси",
+              "emoji": "🚌",
+              "level": "A1",
+              "tags": [
+                "city"
+              ],
+              "status": "planned",
+              "file": null
+            }
+          ]
+        },
+        {
+          "id": "es.life",
+          "title": "Быт и документы",
+          "emoji": "🏠",
+          "order": 2,
+          "levelRange": "A1–A2",
+          "topics": [
+            {
+              "id": "es.life.rent",
+              "title": "Аренда и лендлорд",
+              "emoji": "🔑",
+              "level": "A1",
+              "tags": [
+                "spain",
+                "housing"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.life.nie",
+              "title": "Полиция, NIE и cita previa",
+              "emoji": "🪪",
+              "level": "A1",
+              "tags": [
+                "spain",
+                "docs"
+              ],
+              "status": "ready",
+              "file": "topics/es/life/nie.json"
+            },
+            {
+              "id": "es.life.bank",
+              "title": "Банк и счета",
+              "emoji": "🏦",
+              "level": "A1",
+              "tags": [
+                "spain",
+                "money"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.life.doctor",
+              "title": "Врач, аптека, скорая 112",
+              "emoji": "🚑",
+              "level": "A1",
+              "tags": [
+                "health",
+                "emergency"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.life.repairs",
+              "title": "Поломки и мастер",
+              "emoji": "🔧",
+              "level": "A2",
+              "tags": [
+                "housing"
+              ],
+              "status": "planned",
+              "file": null
+            }
+          ]
+        },
+        {
+          "id": "es.social",
+          "title": "Люди и общение",
+          "emoji": "💬",
+          "order": 3,
+          "levelRange": "A1–A2",
+          "topics": [
+            {
+              "id": "es.social.me",
+              "title": "О себе и семье",
+              "emoji": "🙋",
+              "level": "A1",
+              "tags": [
+                "social"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.social.neighbors",
+              "title": "Соседи и small talk",
+              "emoji": "🏘️",
+              "level": "A1",
+              "tags": [
+                "social"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.social.plans",
+              "title": "Планы и встречи (quedar)",
+              "emoji": "📅",
+              "level": "A2",
+              "tags": [
+                "social"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.social.opinions",
+              "title": "Чувства и мнение",
+              "emoji": "💭",
+              "level": "A2",
+              "tags": [
+                "social"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.social.bar",
+              "title": "Бар и неформальный сленг",
+              "emoji": "🍻",
+              "level": "A2",
+              "tags": [
+                "slang",
+                "social"
+              ],
+              "status": "planned",
+              "file": null
+            }
+          ]
+        },
+        {
+          "id": "es.travel",
+          "title": "Поездки и город",
+          "emoji": "✈️",
+          "order": 4,
+          "levelRange": "A2",
+          "topics": [
+            {
+              "id": "es.travel.hotel",
+              "title": "Отель и жильё на ночь",
+              "emoji": "🏨",
+              "level": "A2",
+              "tags": [
+                "travel"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.travel.renfe",
+              "title": "Вокзал, Renfe, аэропорт",
+              "emoji": "🚆",
+              "level": "A2",
+              "tags": [
+                "travel"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.travel.directions",
+              "title": "Как пройти?",
+              "emoji": "🗺️",
+              "level": "A1",
+              "tags": [
+                "city"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.travel.beach",
+              "title": "Пляж, спорт, отдых",
+              "emoji": "🏖️",
+              "level": "A2",
+              "tags": [
+                "leisure"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.travel.problems",
+              "title": "Проблемы в поездке",
+              "emoji": "🧳",
+              "level": "A2",
+              "tags": [
+                "travel",
+                "emergency"
+              ],
+              "status": "planned",
+              "file": null
+            }
+          ]
+        },
+        {
+          "id": "es.work",
+          "title": "Работа",
+          "emoji": "💼",
+          "order": 5,
+          "levelRange": "A2–B1",
+          "topics": [
+            {
+              "id": "es.work.search",
+              "title": "Поиск работы и объявления",
+              "emoji": "🔎",
+              "level": "A2",
+              "tags": [
+                "work"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.work.interview",
+              "title": "CV и собеседование",
+              "emoji": "🤝",
+              "level": "B1",
+              "tags": [
+                "work"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.work.colleagues",
+              "title": "Первый день и коллеги",
+              "emoji": "👥",
+              "level": "A2",
+              "tags": [
+                "work"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.work.calls",
+              "title": "Звонки и сообщения",
+              "emoji": "📞",
+              "level": "B1",
+              "tags": [
+                "work"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "es.work.rights",
+              "title": "Контракт, nómina, SEPE",
+              "emoji": "📄",
+              "level": "B1",
+              "tags": [
+                "work",
+                "spain"
+              ],
+              "status": "planned",
+              "file": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "en",
+      "title": "Английский",
+      "subtitle": "B1 → C1 · Speaking & Business",
+      "color": "#9D7CD8",
+      "levels": [
+        "B1",
+        "B2",
+        "C1"
+      ],
+      "voices": {
+        "default": "en-US",
+        "variants": [
+          {
+            "lang": "en-US",
+            "label": "🇺🇸 American"
+          },
+          {
+            "lang": "en-GB",
+            "label": "🇬🇧 British"
+          }
+        ]
+      },
+      "blocks": [
+        {
+          "id": "en.barriers",
+          "title": "Speaking Barriers",
+          "emoji": "🧱",
+          "order": 1,
+          "levelRange": "B1–B2",
+          "topics": [
+            {
+              "id": "en.barriers.fillers",
+              "title": "Fillers: время подумать",
+              "emoji": "⏳",
+              "level": "B1",
+              "tags": [
+                "fluency"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.barriers.paraphrase",
+              "title": "Забыл слово → перефразируй",
+              "emoji": "🔄",
+              "level": "B1",
+              "tags": [
+                "fluency"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.barriers.clarify",
+              "title": "Переспросить и уточнить",
+              "emoji": "❓",
+              "level": "B1",
+              "tags": [
+                "fluency"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.barriers.story",
+              "title": "Рассказать историю",
+              "emoji": "📖",
+              "level": "B2",
+              "tags": [
+                "fluency",
+                "past"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.barriers.pron",
+              "title": "Ловушки произношения",
+              "emoji": "👄",
+              "level": "B1",
+              "tags": [
+                "pronunciation"
+              ],
+              "status": "planned",
+              "file": null
+            }
+          ]
+        },
+        {
+          "id": "en.interview",
+          "title": "Job Interviews",
+          "emoji": "🎯",
+          "order": 2,
+          "levelRange": "B1–C1",
+          "topics": [
+            {
+              "id": "en.interview.about",
+              "title": "Tell me about yourself",
+              "emoji": "🙋",
+              "level": "B1",
+              "tags": [
+                "work",
+                "remote"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.interview.star",
+              "title": "Поведенческие вопросы (STAR)",
+              "emoji": "⭐",
+              "level": "B2",
+              "tags": [
+                "work"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.interview.strengths",
+              "title": "Сильные/слабые стороны",
+              "emoji": "💪",
+              "level": "B2",
+              "tags": [
+                "work"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.interview.salary",
+              "title": "Переговоры о зарплате",
+              "emoji": "💰",
+              "level": "B2",
+              "tags": [
+                "work",
+                "negotiation"
+              ],
+              "status": "ready",
+              "file": "topics/en/interview/salary.json"
+            },
+            {
+              "id": "en.interview.remote",
+              "title": "Удалёнка: вопросы и техника",
+              "emoji": "💻",
+              "level": "B2",
+              "tags": [
+                "work",
+                "remote"
+              ],
+              "status": "planned",
+              "file": null
+            }
+          ]
+        },
+        {
+          "id": "en.biz",
+          "title": "Tech & Business Slang",
+          "emoji": "💻",
+          "order": 3,
+          "levelRange": "B2–C1",
+          "topics": [
+            {
+              "id": "en.biz.meetings",
+              "title": "Митинги и стендапы",
+              "emoji": "🗓️",
+              "level": "B2",
+              "tags": [
+                "work"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.biz.async",
+              "title": "Slack и email-этикет",
+              "emoji": "✉️",
+              "level": "B2",
+              "tags": [
+                "work",
+                "writing"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.biz.idioms",
+              "title": "Корпоративные идиомы",
+              "emoji": "🏢",
+              "level": "C1",
+              "tags": [
+                "work",
+                "idioms"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.biz.fintech",
+              "title": "FinTech, KYC и комплаенс",
+              "emoji": "🛡️",
+              "level": "B2",
+              "tags": [
+                "work",
+                "fintech"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.biz.product",
+              "title": "Стартапы и продукт",
+              "emoji": "🚀",
+              "level": "C1",
+              "tags": [
+                "work"
+              ],
+              "status": "planned",
+              "file": null
+            }
+          ]
+        },
+        {
+          "id": "en.social",
+          "title": "Small Talk & Friends",
+          "emoji": "🍻",
+          "order": 4,
+          "levelRange": "B1–B2",
+          "topics": [
+            {
+              "id": "en.social.openers",
+              "title": "Начать и поддержать разговор",
+              "emoji": "👋",
+              "level": "B1",
+              "tags": [
+                "social"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.social.pub",
+              "title": "Паб и сленг UK/US",
+              "emoji": "🍺",
+              "level": "B2",
+              "tags": [
+                "social",
+                "slang"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.social.banter",
+              "title": "Шутки, сарказм, banter",
+              "emoji": "😏",
+              "level": "C1",
+              "tags": [
+                "social",
+                "humor"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.social.plans",
+              "title": "Планы и вежливый отказ",
+              "emoji": "📅",
+              "level": "B1",
+              "tags": [
+                "social"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.social.texting",
+              "title": "Переписка и мемы",
+              "emoji": "📱",
+              "level": "B2",
+              "tags": [
+                "social",
+                "slang"
+              ],
+              "status": "planned",
+              "file": null
+            }
+          ]
+        },
+        {
+          "id": "en.debate",
+          "title": "Arguments & Debates",
+          "emoji": "⚔️",
+          "order": 5,
+          "levelRange": "B2–C1",
+          "topics": [
+            {
+              "id": "en.debate.agree",
+              "title": "Согласиться / не согласиться",
+              "emoji": "🤝",
+              "level": "B2",
+              "tags": [
+                "opinion"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.debate.opinion",
+              "title": "Мнение + аргумент",
+              "emoji": "🧩",
+              "level": "B2",
+              "tags": [
+                "opinion"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.debate.persuade",
+              "title": "Убеждать и уступать",
+              "emoji": "🎤",
+              "level": "C1",
+              "tags": [
+                "opinion",
+                "negotiation"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.debate.conflict",
+              "title": "Конфликт на работе",
+              "emoji": "🧯",
+              "level": "C1",
+              "tags": [
+                "work"
+              ],
+              "status": "planned",
+              "file": null
+            },
+            {
+              "id": "en.debate.hottakes",
+              "title": "Hot takes: весёлые споры",
+              "emoji": "🔥",
+              "level": "B2",
+              "tags": [
+                "fun"
+              ],
+              "status": "planned",
+              "file": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

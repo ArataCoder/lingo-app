@@ -1,0 +1,222 @@
+{
+  "id": "en.interview.salary",
+  "track": "en",
+  "level": "B2",
+  "title": "Переговоры о зарплате",
+  "emoji": "💰",
+  "estMinutes": 2,
+  "cheatsheet": [
+    {
+      "term": "salary expectations",
+      "tr": "ожидания по зарплате",
+      "ex": "What are your salary expectations?"
+    },
+    {
+      "term": "Based on my research…",
+      "tr": "Судя по рынку…",
+      "ex": "Based on my research, the range is 30–35k."
+    },
+    {
+      "term": "total compensation",
+      "tr": "весь пакет (зарплата + бонусы)",
+      "ex": "Could we look at the total compensation?"
+    },
+    {
+      "term": "Is there any flexibility on…?",
+      "tr": "Есть ли гибкость по…?",
+      "ex": "Is there any flexibility on the base salary?"
+    },
+    {
+      "term": "I'd like to think it over.",
+      "tr": "Хочу подумать.",
+      "ex": "Thanks! I'd like to think it over until Friday."
+    },
+    {
+      "term": "That's a bit below what I expected.",
+      "tr": "Чуть ниже ожиданий.",
+      "ex": "Honestly, that's a bit below what I expected."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Самый сильный ответ на «What are your salary expectations?»",
+      "options": [
+        "Based on my research, I'm looking at 30–35k.",
+        "I don't know, whatever you pay.",
+        "As much as possible!"
+      ],
+      "answer": 0,
+      "explain": "Диапазон + опора на рынок = уверенно и без агрессии."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "«Is there any flexibility on…?» — это…",
+      "options": [
+        "Есть ли гибкость по…?",
+        "Можно ли работать гибко?",
+        "Вы гибкий человек?"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c7",
+      "type": "flash",
+      "energy": "low",
+      "front": "total compensation",
+      "back": "весь пакет: зарплата + бонусы + плюшки 💼"
+    },
+    {
+      "id": "c3",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "We can offer twenty-eight thousand, plus a performance bonus.",
+        "lang": "en-GB",
+        "rate": 1
+      },
+      "q": "Что предлагают? (British)",
+      "options": [
+        "28k + бонус",
+        "38k без бонуса",
+        "28k и удалёнку"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c4",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Чуть ниже, чем я ожидал.",
+      "tokens": [
+        "That's",
+        "a",
+        "bit",
+        "below",
+        "what",
+        "I",
+        "expected"
+      ],
+      "distractors": [
+        "more",
+        "under"
+      ],
+      "pattern": "That's a bit + [below/above] + what I expected"
+    },
+    {
+      "id": "c5",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Thank you. I'd like to think it over and get back to you by Friday.",
+      "tr": "Спасибо. Хочу подумать и вернусь с ответом к пятнице.",
+      "lang": "en-US"
+    },
+    {
+      "id": "c6",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Is there any flexibility on the base salary if I start sooner?",
+      "tr": "Есть ли гибкость по окладу, если я выйду раньше?",
+      "lang": "en-US"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "en.interview.salary.s1",
+      "title": "Звонок с рекрутером",
+      "emoji": "📞",
+      "userRole": "You",
+      "botRole": "Recruiter",
+      "voice": "en-US",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "So, what are your salary expectations for this role?",
+          "tr": "Итак, какие у вас ожидания по зарплате?",
+          "choices": [
+            {
+              "text": "Based on my research, I'm looking at 30 to 35 thousand.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Диапазон + рынок. Сильно."
+            },
+            {
+              "text": "Whatever you think is fair.",
+              "next": "n1b",
+              "score": 0,
+              "feedback": "Так ты отдаёшь контроль. Попробуем ещё раз?"
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Hmm, we'd really like a number.",
+          "tr": "Хм, нам бы хотелось конкретную цифру.",
+          "choices": [
+            {
+              "text": "Sure. Something in the 30 to 35k range.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Вот! Конкретика = уважение."
+            }
+          ]
+        },
+        "n2": {
+          "say": "Our budget is around 28k, plus a performance bonus.",
+          "tr": "Наш бюджет около 28k плюс бонус.",
+          "choices": [
+            {
+              "text": "That's a bit below what I expected. Is there any flexibility on the base?",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Идеальная связка: честно + вопрос."
+            },
+            {
+              "text": "OK, deal.",
+              "next": "end",
+              "score": 1,
+              "feedback": "Можно, но ты, возможно, оставил деньги на столе."
+            }
+          ]
+        },
+        "n3": {
+          "say": "I could check if 31k is possible. Would that work for you?",
+          "tr": "Могу уточнить, возможно ли 31k. Вам подходит?",
+          "choices": [
+            {
+              "text": "That sounds good. I'd like to see the full offer in writing.",
+              "next": "end",
+              "score": 2,
+              "feedback": "Профи-ход: всё письменно."
+            },
+            {
+              "text": "Thanks, I'd like to think it over.",
+              "next": "end",
+              "score": 2,
+              "feedback": "Взять паузу — нормально и вежливо."
+            }
+          ]
+        },
+        "end": {
+          "say": "Great, I'll send the details by email today.",
+          "tr": "Отлично, пришлю детали на почту сегодня.",
+          "end": true,
+          "choices": []
+        }
+      },
+      "ai": {
+        "enabled": false,
+        "persona": "Friendly but budget-conscious recruiter at a remote-first EU fintech company.",
+        "goals": [
+          "Name a range",
+          "Push back politely once",
+          "Ask for the offer in writing"
+        ],
+        "maxTurns": 10
+      }
+    }
+  ]
+}
