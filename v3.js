@@ -1,7 +1,7 @@
 /* Lingo Brain v3: каталог тем, «Нет сил», Surprise Box, заморозка серии,
    тренажёр уха, конструктор фраз, шпаргалки и сценарии. Контент: content/*.json */
 (function () {
-  var VER = "10";
+  var VER = "11";
   var V = { cat: null, cfg: null, sur: null, topics: {}, failed: false, track: "es", run: null, lastRun: null };
   var DEF_LANG = { es: "es-ES", en: "en-US" };
   var ACCENT = { "es-ES": "🇪🇸 Кастилья", "es-MX": "🇲🇽 Латино", "es-US": "🌎 Латино", "en-GB": "🇬🇧 Британский", "en-US": "🇺🇸 Американский" };
@@ -200,7 +200,51 @@
     var v = pickVoice(lang); if (v) u.voice = v;
     speechSynthesis.speak(u);
   }
-  function say(text, lang, rate) {
+  // ---- v3.6: живые нейроголоса (mp3 из edge-tts), иначе лучший голос браузера ----
+  var AUD = {}, AUD_N = 0, AUD_TOPICS = -1, CUR_AUDIO = null, BS = String.fromCharCode(92), WRX = null;
+  try { WRX = new RegExp("[" + BS + "p{L}" + BS + "p{N}]+", "gu"); } catch (e) { WRX = /[a-z0-9À-ɏЀ-ӿ]+/gi; }
+  function aKey(lang, text) {
+    var t = String(text || "").replace(/<[^>]*>/g, " ");
+    try { t = t.normalize("NFC"); } catch (e) {}
+    var w = t.toLowerCase().match(WRX) || [];
+    return String(lang || "es").slice(0, 2).toLowerCase() + "|" + w.join(" ");
+  }
+  function regTopicUrls() {
+    var ids = Object.keys(V.topics || {}); if (ids.length === AUD_TOPICS) return; AUD_TOPICS = ids.length;
+    ids.forEach(function (id) {
+      (function walk(o, lang) {
+        if (!o || typeof o !== "object") return;
+        if (Array.isArray(o)) { o.forEach(function (x) { walk(x, lang); }); return; }
+        var lg = o.lang || lang;
+        if (o.audio_url) { var tx = o.text || o.term || o.front || o.say; if (tx) AUD[aKey(lg, tx)] = o.audio_url; }
+        if (o.ex_audio_url && o.ex) AUD[aKey(lg, o.ex)] = o.ex_audio_url;
+        Object.keys(o).forEach(function (k) { var x = o[k]; if (x && typeof x === "object") walk(x, lg); });
+      })(V.topics[id], String(id).slice(0, 2));
+    });
+  }
+  function audioFor(text, lang) { if (!text) return null; regTopicUrls(); return AUD[aKey(lang, text)] || null; }
+  function loadAudioMap() {
+    try {
+      fetch("assets/audio/manifest.json?v=" + VER).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+        if (!j || !j.items) return; var n = 0;
+        Object.keys(j.items).forEach(function (k) { if (!AUD[k]) AUD[k] = "assets/audio/" + j.items[k]; n++; });
+        AUD_N = n; document.body.classList.add("hasmp3");
+        if (window.current === "words" && window.lbNeuralBox) window.lbNeuralBox();
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  function playUrl(url, text, lang, rate) {
+    var done = false; function fb() { if (done) return; done = true; ttsSay(text, lang, rate); }
+    try {
+      if (CUR_AUDIO) { try { CUR_AUDIO.pause(); } catch (e) {} }
+      if (SAY_OK) { try { speechSynthesis.cancel(); } catch (e) {} }
+      var a = new Audio(url); CUR_AUDIO = a;
+      a.playbackRate = Math.max(0.5, Math.min(1.5, (rate || 1) * (VS.rate || 1)));
+      a.onerror = fb;
+      var p = a.play(); if (p && p.catch) p.catch(function (e) { if (e && e.name === "NotAllowedError") return; fb(); });
+    } catch (e) { fb(); }
+  }
+  function ttsSay(text, lang, rate) {
     if (!SAY_OK || !text) return;
     lang = lang || "es-ES";
     try {
@@ -211,6 +255,12 @@
         setTimeout(function () { try { speakNow(text, lang, rate); } catch (e) {} }, 60);
       } else speakNow(text, lang, rate); // синхронно — иначе iOS теряет жест
     } catch (e) {}
+  }
+  function say(text, lang, rate, url) {
+    if (!text) return;
+    lang = lang || "es-ES";
+    if (VS.neural !== false) { var u = url || audioFor(text, lang); if (u) { playUrl(u, text, lang, rate); return; } }
+    ttsSay(text, lang, rate);
   }
   // старые экраны (v1/v2) тоже говорят через новый движок
   window.speak = function (t, l) { say(t, l, 0.85); };
@@ -376,7 +426,7 @@
       ".v3msg.me .sp{background:rgba(0,0,0,.14);color:#1A1B26;border:none}";
     document.head.appendChild(st);
   })();
-  window.__v3.say = say; window.__v3.wordMark = wordMark; window.__v3.wCounts = wCounts; window.__v3.WD = function () { return WD; }; window.__v3.wMerge = wMerge; window.__v3.wEntry = wEntry; window.__v3.voicesFor = voicesFor; window.__v3.pickVoice = pickVoice; window.__v3.VS = function () { return VS; };
+  window.__v3.say = say; window.__v3.wordMark = wordMark; window.__v3.wCounts = wCounts; window.__v3.WD = function () { return WD; }; window.__v3.wMerge = wMerge; window.__v3.aKey = aKey; window.__v3.audioFor = audioFor; window.__v3.audioInfo = function () { return { count: AUD_N }; }; window.__v3.setNeural = function (on) { VS.neural = !!on; vsSave(); }; loadAudioMap(); window.__v3.wEntry = wEntry; window.__v3.voicesFor = voicesFor; window.__v3.pickVoice = pickVoice; window.__v3.VS = function () { return VS; };
 
   // ---------- стили ----------
   var css = "" +
@@ -666,7 +716,7 @@
     } else if (c.type === "listen") {
       var a = c.audio, rate = a.rate || 1;
       card.appendChild(E("div", "v3center", '<div style="color:var(--muted);font-size:13px;font-weight:800">' + (ACCENT[a.lang] || a.lang) + " · темп " + rate + "</div>"));
-      var pb = E("button", "v3play sayb", "🔊"); pb.onclick = function () { haptic("light"); say(a.text, a.lang, rate); }; card.appendChild(pb); if (!SAY_OK) card.appendChild(E("div", "v3sub", "🔇 Озвучка недоступна — прочитай: <b>" + esc(a.text) + "</b>"));
+      var pb = E("button", "v3play sayb", "🔊"); pb.onclick = function () { haptic("light"); say(a.text, a.lang, rate); }; card.appendChild(pb); if (!SAY_OK && !audioFor(a.text, a.lang)) card.appendChild(E("div", "v3sub", "🔇 Озвучка недоступна — прочитай: <b>" + esc(a.text) + "</b>"));
       var sl = E("button", "pill sayb", "🐢 Медленнее"); sl.onclick = function () { haptic("light"); say(a.text, a.lang, Math.max(0.5, rate * 0.7)); };
       var cw = E("div", "v3center"); cw.appendChild(sl); card.appendChild(cw);
       card.appendChild(E("div", "qtext", esc(c.q))).style.marginTop = "14px";

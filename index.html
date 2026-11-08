@@ -233,12 +233,25 @@ body.focus .nav{display:none}
   </div>
 </section>
 
+<!-- ДРУЗЬЯ -->
+<section class="screen" id="scr_friends">
+  <div class="fr">
+    <h2>👥 Друзья</h2>
+    <p class="frsub">Кто больше занимался — соревнуйтесь по XP</p>
+    <div class="seg" id="frSeg"><button data-m="week" class="on" onclick="lbFriendsMode('week')">Неделя</button><button data-m="all" onclick="lbFriendsMode('all')">Всё время</button></div>
+    <div id="frList"></div>
+    <button class="btn ok" onclick="lbInvite()">Пригласить друга 🚀</button>
+    <p class="frhint">Друг открывает бота по твоей ссылке — и вы сразу видите прогресс друг друга.<br>Недельный счёт обнуляется каждый понедельник.</p>
+  </div>
+</section>
+
 <!-- ИТОГ -->
 <section class="screen" id="scr_result">
   <div class="result">
     <div class="big" id="resEmoji">🏆</div><h2 id="resTitle"></h2><p id="resSub"></p>
     <div class="stats"><div class="stat glass"><b id="resScore"></b><span>сделано</span></div><div class="stat glass"><b id="resXp"></b><span>XP</span></div><div class="stat glass"><b id="resStreak"></b><span>серия</span></div></div>
     <button class="btn ok" id="shareBtn" onclick="shareResult()">Поделиться с другом 🚀</button>
+    <button class="btn" id="cardBtn" onclick="lbCard()">🖼 Карточка игрока</button>
     <button class="btn" onclick="again()">🔁 Ещё раунд</button>
     <button class="btn ghost" onclick="openTrack(LAST.lang)">🔀 Другая тема</button>
     <button class="btn ghost" onclick="show('home')">🏠 Домой</button>
@@ -271,7 +284,7 @@ body.focus .nav{display:none}
 
 <div class="sheet" id="sheet"><h3 id="shTitle"></h3><p id="shTip"></p><div class="row2"><button class="btn ghost say sayb" onclick="speakAnswer()">🔊</button><button class="btn" id="shNext" onclick="next()">Дальше →</button></div></div>
 
-<nav class="nav glass"><button data-go="home" class="on" onclick="show('home')"><span class="i">🏠</span>Главная</button><button data-go="profile" onclick="show('profile')"><span class="i">📊</span>Прогресс</button><button data-go="words" onclick="show(&quot;words&quot;)"><span class="i">📚</span>Слова</button></nav>
+<nav class="nav glass"><button data-go="home" class="on" onclick="show('home')"><span class="i">🏠</span>Главная</button><button data-go="profile" onclick="show('profile')"><span class="i">📊</span>Прогресс</button><button data-go="words" onclick="show(&quot;words&quot;)"><span class="i">📚</span>Слова</button><button data-go="friends" onclick="show(&quot;friends&quot;)"><span class="i">👥</span>Друзья</button></nav>
 
 <script>
 // ================= КОНТЕНТ =================
@@ -666,6 +679,7 @@ if (hs === "#profile") { S.xp = 340; S.rounds = 7; S.streak = 3; S.bestStreak = 
   window.lbTrackInit=function(c){ try{ if(cfg) return; cfg=c||{}; var x=q; q=[]; x.forEach(function(a){ send(a[0],a[1]); }); }catch(e){} };
 })();
 </script>
-<script src="v3.js?v=10"></script>
+<script src="v3.js?v=11"></script>
+<script src="v36.js?v=11"></script>
 </body>
 </html>

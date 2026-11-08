@@ -113,3 +113,10 @@
 - 🇪🇸 social, travel, остальные work
 - 🇬🇧 barriers story/pron, biz idioms/fintech/product, social pub/banter/plans/texting, debate
 - SRS-повторение «выученных» слов, проверка произношения, напоминания по Cron
+
+
+## v3.6 (8 Nov 2026) - done
+- Friends tab: weekly / all-time XP rating, invite via personal /start ref link, bot notifies inviter.
+- Player card: 1080x1350 image with XP, level, streak, words; send to chat via bot, share to Stories, save.
+- Neural voice: assets/audio/*.mp3 from edge-tts (generate_audio.py + GitHub Action), smart browser-voice fallback, toggle in Words.
+- Next: broaden content (general social / travel / work / debate topics, less personal).
