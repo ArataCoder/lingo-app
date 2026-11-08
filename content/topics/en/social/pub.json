@@ -1,0 +1,267 @@
+{
+ "id": "en.social.pub",
+ "track": "en",
+ "level": "B2",
+ "title": "Паб и сленг UK/US",
+ "emoji": "🍺",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "It's my round",
+   "tr": "моя очередь угощать",
+   "ex": "Put your wallet away, it's my round."
+  },
+  {
+   "term": "a pint",
+   "tr": "пинта пива",
+   "ex": "Can I get a pint of lager?"
+  },
+  {
+   "term": "Cheers!",
+   "tr": "спасибо / будем! (UK)",
+   "ex": "Cheers, mate!"
+  },
+  {
+   "term": "mate / buddy",
+   "tr": "приятель (UK / US)",
+   "ex": "Thanks, buddy!"
+  },
+  {
+   "term": "I'm knackered",
+   "tr": "я вымотан(а) (UK)",
+   "ex": "I'm knackered after work."
+  },
+  {
+   "term": "That's sick!",
+   "tr": "это круто! (сленг)",
+   "ex": "You got the job? That's sick!"
+  },
+  {
+   "term": "What are you having?",
+   "tr": "что будешь пить?",
+   "ex": "My round. What are you having?"
+  },
+  {
+   "term": "Last orders",
+   "tr": "последний заказ перед закрытием",
+   "ex": "Last orders at the bar!"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«It's my round» в пабе значит…",
+   "options": [
+    "Моя очередь угощать",
+    "Мой круг друзей",
+    "Я ухожу"
+   ],
+   "answer": 0,
+   "explain": "В UK пьют <b>rounds</b>: каждый по очереди покупает на всех."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«I'm knackered» значит…",
+   "options": [
+    "Я вымотан(а)",
+    "Я пьян(а)",
+    "Я голоден(на)"
+   ],
+   "answer": 0,
+   "explain": "<b>knackered</b> — британский сленг: очень устал."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Cheers!",
+   "back": "Спасибо! / Будем! (UK)"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Last orders, everyone! We close in fifteen minutes.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что объявили?",
+   "options": [
+    "Последний заказ, закрытие через 15 минут",
+    "Скидка на 15 минут",
+    "Бар уже закрыт"
+   ],
+   "answer": 0,
+   "explain": "<b>Last orders</b> = последний шанс заказать."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "I'm knackered, mate. One more pint and I'm off home.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что собирается делать человек?",
+   "options": [
+    "Ещё одна пинта и домой",
+    "Остаться до утра",
+    "Пойти в клуб"
+   ],
+   "answer": 0,
+   "explain": "<b>I'm off</b> = я ухожу."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Убери кошелёк, моя очередь угощать.",
+   "tokens": [
+    "Put",
+    "your",
+    "wallet",
+    "away,",
+    "it's",
+    "my",
+    "round."
+   ],
+   "distractors": [
+    "turn",
+    "mine"
+   ],
+   "pattern": "It's my round."
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Что будешь пить?",
+   "tokens": [
+    "What",
+    "are",
+    "you",
+    "having?"
+   ],
+   "distractors": [
+    "drink",
+    "do"
+   ],
+   "pattern": "What are you having?"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Cheers, mate! Can I get a pint of lager, please?",
+   "tr": "Спасибо, приятель! Можно пинту лагера, пожалуйста?",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Put your wallet away, it's my round. What are you having?",
+   "tr": "Убери кошелёк, моя очередь. Что будешь?",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.social.pub.s1",
+   "title": "Вечер в лондонском пабе",
+   "emoji": "🍺",
+   "userRole": "Ты",
+   "botRole": "Jack",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Alright? What are you having?",
+     "tr": "Привет, как ты? Что будешь пить?",
+     "choices": [
+      {
+       "text": "Alright, mate! A pint of lager, please.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Звучишь как местный 🍺"
+      },
+      {
+       "text": "I would like to drink one beer, please.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Понятно, но слишком формально для паба."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Cheers. Long day?",
+     "tr": "Ага. Тяжёлый день?",
+     "choices": [
+      {
+       "text": "Yeah, I'm knackered. Work was crazy.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Британский сленг к месту 👍"
+      },
+      {
+       "text": "Not bad, actually. I got a job interview!",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Хорошие новости 🔥"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Fair enough. Fancy some crisps?",
+     "tr": "Понятно. Хочешь чипсов?",
+     "choices": [
+      {
+       "text": "Go on then. Salt and vinegar, please.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>Go on then</b> = ну давай (UK) 😄"
+      },
+      {
+       "text": "No, thanks. I'm good.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>I'm good</b> = мне не нужно, спасибо."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Right. Last orders in ten minutes.",
+     "tr": "Так. Последний заказ через десять минут.",
+     "choices": [
+      {
+       "text": "Put your wallet away, it's my round.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Правило паба соблюдено 🍻"
+      },
+      {
+       "text": "I'm off after this one. Early start tomorrow.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>early start</b> = рано вставать."
+      }
+     ]
+    },
+    "n5": {
+     "say": "Legend. Cheers, mate!",
+     "tr": "Красавчик. Будем, приятель!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

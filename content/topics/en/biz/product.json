@@ -1,0 +1,269 @@
+{
+ "id": "en.biz.product",
+ "track": "en",
+ "level": "C1",
+ "title": "Стартапы и продукт",
+ "emoji": "🚀",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "product-market fit",
+   "tr": "продукт реально нужен рынку",
+   "ex": "We haven't found product-market fit yet."
+  },
+  {
+   "term": "MVP (minimum viable product)",
+   "tr": "минимальная рабочая версия",
+   "ex": "We shipped the MVP in six weeks."
+  },
+  {
+   "term": "to pivot",
+   "tr": "резко сменить стратегию",
+   "ex": "We pivoted from B2C to B2B."
+  },
+  {
+   "term": "churn",
+   "tr": "отток пользователей",
+   "ex": "Our monthly churn is five percent."
+  },
+  {
+   "term": "retention",
+   "tr": "удержание пользователей",
+   "ex": "Day-30 retention is our key metric."
+  },
+  {
+   "term": "to ship a feature",
+   "tr": "выпустить функцию",
+   "ex": "We ship a new feature every week."
+  },
+  {
+   "term": "runway",
+   "tr": "на сколько хватит денег",
+   "ex": "We have twelve months of runway."
+  },
+  {
+   "term": "to scale",
+   "tr": "масштабировать",
+   "ex": "We need to hire before we scale."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«We have twelve months of runway» значит…",
+   "options": [
+    "Денег хватит на 12 месяцев",
+    "Через 12 месяцев запуск",
+    "Команда работает 12 месяцев"
+   ],
+   "answer": 0,
+   "explain": "<b>runway</b> = сколько компания проживёт на текущие деньги."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как сказать «мы сменили стратегию на B2B»?",
+   "options": [
+    "We pivoted to B2B.",
+    "We turned around B2B.",
+    "We rotated on B2B."
+   ],
+   "answer": 0,
+   "explain": "<b>to pivot</b> = резко сменить направление."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "churn",
+   "back": "отток пользователей"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "We shipped the MVP in six weeks, and retention doubled after the second update.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что произошло?",
+   "options": [
+    "MVP за 6 недель, удержание выросло вдвое после 2-го обновления",
+    "MVP за 2 недели, отток вырос",
+    "Продукт закрыли через 6 недель"
+   ],
+   "answer": 0,
+   "explain": "<b>retention</b> = удержание."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Our churn is too high, so we're focusing on onboarding before we scale.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "На чём фокус?",
+   "options": [
+    "Онбординг до масштабирования",
+    "Маркетинг и реклама",
+    "Наём новой команды"
+   ],
+   "answer": 0,
+   "explain": "<b>before we scale</b> = до масштабирования."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Мы ещё не нашли product-market fit.",
+   "tokens": [
+    "We",
+    "haven't",
+    "found",
+    "product-market",
+    "fit",
+    "yet."
+   ],
+   "distractors": [
+    "didn't",
+    "already"
+   ],
+   "pattern": "We haven't + [V3] + yet."
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Мы выпускаем новую функцию каждую неделю.",
+   "tokens": [
+    "We",
+    "ship",
+    "a",
+    "new",
+    "feature",
+    "every",
+    "week."
+   ],
+   "distractors": [
+    "ships",
+    "all"
+   ],
+   "pattern": "We ship + [что] + every week."
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "We pivoted from B2C to B2B, and our churn dropped by half.",
+   "tr": "Мы переключились с B2C на B2B, и отток упал вдвое.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "We have eighteen months of runway, so we can focus on retention before we scale.",
+   "tr": "Денег у нас на восемнадцать месяцев, так что можем сфокусироваться на удержании, прежде чем масштабироваться.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.biz.product.s1",
+   "title": "Питч инвестору",
+   "emoji": "🚀",
+   "userRole": "Ты",
+   "botRole": "Investor",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "You have two minutes. What problem are you solving?",
+     "tr": "У вас две минуты. Какую проблему вы решаете?",
+     "choices": [
+      {
+       "text": "Adults with ADHD quit language apps fast. We built short, low-pressure lessons that keep them coming back.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Проблема + решение — сильный питч 🔥"
+      },
+      {
+       "text": "We have a very cool app with many features.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Инвестору нужна проблема, а не список фич."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Interesting. Do you have traction?",
+     "tr": "Интересно. Есть ли рост?",
+     "choices": [
+      {
+       "text": "Yes. Day-30 retention is forty percent, which is double the market average.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Цифра + сравнение 💪"
+      },
+      {
+       "text": "We shipped the MVP last month, and early users love it.",
+       "next": "n3",
+       "score": 1,
+       "feedback": "Хорошо, но нужны цифры: retention, users."
+      }
+     ]
+    },
+    "n3": {
+     "say": "What's your biggest risk right now?",
+     "tr": "Какой у вас главный риск сейчас?",
+     "choices": [
+      {
+       "text": "Churn after the first week. We're fixing it with daily reminders and streaks.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Честно + план 🔥"
+      },
+      {
+       "text": "Honestly, we haven't found product-market fit in the B2B market yet.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Честность ценится 👍"
+      }
+     ]
+    },
+    "n4": {
+     "say": "How much runway do you have?",
+     "tr": "На сколько у вас хватит денег?",
+     "choices": [
+      {
+       "text": "Six months. With this round, we'd have eighteen months to scale.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Ясно, зачем деньги 💸"
+      },
+      {
+       "text": "We're running at almost zero cost, so our runway is long.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Бережливость — тоже аргумент 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Okay, send me your deck. Let's set up a follow-up call.",
+     "tr": "Хорошо, пришлите презентацию. Договоримся о следующем созвоне.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,269 @@
+{
+ "id": "en.biz.fintech",
+ "track": "en",
+ "level": "B2",
+ "title": "FinTech, KYC и комплаенс",
+ "emoji": "🛡️",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "KYC (Know Your Customer)",
+   "tr": "проверка личности клиента",
+   "ex": "Every new user goes through KYC."
+  },
+  {
+   "term": "AML (anti-money laundering)",
+   "tr": "противодействие отмыванию денег",
+   "ex": "Our AML team reviews large transfers."
+  },
+  {
+   "term": "to flag a transaction",
+   "tr": "пометить операцию как подозрительную",
+   "ex": "The system flagged the transaction."
+  },
+  {
+   "term": "proof of address",
+   "tr": "подтверждение адреса",
+   "ex": "We need a recent proof of address."
+  },
+  {
+   "term": "to onboard a client",
+   "tr": "подключить нового клиента",
+   "ex": "We onboard about fifty clients a day."
+  },
+  {
+   "term": "a chargeback",
+   "tr": "возврат платежа через банк",
+   "ex": "The customer filed a chargeback."
+  },
+  {
+   "term": "compliant with",
+   "tr": "соответствующий требованиям",
+   "ex": "The process must be compliant with GDPR."
+  },
+  {
+   "term": "to escalate to",
+   "tr": "передать на уровень выше",
+   "ex": "I escalated the case to compliance."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Что такое KYC?",
+   "options": [
+    "Проверка личности клиента",
+    "Ключ шифрования",
+    "Кредитный рейтинг"
+   ],
+   "answer": 0,
+   "explain": "<b>Know Your Customer</b> — паспорт, селфи, адрес."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«The system flagged the transaction» значит…",
+   "options": [
+    "Система пометила операцию как подозрительную",
+    "Система одобрила операцию",
+    "Клиент отменил операцию"
+   ],
+   "answer": 0,
+   "explain": "<b>to flag</b> = отметить для проверки."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "proof of address",
+   "back": "подтверждение адреса (счёт за свет, выписка из банка)"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Please upload a utility bill from the last three months as proof of address.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что нужно загрузить?",
+   "options": [
+    "Счёт за коммуналку за последние 3 месяца",
+    "Паспорт и селфи",
+    "Выписку за год"
+   ],
+   "answer": 0,
+   "explain": "<b>utility bill</b> = счёт за коммунальные услуги."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Any transfer over ten thousand euros is flagged and reviewed by the AML team.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что происходит с переводами больше 10 000 €?",
+   "options": [
+    "Их проверяет AML-команда",
+    "Их блокируют навсегда",
+    "Их проводят мгновенно"
+   ],
+   "answer": 0,
+   "explain": "<b>AML</b> = anti-money laundering."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я передал(а) кейс в комплаенс.",
+   "tokens": [
+    "I",
+    "escalated",
+    "the",
+    "case",
+    "to",
+    "compliance."
+   ],
+   "distractors": [
+    "escalate",
+    "at"
+   ],
+   "pattern": "I escalated + [что] + to + [кому]"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Нам нужно свежее подтверждение адреса.",
+   "tokens": [
+    "We",
+    "need",
+    "a",
+    "recent",
+    "proof",
+    "of",
+    "address."
+   ],
+   "distractors": [
+    "needs",
+    "from"
+   ],
+   "pattern": "We need + [документ]"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Every new user goes through KYC before the first payment.",
+   "tr": "Каждый новый пользователь проходит KYC до первого платежа.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "The system flagged the transaction, so I escalated it to the AML team.",
+   "tr": "Система пометила операцию, поэтому я передал(а) её AML-команде.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.biz.fintech.s1",
+   "title": "Собеседование в FinTech",
+   "emoji": "🛡️",
+   "userRole": "Ты",
+   "botRole": "Ops manager",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Thanks for coming in. What do you know about KYC?",
+     "tr": "Спасибо, что пришли. Что вы знаете о KYC?",
+     "choices": [
+      {
+       "text": "It's how we verify a customer's identity, usually with an ID, a selfie, and proof of address.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Полный ответ 🔥"
+      },
+      {
+       "text": "It's something about security, I think.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Слишком размыто. Назови шаги: ID, selfie, proof of address."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Good. A transaction gets flagged at midnight. What do you do?",
+     "tr": "Хорошо. Ночью система пометила операцию. Что будете делать?",
+     "choices": [
+      {
+       "text": "I'd check the details and escalate it to the AML team if it looks suspicious.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Проверка + эскалация 👍"
+      },
+      {
+       "text": "I'd follow our internal procedure and document everything.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Документирование — ключ в комплаенсе 💪"
+      }
+     ]
+    },
+    "n3": {
+     "say": "A customer is angry because their account is frozen. How do you handle it?",
+     "tr": "Клиент злится, что счёт заморожен. Как поступите?",
+     "choices": [
+      {
+       "text": "I'd stay calm, explain that we need extra documents, and give a clear timeline.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Эмпатия + ясность 🔥"
+      },
+      {
+       "text": "I'd tell them the exact reason we flagged them.",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Осторожно: детали AML-проверки раскрывать нельзя (tipping off). Скажи, какие документы нужны."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Exactly. Why do you want to work in fintech?",
+     "tr": "Именно. Почему вы хотите работать в финтехе?",
+     "choices": [
+      {
+       "text": "I like fast-moving products, and I care about keeping payments safe and compliant.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Мотивация + ценности 👍"
+      },
+      {
+       "text": "I speak four languages, so I can help customers across Europe.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Сильный аргумент для онбординга 💪"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Great answers. We'll be in touch by Friday.",
+     "tr": "Отличные ответы. Свяжемся с вами до пятницы.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
