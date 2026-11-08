@@ -1,0 +1,270 @@
+{
+ "id": "en.biz.idioms",
+ "track": "en",
+ "level": "C1",
+ "title": "Корпоративные идиомы",
+ "emoji": "🏢",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "to touch base",
+   "tr": "коротко связаться, сверить статус",
+   "ex": "Let's touch base on Friday."
+  },
+  {
+   "term": "to circle back",
+   "tr": "вернуться к вопросу позже",
+   "ex": "Can we circle back to this after lunch?"
+  },
+  {
+   "term": "low-hanging fruit",
+   "tr": "лёгкие быстрые победы",
+   "ex": "Let's start with the low-hanging fruit."
+  },
+  {
+   "term": "on the same page",
+   "tr": "одинаково понимаем",
+   "ex": "Just to make sure we're on the same page."
+  },
+  {
+   "term": "a ballpark figure",
+   "tr": "примерная цифра",
+   "ex": "Can you give me a ballpark figure?"
+  },
+  {
+   "term": "to move the needle",
+   "tr": "реально повлиять на результат",
+   "ex": "This won't really move the needle."
+  },
+  {
+   "term": "bandwidth",
+   "tr": "свободное время и ресурс",
+   "ex": "I don't have the bandwidth this week."
+  },
+  {
+   "term": "to take this offline",
+   "tr": "обсудить отдельно, после встречи",
+   "ex": "Let's take this offline."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«I don't have the bandwidth» значит…",
+   "options": [
+    "У меня нет на это ресурса",
+    "У меня медленный интернет",
+    "Я не понимаю"
+   ],
+   "answer": 0,
+   "explain": "<b>bandwidth</b> в офисе = свободное время и силы."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как предложить обсудить отдельно, не тратя время всех?",
+   "options": [
+    "Let's take this offline.",
+    "Let's go out of line.",
+    "Let's turn off the call."
+   ],
+   "answer": 0,
+   "explain": "<b>take this offline</b> = обсудить после встречи."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "a ballpark figure",
+   "back": "примерная цифра"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Let's go for the low-hanging fruit first and circle back to pricing next week.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Какой план?",
+   "options": [
+    "Сначала лёгкие задачи, к ценам вернуться на следующей неделе",
+    "Сразу обсудить цены",
+    "Отменить проект"
+   ],
+   "answer": 0,
+   "explain": "<b>circle back</b> = вернуться к вопросу."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Honestly, a new logo won't move the needle. We need more users.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что думает говорящий?",
+   "options": [
+    "Логотип не повлияет на результат",
+    "Логотип очень важен",
+    "Пользователей достаточно"
+   ],
+   "answer": 0,
+   "explain": "<b>move the needle</b> = заметно повлиять."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Давай коротко сверимся в пятницу.",
+   "tokens": [
+    "Let's",
+    "touch",
+    "base",
+    "on",
+    "Friday."
+   ],
+   "distractors": [
+    "touching",
+    "at"
+   ],
+   "pattern": "Let's touch base + [когда]"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Чтобы убедиться, что мы понимаем одинаково.",
+   "tokens": [
+    "Just",
+    "to",
+    "make",
+    "sure",
+    "we're",
+    "on",
+    "the",
+    "same",
+    "page."
+   ],
+   "distractors": [
+    "in",
+    "paper"
+   ],
+   "pattern": "…we're on the same page."
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Can you give me a ballpark figure by Friday?",
+   "tr": "Можешь дать примерную цифру к пятнице?",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "I don't have the bandwidth this week, so let's circle back to it on Monday.",
+   "tr": "На этой неделе у меня нет ресурса, так что давай вернёмся к этому в понедельник.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.biz.idioms.s1",
+   "title": "Планёрка в понедельник",
+   "emoji": "🏢",
+   "userRole": "Ты",
+   "botRole": "Team lead",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Morning, everyone. Quick update on the launch?",
+     "tr": "Всем доброе утро. Коротко по запуску?",
+     "choices": [
+      {
+       "text": "Sure. We fixed the low-hanging fruit, but the payment bug is still open.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Чётко и по делу 🔥"
+      },
+      {
+       "text": "Everything is good, I think.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Слишком размыто. Дай факты."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Okay. How long will the payment bug take?",
+     "tr": "Ок. Сколько займёт баг с оплатой?",
+     "choices": [
+      {
+       "text": "A ballpark figure? About three days.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Идиома к месту 👍"
+      },
+      {
+       "text": "I'm not sure yet. Can I circle back to you this afternoon?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Честно + срок 💪"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Hmm. Can you also redesign the landing page this week?",
+     "tr": "Хм. А можешь ещё переделать лендинг на этой неделе?",
+     "choices": [
+      {
+       "text": "Honestly, I don't have the bandwidth. Can we push it to next week?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Вежливое «нет» — навык уровня C1 🔥"
+      },
+      {
+       "text": "Sure, no problem.",
+       "next": "n4",
+       "score": 1,
+       "feedback": "Если ресурса нет — лучше сказать честно. Иначе выгорание."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Fair. Does the redesign even move the needle, though?",
+     "tr": "Справедливо. А редизайн вообще повлияет на результат?",
+     "choices": [
+      {
+       "text": "Good question. Let's take this offline and look at the data.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Не тратишь время всей команды 👍"
+      },
+      {
+       "text": "Not really. Fixing payments matters more right now.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Приоритет ясен 💪"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Great. Let's touch base on Thursday. Thanks, everyone.",
+     "tr": "Отлично. Сверимся в четверг. Всем спасибо.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

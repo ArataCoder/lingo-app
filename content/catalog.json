@@ -349,8 +349,8 @@
         "work",
         "spain"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/es/work/rights.json"
       }
      ]
     }
@@ -440,8 +440,8 @@
        "tags": [
         "pronunciation"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/en/barriers/pron.json"
       }
      ]
     },
@@ -562,8 +562,8 @@
         "work",
         "idioms"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/en/biz/idioms.json"
       },
       {
        "id": "en.biz.fintech",

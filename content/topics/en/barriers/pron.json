@@ -1,0 +1,266 @@
+{
+ "id": "en.barriers.pron",
+ "track": "en",
+ "level": "B1",
+ "title": "Ловушки произношения",
+ "emoji": "👄",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "thirteen / thirty",
+   "tr": "13 (ударение в конце) / 30 (в начале)",
+   "ex": "It's thirteen, one three."
+  },
+  {
+   "term": "three",
+   "tr": "три: th — кончик языка между зубами",
+   "ex": "I'd like three coffees, please."
+  },
+  {
+   "term": "comfortable",
+   "tr": "удобный: KUMF-ter-bul, три слога",
+   "ex": "These shoes are really comfortable."
+  },
+  {
+   "term": "Wednesday",
+   "tr": "среда: WENZ-day, первая d не читается",
+   "ex": "See you on Wednesday."
+  },
+  {
+   "term": "ship / sheep",
+   "tr": "корабль (коротко) / овца (долго)",
+   "ex": "The sheep are on the ship."
+  },
+  {
+   "term": "Could you spell that?",
+   "tr": "продиктуете по буквам?",
+   "ex": "Sorry, could you spell that?"
+  },
+  {
+   "term": "water",
+   "tr": "вода: в US t звучит как мягкое d — WAH-der",
+   "ex": "Can I get a glass of water?"
+  },
+  {
+   "term": "I said…",
+   "tr": "я сказал(а)…",
+   "ex": "Sorry, I said thirteen, not thirty."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Сколько слогов в «comfortable»?",
+   "options": [
+    "Три: KUMF-ter-bul",
+    "Четыре: com-for-ta-ble",
+    "Два: comf-table"
+   ],
+   "answer": 0,
+   "explain": "Носители проглатывают середину: <b>KUMF-ter-bul</b>."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как отличить «thirteen» от «thirty» на слух?",
+   "options": [
+    "Ударение: thir-TEEN vs THIR-ty",
+    "Никак, звучат одинаково",
+    "По первому звуку"
+   ],
+   "answer": 0,
+   "explain": "13 — ударение в конце и долгое «ee». 30 — ударение в начале."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Wednesday",
+   "back": "Среда — WENZ-day, первая d не читается."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Your table is number thirteen, by the window.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Какой номер столика?",
+   "options": [
+    "13",
+    "30",
+    "3"
+   ],
+   "answer": 0,
+   "explain": "thir-<b>TEEN</b> — ударение в конце."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "The meeting is on Wednesday at three thirty.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Когда встреча?",
+   "options": [
+    "В среду в 3:30",
+    "Во вторник в 3:13",
+    "В среду в 13:30"
+   ],
+   "answer": 0,
+   "explain": "<b>three thirty</b> = 3:30."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Простите, продиктуете по буквам?",
+   "tokens": [
+    "Sorry,",
+    "could",
+    "you",
+    "spell",
+    "that?"
+   ],
+   "distractors": [
+    "write",
+    "tell"
+   ],
+   "pattern": "Could you spell that?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я сказал(а) тринадцать, а не тридцать.",
+   "tokens": [
+    "I",
+    "said",
+    "thirteen,",
+    "not",
+    "thirty."
+   ],
+   "distractors": [
+    "told",
+    "three"
+   ],
+   "pattern": "I said X, not Y."
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "I'd like three coffees and a glass of water, please.",
+   "tr": "Мне три кофе и стакан воды, пожалуйста.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Sorry, I said thirteen, not thirty. See you on Wednesday.",
+   "tr": "Простите, я сказал(а) тринадцать, а не тридцать. Увидимся в среду.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.barriers.pron.s1",
+   "title": "Кофе с собой",
+   "emoji": "👄",
+   "userRole": "Ты",
+   "botRole": "Barista",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hi! What can I get you?",
+     "tr": "Привет! Что тебе приготовить?",
+     "choices": [
+      {
+       "text": "Hi! Can I get three lattes, please?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Чёткое th в three 👍"
+      },
+      {
+       "text": "Give me tree latte.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "«tree» = дерево 🌳. Скажи <b>three</b> (язык между зубами) и «Can I get…»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Sure. Anything else?",
+     "tr": "Конечно. Что-нибудь ещё?",
+     "choices": [
+      {
+       "text": "And a glass of water, please.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Американское «WAH-der» 💧"
+      },
+      {
+       "text": "No, that's it, thanks.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>That's it</b> = это всё."
+      }
+     ]
+    },
+    "n3": {
+     "say": "Great. Can I get a name for the order?",
+     "tr": "Отлично. Имя для заказа?",
+     "choices": [
+      {
+       "text": "It's Aleks. A, L, E, K, S.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "По буквам — и имя напишут правильно 😉"
+      },
+      {
+       "text": "Aleks, with a K and an S.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Тоже удобно 👍"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Okay, that's thirty dollars.",
+     "tr": "Хорошо, с тебя тридцать долларов.",
+     "choices": [
+      {
+       "text": "Sorry, did you say thirty or thirteen?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Переспросить — суперсила 🔥"
+      },
+      {
+       "text": "Thirty? Okay, here you go.",
+       "next": "n5",
+       "score": 1,
+       "feedback": "Ок, но если сомневаешься в цифре — переспрашивай."
+      }
+     ]
+    },
+    "n5": {
+     "say": "Thirteen, sorry. My bad. Your order will be ready in a minute.",
+     "tr": "Тринадцать, извини. Моя ошибка. Заказ будет готов через минуту.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,271 @@
+{
+ "id": "es.work.rights",
+ "track": "es",
+ "level": "B1",
+ "title": "Контракт, nómina, SEPE",
+ "emoji": "📄",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "el contrato indefinido / temporal",
+   "tr": "бессрочный / временный контракт",
+   "ex": "Me han ofrecido un contrato indefinido."
+  },
+  {
+   "term": "la nómina",
+   "tr": "расчётный лист, зарплата",
+   "ex": "No entiendo esta línea de la nómina."
+  },
+  {
+   "term": "el sueldo bruto / neto",
+   "tr": "зарплата до / после налогов",
+   "ex": "El sueldo bruto son mil quinientos euros."
+  },
+  {
+   "term": "el periodo de prueba",
+   "tr": "испытательный срок",
+   "ex": "El periodo de prueba es de dos meses."
+  },
+  {
+   "term": "las pagas extra",
+   "tr": "доп. выплаты (13-я и 14-я зарплата)",
+   "ex": "¿Las pagas extra están prorrateadas?"
+  },
+  {
+   "term": "dar de alta en la Seguridad Social",
+   "tr": "оформить в системе соцстраха",
+   "ex": "La empresa te da de alta en la Seguridad Social."
+  },
+  {
+   "term": "el paro",
+   "tr": "пособие по безработице",
+   "ex": "Si me despiden, ¿tengo derecho al paro?"
+  },
+  {
+   "term": "el SEPE",
+   "tr": "государственная служба занятости",
+   "ex": "Tengo cita en el SEPE el lunes."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Sueldo neto» — это…",
+   "options": [
+    "Зарплата на руки после налогов",
+    "Зарплата до налогов",
+    "Премия"
+   ],
+   "answer": 0,
+   "explain": "<b>bruto</b> = до налогов, <b>neto</b> = на руки."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как спросить, есть ли право на пособие?",
+   "options": [
+    "¿Tengo derecho al paro?",
+    "¿Tengo derecho del paro?",
+    "¿Puedo paro?"
+   ],
+   "answer": 0,
+   "explain": "<b>tener derecho a</b> = иметь право на. a + el = <b>al</b>."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "El periodo de prueba.",
+   "back": "Испытательный срок."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Es un contrato temporal de seis meses, con un periodo de prueba de un mes.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Какой контракт?",
+   "options": [
+    "Временный на 6 месяцев, испытательный срок 1 месяц",
+    "Бессрочный, без испытательного срока",
+    "Временный на 1 месяц"
+   ],
+   "answer": 0,
+   "explain": "<b>temporal</b> = временный."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Tienes catorce pagas: doce mensuales y dos extra, en julio y en diciembre.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Сколько выплат в год?",
+   "options": [
+    "14: 12 ежемесячных + 2 дополнительные",
+    "12 ежемесячных",
+    "13: с премией в декабре"
+   ],
+   "answer": 0,
+   "explain": "В Испании часто <b>14 pagas</b>."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я не понимаю эту строку в расчётном листе.",
+   "tokens": [
+    "No",
+    "entiendo",
+    "esta",
+    "línea",
+    "de",
+    "la",
+    "nómina."
+   ],
+   "distractors": [
+    "entiende",
+    "este"
+   ],
+   "pattern": "No entiendo + [что]"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Испытательный срок — два месяца.",
+   "tokens": [
+    "El",
+    "periodo",
+    "de",
+    "prueba",
+    "es",
+    "de",
+    "dos",
+    "meses."
+   ],
+   "distractors": [
+    "está",
+    "por"
+   ],
+   "pattern": "[что] es de + [срок]"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "¿El sueldo es bruto o neto?",
+   "tr": "Зарплата указана до или после налогов?",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Si se termina mi contrato temporal, ¿tengo derecho al paro? ¿Tengo que ir al SEPE?",
+   "tr": "Если мой временный контракт закончится, у меня будет право на пособие? Нужно идти в SEPE?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.work.rights.s1",
+   "title": "Вопросы в отдел кадров",
+   "emoji": "📄",
+   "userRole": "Ты",
+   "botRole": "Gestora de RR. HH.",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hola, ¿tienes alguna duda sobre el contrato?",
+     "tr": "Привет, есть вопросы по контракту?",
+     "choices": [
+      {
+       "text": "Sí. ¿Es un contrato indefinido o temporal?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Главный вопрос 👍"
+      },
+      {
+       "text": "Sí, el contrato no entiendo.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Порядок слов: «No entiendo el contrato»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Es temporal, de seis meses, pero luego puede pasar a indefinido.",
+     "tr": "Временный, на шесть месяцев, но потом может стать бессрочным.",
+     "choices": [
+      {
+       "text": "Vale. ¿Y cuánto dura el periodo de prueba?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Важно знать 💪"
+      },
+      {
+       "text": "Entendido. ¿Ya me habéis dado de alta en la Seguridad Social?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Очень правильный вопрос — без alta работать нельзя."
+      }
+     ]
+    },
+    "n3": {
+     "say": "Un mes. Y el alta en la Seguridad Social ya está hecha.",
+     "tr": "Месяц. И оформление в соцстрахе уже сделано.",
+     "choices": [
+      {
+       "text": "Perfecto. Otra pregunta: ¿el sueldo es bruto o neto?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Всегда уточняй 🔥"
+      },
+      {
+       "text": "Genial. ¿Cuándo pagáis la nómina?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Практично 👍"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Mil cuatrocientos brutos al mes, en catorce pagas. Se paga el último día del mes.",
+     "tr": "1400 брутто в месяц, 14 выплат. Платим в последний день месяца.",
+     "choices": [
+      {
+       "text": "Muy claro. Y si se termina el contrato, ¿tengo derecho al paro?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Думаешь наперёд 💪"
+      },
+      {
+       "text": "Gracias. ¿Las pagas extra están prorrateadas?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>prorrateadas</b> = разбиты по месяцам. Уровень B1+ 🔥"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Buena pregunta. Te lo explico todo por correo, ¿vale?",
+     "tr": "Хороший вопрос. Объясню тебе всё по почте, хорошо?",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
