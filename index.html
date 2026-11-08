@@ -223,6 +223,7 @@ body.focus .nav{display:none}
   <div class="result">
     <div class="big" id="resEmoji">🏆</div><h2 id="resTitle"></h2><p id="resSub"></p>
     <div class="stats"><div class="stat glass"><b id="resScore"></b><span>сделано</span></div><div class="stat glass"><b id="resXp"></b><span>XP</span></div><div class="stat glass"><b id="resStreak"></b><span>серия</span></div></div>
+    <button class="btn ok" id="shareBtn" onclick="shareResult()">Поделиться с другом 🚀</button>
     <button class="btn" onclick="again()">🔁 Ещё раунд</button>
     <button class="btn ghost" onclick="openTrack(LAST.lang)">🔀 Другая тема</button>
     <button class="btn ghost" onclick="show('home')">🏠 Домой</button>
@@ -239,11 +240,14 @@ body.focus .nav{display:none}
     <div class="tile glass"><div class="v" id="pStreak"></div><div class="n">🔥 серия сейчас</div></div>
     <div class="tile glass"><div class="v" id="pRounds"></div><div class="n">🎯 раундов</div></div>
     <div class="tile glass"><div class="v" id="pBest"></div><div class="n">🏅 лучшая серия</div></div>
+    <div class="tile glass"><div class="v" id="pWLearn">0</div><div class="n">📚 слов в процессе</div></div>
+    <div class="tile glass"><div class="v" id="pWDone">0</div><div class="n">🎓 выучено слов</div></div>
   </div>
+  <p style="color:var(--muted);font-size:13px;text-align:center;margin-bottom:6px">5 верных ответов на слово — и оно «Выучено» 🎓</p>
   <p style="color:var(--muted);font-size:13px;text-align:center">Пропустил день? Ничего страшного. Серия — не экзамен 💛</p>
 </section>
 
-<div class="sheet" id="sheet"><h3 id="shTitle"></h3><p id="shTip"></p><div class="row2"><button class="btn ghost say" onclick="speakAnswer()">🔊</button><button class="btn" id="shNext" onclick="next()">Дальше →</button></div></div>
+<div class="sheet" id="sheet"><h3 id="shTitle"></h3><p id="shTip"></p><div class="row2"><button class="btn ghost say sayb" onclick="speakAnswer()">🔊</button><button class="btn" id="shNext" onclick="next()">Дальше →</button></div></div>
 
 <nav class="nav glass"><button data-go="home" class="on" onclick="show('home')"><span class="i">🏠</span>Главная</button><button data-go="profile" onclick="show('profile')"><span class="i">📊</span>Прогресс</button></nav>
 
@@ -521,7 +525,7 @@ function spGood() {
 
 // ================= ИТОГ РАУНДА =================
 function complete(score, n, xp) {
-  xp += 20;
+  xp += 20; window.LB_LAST_XP = xp;
   try { if (window.lbTrack) window.lbTrack("round_completed", { xp: xp, score: score, cards: n, passed: score / Math.max(1, n) >= 0.6, track: LAST.lang, topic_id: LAST.topic }); } catch (e) {}
   var key = LAST.lang + ":" + LAST.topic, t = dayStr();
   S.best[key] = Math.max(S.best[key] || 0, Math.round(score / n * 5));
@@ -545,6 +549,7 @@ function complete(score, n, xp) {
 function renderProfile() {
   $("pXp").textContent = S.xp; $("pRounds").textContent = S.rounds;
   $("pStreak").textContent = currentStreak() + " дн."; $("pBest").textContent = S.bestStreak + " дн.";
+  try { if (window.lbWords) window.lbWords(); } catch (e) {}
   var lvl = Math.floor(S.xp / 200) + 1, inL = S.xp % 200;
   $("pLvl").textContent = "Уровень " + lvl; $("pLvlTxt").textContent = "до следующего: " + (200 - inL) + " XP";
   $("pLvlDots").innerHTML = dots(Math.floor(inL / 40), 5);
@@ -638,6 +643,6 @@ if (hs === "#profile") { S.xp = 340; S.rounds = 7; S.streak = 3; S.bestStreak = 
   window.lbTrackInit=function(c){ try{ if(cfg) return; cfg=c||{}; var x=q; q=[]; x.forEach(function(a){ send(a[0],a[1]); }); }catch(e){} };
 })();
 </script>
-<script src="v3.js?v=8"></script>
+<script src="v3.js?v=9"></script>
 </body>
 </html>
