@@ -72,7 +72,7 @@
         "Где ты родился?"
       ],
       "answer": 0,
-      "explain": "Стандартный вопрос в распределённых командах. Ответ: <b>I'm based in Torrevieja</b>."
+      "explain": "Стандартный вопрос в распределённых командах. Ответ: <b>I'm based in Valencia</b>."
     },
     {
       "id": "c3",
@@ -166,8 +166,8 @@
       "id": "c9",
       "type": "speak",
       "energy": "boost",
-      "text": "I'm based in Torrevieja, on the coast of Spain. How about you?",
-      "tr": "Я живу в Торревьехе, на побережье Испании. А ты?",
+      "text": "I'm based in Valencia, on the coast of Spain. How about you?",
+      "tr": "Я живу в Валенсии, на побережье Испании. А ты?",
       "lang": "en-US"
     }
   ],
@@ -246,7 +246,7 @@
           "tr": "Классно, но коробки повсюду! Кстати, а ты где живёшь?",
           "choices": [
             {
-              "text": "I'm based in Torrevieja, in the south of Spain. It's sunny almost all year.",
+              "text": "I'm based in Valencia, on the east coast of Spain. It's sunny almost all year.",
               "next": "n4",
               "score": 2,
               "feedback": "Факт + интересная деталь — есть за что зацепиться."

@@ -44,7 +44,7 @@
     {
       "term": "Me llamo…",
       "tr": "меня зовут…",
-      "ex": "Me llamo Aleks."
+      "ex": "Me llamo Leo."
     }
   ],
   "cards": [
@@ -72,7 +72,7 @@
         "«Пока»"
       ],
       "answer": 0,
-      "explain": "В Торревьехе так здороваются в магазине, в баре и в лифте."
+      "explain": "В Валенсии так здороваются в магазине, в баре и в лифте."
     },
     {
       "id": "c3",
@@ -154,8 +154,8 @@
       "id": "c8",
       "type": "speak",
       "energy": "normal",
-      "text": "Hola, me llamo Aleks. Soy nuevo aquí.",
-      "tr": "Привет, меня зовут Алекс. Я тут новенький.",
+      "text": "Hola, me llamo Leo. Soy nuevo aquí.",
+      "tr": "Привет, меня зовут Лео. Я тут новенький.",
       "lang": "es-ES"
     },
     {
@@ -182,7 +182,7 @@
           "tr": "Здрасте! Ты новенький с четвёртого?",
           "choices": [
             {
-              "text": "¡Hola! Sí, soy nuevo. Me llamo Aleks.",
+              "text": "¡Hola! Sí, soy nuevo. Me llamo Leo.",
               "next": "n2",
               "score": 2,
               "feedback": "Идеально: привет + ответ + имя."
@@ -206,7 +206,7 @@
           "tr": "Спокойно. Ты живёшь… на четвёртом этаже?",
           "choices": [
             {
-              "text": "¡Ah, sí! En el cuarto. Me llamo Aleks.",
+              "text": "¡Ah, sí! En el cuarto. Me llamo Leo.",
               "next": "n2",
               "score": 2,
               "feedback": "Отлично, ты понял со второго раза 💪"
@@ -262,8 +262,8 @@
           ]
         },
         "n4": {
-          "say": "¡Hasta luego, Aleks!",
-          "tr": "Пока, Алекс!",
+          "say": "¡Hasta luego, Leo!",
+          "tr": "Пока, Лео!",
           "end": true
         }
       },

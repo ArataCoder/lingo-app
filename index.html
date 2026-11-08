@@ -160,6 +160,21 @@ body.focus .nav{display:none}
 .toast{position:fixed;top:14px;left:50%;transform:translate(-50%,-90px);background:var(--solid);border:1px solid var(--line);padding:10px 18px;border-radius:999px;font-weight:800;font-size:14px;transition:transform .3s;z-index:30;white-space:normal;width:max-content;max-width:calc(100vw - 28px);text-align:center;line-height:1.35;border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .toast.show{transform:translate(-50%,0)}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:40}
+.result .btn{margin-top:10px}.result .stats{margin-bottom:8px}
+.btn{-webkit-tap-highlight-color:transparent}.btn:focus{outline:none}.btn:focus-visible{outline:2px solid rgba(238,238,255,.35);outline-offset:2px}
+.tile.tap{cursor:pointer;position:relative}.tile.tap:after{content:"›";position:absolute;right:14px;top:12px;color:var(--muted);font-size:20px}
+.wtabs{display:flex;gap:8px;margin-bottom:12px}.wtabs button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:14px;padding:10px 6px;font:800 14px inherit;font-family:inherit;cursor:pointer}
+.wtabs button.on{color:#1A1B26;background:var(--ok);border-color:transparent}.wtabs b{opacity:.8}
+.wgrp{padding:12px 12px 4px;margin-bottom:12px}.wgh{font-weight:800;margin:0 4px 8px}.wgh span{font-weight:600;font-size:12px;color:var(--muted)}
+.wrow{display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;margin-bottom:8px;background:rgba(255,255,255,.03);border:1px solid transparent}
+.wrow.done{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.45);box-shadow:0 0 14px rgba(16,185,129,.18)}
+.wtx{flex:1;min-width:0}.wtx b{display:block;font-size:15px}.wtx small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.wdots{display:flex;gap:3px;flex-shrink:0}.wdots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.14)}.wdots i.on{background:var(--ok)}
+.wempty{padding:18px;text-align:center;color:var(--muted);margin-bottom:12px}
+.vrow{display:flex;align-items:center;gap:8px;margin:10px 0}.vrow>span{width:92px;font-size:13px;color:var(--muted);flex-shrink:0}
+.vrow select{flex:1;min-width:0;background:#1A1B26;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:9px;font-family:inherit}
+.vrate{display:flex;gap:6px;flex:1}.vrate button{flex:1;border:1px solid var(--line);background:#1A1B26;color:var(--muted);border-radius:12px;padding:8px 4px;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer}.vrate button.on{color:var(--text);border-color:var(--es)}
+.vhint{color:var(--muted);font-size:12px;line-height:1.45;margin-top:8px}
 </style>
 </head>
 <body data-track="es">
@@ -240,16 +255,23 @@ body.focus .nav{display:none}
     <div class="tile glass"><div class="v" id="pStreak"></div><div class="n">🔥 серия сейчас</div></div>
     <div class="tile glass"><div class="v" id="pRounds"></div><div class="n">🎯 раундов</div></div>
     <div class="tile glass"><div class="v" id="pBest"></div><div class="n">🏅 лучшая серия</div></div>
-    <div class="tile glass"><div class="v" id="pWLearn">0</div><div class="n">📚 слов в процессе</div></div>
-    <div class="tile glass"><div class="v" id="pWDone">0</div><div class="n">🎓 выучено слов</div></div>
+    <div class="tile glass tap" onclick="show(&quot;words&quot;)"><div class="v" id="pWLearn">0</div><div class="n">📚 слов в процессе</div></div>
+    <div class="tile glass tap" onclick="show(&quot;words&quot;)"><div class="v" id="pWDone">0</div><div class="n">🎓 выучено слов</div></div>
   </div>
   <p style="color:var(--muted);font-size:13px;text-align:center;margin-bottom:6px">5 верных ответов на слово — и оно «Выучено» 🎓</p>
   <p style="color:var(--muted);font-size:13px;text-align:center">Пропустил день? Ничего страшного. Серия — не экзамен 💛</p>
 </section>
 
+<section class="screen" id="scr_words">
+  <div class="header"><h1>📚 Мои слова</h1></div>
+  <div class="wtabs"><button data-wf="learning" class="on" onclick="lbWordFilter('learning')">Учу <b id="wcL">0</b></button><button data-wf="learned" onclick="lbWordFilter('learned')">Выучено <b id="wcD">0</b></button><button data-wf="all" onclick="lbWordFilter('all')">Все</button></div>
+  <div id="wList"></div>
+  <div class="pcard glass" id="voiceBox"></div>
+</section>
+
 <div class="sheet" id="sheet"><h3 id="shTitle"></h3><p id="shTip"></p><div class="row2"><button class="btn ghost say sayb" onclick="speakAnswer()">🔊</button><button class="btn" id="shNext" onclick="next()">Дальше →</button></div></div>
 
-<nav class="nav glass"><button data-go="home" class="on" onclick="show('home')"><span class="i">🏠</span>Главная</button><button data-go="profile" onclick="show('profile')"><span class="i">📊</span>Прогресс</button></nav>
+<nav class="nav glass"><button data-go="home" class="on" onclick="show('home')"><span class="i">🏠</span>Главная</button><button data-go="profile" onclick="show('profile')"><span class="i">📊</span>Прогресс</button><button data-go="words" onclick="show(&quot;words&quot;)"><span class="i">📚</span>Слова</button></nav>
 
 <script>
 // ================= КОНТЕНТ =================
@@ -270,7 +292,7 @@ var DATA = {
       { q: "«<b>No entiendo</b>» значит…", o: ["Я не понимаю", "Я не знаю", "Я не хочу"], a: 0, tip: "🤷 «Я не знаю» — <b>No sé</b>.", say: "No entiendo" },
       { q: "Как попросить говорить <b>медленнее</b>?", o: ["Más despacio, por favor", "Más rápido, por favor", "Más alto, por favor"], a: 0, tip: "🐢 <b>despacio</b> — медленно. Главная фраза первых месяцев." },
       { q: "Как сказать «Я <b>из Украины</b>»?", o: ["Soy de Ucrania", "Estoy en Ucrania", "Voy a Ucrania"], a: 0, tip: "🇺🇦 <b>Soy de</b> — я из · <b>Estoy en</b> — я нахожусь в." },
-      { q: "Как сказать «<b>Меня зовут</b> Алекс»?", o: ["Me llamo Aleks", "Yo llamo Aleks", "Mi nombre Aleks"], a: 0, tip: "🙋 <b>Me llamo</b> — дословно «я себя зову»." }
+      { q: "Как сказать «<b>Меня зовут</b> Лео»?", o: ["Me llamo Leo", "Yo llamo Leo", "Mi nombre Leo"], a: 0, tip: "🙋 <b>Me llamo</b> — дословно «я себя зову»." }
     ]},
     cafe: { title: "Кафе", em: "☕", cards: [
       { q: "Ты хочешь <b>кофе с молоком</b>. Как заказать?", o: ["Un café con leche, por favor", "Una leche sin café", "Café, gracias, adiós"], a: 0, tip: "☕ <b>con leche</b> — с молоком." },
@@ -376,6 +398,7 @@ function show(name) {
   if (name !== "quiz") hideSheet();
   if (name === "home") renderHome();
   if (name === "profile") renderProfile();
+  if (name === "words" && window.lbRenderWords) window.lbRenderWords();
 }
 function goBack() { if (current === "quiz" || current === "speak") quit(); else if (current === "result") openTrack(LAST.lang); else show("home"); }
 
@@ -643,6 +666,6 @@ if (hs === "#profile") { S.xp = 340; S.rounds = 7; S.streak = 3; S.bestStreak = 
   window.lbTrackInit=function(c){ try{ if(cfg) return; cfg=c||{}; var x=q; q=[]; x.forEach(function(a){ send(a[0],a[1]); }); }catch(e){} };
 })();
 </script>
-<script src="v3.js?v=9"></script>
+<script src="v3.js?v=10"></script>
 </body>
 </html>

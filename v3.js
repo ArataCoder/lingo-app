@@ -1,7 +1,7 @@
 /* Lingo Brain v3: каталог тем, «Нет сил», Surprise Box, заморозка серии,
    тренажёр уха, конструктор фраз, шпаргалки и сценарии. Контент: content/*.json */
 (function () {
-  var VER = "9";
+  var VER = "10";
   var V = { cat: null, cfg: null, sur: null, topics: {}, failed: false, track: "es", run: null, lastRun: null };
   var DEF_LANG = { es: "es-ES", en: "en-US" };
   var ACCENT = { "es-ES": "🇪🇸 Кастилья", "es-MX": "🇲🇽 Латино", "es-US": "🌎 Латино", "en-GB": "🇬🇧 Британский", "en-US": "🇺🇸 Американский" };
@@ -168,16 +168,35 @@
   } else {
     document.documentElement.classList.add("nosay");
   }
-  function pickVoice(lang) {
+  // v3.5: выбираем самый живой голос (Natural/Neural/Google/Enhanced), можно сменить вручную
+  var VSKEY = "lingo_voice", VS = {};
+  try { VS = JSON.parse(localStorage.getItem(VSKEY) || "{}") || {}; } catch (e) { VS = {}; }
+  function vsSave() { try { localStorage.setItem(VSKEY, JSON.stringify(VS)); } catch (e) {} }
+  function vNorm(x) { return String(x.lang || "").split("_").join("-").toLowerCase(); }
+  var BADV = /compact|espeak|novelty|whisper|bad news|bells|bubbles|cellos|jester|organ|trinoids|zarvox|superstar|wobble|boing|albert|bahh|fred|junior|ralph|kathy|grandpa|grandma|rocko|shelley|flo|eddy|reed|sandy/i;
+  function vScore(v, low) {
+    var n = String(v.name || ""), s = 0, l = vNorm(v);
+    if (l === low) s += 20; else if (low === "es-es" && l === "es-us") s += 5;
+    if (/natural|neural|online/i.test(n)) s += 60;
+    if (/premium|enhanced/i.test(n)) s += 50;
+    if (/google/i.test(n)) s += 35;
+    if (BADV.test(n)) s -= 80;
+    if (v.localService === false) s += 3;
+    return s;
+  }
+  function voicesFor(lang) {
     if (!VOICES.length) loadVoices();
-    var low = String(lang || "").toLowerCase(), norm = function (x) { return String(x.lang || "").split("_").join("-").toLowerCase(); };
-    var v = VOICES.filter(function (x) { return norm(x) === low; })[0];
-    if (!v && low === "es-mx") v = VOICES.filter(function (x) { return norm(x) === "es-us"; })[0];
-    if (!v) v = VOICES.filter(function (x) { return norm(x).indexOf(low.slice(0, 2)) === 0; })[0];
-    return v || null;
+    var low = String(lang || "").toLowerCase(), base = low.slice(0, 2);
+    return VOICES.filter(function (x) { return vNorm(x).indexOf(base) === 0; })
+      .sort(function (a, b) { return vScore(b, low) - vScore(a, low); });
+  }
+  function pickVoice(lang) {
+    var list = voicesFor(lang), want = VS[String(lang || "").slice(0, 2).toLowerCase()];
+    if (want) { var w = list.filter(function (x) { return x.voiceURI === want || x.name === want; })[0]; if (w) return w; }
+    return list[0] || null;
   }
   function speakNow(text, lang, rate) {
-    var u = new SpeechSynthesisUtterance(text); u.lang = lang; u.rate = rate || 1;
+    var u = new SpeechSynthesisUtterance(text); u.lang = lang; u.rate = Math.max(0.5, Math.min(1.5, (rate || 1) * (VS.rate || 1)));
     var v = pickVoice(lang); if (v) u.voice = v;
     speechSynthesis.speak(u);
   }
@@ -259,6 +278,83 @@
     if (a) a.textContent = c.learning; if (b) b.textContent = c.learned;
   };
 
+  // ---------- v3.5: экран «Мои слова» + настройки голоса ----------
+  var WF = "learning";
+  function hasCyr(s) { return /[а-яё]/i.test(s || ""); }
+  function strip(s) { var d = document.createElement("div"); d.innerHTML = s == null ? "" : String(s); return (d.textContent || "").trim(); }
+  function wEntry(c) {
+    var t = "", r = "";
+    if (c.type === "flash") { t = c.front; r = c.back; }
+    else if (c.type === "listen") { t = c.audio && c.audio.text; r = "🎧 " + (c.q || ""); }
+    else if (c.type === "build") { t = (c.tokens || []).join(" "); r = c.prompt; }
+    else if (c.type === "speak") { t = c.text; r = c.tr; }
+    else {
+      var ans = c.options ? c.options[c.answer] : "", m = /«([^»]+)»/.exec(strip(c.q));
+      if (ans && !hasCyr(strip(ans))) { t = ans; r = c.q; }
+      else if (m && !hasCyr(m[1])) { t = m[1]; r = ans; }
+      else { t = ans; r = c.q; }
+    }
+    return { t: strip(t), r: strip(r) };
+  }
+  window.lbWordFilter = function (f) { WF = f; haptic("light"); window.lbRenderWords(); };
+  window.lbRenderWords = function () {
+    var box = document.getElementById("wList"); if (!box) return;
+    var c = wCounts(), a = document.getElementById("wcL"), b = document.getElementById("wcD");
+    if (a) a.textContent = c.learning; if (b) b.textContent = c.learned;
+    var tabs = document.querySelectorAll("[data-wf]");
+    for (var i = 0; i < tabs.length; i++) tabs[i].classList.toggle("on", tabs[i].getAttribute("data-wf") === WF);
+    box.innerHTML = ""; var shown = 0;
+    Object.keys(WD).forEach(function (tid) {
+      var tp = V.topics[tid]; if (!tp || !tp.cards) return;
+      var s = WD[tid] || "", items = [];
+      for (var k = 0; k < s.length; k++) {
+        var v = wv(s.charAt(k)), cd = tp.cards[k];
+        if (v < 0 || !cd || cd.type === "speak") continue;
+        if (WF === "learning" && v >= WMAX) continue;
+        if (WF === "learned" && v < WMAX) continue;
+        items.push({ v: v, c: cd });
+      }
+      if (!items.length) return;
+      var g = E("div", "wgrp glass");
+      g.appendChild(E("div", "wgh", esc((tp.emoji || "") + " " + (tp.title || tid)) + ' <span>' + (tp.track === "es" ? "испанский" : "английский") + "</span>"));
+      items.sort(function (x, y) { return y.v - x.v; }).forEach(function (it) {
+        var en = wEntry(it.c), done = it.v >= WMAX, row = E("div", "wrow" + (done ? " done" : ""));
+        var dots = ""; for (var d = 0; d < WMAX; d++) dots += '<i class="' + (d < it.v ? "on" : "") + '"></i>';
+        row.innerHTML = '<div class="wtx"><b>' + esc(en.t) + "</b><small>" + esc(en.r) + '</small></div><div class="wdots">' + (done ? "🎓" : dots) + "</div>";
+        if (en.t && !hasCyr(en.t)) {
+          var sb = E("button", "v3sb sayb", "🔊"), lang = DEF_LANG[tp.track];
+          sb.onclick = function () { haptic("light"); say(en.t, lang, 0.9); };
+          row.appendChild(sb);
+        }
+        g.appendChild(row); shown++;
+      });
+      box.appendChild(g);
+    });
+    if (!shown) box.appendChild(E("div", "wempty glass", WF === "learned" ? "Пока пусто. Ответь верно 5 раз на слово — и оно переедет сюда 🎓" : "Пройди любой раунд — слова из него появятся здесь 📚"));
+    renderVoiceBox();
+  };
+  var SAMPLE = { es: "Hola, ¿qué tal? Me alegro mucho de verte.", en: "Hi! Nice to meet you. How's your day going?" };
+  function renderVoiceBox() {
+    var vb = document.getElementById("voiceBox"); if (!vb) return;
+    if (!SAY_OK) { vb.innerHTML = '<div class="label">🎙 Голос</div><p class="vhint">В этом браузере озвучки нет 😕</p>'; return; }
+    var h = '<div class="label">🎙 Голос озвучки</div>';
+    [["es", "es-ES", "Испанский"], ["en", "en-US", "Английский"]].forEach(function (L) {
+      var list = voicesFor(L[1]), cur = pickVoice(L[1]);
+      h += '<div class="vrow"><span>' + L[2] + '</span><select data-vl="' + L[0] + '">';
+      if (!list.length) h += "<option>голос не найден</option>";
+      list.forEach(function (v) { h += '<option value="' + esc(v.voiceURI || v.name) + '"' + (cur && v === cur ? " selected" : "") + ">" + esc(v.name + " · " + v.lang) + "</option>"; });
+      h += '</select><button class="v3sb" data-vt="' + L[1] + '">▶️</button></div>';
+    });
+    var r = VS.rate || 1;
+    h += '<div class="vrow"><span>Темп</span><div class="vrate">' + [[0.8, "🐢 медленно"], [1, "норм"], [1.15, "🐇 быстро"]].map(function (x) { return '<button data-vr="' + x[0] + '" class="' + (Math.abs(r - x[0]) < 0.01 ? "on" : "") + '">' + x[1] + "</button>"; }).join("") + "</div></div>";
+    h += '<p class="vhint">Самые живые голоса: <b>Edge</b> (Natural), <b>Android</b> — Google. iPhone: Настройки → Универсальный доступ → Устный контент → Голоса → скачай голос с пометкой «Улучшенный».</p>';
+    vb.innerHTML = h;
+    Array.prototype.forEach.call(vb.querySelectorAll("select[data-vl]"), function (sel) { sel.onchange = function () { VS[sel.getAttribute("data-vl")] = sel.value; vsSave(); trk("voice_changed", { lang: sel.getAttribute("data-vl") }); }; });
+    Array.prototype.forEach.call(vb.querySelectorAll("[data-vt]"), function (b) { b.onclick = function () { var l = b.getAttribute("data-vt"); say(SAMPLE[l.slice(0, 2)], l, 1); }; });
+    Array.prototype.forEach.call(vb.querySelectorAll("[data-vr]"), function (b) { b.onclick = function () { VS.rate = parseFloat(b.getAttribute("data-vr")); vsSave(); renderVoiceBox(); say(SAMPLE.es, "es-ES", 1); }; });
+  }
+  if (SAY_OK) { try { speechSynthesis.addEventListener("voiceschanged", function () { if (window.current === "words") renderVoiceBox(); }); } catch (e) {} }
+
   // ---------- v3.4: поделиться с другом ----------
   window.shareResult = function () {
     var xp = window.LB_LAST_XP || 0, app = "https://t.me/LingoBrainBOT";
@@ -280,7 +376,7 @@
       ".v3msg.me .sp{background:rgba(0,0,0,.14);color:#1A1B26;border:none}";
     document.head.appendChild(st);
   })();
-  window.__v3.say = say; window.__v3.wordMark = wordMark; window.__v3.wCounts = wCounts; window.__v3.WD = function () { return WD; }; window.__v3.wMerge = wMerge;
+  window.__v3.say = say; window.__v3.wordMark = wordMark; window.__v3.wCounts = wCounts; window.__v3.WD = function () { return WD; }; window.__v3.wMerge = wMerge; window.__v3.wEntry = wEntry; window.__v3.voicesFor = voicesFor; window.__v3.pickVoice = pickVoice; window.__v3.VS = function () { return VS; };
 
   // ---------- стили ----------
   var css = "" +

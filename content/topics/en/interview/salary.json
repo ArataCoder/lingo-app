@@ -255,7 +255,7 @@
       },
       "ai": {
         "enabled": false,
-        "persona": "Friendly but budget-conscious recruiter at a remote-first EU fintech company.",
+        "persona": "Friendly but budget-conscious recruiter at a remote-first European tech company.",
         "goals": [
           "Name a range",
           "Push back politely once",

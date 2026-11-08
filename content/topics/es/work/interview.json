@@ -185,13 +185,13 @@
           "tr": "Доброе утро. Садитесь, пожалуйста. Расскажите немного о себе.",
           "choices": [
             {
-              "text": "Buenos días. Me llamo Aleks, soy de Ucrania y vivo en Torrevieja. Tengo experiencia en atención al cliente.",
+              "text": "Buenos días. Me llamo Leo y vivo en Valencia. Tengo experiencia en atención al cliente.",
               "next": "n2",
               "score": 2,
               "feedback": "Отличная мини-презентация: имя, откуда, опыт."
             },
             {
-              "text": "Soy Aleks.",
+              "text": "Soy Leo.",
               "next": "n2",
               "score": 1,
               "feedback": "Хорошее начало. Добавь опыт: «Tengo experiencia en…»."
@@ -209,7 +209,7 @@
           "tr": "Ничего страшного, спокойно. Как вас зовут и какой у вас опыт?",
           "choices": [
             {
-              "text": "Me llamo Aleks. Tengo experiencia en atención al cliente.",
+              "text": "Me llamo Leo. Tengo experiencia en atención al cliente.",
               "next": "n2",
               "score": 2,
               "feedback": "Вот, получилось 💪"
@@ -295,8 +295,8 @@
           ]
         },
         "n5": {
-          "say": "Muy bien, Aleks. Le llamamos esta semana. ¡Gracias por venir!",
-          "tr": "Отлично, Алекс. Мы позвоним вам на этой неделе. Спасибо, что пришли!",
+          "say": "Muy bien, Leo. Le llamamos esta semana. ¡Gracias por venir!",
+          "tr": "Отлично, Лео. Мы позвоним вам на этой неделе. Спасибо, что пришли!",
           "end": true
         }
       },
