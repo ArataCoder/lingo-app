@@ -58,7 +58,7 @@ html{scrollbar-width:none}::-webkit-scrollbar{display:none}
 .track.es{background:linear-gradient(135deg,rgba(247,160,70,.20),rgba(36,40,59,.85) 60%);border:1px solid rgba(247,160,70,.35)}
 .track.en{background:linear-gradient(135deg,rgba(157,124,216,.22),rgba(36,40,59,.85) 60%);border:1px solid rgba(157,124,216,.38)}
 .ticon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:30px;flex:none}
-.es .ticon{background:rgba(247,160,70,.18)}.en .ticon{background:rgba(157,124,216,.2)}.ticon.code{font-size:21px;font-weight:900;letter-spacing:1px;line-height:1}.es .ticon.code{color:#F7A046}.en .ticon.code{color:#9D7CD8}
+.es .ticon{background:rgba(247,160,70,.18)}.en .ticon{background:rgba(157,124,216,.2)}.ticon{line-height:1}.ticon img.emj{width:1.15em;height:1.15em;margin:0;vertical-align:0;border-radius:4px}
 .track h2{font-size:19px;line-height:1.2}
 .es h2{color:var(--es)}.en h2{color:var(--en)}
 .track p{font-size:13px;color:var(--muted);margin:2px 0 8px}
@@ -183,8 +183,8 @@ body.focus .nav{display:none}
   </div>
   <button class="quick" onclick="quickRound()">⚡ Быстрый раунд · 2 мин</button>
   <div class="label">Треки</div>
-  <div class="track es" onclick="openTrack('es')"><div class="ticon code">ES</div><div><h2>Испанский</h2><p>С нуля · жизнь в Испании</p><div class="dots" id="dots_es"></div></div><div class="go">›</div></div>
-  <div class="track en" onclick="openTrack('en')"><div class="ticon code">EN</div><div><h2>Английский</h2><p>B1+ · говорим и собесы</p><div class="dots" id="dots_en"></div></div><div class="go">›</div></div>
+  <div class="track es" onclick="openTrack('es')"><div class="ticon">🇪🇸</div><div><h2>Испанский</h2><p>С нуля · жизнь в Испании</p><div class="dots" id="dots_es"></div></div><div class="go">›</div></div>
+  <div class="track en" onclick="openTrack('en')"><div class="ticon">🇬🇧</div><div><h2>Английский</h2><p>B1+ · говорим и собесы</p><div class="dots" id="dots_en"></div></div><div class="go">›</div></div>
 </section>
 
 <!-- ТЕМЫ -->
@@ -252,7 +252,7 @@ body.focus .nav{display:none}
 // Квизы: q — вопрос (<b>ключевые слова</b>), o — варианты, a — правильный (с нуля), tip — подсказка, say — что озвучить
 // Говорилка (speak:true): t — фраза, ru — перевод, say — что озвучить (если не указано, берётся t без тегов)
 var DATA = {
-  es: { name: "Испанский", flag: "ES", tts: "es-ES", topics: {
+  es: { name: "Испанский", flag: "🇪🇸", tts: "es-ES", topics: {
     speak: { title: "Повторяй вслух", em: "🎙", speak: true, cards: [
       { t: "Un <b>café con leche</b>, por favor.", ru: "Кофе с молоком, пожалуйста." },
       { t: "Más <b>despacio</b>, por favor.", ru: "Помедленнее, пожалуйста." },
@@ -290,7 +290,7 @@ var DATA = {
       { q: "Как сказать «Я <b>плохо</b> говорю по-испански»?", o: ["Hablo poco español", "No hablo nunca", "Hablo español bien"], a: 0, tip: "Скажи сразу — с тобой будут говорить проще 💛" }
     ]}
   }},
-  en: { name: "Английский", flag: "EN", tts: "en-US", topics: {
+  en: { name: "Английский", flag: "🇬🇧", tts: "en-US", topics: {
     speak: { title: "Зажми и говори", em: "🎙", speak: true, cards: [
       { t: "I'm a <b>support specialist</b> with two years in <b>FinTech</b>.", ru: "Я специалист поддержки с 2 годами в финтехе." },
       { t: "I <b>led</b> a team of five agents.", ru: "Я руководил командой из пяти агентов." },
@@ -604,6 +604,6 @@ if (hs === "#speak") { start("en", "speak"); $("talkBtn").classList.add("rec"); 
 if (hs === "#result") { LAST = { lang: "es", topic: "cafe" }; complete(5, 5, 50); }
 if (hs === "#profile") { S.xp = 340; S.rounds = 7; S.streak = 3; S.bestStreak = 3; S.lastDay = dayStr(); S.days = [dayStr(), yesterday()]; show("profile"); }
 </script>
-<script src="v3.js?v=5"></script>
+<script src="v3.js?v=6"></script>
 </body>
 </html>

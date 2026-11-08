@@ -1,7 +1,7 @@
 /* Lingo Brain v3: каталог тем, «Нет сил», Surprise Box, заморозка серии,
    тренажёр уха, конструктор фраз, шпаргалки и сценарии. Контент: content/*.json */
 (function () {
-  var VER = "5";
+  var VER = "6";
   var V = { cat: null, cfg: null, sur: null, topics: {}, failed: false, track: "es", run: null, lastRun: null };
   var DEF_LANG = { es: "es-ES", en: "en-US" };
   var ACCENT = { "es-ES": "🇪🇸 Кастилья", "es-MX": "🇲🇽 Латино", "es-US": "🌎 Латино", "en-GB": "🇬🇧 Британский", "en-US": "🇺🇸 Американский" };
@@ -202,7 +202,7 @@
 
   // ---------- разметка ----------
   function section(id, html) { var s = E("section", "screen", html); s.id = "scr_" + id; $("sheet").parentNode.insertBefore(s, $("sheet")); return s; }
-  section("catalog", '<div class="header"><button class="iconbtn" onclick="show(\'home\')">←</button><h1>📚 Все темы</h1></div><div class="v3seg"><button data-t="es"><span class="v3code">ES</span>Испанский</button><button data-t="en"><span class="v3code">EN</span>Английский</button></div><div id="v3cat"></div>');
+  section("catalog", '<div class="header"><button class="iconbtn" onclick="show(\'home\')">←</button><h1>📚 Все темы</h1></div><div class="v3seg"><button data-t="es">🇪🇸 Испанский</button><button data-t="en">🇬🇧 Английский</button></div><div id="v3cat"></div>');
   section("topic", '<div class="header"><button class="iconbtn" onclick="show(\'catalog\')">←</button><h1 id="v3tTitle"></h1></div><div id="v3topic"></div>');
   section("cheat", '<div class="header"><button class="iconbtn" id="v3cBack">←</button><h1>⚡ Шпаргалка · 30 сек</h1></div><div class="v3bar"><i id="v3cBar"></i></div><div id="v3cheat"></div>');
   section("play", '<div class="qtop"><button class="iconbtn" onclick="goBack()" style="font-size:24px">×</button><div class="dots center big" id="v3dots"></div><div class="v3timer" id="v3timer">⚡</div></div><div id="v3body"></div>');
