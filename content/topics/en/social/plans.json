@@ -1,0 +1,270 @@
+{
+ "id": "en.social.plans",
+ "track": "en",
+ "level": "B1",
+ "title": "Планы и вежливый отказ",
+ "emoji": "📅",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "Are you free on…?",
+   "tr": "у тебя есть время в…?",
+   "ex": "Are you free on Saturday?"
+  },
+  {
+   "term": "I'd love to, but…",
+   "tr": "с удовольствием бы, но…",
+   "ex": "I'd love to, but I already have plans."
+  },
+  {
+   "term": "Can I take a rain check?",
+   "tr": "давай в другой раз?",
+   "ex": "Can I take a rain check on dinner?"
+  },
+  {
+   "term": "What about…?",
+   "tr": "как насчёт…?",
+   "ex": "What about Sunday instead?"
+  },
+  {
+   "term": "I'm down.",
+   "tr": "я за / я в деле",
+   "ex": "Pizza tonight? I'm down."
+  },
+  {
+   "term": "Let me check.",
+   "tr": "сейчас проверю",
+   "ex": "Let me check my calendar."
+  },
+  {
+   "term": "Count me in / out",
+   "tr": "я участвую / без меня",
+   "ex": "Count me in for Friday."
+  },
+  {
+   "term": "Something came up.",
+   "tr": "кое-что неожиданно случилось",
+   "ex": "Sorry, something came up. Can we move it?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как вежливо отказаться от приглашения?",
+   "options": [
+    "I'd love to, but I already have plans.",
+    "No. I don't want.",
+    "Maybe never."
+   ],
+   "answer": 0,
+   "explain": "<b>I'd love to, but…</b> смягчает любой отказ."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Can I take a rain check?» значит…",
+   "options": [
+    "Давай перенесём на другой раз?",
+    "Можно проверить прогноз погоды?",
+    "Можно взять зонт?"
+   ],
+   "answer": 0,
+   "explain": "Идиома: отказываюсь сейчас, но хочу в другой раз."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "I'm down.",
+   "back": "я за / я в деле (неформально)"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Something came up. Can we move it to Thursday?",
+    "lang": "en-US",
+    "rate": 0.9
+   },
+   "q": "Что предлагают?",
+   "options": [
+    "Перенести на четверг",
+    "Встретиться сегодня",
+    "Отменить совсем"
+   ],
+   "answer": 0,
+   "explain": "<b>move it to</b> = перенести на."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Let me check my calendar and get back to you.",
+    "lang": "en-US",
+    "rate": 0.9
+   },
+   "q": "Что пообещал человек?",
+   "options": [
+    "Проверить календарь и ответить",
+    "Прислать свой календарь",
+    "Перезвонить через минуту"
+   ],
+   "answer": 0,
+   "explain": "<b>get back to you</b> = вернусь с ответом."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Как насчёт воскресенья?",
+   "tokens": [
+    "What",
+    "about",
+    "Sunday?"
+   ],
+   "distractors": [
+    "how",
+    "on"
+   ],
+   "pattern": "What about + [день]?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Без меня в этот раз.",
+   "tokens": [
+    "Count",
+    "me",
+    "out",
+    "this",
+    "time."
+   ],
+   "distractors": [
+    "in",
+    "my"
+   ],
+   "pattern": "Count me in / out"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Are you free on Saturday? Let's grab a coffee.",
+   "tr": "У тебя есть время в субботу? Давай выпьем кофе.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "I'd love to, but something came up. What about next week?",
+   "tr": "С удовольствием бы, но кое-что случилось. Как насчёт следующей недели?",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.social.plans.s1",
+   "title": "Друг зовёт гулять",
+   "emoji": "📅",
+   "userRole": "Ты",
+   "botRole": "Friend",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hey! A few of us are going out on Friday. Are you in?",
+     "tr": "Привет! Мы компанией идём гулять в пятницу. Ты с нами?",
+     "choices": [
+      {
+       "text": "Sounds fun! Count me in.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Естественно и тепло 🔥"
+      },
+      {
+       "text": "I'd love to, but I already have plans on Friday.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Вежливый отказ — идеально."
+      },
+      {
+       "text": "No.",
+       "next": "n3",
+       "score": 0,
+       "feedback": "Слишком резко. Лучше: «I'd love to, but…»"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Awesome! We're meeting at eight. Is that okay?",
+     "tr": "Круто! Встречаемся в восемь. Нормально?",
+     "choices": [
+      {
+       "text": "Eight works for me.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "«Works for me» = мне подходит."
+      },
+      {
+       "text": "Let me check and get back to you.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Тоже нормально, только не забудь ответить 😉"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Oh, no worries! What about Saturday instead?",
+     "tr": "Ничего страшного! Может, тогда в субботу?",
+     "choices": [
+      {
+       "text": "Saturday works! I'm down.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Отлично!"
+      },
+      {
+       "text": "Can I take a rain check? This weekend is busy.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Хороший вежливый перенос."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Cool, I'll send you the details later.",
+     "tr": "Хорошо, потом пришлю подробности.",
+     "choices": [
+      {
+       "text": "Great, thanks! See you.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Идеально."
+      },
+      {
+       "text": "Thanks for the invite!",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Поблагодарить за приглашение — очень по-английски 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "See you!",
+     "tr": "Увидимся!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

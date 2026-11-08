@@ -1,0 +1,310 @@
+{
+ "id": "es.social.me",
+ "track": "es",
+ "level": "A1",
+ "title": "О себе и семье",
+ "emoji": "🙋",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "Me llamo…",
+   "tr": "меня зовут…",
+   "ex": "Me llamo Ana, ¿y tú?"
+  },
+  {
+   "term": "Soy de…",
+   "tr": "я из…",
+   "ex": "Soy de Ucrania, pero vivo aquí."
+  },
+  {
+   "term": "Vivo en…",
+   "tr": "я живу в…",
+   "ex": "Vivo en Alicante con mi familia."
+  },
+  {
+   "term": "Tengo … años",
+   "tr": "мне … лет (дословно «имею … лет»)",
+   "ex": "Tengo treinta años."
+  },
+  {
+   "term": "mi familia",
+   "tr": "моя семья",
+   "ex": "Mi familia es pequeña."
+  },
+  {
+   "term": "un hermano / una hermana",
+   "tr": "брат / сестра",
+   "ex": "Tengo un hermano y una hermana."
+  },
+  {
+   "term": "¿A qué te dedicas?",
+   "tr": "чем ты занимаешься (по работе)?",
+   "ex": "¿A qué te dedicas? Trabajo en una tienda."
+  },
+  {
+   "term": "los hijos",
+   "tr": "дети (сыновья и дочери)",
+   "ex": "¿Tienes hijos? No, todavía no."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как сказать «меня зовут Ана»?",
+   "options": [
+    "Me llamo Ana.",
+    "Yo llamo Ana.",
+    "Mi nombre llamo Ana."
+   ],
+   "answer": 0,
+   "explain": "<b>Me llamo</b> = дословно «я себя называю»."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«¿A qué te dedicas?» — о чём спрашивают?",
+   "options": [
+    "Чем ты занимаешься по работе?",
+    "Сколько тебе лет?",
+    "Откуда ты?"
+   ],
+   "answer": 0,
+   "explain": "Вежливый вопрос о работе. Ответ: <b>Trabajo en…</b>"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Tengo treinta años.",
+   "back": "Мне тридцать лет (в испанском возраст «имеют»)."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Soy de Polonia, pero vivo en Valencia.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что человек сказал о себе?",
+   "options": [
+    "Из Польши, живёт в Валенсии",
+    "Из Валенсии, живёт в Польше",
+    "Едет из Валенсии в Польшу"
+   ],
+   "answer": 0,
+   "explain": "<b>Soy de</b> = я из, <b>vivo en</b> = живу в."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Tengo dos hijos y un perro.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что ты услышал(а)?",
+   "options": [
+    "Двое детей и собака",
+    "Два брата и кошка",
+    "Две собаки и ребёнок"
+   ],
+   "answer": 0,
+   "explain": "<b>hijos</b> = дети, <b>perro</b> = собака."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я живу в Аликанте с семьёй.",
+   "tokens": [
+    "Vivo",
+    "en",
+    "Alicante",
+    "con",
+    "mi",
+    "familia."
+   ],
+   "distractors": [
+    "soy",
+    "tengo"
+   ],
+   "pattern": "Vivo en + [город]"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "У меня есть брат и сестра.",
+   "tokens": [
+    "Tengo",
+    "un",
+    "hermano",
+    "y",
+    "una",
+    "hermana."
+   ],
+   "distractors": [
+    "hermanos",
+    "soy"
+   ],
+   "pattern": "Tengo + [кто]"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Hola, me llamo Ana. Soy de Ucrania.",
+   "tr": "Привет, меня зовут Ана. Я из Украины.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Vivo aquí desde hace un año y me gusta mucho.",
+   "tr": "Я живу здесь уже год, и мне очень нравится.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.social.me.s1",
+   "title": "Знакомство на вечеринке",
+   "emoji": "🙋",
+   "userRole": "Ты",
+   "botRole": "Lucía",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¡Hola! Soy Lucía. ¿Cómo te llamas?",
+     "tr": "Привет! Я Лусия. Как тебя зовут?",
+     "choices": [
+      {
+       "text": "Me llamo Alex. ¡Mucho gusto!",
+       "next": "n2",
+       "score": 2,
+       "feedback": "«Mucho gusto» подходит всем, без рода 👍"
+      },
+      {
+       "text": "Alex.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Поймут! С «Me llamo…» звучит дружелюбнее."
+      },
+      {
+       "text": "Yo llamo Alex.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Почти: правильно «Me llamo Alex»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "¡Mucho gusto! ¿De dónde eres?",
+     "tr": "Очень приятно! Откуда ты?",
+     "choices": [
+      {
+       "text": "Soy de Ucrania. ¿Y tú?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Отлично, и вопрос вернул(а) 🔥"
+      },
+      {
+       "text": "De Ucrania.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Коротко и понятно."
+      },
+      {
+       "text": "¿Perdón? Más despacio, por favor.",
+       "next": "n2b",
+       "score": 2,
+       "feedback": "Переспросить — это нормально."
+      }
+     ]
+    },
+    "n2b": {
+     "say": "Claro. ¿De dónde… eres?",
+     "tr": "Конечно. Откуда… ты?",
+     "choices": [
+      {
+       "text": "Soy de Ucrania.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Вот! 💪"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Yo soy de aquí, de Alicante. ¿Y a qué te dedicas?",
+     "tr": "А я местная, из Аликанте. А чем ты занимаешься?",
+     "choices": [
+      {
+       "text": "Ahora estoy buscando trabajo.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Честно и естественно. «Estoy buscando» = я ищу."
+      },
+      {
+       "text": "Trabajo en una tienda.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Отлично!"
+      },
+      {
+       "text": "Yo trabajo es tienda.",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Почти: «Trabajo en una tienda»."
+      }
+     ]
+    },
+    "n4": {
+     "say": "¡Qué bien! ¿Tienes familia aquí?",
+     "tr": "Здорово! У тебя здесь есть семья?",
+     "choices": [
+      {
+       "text": "Sí, vivo con mi familia.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Супер 👍"
+      },
+      {
+       "text": "No, mi familia está en Ucrania.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Отлично: «está en» = где кто-то находится."
+      }
+     ]
+    },
+    "n5": {
+     "say": "Bueno, si necesitas algo, aquí estoy. ¡Hasta luego!",
+     "tr": "Ну, если что-то нужно, я рядом. До встречи!",
+     "choices": [
+      {
+       "text": "¡Gracias! ¡Hasta luego!",
+       "next": "n6",
+       "score": 2,
+       "feedback": "Идеальное завершение."
+      }
+     ]
+    },
+    "n6": {
+     "say": "¡Chao!",
+     "tr": "Пока!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

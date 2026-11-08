@@ -1,0 +1,276 @@
+{
+ "id": "es.travel.directions",
+ "track": "es",
+ "level": "A1",
+ "title": "Как пройти?",
+ "emoji": "🗺️",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "¿Dónde está…?",
+   "tr": "где находится…?",
+   "ex": "¿Dónde está la estación?"
+  },
+  {
+   "term": "a la derecha",
+   "tr": "направо",
+   "ex": "Gira a la derecha."
+  },
+  {
+   "term": "a la izquierda",
+   "tr": "налево",
+   "ex": "La farmacia está a la izquierda."
+  },
+  {
+   "term": "todo recto",
+   "tr": "прямо",
+   "ex": "Sigue todo recto."
+  },
+  {
+   "term": "cerca / lejos",
+   "tr": "близко / далеко",
+   "ex": "¿Está cerca o lejos?"
+  },
+  {
+   "term": "la calle",
+   "tr": "улица",
+   "ex": "Está en la calle Mayor."
+  },
+  {
+   "term": "la esquina",
+   "tr": "угол (улицы)",
+   "ex": "El banco está en la esquina."
+  },
+  {
+   "term": "¿Me puede ayudar?",
+   "tr": "вы можете мне помочь?",
+   "ex": "Perdone, ¿me puede ayudar?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как вежливо обратиться к прохожему?",
+   "options": [
+    "Perdone, ¿me puede ayudar?",
+    "Oye, tú, ¿dónde?",
+    "Ayuda, rápido."
+   ],
+   "answer": 0,
+   "explain": "<b>Perdone</b> = извините (на «вы»). Работает с любым прохожим."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Todo recto» — это…",
+   "options": [
+    "прямо",
+    "направо",
+    "назад"
+   ],
+   "answer": 0,
+   "explain": "<b>Sigue todo recto</b> = иди прямо."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "a la izquierda",
+   "back": "налево"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Sigue todo recto y luego a la derecha.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Куда идти?",
+   "options": [
+    "Прямо, потом направо",
+    "Направо, потом прямо",
+    "Налево, потом прямо"
+   ],
+   "answer": 0,
+   "explain": "<b>luego</b> = потом."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Está a cinco minutos andando.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Как далеко?",
+   "options": [
+    "5 минут пешком",
+    "5 километров",
+    "5 минут на машине"
+   ],
+   "answer": 0,
+   "explain": "<b>andando</b> = пешком."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Где находится вокзал?",
+   "tokens": [
+    "¿Dónde",
+    "está",
+    "la",
+    "estación?"
+   ],
+   "distractors": [
+    "es",
+    "el"
+   ],
+   "pattern": "¿Dónde está + [место]?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Это на углу.",
+   "tokens": [
+    "Está",
+    "en",
+    "la",
+    "esquina."
+   ],
+   "distractors": [
+    "es",
+    "calle"
+   ],
+   "pattern": "Está en + [где]"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Perdone, ¿dónde está la parada de autobús?",
+   "tr": "Извините, где автобусная остановка?",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "¿Está lejos? ¿Puedo ir andando?",
+   "tr": "Это далеко? Можно дойти пешком?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.travel.directions.s1",
+   "title": "Ищем аптеку",
+   "emoji": "🗺️",
+   "userRole": "Ты",
+   "botRole": "Señor",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¿Sí? Dígame.",
+     "tr": "Да? Слушаю.",
+     "choices": [
+      {
+       "text": "Perdone, ¿dónde está la farmacia?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Вежливо и чётко 👍"
+      },
+      {
+       "text": "¿Farmacia?",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Поймут, но с «Perdone, ¿dónde está…?» вежливее."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Sigue todo recto y en la segunda calle, a la izquierda.",
+     "tr": "Иди прямо и на второй улице налево.",
+     "choices": [
+      {
+       "text": "¿Todo recto y luego a la izquierda?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Повторить маршрут — лучший способ не заблудиться 🔥"
+      },
+      {
+       "text": "Perdone, más despacio, por favor.",
+       "next": "n2b",
+       "score": 2,
+       "feedback": "Переспросить — это нормально."
+      },
+      {
+       "text": "Vale, a la derecha.",
+       "next": "n2c",
+       "score": 0,
+       "feedback": "Осторожно: izquierda = налево."
+      }
+     ]
+    },
+    "n2b": {
+     "say": "Todo recto… y la segunda calle… a la izquierda.",
+     "tr": "Прямо… и вторая улица… налево.",
+     "choices": [
+      {
+       "text": "Vale, gracias. ¿Está lejos?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Отлично!"
+      }
+     ]
+    },
+    "n2c": {
+     "say": "No, no, a la izquierda.",
+     "tr": "Нет-нет, налево.",
+     "choices": [
+      {
+       "text": "Ah, a la izquierda. Perdón.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Вот так 💪"
+      }
+     ]
+    },
+    "n3": {
+     "say": "No, está muy cerca, a cinco minutos andando.",
+     "tr": "Нет, совсем близко, пять минут пешком.",
+     "choices": [
+      {
+       "text": "¡Perfecto, muchas gracias!",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Идеально."
+      },
+      {
+       "text": "Gracias.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Коротко и вежливо."
+      }
+     ]
+    },
+    "n4": {
+     "say": "De nada. ¡Que te mejores!",
+     "tr": "Не за что. Выздоравливай!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

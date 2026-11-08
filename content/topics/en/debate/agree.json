@@ -1,0 +1,276 @@
+{
+ "id": "en.debate.agree",
+ "track": "en",
+ "level": "B2",
+ "title": "Согласиться / не согласиться",
+ "emoji": "🤝",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "I see your point, but…",
+   "tr": "понимаю твою мысль, но…",
+   "ex": "I see your point, but I think it's too risky."
+  },
+  {
+   "term": "That's a fair point.",
+   "tr": "справедливое замечание",
+   "ex": "That's a fair point. I hadn't thought of that."
+  },
+  {
+   "term": "I'm not so sure about that.",
+   "tr": "я в этом не уверен(а)",
+   "ex": "I'm not so sure about that. Do we have data?"
+  },
+  {
+   "term": "I couldn't agree more.",
+   "tr": "полностью согласен(на)",
+   "ex": "I couldn't agree more. Let's do it."
+  },
+  {
+   "term": "to some extent",
+   "tr": "до некоторой степени",
+   "ex": "I agree to some extent."
+  },
+  {
+   "term": "I'd push back on…",
+   "tr": "я бы поспорил(а) с…",
+   "ex": "I'd push back on the timeline a little."
+  },
+  {
+   "term": "Fair enough.",
+   "tr": "справедливо / ладно, принимаю",
+   "ex": "Fair enough, let's try it your way."
+  },
+  {
+   "term": "Let's agree to disagree.",
+   "tr": "останемся каждый при своём",
+   "ex": "Let's agree to disagree and move on."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как правильно сказать «я согласен / согласна»?",
+   "options": [
+    "I agree.",
+    "I am agree.",
+    "I'm agree with."
+   ],
+   "answer": 0,
+   "explain": "<b>agree</b> — глагол, поэтому без «am». Типичная ошибка русскоговорящих."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«I couldn't agree more» значит…",
+   "options": [
+    "Полностью согласен(на)",
+    "Не могу согласиться",
+    "Больше не соглашусь"
+   ],
+   "answer": 0,
+   "explain": "Звучит как отрицание, но значит «согласен на 100%»."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Fair enough.",
+   "back": "справедливо / ладно, принимаю"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "I see your point, but I'm not sure it will work.",
+    "lang": "en-US",
+    "rate": 0.9
+   },
+   "q": "Какая позиция у говорящего?",
+   "options": [
+    "Понимает, но сомневается",
+    "Полностью согласен",
+    "Резко против"
+   ],
+   "answer": 0,
+   "explain": "<b>I see your point, but…</b> = мягкое несогласие."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "I agree to some extent, but the budget is a problem.",
+    "lang": "en-US",
+    "rate": 0.9
+   },
+   "q": "Что сказали?",
+   "options": [
+    "Частично согласны, но бюджет — проблема",
+    "Согласны, с бюджетом всё хорошо",
+    "Не согласны ни в чём"
+   ],
+   "answer": 0,
+   "explain": "<b>to some extent</b> = до некоторой степени."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Справедливое замечание.",
+   "tokens": [
+    "That's",
+    "a",
+    "fair",
+    "point."
+   ],
+   "distractors": [
+    "an",
+    "fine"
+   ],
+   "pattern": "That's a fair point."
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Давай останемся каждый при своём мнении.",
+   "tokens": [
+    "Let's",
+    "agree",
+    "to",
+    "disagree."
+   ],
+   "distractors": [
+    "agreed",
+    "for"
+   ],
+   "pattern": "Let's agree to disagree."
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "That's a fair point. I hadn't thought of that.",
+   "tr": "Справедливое замечание. Я об этом не подумал(а).",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "I see your point, but I'd push back on the deadline.",
+   "tr": "Понимаю твою мысль, но я бы поспорил(а) со сроком.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.debate.agree.s1",
+   "title": "Спор о дедлайне на созвоне",
+   "emoji": "🤝",
+   "userRole": "Ты",
+   "botRole": "Manager",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "I think we can ship the new feature by Friday. Thoughts?",
+     "tr": "Думаю, мы успеем выпустить новую фичу к пятнице. Что думаете?",
+     "choices": [
+      {
+       "text": "I see your point, but Friday feels too tight.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Мягко и профессионально 🔥"
+      },
+      {
+       "text": "I couldn't agree more.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Отлично звучит, если правда согласен(на)."
+      },
+      {
+       "text": "I am agree.",
+       "next": "n3",
+       "score": 0,
+       "feedback": "Ошибка: правильно «I agree»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Hmm, why do you think so?",
+     "tr": "Хм, почему ты так думаешь?",
+     "choices": [
+      {
+       "text": "Testing usually takes two days, so we'd need until Tuesday.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Аргумент + цифры = сильная позиция."
+      },
+      {
+       "text": "Because no.",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Нужен аргумент: «because testing takes two days»."
+      }
+     ]
+    },
+    "n3": {
+     "say": "Great. Are there any risks we should think about?",
+     "tr": "Отлично. Есть риски, о которых стоит подумать?",
+     "choices": [
+      {
+       "text": "Testing might take longer than we expect.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Хорошо подсветил(а) риск."
+      },
+      {
+       "text": "No risks.",
+       "next": "n4",
+       "score": 1,
+       "feedback": "Звучит слишком уверенно, но допустимо."
+      }
+     ]
+    },
+    "n4": {
+     "say": "That's a fair point. What if we ship a smaller version on Friday?",
+     "tr": "Справедливо. А если в пятницу выпустить урезанную версию?",
+     "choices": [
+      {
+       "text": "That works for me.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Компромисс найден 👍"
+      },
+      {
+       "text": "Fair enough, let's try it.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "«Fair enough» — естественная реакция."
+      },
+      {
+       "text": "I'm not so sure about that.",
+       "next": "n5",
+       "score": 1,
+       "feedback": "Можно, но лучше сразу предложи альтернативу."
+      }
+     ]
+    },
+    "n5": {
+     "say": "Great, let's go with that. Thanks, everyone.",
+     "tr": "Отлично, так и сделаем. Всем спасибо.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
