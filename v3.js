@@ -1,11 +1,130 @@
 /* Lingo Brain v3: каталог тем, «Нет сил», Surprise Box, заморозка серии,
    тренажёр уха, конструктор фраз, шпаргалки и сценарии. Контент: content/*.json */
 (function () {
-  var VER = "4";
+  var VER = "5";
   var V = { cat: null, cfg: null, sur: null, topics: {}, failed: false, track: "es", run: null, lastRun: null };
   var DEF_LANG = { es: "es-ES", en: "en-US" };
   var ACCENT = { "es-ES": "🇪🇸 Кастилья", "es-MX": "🇲🇽 Латино", "es-US": "🌎 Латино", "en-GB": "🇬🇧 Британский", "en-US": "🇺🇸 Американский" };
   var LETTERS = "ABCD";
+
+  // ---------- v3.1: эмодзи через Twemoji SVG (с откатом на системные) ----------
+  var TW = { base: "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/", ok: 0, bad: 0, off: false };
+  function isRI(c) { return c >= 0x1F1E6 && c <= 0x1F1FF; }
+  function isMod(c) { return c >= 0x1F3FB && c <= 0x1F3FF; }
+  var PICT_EXTRA = [0x231A, 0x231B, 0x2328, 0x23CF, 0x23E9, 0x23EA, 0x23EB, 0x23EC, 0x23ED, 0x23EE, 0x23EF, 0x23F0, 0x23F1, 0x23F2, 0x23F3, 0x23F8, 0x23F9, 0x23FA, 0x2B50, 0x2B55, 0x2B1B, 0x2B1C, 0x2B05, 0x2B06, 0x2B07, 0x2934, 0x2935, 0x25B6, 0x25C0, 0x25FB, 0x25FC, 0x25FD, 0x25FE, 0x2139, 0x3030, 0x303D, 0x3297, 0x3299];
+  function isPict(c) {
+    if (c >= 0x1F000 && c <= 0x1FAFF) return !isMod(c) && !isRI(c);
+    if (c >= 0x2600 && c <= 0x27BF) return true;
+    return PICT_EXTRA.indexOf(c) >= 0;
+  }
+  function emojiRuns(s) {
+    var cps = Array.from(s), out = [], txt = "", i = 0, found = false;
+    function cp(k) { return k < cps.length ? cps[k].codePointAt(0) : -1; }
+    while (i < cps.length) {
+      var c = cp(i), j = i;
+      if (isRI(c) && isRI(cp(i + 1))) j = i + 2;
+      else if (isPict(c)) {
+        j = i + 1;
+        if (cp(j) === 0xFE0F) j++;
+        if (isMod(cp(j))) j++;
+        while (cp(j) >= 0xE0020 && cp(j) <= 0xE007F) j++;
+        while (cp(j) === 0x200D && isPict(cp(j + 1))) { j += 2; if (cp(j) === 0xFE0F) j++; if (isMod(cp(j))) j++; }
+      }
+      if (j > i) {
+        var seq = cps.slice(i, j), codes = seq.map(function (x) { return x.codePointAt(0); });
+        var zwj = codes.indexOf(0x200D) >= 0;
+        var code = codes.filter(function (x) { return zwj || x !== 0xFE0F; }).map(function (x) { return x.toString(16); }).join("-");
+        if (txt) { out.push({ t: txt }); txt = ""; }
+        out.push({ e: seq.join(""), code: code }); found = true; i = j;
+      } else { txt += cps[i]; i++; }
+    }
+    if (txt) out.push({ t: txt });
+    return found ? out : null;
+  }
+  function twFallback(im) { var sp = document.createElement("span"); sp.className = "emjf"; sp.textContent = im.alt; if (im.parentNode) im.parentNode.replaceChild(sp, im); }
+  function twOff() { TW.off = true; Array.prototype.forEach.call(document.querySelectorAll("img.emj"), twFallback); }
+  function twImg(e, code) {
+    var im = document.createElement("img"); im.className = "emj"; im.alt = e; im.draggable = false; im.setAttribute("aria-hidden", "true");
+    im.onload = function () { TW.ok++; };
+    im.onerror = function () { TW.bad++; twFallback(im); if (!TW.ok && TW.bad >= 3) twOff(); };
+    im.src = TW.base + code + ".svg"; return im;
+  }
+  function twText(n) {
+    if (TW.off) return;
+    var p = n.parentNode; if (!p || !n.nodeValue || p.nodeType !== 1) return;
+    var tag = p.nodeName; if (tag === "SCRIPT" || tag === "STYLE" || tag === "TEXTAREA" || tag === "INPUT" || tag === "TITLE") return;
+    if (p.closest && p.closest(".emjf,.noemj")) return;
+    var runs; try { runs = emojiRuns(n.nodeValue); } catch (e) { return; }
+    if (!runs) return;
+    var f = document.createDocumentFragment();
+    runs.forEach(function (r) { f.appendChild(r.e ? twImg(r.e, r.code) : document.createTextNode(r.t)); });
+    p.replaceChild(f, n);
+  }
+  function twParse(root) {
+    if (TW.off || !root) return;
+    if (root.nodeType === 3) { twText(root); return; }
+    if (root.nodeType !== 1 || root.nodeName === "SCRIPT" || root.nodeName === "STYLE") return;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), list = [], n;
+    while ((n = w.nextNode())) list.push(n);
+    list.forEach(twText);
+  }
+  function twStart() {
+    try {
+      twParse(document.body);
+      new MutationObserver(function (ms) { if (TW.off) return; ms.forEach(function (m) { if (m.type === "characterData") twText(m.target); else Array.prototype.forEach.call(m.addedNodes, twParse); }); })
+        .observe(document.body, { childList: true, subtree: true, characterData: true });
+    } catch (e) { TW.off = true; }
+  }
+  // виброотклик на любые карточки/кнопки навигации
+  document.addEventListener("click", function (e) {
+    var el = e.target && e.target.closest ? e.target.closest(".track,.iconbtn,nav button,.v3b,.pill,.chip,.v3act") : null;
+    if (el) haptic("light");
+  }, true);
+
+  // ---------- v3.1: офлайн-кэш контента ----------
+  var CKEY = "lingo_content_cache_v1";
+  function cacheContent() {
+    var old = null; try { old = JSON.parse(localStorage.getItem(CKEY) || "null"); } catch (e) {}
+    if (old && old.topics) readyRefs().forEach(function (tp) { if (!V.topics[tp.id] && old.topics[tp.id]) V.topics[tp.id] = old.topics[tp.id]; });
+    try { localStorage.setItem(CKEY, JSON.stringify({ cat: V.cat, cfg: V.cfg, sur: V.sur, topics: V.topics, at: Date.now() })); } catch (e) {}
+  }
+  function fromCache() {
+    var c = null; try { c = JSON.parse(localStorage.getItem(CKEY) || "null"); } catch (e) {}
+    if (c && c.cat && c.cat.tracks) { V.cat = c.cat; V.cfg = c.cfg; V.sur = c.sur; V.topics = c.topics || {}; V.offline = true; V.failed = false; }
+    else V.failed = true;
+  }
+
+  // ---------- v3.1: разблокировка тем ----------
+  var PASS = 0.6;
+  function readyOrder(tr) {
+    var out = []; if (!V.cat) return out;
+    var t = V.cat.tracks.filter(function (x) { return x.id === tr; })[0]; if (!t) return out;
+    t.blocks.slice().sort(function (a, b) { return a.order - b.order; }).forEach(function (b) { b.topics.forEach(function (tp) { if (tp.status === "ready" && V.topics[tp.id]) out.push(tp); }); });
+    return out;
+  }
+  function arr(k) { if (!Array.isArray(S[k])) S[k] = []; return S[k]; }
+  function isPassed(id) { return arr("passed").indexOf(id) >= 0; }
+  function prevOf(id) { var o = readyOrder(trackOf(id)), i = o.map(function (x) { return x.id; }).indexOf(id); return i > 0 ? o[i - 1] : null; }
+  function nextOf(id) { var o = readyOrder(trackOf(id)), i = o.map(function (x) { return x.id; }).indexOf(id); return i >= 0 && i + 1 < o.length ? o[i + 1] : null; }
+  function isOpen(id) {
+    var o = readyOrder(trackOf(id)).map(function (x) { return x.id; }), i = o.indexOf(id);
+    if (i < 0) return false; if (i === 0) return true;
+    return arr("unlocked").indexOf(id) >= 0 || isPassed(id) || isPassed(o[i - 1]);
+  }
+  function checkUnlock(id, ratio) {
+    var nx = nextOf(id), wasOpen = nx ? isOpen(nx.id) : true;
+    if (!(ratio >= PASS)) {
+      if (nx && !wasOpen) setTimeout(function () { toast("Ещё раунд от 60% — и откроется «" + nx.title + "» 💪"); }, 1600);
+      return null;
+    }
+    if (!isPassed(id)) arr("passed").push(id);
+    var res = null;
+    if (nx && !wasOpen) { if (arr("unlocked").indexOf(nx.id) < 0) arr("unlocked").push(nx.id); V.fresh = nx.id; res = nx; }
+    save();
+    return res;
+  }
+  window.__v3 = { V: V, isOpen: isOpen, emojiRuns: emojiRuns, TW: TW };
+
 
   function E(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
   function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : String(s); return d.innerHTML; }
@@ -16,9 +135,9 @@
 
   function loadAll() {
     return Promise.all([getJ("catalog.json"), getJ("config.json"), getJ("surprise.json")]).then(function (r) {
-      V.cat = r[0]; V.cfg = r[1]; V.sur = r[2]; V.failed = false;
-      return Promise.all(readyRefs().map(function (tp) { return getJ(tp.file).then(function (t) { V.topics[tp.id] = t; }).catch(function () {}); }));
-    }).catch(function () { V.failed = true; });
+      V.cat = r[0]; V.cfg = r[1]; V.sur = r[2]; V.failed = false; V.offline = false;
+      return Promise.all(readyRefs().map(function (tp) { return getJ(tp.file).then(function (t) { V.topics[tp.id] = t; }).catch(function () {}); })).then(cacheContent);
+    }).catch(function () { fromCache(); });
   }
 
   // ---------- озвучка с акцентом и темпом ----------
@@ -39,17 +158,21 @@
     ".v3row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 0 18px}" +
     ".v3b{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:20px;padding:12px 6px;font-weight:800;font-size:13px;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 4px 0 rgba(0,0,0,.25);transition:transform .1s}" +
     ".v3b:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.25)}" +
-    ".v3b .e{font-size:24px}.v3b small{color:var(--muted);font-weight:700;font-size:11px}" +
+    ".v3b .e{font-size:24px;line-height:1.2}.v3b small{color:var(--muted);font-weight:700;font-size:11px}" +
     ".v3b.low{border-color:rgba(16,185,129,.45)}.v3b.sur{border-color:rgba(247,160,70,.45)}.v3b.cat{border-color:rgba(157,124,216,.45)}" +
     ".v3seg{display:flex;gap:8px;margin-bottom:16px}.v3seg button{flex:1;padding:12px;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-weight:800;font-size:15px;font-family:inherit;cursor:pointer}" +
     ".v3seg button.on{color:#1A1B26;background:var(--acc);border-color:transparent}" +
     ".v3block{margin-bottom:18px}.v3bh{display:flex;justify-content:space-between;align-items:baseline;margin:0 2px 8px}.v3bh b{font-size:16px}.v3bh span{font-size:12px;color:var(--dim);font-weight:800}" +
+    ".v3code{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.5px;padding:2px 6px;border-radius:7px;background:rgba(0,0,0,.2);margin-right:6px;vertical-align:1px}" +
+    "img.emj{width:1.2em;height:1.2em;display:inline-block;vertical-align:-0.22em;margin:0 .04em;pointer-events:none;user-select:none}.emjf{font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif}" +
+    ".v3off{font-size:13px;color:var(--muted);padding:10px 12px;border-radius:14px;background:rgba(247,118,142,.1);border:1px solid rgba(247,118,142,.3);margin-bottom:12px}" +
+    "@keyframes v3glow{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}50%{box-shadow:0 0 0 4px rgba(16,185,129,.35)}}" +
     ".v3t{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;border-radius:18px}" +
-    ".v3t .em{font-size:24px;flex:none}.v3t .tt{flex:1;font-weight:700;font-size:15px;line-height:1.3}.v3t .lv{font-size:11px;font-weight:800;color:var(--muted);padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.06)}" +
-    ".v3t .st{font-size:14px;color:var(--acc);font-weight:800}.v3t.planned{opacity:.45}.v3t.ready{border-color:var(--acc)}" +
-    ".v3hero{padding:20px;margin-bottom:14px;text-align:center}.v3hero .em{font-size:46px}.v3hero h2{font-size:21px;margin:6px 0 4px}.v3hero p{color:var(--muted);font-size:13px}" +
+    ".v3t .em{width:40px;height:40px;flex:none;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1;border-radius:12px;background:rgba(255,255,255,.05)}.v3t .em img.emj,.v3hero .em img.emj,.v3act .e img.emj,.v3b .e img.emj{width:1em;height:1em;margin:0;vertical-align:0}.v3t .tt{min-width:0;overflow-wrap:anywhere}.v3t .tt small{display:block;font-size:11px;color:var(--muted);font-weight:700;margin-top:2px}.v3t .tt{flex:1;font-weight:700;font-size:15px;line-height:1.3}.v3t .lv{font-size:11px;font-weight:800;color:var(--muted);padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.06)}" +
+    ".v3t .st{font-size:14px;color:var(--acc);font-weight:800}.v3t.planned .tt,.v3t.planned .lv,.v3t.planned .st{opacity:.5}.v3t.planned .em{filter:grayscale(.7);opacity:.75}.v3t.locked .tt{opacity:.8}.v3t.locked .em{filter:grayscale(.35)}.v3t.locked .st{color:var(--muted)}.v3t.fresh{border-color:var(--ok);animation:v3glow 1.2s ease-in-out 3}.v3t.ready{border-color:var(--acc)}" +
+    ".v3hero{padding:20px;margin-bottom:14px;text-align:center}.v3hero .em{font-size:46px;line-height:1.2;min-height:60px;display:flex;align-items:center;justify-content:center}.v3hero h2{font-size:21px;margin:6px 0 4px}.v3hero p{color:var(--muted);font-size:13px}" +
     ".v3act{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:15px 14px;margin-bottom:10px;border-radius:20px;background:var(--card);border:1px solid var(--line);color:var(--text);font-weight:800;font-size:15px;font-family:inherit;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.25)}" +
-    ".v3act .e{font-size:24px}.v3act small{display:block;color:var(--muted);font-weight:700;font-size:12px;margin-top:2px}.v3act:active{transform:translateY(3px)}" +
+    ".v3act .e{font-size:24px;width:32px;flex:none;display:flex;justify-content:center;line-height:1}.v3act small{display:block;color:var(--muted);font-weight:700;font-size:12px;margin-top:2px}.v3act:active{transform:translateY(3px)}" +
     ".v3bar{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin:4px 0 16px}.v3bar i{display:block;height:100%;width:100%;background:var(--acc);transition:width 1s linear}" +
     ".v3cs{padding:13px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;cursor:pointer}.v3cs .w{flex:1}.v3cs b{font-size:16px}.v3cs .tr{color:var(--muted);font-size:13px;margin-top:2px}.v3cs .ex{color:var(--dim);font-size:13px;font-style:italic;margin-top:4px}" +
     ".v3timer{min-width:44px;height:44px;border-radius:15px;display:grid;place-items:center;font-weight:800;background:var(--card);border:1px solid var(--line);color:var(--ok)}" +
@@ -79,7 +202,7 @@
 
   // ---------- разметка ----------
   function section(id, html) { var s = E("section", "screen", html); s.id = "scr_" + id; $("sheet").parentNode.insertBefore(s, $("sheet")); return s; }
-  section("catalog", '<div class="header"><button class="iconbtn" onclick="show(\'home\')">←</button><h1>📚 Все темы</h1></div><div class="v3seg"><button data-t="es">🇪🇸 Испанский</button><button data-t="en">🇬🇧 Английский</button></div><div id="v3cat"></div>');
+  section("catalog", '<div class="header"><button class="iconbtn" onclick="show(\'home\')">←</button><h1>📚 Все темы</h1></div><div class="v3seg"><button data-t="es"><span class="v3code">ES</span>Испанский</button><button data-t="en"><span class="v3code">EN</span>Английский</button></div><div id="v3cat"></div>');
   section("topic", '<div class="header"><button class="iconbtn" onclick="show(\'catalog\')">←</button><h1 id="v3tTitle"></h1></div><div id="v3topic"></div>');
   section("cheat", '<div class="header"><button class="iconbtn" id="v3cBack">←</button><h1>⚡ Шпаргалка · 30 сек</h1></div><div class="v3bar"><i id="v3cBar"></i></div><div id="v3cheat"></div>');
   section("play", '<div class="qtop"><button class="iconbtn" onclick="goBack()" style="font-size:24px">×</button><div class="dots center big" id="v3dots"></div><div class="v3timer" id="v3timer">⚡</div></div><div id="v3body"></div>');
@@ -105,7 +228,7 @@
   $("v3sur").onclick = function () { surprise(); };
   $("v3catBtn").onclick = function () { show("catalog"); };
   $("v3fzBuy").onclick = function () { buyFreeze(); };
-  Array.prototype.forEach.call(document.querySelectorAll(".v3seg button"), function (b) { b.onclick = function () { V.track = b.getAttribute("data-t"); haptic("light"); renderCatalog(); }; });
+  Array.prototype.forEach.call(document.querySelectorAll(".v3seg button"), function (b) { b.onclick = function () { V.track = b.getAttribute("data-t"); haptic("select"); renderCatalog(); }; });
 
   // ---------- заморозка серии ----------
   function fzCost() { return (V.cfg && V.cfg.streakFreeze && V.cfg.streakFreeze.costXp) || 50; }
@@ -165,15 +288,18 @@
       return;
     }
     var t = V.cat.tracks.filter(function (x) { return x.id === V.track; })[0];
+    if (V.offline) box.appendChild(E("div", "v3off", "📴 Нет интернета — показываю сохранённые темы. Прогресс сохраняется на телефоне."));
     var all = 0, rd = 0;
     t.blocks.forEach(function (b) { b.topics.forEach(function (tp) { all++; if (tp.status === "ready") rd++; }); });
     box.appendChild(E("p", null, '<span style="color:var(--muted);font-size:13px">' + esc(t.subtitle) + " · готово " + rd + " из " + all + " · новые темы появляются регулярно</span>")).style.marginBottom = "14px";
     t.blocks.slice().sort(function (a, b) { return a.order - b.order; }).forEach(function (b) {
       var bl = E("div", "v3block", '<div class="v3bh"><b>' + b.emoji + " " + esc(b.title) + "</b><span>" + esc(b.levelRange) + "</span></div>");
       b.topics.forEach(function (tp) {
-        var ready = tp.status === "ready" && V.topics[tp.id];
-        var r = E("div", "v3t glass " + (ready ? "ready" : "planned"), '<span class="em">' + tp.emoji + '</span><span class="tt">' + esc(tp.title) + '</span><span class="lv">' + esc(tp.level) + '</span><span class="st">' + (ready ? "▶" : "🔒") + "</span>");
-        r.onclick = function () { if (ready) openTopic(tp.id); else { haptic("light"); toast("🛠 Скоро! Тема в работе"); } };
+        var has = !!(tp.status === "ready" && V.topics[tp.id]), open = has && isOpen(tp.id), done = has && isPassed(tp.id), pv = has && !open ? prevOf(tp.id) : null;
+        var cls = open ? "ready" : (has ? "locked" : "planned"); if (open && V.fresh === tp.id) cls += " fresh";
+        var st = open ? (done ? "✅" : "▶") : (has ? "🔒" : "🛠");
+        var r = E("div", "v3t glass " + cls, '<span class="em">' + tp.emoji + '</span><span class="tt">' + esc(tp.title) + (pv ? "<small>Откроется после «" + esc(pv.title) + "» от 60%</small>" : "") + '</span><span class="lv">' + esc(tp.level) + '</span><span class="st">' + st + "</span>");
+        r.onclick = function () { if (open) { haptic("medium"); V.fresh = null; openTopic(tp.id); } else if (has) { haptic("warning"); toast("🔒 Сначала пройди «" + (pv ? pv.title : "предыдущую тему") + "» — раунд от 60%"); } else { haptic("soft"); toast("🛠 Скоро! Тема в работе"); } };
         bl.appendChild(r);
       });
       box.appendChild(bl);
@@ -182,6 +308,7 @@
 
   // ---------- экран темы ----------
   function openTopic(id) {
+    if (V.cat && V.topics[id] && !isOpen(id)) { haptic("warning"); toast("🔒 Тема пока закрыта — пройди предыдущую от 60%"); return; }
     var t = V.topics[id]; if (!t) { toast("🛠 Скоро!"); return; }
     V.track = t.track; setTrack(t.track); LAST = { lang: t.track, topic: id };
     $("v3tTitle").textContent = t.emoji + " " + t.title;
@@ -255,7 +382,9 @@
   function finishRun() {
     var r = V.run; stopTimer(); if (window.speechSynthesis) speechSynthesis.cancel();
     var n = Math.max(1, r.cards.length);
+    var un = (r.topicId && V.topics[r.topicId]) ? checkUnlock(r.topicId, r.score / n) : null;
     complete(r.score, n, Math.round(r.xp * (r.mult || 1)));
+    if (un) setTimeout(function () { haptic("success"); toast("🔓 Открыта новая тема: " + un.emoji + " " + un.title); }, 1600);
     renderFreeze();
   }
   function nextStep() { var r = V.run; haptic("light"); r.pos++; if (r.pos >= r.cards.length) finishRun(); else renderStep(); }
@@ -273,7 +402,7 @@
   function grade(ok, pts) {
     var r = V.run;
     if (ok) { r.score++; r.combo++; r.xp += pts || cfgXp("correct", 10); haptic("success"); if (r.combo >= 3) toast("🔥 Комбо x" + r.combo + "!"); }
-    else { r.combo = 0; r.xp += cfgXp("wrongButTried", 3); haptic("warning"); }
+    else { r.combo = 0; r.xp += cfgXp("wrongButTried", 3); haptic("error"); }
   }
   function options(c, onDone) {
     var wrap = E("div"), locked = false;
@@ -396,7 +525,7 @@
         ch.innerHTML = "";
         var me = E("div", "v3msg me"); me.textContent = c.text; chat.appendChild(me);
         var sc = c.score || 0; V.run.pts += sc; $("v3sPts").textContent = V.run.pts;
-        haptic(sc >= 2 ? "success" : sc === 1 ? "light" : "warning");
+        haptic(sc >= 2 ? "success" : sc === 1 ? "light" : "error");
         if (c.feedback) chat.appendChild(E("div", "v3note", (sc >= 2 ? "✅ " : sc === 1 ? "👍 " : "💡 ") + esc(c.feedback)));
         say(c.text, lang, 0.95);
         setTimeout(function () { node(s, c.next); setTimeout(function () { ch.scrollIntoView({ behavior: "smooth", block: "end" }); }, 60); }, 1100);
@@ -420,7 +549,7 @@
     if (it.type === "question") {
       var q = $("v3sq");
       q.appendChild(options({ options: it.options, answer: it.answer }, function (ok) {
-        haptic(ok ? "success" : "warning");
+        haptic(ok ? "success" : "error");
         var p = E("p", null); p.style.cssText = "text-align:center;color:var(--muted);margin:4px 0 10px"; p.textContent = (ok ? "✅ Да! " : "💡 Правильно: " + it.options[it.answer] + ". ") + (it.explain || ""); q.appendChild(p);
       }));
     }
@@ -432,6 +561,8 @@
 
   // ---------- старт ----------
   renderHome();
+  twStart();
+  window.addEventListener("online", function () { if (V.offline || V.failed) loadAll().then(function () { if (current === "catalog") renderCatalog(); }); });
   loadAll().then(function () {
     var n = 0; if (V.cat) V.cat.tracks.forEach(function (t) { t.blocks.forEach(function (b) { n += b.topics.length; }); });
     if (n) $("v3catN").textContent = n + " тем";

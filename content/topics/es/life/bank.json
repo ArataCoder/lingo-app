@@ -1,0 +1,310 @@
+{
+  "id": "es.life.bank",
+  "track": "es",
+  "level": "A1",
+  "title": "Банк и счета",
+  "emoji": "🏦",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "la cuenta",
+      "tr": "счёт",
+      "ex": "Quiero abrir una cuenta."
+    },
+    {
+      "term": "la tarjeta",
+      "tr": "карта",
+      "ex": "Mi tarjeta no funciona."
+    },
+    {
+      "term": "el cajero",
+      "tr": "банкомат",
+      "ex": "El cajero se ha tragado mi tarjeta."
+    },
+    {
+      "term": "la comisión",
+      "tr": "комиссия, плата банку",
+      "ex": "¿Hay comisión de mantenimiento?"
+    },
+    {
+      "term": "la transferencia",
+      "tr": "перевод денег",
+      "ex": "Quiero hacer una transferencia."
+    },
+    {
+      "term": "el IBAN",
+      "tr": "номер счёта",
+      "ex": "¿Me da el IBAN, por favor?"
+    },
+    {
+      "term": "sacar dinero",
+      "tr": "снять деньги",
+      "ex": "Quiero sacar cien euros."
+    },
+    {
+      "term": "domiciliar la nómina",
+      "tr": "получать зарплату на этот счёт",
+      "ex": "Si domicilia la nómina, no hay comisión."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Как сказать «Я хочу открыть счёт»?",
+      "options": [
+        "Quiero abrir una cuenta.",
+        "Quiero cerrar la puerta.",
+        "Tengo una cuenta abierta."
+      ],
+      "answer": 0,
+      "explain": "<b>Quiero</b> + действие — универсальный шаблон «хочу сделать»."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "«El cajero» в банке — это…",
+      "options": [
+        "Банкомат",
+        "Директор банка",
+        "Сейф"
+      ],
+      "answer": 0,
+      "explain": "Полностью — <b>cajero automático</b>. Но все говорят просто «el cajero»."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "la comisión",
+      "back": "комиссия (плата банку)"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "¿Hay comisión de mantenimiento?",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Что спрашивают?",
+      "options": [
+        "Есть ли плата за обслуживание счёта?",
+        "Где ближайший банкомат?",
+        "Можно ли оплатить картой?"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Su tarjeta llega por correo en diez días.",
+        "lang": "es-MX",
+        "rate": 0.9
+      },
+      "q": "Когда придёт карта?",
+      "options": [
+        "Через 10 дней, по почте",
+        "Завтра, в отделение",
+        "Через 2 дня, курьером"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Я хочу сделать перевод.",
+      "tokens": [
+        "Quiero",
+        "hacer",
+        "una",
+        "transferencia"
+      ],
+      "distractors": [
+        "tengo",
+        "la"
+      ],
+      "pattern": "Quiero hacer + [что]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Моя карта не работает.",
+      "tokens": [
+        "Mi",
+        "tarjeta",
+        "no",
+        "funciona"
+      ],
+      "distractors": [
+        "es",
+        "tu"
+      ],
+      "pattern": "Mi + [вещь] + no funciona"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "¿Puedo abrir una cuenta con NIE?",
+      "tr": "Могу открыть счёт с NIE?",
+      "lang": "es-ES"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "El cajero se ha tragado mi tarjeta.",
+      "tr": "Банкомат проглотил мою карту.",
+      "lang": "es-ES"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "es.life.bank.s1",
+      "title": "Открываем счёт",
+      "emoji": "🏦",
+      "userRole": "Ты",
+      "botRole": "Empleada",
+      "voice": "es-ES",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Hola, buenos días. ¿En qué le puedo ayudar?",
+          "tr": "Здравствуйте. Чем могу помочь?",
+          "choices": [
+            {
+              "text": "Quiero abrir una cuenta, por favor.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Чётко: цель + por favor."
+            },
+            {
+              "text": "Una cuenta.",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Поймут! С «Quiero abrir…» звучит вежливее."
+            },
+            {
+              "text": "Perdón, ¿habla inglés?",
+              "next": "n1b",
+              "score": 1,
+              "feedback": "Нормально, но давай попробуем на испанском 💪"
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Un poquito… Pero tranquilo, hablamos despacio. ¿Qué necesita?",
+          "tr": "Чуть-чуть… Не волнуйтесь, говорим медленно. Что вам нужно?",
+          "choices": [
+            {
+              "text": "Abrir una cuenta, por favor.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Вот! Ты справился."
+            }
+          ]
+        },
+        "n2": {
+          "say": "Perfecto. ¿Tiene NIE y pasaporte?",
+          "tr": "Отлично. У вас есть NIE и паспорт?",
+          "choices": [
+            {
+              "text": "Sí, aquí tiene.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "«Aquí tiene» снова в деле 😎"
+            },
+            {
+              "text": "Tengo pasaporte, pero el NIE está en trámite.",
+              "next": "n2b",
+              "score": 2,
+              "feedback": "Сильно: «en trámite» = в процессе оформления."
+            }
+          ]
+        },
+        "n2b": {
+          "say": "Vale, con el resguardo también podemos empezar.",
+          "tr": "Хорошо, с квитанцией о подаче тоже можем начать.",
+          "choices": [
+            {
+              "text": "¡Genial! Aquí tiene el resguardo.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "«El resguardo» = квитанция, талон."
+            }
+          ]
+        },
+        "n3": {
+          "say": "¿Quiere la tarjeta de débito? No tiene comisión el primer año.",
+          "tr": "Хотите дебетовую карту? Первый год без комиссии.",
+          "choices": [
+            {
+              "text": "Sí, gracias. ¿Y después hay comisión?",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Умный вопрос: всегда уточняй комиссии."
+            },
+            {
+              "text": "Sí.",
+              "next": "n4",
+              "score": 1,
+              "feedback": "Ок! Но про комиссии лучше спросить 😉"
+            },
+            {
+              "text": "No, gracias.",
+              "next": "n4",
+              "score": 1,
+              "feedback": "Тоже вариант."
+            }
+          ]
+        },
+        "n4": {
+          "say": "Después son tres euros al mes, si no domicilia la nómina.",
+          "tr": "Потом 3 € в месяц, если зарплата приходит не на этот счёт.",
+          "choices": [
+            {
+              "text": "Entendido. ¿Me puede dar el IBAN?",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Чётко! IBAN нужен для работы и аренды."
+            },
+            {
+              "text": "¿Puede repetir más despacio, por favor?",
+              "next": "n4b",
+              "score": 2,
+              "feedback": "Переспросить — это суперсила."
+            }
+          ]
+        },
+        "n4b": {
+          "say": "Claro. Tres euros. Al mes. Si no recibe aquí su sueldo.",
+          "tr": "Конечно. Три евро. В месяц. Если не получаете здесь зарплату.",
+          "choices": [
+            {
+              "text": "Vale, entendido. ¿Me da el IBAN?",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Отлично!"
+            }
+          ]
+        },
+        "n5": {
+          "say": "Aquí lo tiene. ¡Bienvenido!",
+          "tr": "Вот он. Добро пожаловать!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

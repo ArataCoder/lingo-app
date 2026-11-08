@@ -1,0 +1,289 @@
+{
+  "id": "en.interview.remote",
+  "track": "en",
+  "level": "B2",
+  "title": "Удалёнка: вопросы и техника",
+  "emoji": "💻",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "async-first",
+      "tr": "по умолчанию общаемся асинхронно",
+      "ex": "We're an async-first team."
+    },
+    {
+      "term": "overlap hours",
+      "tr": "часы, когда все онлайн одновременно",
+      "ex": "I can guarantee four overlap hours."
+    },
+    {
+      "term": "time zone",
+      "tr": "часовой пояс",
+      "ex": "I'm in Spain, CET time zone."
+    },
+    {
+      "term": "self-managed",
+      "tr": "сам организую свою работу",
+      "ex": "I'm very self-managed."
+    },
+    {
+      "term": "home office setup",
+      "tr": "рабочее место дома",
+      "ex": "I have a quiet home office setup."
+    },
+    {
+      "term": "you're on mute",
+      "tr": "у тебя выключен микрофон",
+      "ex": "Sorry, I think you're on mute."
+    },
+    {
+      "term": "my connection dropped",
+      "tr": "у меня отвалился интернет",
+      "ex": "Sorry, my connection dropped for a second."
+    },
+    {
+      "term": "share your screen",
+      "tr": "показать свой экран",
+      "ex": "Could you share your screen, please?"
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Собеседник беззвучно шевелит губами. Что сказать?",
+      "options": [
+        "I think you're on mute.",
+        "You are silence.",
+        "Your voice is closed."
+      ],
+      "answer": 0,
+      "explain": "<b>You're on mute</b> — фраза №1 любого созвона."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "«Overlap hours» — это…",
+      "options": [
+        "Часы, когда команда работает одновременно",
+        "Сверхурочные",
+        "Обеденный перерыв"
+      ],
+      "answer": 0,
+      "explain": "Overlap = пересечение. На удалёнке это главный вопрос из-за часовых поясов."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "My connection dropped.",
+      "back": "У меня отвалился интернет."
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "How do you stay productive when working from home?",
+        "lang": "en-US",
+        "rate": 0.9
+      },
+      "q": "О чём спрашивают?",
+      "options": [
+        "Как ты сохраняешь продуктивность дома?",
+        "Где ты живёшь?",
+        "Сколько часов в день ты работаешь?"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "We'd need you online until half past five, UK time.",
+        "lang": "en-GB",
+        "rate": 0.9
+      },
+      "q": "До скольки нужно быть онлайн?",
+      "options": [
+        "До 17:30 по времени UK",
+        "До 15:00 по Испании",
+        "До 5 утра"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Я могу гарантировать 4 часа пересечения.",
+      "tokens": [
+        "I",
+        "can",
+        "guarantee",
+        "four",
+        "overlap",
+        "hours"
+      ],
+      "distractors": [
+        "make",
+        "over"
+      ],
+      "pattern": "I can guarantee + [сколько] + overlap hours"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Можешь показать свой экран?",
+      "tokens": [
+        "Could",
+        "you",
+        "share",
+        "your",
+        "screen?"
+      ],
+      "distractors": [
+        "give",
+        "my"
+      ],
+      "pattern": "Could you + [действие]?"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "I'm based in Spain, so I work on Central European Time.",
+      "tr": "Я живу в Испании, поэтому работаю по центральноевропейскому времени.",
+      "lang": "en-US"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "I use time-blocking and a clear daily plan to stay focused.",
+      "tr": "Я использую тайм-блокинг и чёткий план на день, чтобы держать фокус.",
+      "lang": "en-US"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "en.interview.remote.s1",
+      "title": "Вопросы про удалёнку",
+      "emoji": "🎧",
+      "userRole": "Кандидат",
+      "botRole": "Recruiter",
+      "voice": "en-US",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "So, this role is fully remote. Have you worked remotely before?",
+          "tr": "Эта роль полностью удалённая. Работал удалённо раньше?",
+          "choices": [
+            {
+              "text": "Yes, and I'm very self-managed. I plan my day in blocks.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Сильно: факт + как именно ты работаешь."
+            },
+            {
+              "text": "Yes.",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Ок, но добавь деталь — рекрутеры любят конкретику."
+            },
+            {
+              "text": "Not officially, but I've run my own projects from home.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Честно и с плюсом. Отлично."
+            }
+          ]
+        },
+        "n2": {
+          "say": "Great. Where are you based, and what hours can you work?",
+          "tr": "Отлично. Где ты живёшь и в какие часы можешь работать?",
+          "choices": [
+            {
+              "text": "I'm in Spain, CET. I can guarantee four overlap hours with your team.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Идеально: пояс + гарантия overlap."
+            },
+            {
+              "text": "Any time, I don't sleep.",
+              "next": "n3",
+              "score": 0,
+              "feedback": "Звучит как выгорание 😅 Лучше назвать конкретные часы."
+            },
+            {
+              "text": "Spain. Normal hours.",
+              "next": "n3",
+              "score": 1,
+              "feedback": "Понятно, но уточни пояс и часы пересечения."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Oh, sorry, I think your connection dropped for a second.",
+          "tr": "Ой, кажется, у тебя на секунду пропала связь.",
+          "choices": [
+            {
+              "text": "Sorry about that! I'm back. Could you repeat the last part?",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Спокойно и вежливо. Профи."
+            },
+            {
+              "text": "Hello? Hello?",
+              "next": "n3b",
+              "score": 1,
+              "feedback": "Бывает! Но лучше сразу: «Sorry, I'm back»."
+            }
+          ]
+        },
+        "n3b": {
+          "say": "Yes, I can hear you now.",
+          "tr": "Да, теперь слышу.",
+          "choices": [
+            {
+              "text": "Great, sorry about that. Could you repeat the question?",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Вот так!"
+            }
+          ]
+        },
+        "n4": {
+          "say": "Sure. How do you handle communication across time zones?",
+          "tr": "Конечно. Как ты общаешься с командой в разных часовых поясах?",
+          "choices": [
+            {
+              "text": "I'm async-first: clear written updates, and I stay on Slack during overlap hours.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Ответ уровня senior 🔥"
+            },
+            {
+              "text": "I answer messages fast.",
+              "next": "n5",
+              "score": 1,
+              "feedback": "Хорошо, но добавь про async и письменные апдейты."
+            }
+          ]
+        },
+        "n5": {
+          "say": "Love that. Thanks, we'll be in touch soon!",
+          "tr": "Супер. Спасибо, скоро свяжемся!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

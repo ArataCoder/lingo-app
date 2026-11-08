@@ -131,8 +131,8 @@
                 "spain",
                 "money"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/es/life/bank.json"
             },
             {
               "id": "es.life.doctor",
@@ -507,8 +507,8 @@
                 "work",
                 "remote"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/en/interview/remote.json"
             }
           ]
         },

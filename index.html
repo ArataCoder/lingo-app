@@ -58,7 +58,7 @@ html{scrollbar-width:none}::-webkit-scrollbar{display:none}
 .track.es{background:linear-gradient(135deg,rgba(247,160,70,.20),rgba(36,40,59,.85) 60%);border:1px solid rgba(247,160,70,.35)}
 .track.en{background:linear-gradient(135deg,rgba(157,124,216,.22),rgba(36,40,59,.85) 60%);border:1px solid rgba(157,124,216,.38)}
 .ticon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:30px;flex:none}
-.es .ticon{background:rgba(247,160,70,.18)}.en .ticon{background:rgba(157,124,216,.2)}
+.es .ticon{background:rgba(247,160,70,.18)}.en .ticon{background:rgba(157,124,216,.2)}.ticon.code{font-size:21px;font-weight:900;letter-spacing:1px;line-height:1}.es .ticon.code{color:#F7A046}.en .ticon.code{color:#9D7CD8}
 .track h2{font-size:19px;line-height:1.2}
 .es h2{color:var(--es)}.en h2{color:var(--en)}
 .track p{font-size:13px;color:var(--muted);margin:2px 0 8px}
@@ -157,7 +157,7 @@ html{scrollbar-width:none}::-webkit-scrollbar{display:none}
 .nav button .i{font-size:20px}
 .nav button.on{background:rgba(255,255,255,.07);color:var(--text)}
 body.focus .nav{display:none}
-.toast{position:fixed;top:14px;left:50%;transform:translate(-50%,-90px);background:var(--solid);border:1px solid var(--line);padding:10px 18px;border-radius:999px;font-weight:800;font-size:14px;transition:transform .3s;z-index:30;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.toast{position:fixed;top:14px;left:50%;transform:translate(-50%,-90px);background:var(--solid);border:1px solid var(--line);padding:10px 18px;border-radius:999px;font-weight:800;font-size:14px;transition:transform .3s;z-index:30;white-space:normal;width:max-content;max-width:calc(100vw - 28px);text-align:center;line-height:1.35;border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .toast.show{transform:translate(-50%,0)}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:40}
 </style>
@@ -183,8 +183,8 @@ body.focus .nav{display:none}
   </div>
   <button class="quick" onclick="quickRound()">⚡ Быстрый раунд · 2 мин</button>
   <div class="label">Треки</div>
-  <div class="track es" onclick="openTrack('es')"><div class="ticon">🇪🇸</div><div><h2>Испанский</h2><p>С нуля · жизнь в Испании</p><div class="dots" id="dots_es"></div></div><div class="go">›</div></div>
-  <div class="track en" onclick="openTrack('en')"><div class="ticon">🇬🇧</div><div><h2>Английский</h2><p>B1+ · говорим и собесы</p><div class="dots" id="dots_en"></div></div><div class="go">›</div></div>
+  <div class="track es" onclick="openTrack('es')"><div class="ticon code">ES</div><div><h2>Испанский</h2><p>С нуля · жизнь в Испании</p><div class="dots" id="dots_es"></div></div><div class="go">›</div></div>
+  <div class="track en" onclick="openTrack('en')"><div class="ticon code">EN</div><div><h2>Английский</h2><p>B1+ · говорим и собесы</p><div class="dots" id="dots_en"></div></div><div class="go">›</div></div>
 </section>
 
 <!-- ТЕМЫ -->
@@ -252,7 +252,7 @@ body.focus .nav{display:none}
 // Квизы: q — вопрос (<b>ключевые слова</b>), o — варианты, a — правильный (с нуля), tip — подсказка, say — что озвучить
 // Говорилка (speak:true): t — фраза, ru — перевод, say — что озвучить (если не указано, берётся t без тегов)
 var DATA = {
-  es: { name: "Испанский", flag: "🇪🇸", tts: "es-ES", topics: {
+  es: { name: "Испанский", flag: "ES", tts: "es-ES", topics: {
     speak: { title: "Повторяй вслух", em: "🎙", speak: true, cards: [
       { t: "Un <b>café con leche</b>, por favor.", ru: "Кофе с молоком, пожалуйста." },
       { t: "Más <b>despacio</b>, por favor.", ru: "Помедленнее, пожалуйста." },
@@ -290,7 +290,7 @@ var DATA = {
       { q: "Как сказать «Я <b>плохо</b> говорю по-испански»?", o: ["Hablo poco español", "No hablo nunca", "Hablo español bien"], a: 0, tip: "Скажи сразу — с тобой будут говорить проще 💛" }
     ]}
   }},
-  en: { name: "Английский", flag: "🇬🇧", tts: "en-US", topics: {
+  en: { name: "Английский", flag: "EN", tts: "en-US", topics: {
     speak: { title: "Зажми и говори", em: "🎙", speak: true, cards: [
       { t: "I'm a <b>support specialist</b> with two years in <b>FinTech</b>.", ru: "Я специалист поддержки с 2 годами в финтехе." },
       { t: "I <b>led</b> a team of five agents.", ru: "Я руководил командой из пяти агентов." },
@@ -332,7 +332,7 @@ var tg = (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.in
 function ver(v) { return !!(tg && tg.isVersionAtLeast && tg.isVersionAtLeast(v)); }
 var cloudOk = ver("6.9") && !!tg.CloudStorage;
 function $(id) { return document.getElementById(id); }
-function haptic(k) { if (!ver("6.1")) return; if (k === "success" || k === "error" || k === "warning") tg.HapticFeedback.notificationOccurred(k); else tg.HapticFeedback.impactOccurred(k || "light"); }
+function haptic(k) { try { if (!ver("6.1") || !tg.HapticFeedback) return; var H = tg.HapticFeedback; if (k === "success" || k === "error" || k === "warning") H.notificationOccurred(k); else if (k === "select") H.selectionChanged(); else H.impactOccurred(["light", "medium", "heavy", "rigid", "soft"].indexOf(k) >= 0 ? k : "light"); } catch (e) {} }
 function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
 function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
 function strip(s) { return s.replace(/<[^>]+>/g, ""); }
@@ -340,12 +340,13 @@ function dots(done, total, cur) { var h = ""; for (var i = 0; i < total; i++) h 
 function setTrack(l) { document.body.setAttribute("data-track", l); }
 
 // ================= ПРОГРЕСС =================
-function blank() { return { xp: 0, streak: 0, bestStreak: 0, lastDay: null, days: [], best: {}, rounds: 0, todayDate: null, todayRounds: 0, freezes: 0, surpriseDay: null }; }
+function blank() { return { xp: 0, streak: 0, bestStreak: 0, lastDay: null, days: [], best: {}, rounds: 0, todayDate: null, todayRounds: 0, freezes: 0, surpriseDay: null, passed: [], unlocked: [] }; }
 function merge(src) { var b = blank(); if (src) { for (var k in b) { if (src[k] !== undefined) b[k] = src[k]; } } return b; }
 function load() { var s = null; try { s = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {} return merge(s); }
 var S = load();
-function save() { var j = JSON.stringify(S); try { localStorage.setItem(KEY, j); } catch (e) {} if (cloudOk) tg.CloudStorage.setItem(KEY, j, function () {}); }
-function cloudLoad() {
+function save() { var j; try { j = JSON.stringify(S); } catch (e) { return; } try { localStorage.setItem(KEY, j); } catch (e) {} if (cloudOk && j.length < 4000) { try { tg.CloudStorage.setItem(KEY, j, function (err) { if (err) cloudOk = false; }); } catch (e) { cloudOk = false; } } }
+function cloudLoad() { try { cloudLoad0(); } catch (e) {} }
+function cloudLoad0() {
   if (!cloudOk) return;
   tg.CloudStorage.getItem(KEY, function (err, val) {
     if (err || !val) return;
@@ -573,7 +574,7 @@ function confetti() {
 var user = null;
 if (tg) {
   tg.ready(); tg.expand();
-  if (ver("6.1")) { tg.setHeaderColor("#1A1B26"); tg.setBackgroundColor("#1A1B26"); tg.BackButton.onClick(goBack); }
+  if (ver("6.1")) { try { tg.setHeaderColor(ver("6.9") ? "#1A1B26" : "bg_color"); } catch (e) {} try { tg.setBackgroundColor("#1A1B26"); } catch (e) {} tg.BackButton.onClick(goBack); }
   if (ver("7.7") && tg.disableVerticalSwipes) tg.disableVerticalSwipes(); // свайп вниз не закрывает приложение при скролле
   if (ver("7.10") && tg.setBottomBarColor) tg.setBottomBarColor("#12131C");
   user = tg.initDataUnsafe && tg.initDataUnsafe.user;
@@ -603,6 +604,6 @@ if (hs === "#speak") { start("en", "speak"); $("talkBtn").classList.add("rec"); 
 if (hs === "#result") { LAST = { lang: "es", topic: "cafe" }; complete(5, 5, 50); }
 if (hs === "#profile") { S.xp = 340; S.rounds = 7; S.streak = 3; S.bestStreak = 3; S.lastDay = dayStr(); S.days = [dayStr(), yesterday()]; show("profile"); }
 </script>
-<script src="v3.js?v=4"></script>
+<script src="v3.js?v=5"></script>
 </body>
 </html>
