@@ -1,0 +1,295 @@
+{
+  "id": "es.survive.transport",
+  "track": "es",
+  "level": "A1",
+  "title": "Автобус и такси",
+  "emoji": "🚌",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "la parada",
+      "tr": "остановка",
+      "ex": "¿Dónde está la parada?"
+    },
+    {
+      "term": "el billete",
+      "tr": "билет",
+      "ex": "Un billete a Alicante, por favor."
+    },
+    {
+      "term": "¿Este autobús va a…?",
+      "tr": "этот автобус едет в…?",
+      "ex": "¿Este autobús va al hospital?"
+    },
+    {
+      "term": "ida y vuelta",
+      "tr": "туда и обратно",
+      "ex": "Un billete de ida y vuelta."
+    },
+    {
+      "term": "el próximo",
+      "tr": "следующий",
+      "ex": "¿A qué hora sale el próximo?"
+    },
+    {
+      "term": "bajarse",
+      "tr": "выходить (из транспорта)",
+      "ex": "¿Dónde me bajo?"
+    },
+    {
+      "term": "a la derecha / a la izquierda",
+      "tr": "направо / налево",
+      "ex": "La estación está a la derecha."
+    },
+    {
+      "term": "Aquí, por favor",
+      "tr": "здесь, пожалуйста (остановите)",
+      "ex": "Pare aquí, por favor."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Как спросить «Этот автобус едет в Аликанте?»",
+      "options": [
+        "¿Este autobús va a Alicante?",
+        "¿Este autobús es Alicante?",
+        "¿Alicante tiene autobús?"
+      ],
+      "answer": 0,
+      "explain": "<b>Va a</b> + место = едет в…"
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "«Ida y vuelta» — это…",
+      "options": [
+        "Туда и обратно",
+        "Только туда",
+        "Пересадка"
+      ],
+      "answer": 0,
+      "explain": "Билет ida y vuelta часто дешевле двух отдельных."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "la parada",
+      "back": "остановка"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "El próximo sale a las once y cuarto.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Когда следующий?",
+      "options": [
+        "В 11:15",
+        "В 11:40",
+        "Через 4 минуты"
+      ],
+      "answer": 0,
+      "explain": "<b>Y cuarto</b> = и четверть = :15."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Tienes que bajarte en la tercera parada.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Где выходить?",
+      "options": [
+        "На третьей остановке",
+        "На конечной",
+        "Через три минуты"
+      ],
+      "answer": 0,
+      "explain": "<b>Bajarse</b> = выходить. <b>Tercera</b> = третья."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Один билет до Аликанте, пожалуйста.",
+      "tokens": [
+        "Un",
+        "billete",
+        "a",
+        "Alicante,",
+        "por",
+        "favor"
+      ],
+      "distractors": [
+        "una",
+        "de"
+      ],
+      "pattern": "Un billete a + [город]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Где мне выходить?",
+      "tokens": [
+        "¿Dónde",
+        "me",
+        "bajo?"
+      ],
+      "distractors": [
+        "está",
+        "te"
+      ],
+      "pattern": "¿Dónde me + [глагол]?"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Perdón, ¿este autobús va a la estación?",
+      "tr": "Извините, этот автобус идёт на вокзал?",
+      "lang": "es-ES"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Al hospital de Torrevieja, por favor. Pare aquí, gracias.",
+      "tr": "В больницу Торревьехи, пожалуйста. Остановите здесь, спасибо.",
+      "lang": "es-ES"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "es.survive.transport.s1",
+      "title": "Автобус до Аликанте",
+      "emoji": "🚌",
+      "userRole": "Ты",
+      "botRole": "Conductor",
+      "voice": "es-ES",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Buenas. ¿A dónde va?",
+          "tr": "Здрасте. Куда едете?",
+          "choices": [
+            {
+              "text": "A Alicante, por favor. ¿Cuánto es?",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Куда + цена в одной фразе. Отлично!"
+            },
+            {
+              "text": "Alicante.",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Поймут! С «A… por favor» вежливее."
+            },
+            {
+              "text": "¿Este autobús va a Alicante?",
+              "next": "n1b",
+              "score": 2,
+              "feedback": "Проверить маршрут — всегда правильно."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Sí, sí, va a Alicante, a la estación.",
+          "tr": "Да-да, идёт в Аликанте, до вокзала.",
+          "choices": [
+            {
+              "text": "Perfecto. Un billete, por favor.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Супер 💪"
+            }
+          ]
+        },
+        "n2": {
+          "say": "¿Solo ida o ida y vuelta?",
+          "tr": "Только туда или туда-обратно?",
+          "choices": [
+            {
+              "text": "Ida y vuelta, por favor.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Экономно и правильно."
+            },
+            {
+              "text": "Solo ida.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Чётко."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Son siete con ochenta. ¿Tarjeta?",
+          "tr": "7,80. Картой?",
+          "choices": [
+            {
+              "text": "Sí, con tarjeta.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Отлично."
+            },
+            {
+              "text": "¿Puede repetir, por favor?",
+              "next": "n3b",
+              "score": 2,
+              "feedback": "Переспросить цену — нормально."
+            }
+          ]
+        },
+        "n3b": {
+          "say": "Siete euros con ochenta.",
+          "tr": "Семь евро восемьдесят.",
+          "choices": [
+            {
+              "text": "Vale, con tarjeta.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "👍"
+            }
+          ]
+        },
+        "n4": {
+          "say": "Listo. ¿Algo más?",
+          "tr": "Готово. Что-то ещё?",
+          "choices": [
+            {
+              "text": "Sí, ¿me avisa cuando lleguemos a la estación?",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Уровень boss: «предупредите, когда приедем» 🔥"
+            },
+            {
+              "text": "No, gracias.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Ок!"
+            }
+          ]
+        },
+        "n5": {
+          "say": "Claro, sin problema. ¡Buen viaje!",
+          "tr": "Конечно, без проблем. Хорошей поездки!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

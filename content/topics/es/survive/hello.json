@@ -1,0 +1,275 @@
+{
+  "id": "es.survive.hello",
+  "track": "es",
+  "level": "A0",
+  "title": "Привет и «я не понимаю»",
+  "emoji": "👋",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "Hola",
+      "tr": "привет",
+      "ex": "¡Hola! ¿Qué tal?"
+    },
+    {
+      "term": "Buenos días",
+      "tr": "доброе утро / добрый день (до обеда)",
+      "ex": "Buenos días, señora."
+    },
+    {
+      "term": "Buenas",
+      "tr": "короткое «здрасте» на любое время",
+      "ex": "¡Buenas! Una pregunta…"
+    },
+    {
+      "term": "Gracias",
+      "tr": "спасибо",
+      "ex": "Muchas gracias."
+    },
+    {
+      "term": "Perdón",
+      "tr": "извините",
+      "ex": "Perdón, no hablo bien español."
+    },
+    {
+      "term": "No entiendo",
+      "tr": "я не понимаю",
+      "ex": "Lo siento, no entiendo."
+    },
+    {
+      "term": "Más despacio, por favor",
+      "tr": "помедленнее, пожалуйста",
+      "ex": "¿Puede hablar más despacio, por favor?"
+    },
+    {
+      "term": "Me llamo…",
+      "tr": "меня зовут…",
+      "ex": "Me llamo Aleks."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Сосед говорит слишком быстро. Что сказать?",
+      "options": [
+        "Más despacio, por favor.",
+        "Más rápido, por favor.",
+        "Muy bien, gracias."
+      ],
+      "answer": 0,
+      "explain": "<b>Despacio</b> = медленно. Испанцы не обижаются, а наоборот замедляются 🙂"
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "«Buenas» — это…",
+      "options": [
+        "Короткое «здрасте» в любое время",
+        "«Хорошие» про еду",
+        "«Пока»"
+      ],
+      "answer": 0,
+      "explain": "В Торревьехе так здороваются в магазине, в баре и в лифте."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "No entiendo.",
+      "back": "Я не понимаю."
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Hola, ¿qué tal? ¿Eres nuevo en el edificio?",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Что спросили?",
+      "options": [
+        "Ты новенький в этом доме?",
+        "Где здесь лифт?",
+        "Ты говоришь по-английски?"
+      ],
+      "answer": 0,
+      "explain": "<b>El edificio</b> = здание, дом. <b>Nuevo</b> = новый."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Me llamo Carmen. Vivo en el tercero.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Где живёт Carmen?",
+      "options": [
+        "На третьем этаже",
+        "В третьем доме",
+        "Три года здесь"
+      ],
+      "answer": 0,
+      "explain": "<b>El tercero</b> = третий (этаж). Так говорят про квартиры."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Извините, я не понимаю.",
+      "tokens": [
+        "Perdón,",
+        "no",
+        "entiendo"
+      ],
+      "distractors": [
+        "sí",
+        "tengo"
+      ],
+      "pattern": "Perdón, no + [глагол]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Можете повторить, пожалуйста?",
+      "tokens": [
+        "¿Puede",
+        "repetir,",
+        "por",
+        "favor?"
+      ],
+      "distractors": [
+        "tiene",
+        "hablar"
+      ],
+      "pattern": "¿Puede + [действие], por favor?"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Hola, me llamo Aleks. Soy nuevo aquí.",
+      "tr": "Привет, меня зовут Алекс. Я тут новенький.",
+      "lang": "es-ES"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Perdón, hablo un poco de español. ¿Puede hablar más despacio?",
+      "tr": "Извините, я немного говорю по-испански. Можете говорить медленнее?",
+      "lang": "es-ES"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "es.survive.hello.s1",
+      "title": "Сосед в лифте",
+      "emoji": "🛗",
+      "userRole": "Ты",
+      "botRole": "Vecina",
+      "voice": "es-ES",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "¡Buenas! ¿Eres el nuevo del cuarto?",
+          "tr": "Здрасте! Ты новенький с четвёртого?",
+          "choices": [
+            {
+              "text": "¡Hola! Sí, soy nuevo. Me llamo Aleks.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Идеально: привет + ответ + имя."
+            },
+            {
+              "text": "Sí.",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Понятно! Добавь имя — так теплее."
+            },
+            {
+              "text": "Perdón, no entiendo.",
+              "next": "n1b",
+              "score": 1,
+              "feedback": "Нормально! Переспрашивать — это суперсила."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Tranquilo. ¿Vives… en el cuarto piso?",
+          "tr": "Спокойно. Ты живёшь… на четвёртом этаже?",
+          "choices": [
+            {
+              "text": "¡Ah, sí! En el cuarto. Me llamo Aleks.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Отлично, ты понял со второго раза 💪"
+            }
+          ]
+        },
+        "n2": {
+          "say": "Encantada, yo soy Carmen. ¿De dónde eres?",
+          "tr": "Очень приятно, я Кармен. Откуда ты?",
+          "choices": [
+            {
+              "text": "Encantado. Soy de Ucrania.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "«Encantado» = очень приятно. Красиво!"
+            },
+            {
+              "text": "De Ucrania.",
+              "next": "n3",
+              "score": 1,
+              "feedback": "Коротко и понятно 👍"
+            }
+          ]
+        },
+        "n3": {
+          "say": "¡Qué bien! Si necesitas algo, estoy en el tercero.",
+          "tr": "Здорово! Если что-то нужно, я на третьем.",
+          "choices": [
+            {
+              "text": "Muchas gracias, Carmen. ¡Hasta luego!",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Вежливо и по-местному."
+            },
+            {
+              "text": "¿Puede repetir, por favor?",
+              "next": "n3b",
+              "score": 2,
+              "feedback": "Правильно, лучше переспросить, чем кивать."
+            }
+          ]
+        },
+        "n3b": {
+          "say": "Claro. Yo vivo en el tercero. Si necesitas algo, me dices.",
+          "tr": "Конечно. Я живу на третьем. Если что-то нужно — говори.",
+          "choices": [
+            {
+              "text": "¡Vale, gracias! Hasta luego.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "«Vale» = ок. Звучишь как местный 😎"
+            }
+          ]
+        },
+        "n4": {
+          "say": "¡Hasta luego, Aleks!",
+          "tr": "Пока, Алекс!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

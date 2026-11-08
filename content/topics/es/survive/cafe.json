@@ -1,0 +1,290 @@
+{
+  "id": "es.survive.cafe",
+  "track": "es",
+  "level": "A0",
+  "title": "Кафе и бар: заказ",
+  "emoji": "☕",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "¿Me pone…?",
+      "tr": "мне можно…? (так заказывают)",
+      "ex": "¿Me pone un café con leche?"
+    },
+    {
+      "term": "un café con leche",
+      "tr": "кофе с молоком",
+      "ex": "Un café con leche, por favor."
+    },
+    {
+      "term": "un cortado",
+      "tr": "эспрессо с каплей молока",
+      "ex": "Un cortado, por favor."
+    },
+    {
+      "term": "una caña",
+      "tr": "маленькое разливное пиво",
+      "ex": "Dos cañas, por favor."
+    },
+    {
+      "term": "para llevar",
+      "tr": "с собой",
+      "ex": "Un café para llevar."
+    },
+    {
+      "term": "sin azúcar",
+      "tr": "без сахара",
+      "ex": "Un té sin azúcar."
+    },
+    {
+      "term": "¿Algo más?",
+      "tr": "что-нибудь ещё?",
+      "ex": "¿Algo más? No, gracias."
+    },
+    {
+      "term": "la cuenta",
+      "tr": "счёт",
+      "ex": "La cuenta, por favor."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Как испанцы обычно заказывают в баре?",
+      "options": [
+        "¿Me pone un café?",
+        "Dame café ahora.",
+        "Yo quiero comprar café."
+      ],
+      "answer": 0,
+      "explain": "<b>¿Me pone…?</b> = «мне можно…?» Самый естественный вариант."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "«Una caña» — это…",
+      "options": [
+        "Маленькое разливное пиво",
+        "Тростник сахара",
+        "Чашка чая"
+      ],
+      "answer": 0,
+      "explain": "Caña — классика испанского бара. Около 2 €."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "para llevar",
+      "back": "с собой"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "¿Para tomar aquí o para llevar?",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Что спрашивают?",
+      "options": [
+        "Здесь или с собой?",
+        "Горячий или холодный?",
+        "Картой или наличными?"
+      ],
+      "answer": 0,
+      "explain": "<b>Para tomar aquí</b> = пить здесь."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Son tres euros con veinte. ¿Algo más?",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Сколько платить?",
+      "options": [
+        "3,20 €",
+        "3,02 €",
+        "20 €"
+      ],
+      "answer": 0,
+      "explain": "Tres con veinte = 3 евро 20."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Мне можно кофе с молоком?",
+      "tokens": [
+        "¿Me",
+        "pone",
+        "un",
+        "café",
+        "con",
+        "leche?"
+      ],
+      "distractors": [
+        "sin",
+        "tengo"
+      ],
+      "pattern": "¿Me pone + [что]?"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Счёт, пожалуйста.",
+      "tokens": [
+        "La",
+        "cuenta,",
+        "por",
+        "favor"
+      ],
+      "distractors": [
+        "el",
+        "cuesta"
+      ],
+      "pattern": "La cuenta, por favor"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "¿Me pone un cortado, por favor?",
+      "tr": "Можно мне кортадо, пожалуйста?",
+      "lang": "es-ES"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Un café con leche para llevar y la cuenta, por favor.",
+      "tr": "Кофе с молоком с собой и счёт, пожалуйста.",
+      "lang": "es-ES"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "es.survive.cafe.s1",
+      "title": "Утренний кофе",
+      "emoji": "☕",
+      "userRole": "Ты",
+      "botRole": "Camarero",
+      "voice": "es-ES",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "¡Buenos días! ¿Qué te pongo?",
+          "tr": "Доброе утро! Что тебе?",
+          "choices": [
+            {
+              "text": "¿Me pones un café con leche, por favor?",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Звучит на 100% по-испански 🔥"
+            },
+            {
+              "text": "Un café, por favor.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Чётко. Обычно принесут эспрессо."
+            },
+            {
+              "text": "Café.",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Поймут! С «por favor» вежливее."
+            }
+          ]
+        },
+        "n2": {
+          "say": "¿Para tomar aquí o para llevar?",
+          "tr": "Здесь или с собой?",
+          "choices": [
+            {
+              "text": "Para tomar aquí.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Отлично!"
+            },
+            {
+              "text": "Para llevar, por favor.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Супер, ключевая фраза."
+            },
+            {
+              "text": "¿Perdón? Más despacio, por favor.",
+              "next": "n2b",
+              "score": 2,
+              "feedback": "Правильно сделал, что переспросил."
+            }
+          ]
+        },
+        "n2b": {
+          "say": "Claro. ¿Aquí… o para llevar?",
+          "tr": "Конечно. Здесь… или с собой?",
+          "choices": [
+            {
+              "text": "Aquí, gracias.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Вот! 💪"
+            }
+          ]
+        },
+        "n3": {
+          "say": "Muy bien. ¿Algo más? ¿Una tostada?",
+          "tr": "Хорошо. Что-нибудь ещё? Тост?",
+          "choices": [
+            {
+              "text": "Sí, una tostada con tomate, por favor.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Tostada con tomate — легендарный завтрак 🍅"
+            },
+            {
+              "text": "No, nada más, gracias.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "«Nada más» = больше ничего."
+            }
+          ]
+        },
+        "n4": {
+          "say": "Aquí tienes. Luego me dices.",
+          "tr": "Держи. Потом скажешь (когда платить).",
+          "choices": [
+            {
+              "text": "¡Gracias! … La cuenta, por favor.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Идеально. В Испании счёт нужно попросить самому."
+            },
+            {
+              "text": "¿Cuánto es?",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Тоже работает 👍"
+            }
+          ]
+        },
+        "n5": {
+          "say": "Son dos con ochenta. ¡Gracias!",
+          "tr": "С тебя 2,80. Спасибо!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

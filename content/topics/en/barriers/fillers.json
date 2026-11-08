@@ -1,0 +1,276 @@
+{
+  "id": "en.barriers.fillers",
+  "track": "en",
+  "level": "B1",
+  "title": "Филлеры: как выиграть время",
+  "emoji": "⏳",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "Let me think…",
+      "tr": "дай подумать…",
+      "ex": "Hmm, let me think for a second."
+    },
+    {
+      "term": "That's a good question.",
+      "tr": "хороший вопрос (выигрываешь 3 секунды)",
+      "ex": "That's a good question. I'd say…"
+    },
+    {
+      "term": "How can I put it…",
+      "tr": "как бы это сказать…",
+      "ex": "How can I put it… it was a challenge."
+    },
+    {
+      "term": "What I mean is…",
+      "tr": "я имею в виду…",
+      "ex": "What I mean is, I prefer clear goals."
+    },
+    {
+      "term": "To be honest…",
+      "tr": "честно говоря…",
+      "ex": "To be honest, I've never tried it."
+    },
+    {
+      "term": "Off the top of my head…",
+      "tr": "навскидку…",
+      "ex": "Off the top of my head, maybe three."
+    },
+    {
+      "term": "Give me a second.",
+      "tr": "секунду",
+      "ex": "Give me a second, I'll find it."
+    },
+    {
+      "term": "Basically…",
+      "tr": "в общем, по сути…",
+      "ex": "Basically, it saves time."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Тебя спросили сложное. Нужно 3 секунды на мысль. Что сказать?",
+      "options": [
+        "That's a good question. Let me think…",
+        "Ehhh… ehhh…",
+        "I don't know."
+      ],
+      "answer": 0,
+      "explain": "Филлер звучит уверенно, а «эээ» — как паника."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "«Off the top of my head» — это…",
+      "options": [
+        "Навскидку, без подготовки",
+        "У меня болит голова",
+        "Главная мысль"
+      ],
+      "answer": 0,
+      "explain": "Удобно, когда спрашивают цифры: «Off the top of my head, about 20%»."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "How can I put it…",
+      "back": "Как бы это сказать…"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "That's a tricky one. Give me a second to think.",
+        "lang": "en-US",
+        "rate": 0.9
+      },
+      "q": "Что сделал говорящий?",
+      "options": [
+        "Попросил секунду подумать",
+        "Отказался отвечать",
+        "Попросил повторить вопрос"
+      ],
+      "answer": 0,
+      "explain": "<b>A tricky one</b> = непростой вопрос. Это нормально говорить на собесе."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "To be honest, I haven't used that tool, but I learn fast.",
+        "lang": "en-GB",
+        "rate": 0.9
+      },
+      "q": "Что он сказал?",
+      "options": [
+        "Не пользовался, но быстро учится",
+        "Использует этот инструмент каждый день",
+        "Не любит учиться"
+      ],
+      "answer": 0,
+      "explain": "Честно + сильная сторона = лучший ответ на «а вы умеете?..»."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Я имею в виду, мне нравятся чёткие цели.",
+      "tokens": [
+        "What",
+        "I",
+        "mean",
+        "is,",
+        "I",
+        "like",
+        "clear",
+        "goals"
+      ],
+      "distractors": [
+        "say",
+        "want"
+      ],
+      "pattern": "What I mean is + [мысль]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Честно говоря, я не уверен.",
+      "tokens": [
+        "To",
+        "be",
+        "honest,",
+        "I'm",
+        "not",
+        "sure"
+      ],
+      "distractors": [
+        "am",
+        "true"
+      ],
+      "pattern": "To be honest, + [мысль]"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "That's a good question. Let me think for a second.",
+      "tr": "Хороший вопрос. Дай секунду подумать.",
+      "lang": "en-US"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "How can I put it… basically, I like solving messy problems.",
+      "tr": "Как бы сказать… по сути, мне нравится решать запутанные задачи.",
+      "lang": "en-US"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "en.barriers.fillers.s1",
+      "title": "Неудобный вопрос",
+      "emoji": "😬",
+      "userRole": "Кандидат",
+      "botRole": "Interviewer",
+      "voice": "en-US",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "What would you say is your biggest weakness?",
+          "tr": "Какая у тебя самая большая слабость?",
+          "choices": [
+            {
+              "text": "That's a good question. Let me think… I sometimes take on too much at once.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Филлер + честный ответ. Идеально."
+            },
+            {
+              "text": "I don't have weaknesses.",
+              "next": "n2",
+              "score": 0,
+              "feedback": "Звучит как неправда 😅 Лучше назвать реальную, но рабочую слабость."
+            },
+            {
+              "text": "Ehm… ehm… I don't know.",
+              "next": "n1b",
+              "score": 0,
+              "feedback": "Бывает! Попробуй выиграть время фразой."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Take your time.",
+          "tr": "Не торопись.",
+          "choices": [
+            {
+              "text": "Thanks. To be honest, I sometimes take on too much at once.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Вот! «To be honest» спасает."
+            }
+          ]
+        },
+        "n2": {
+          "say": "Interesting. And how do you deal with that?",
+          "tr": "Интересно. И как ты с этим справляешься?",
+          "choices": [
+            {
+              "text": "Basically, I plan my day in short blocks and say no to extra tasks.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Конкретно и по делу 🔥"
+            },
+            {
+              "text": "I try my best.",
+              "next": "n3",
+              "score": 1,
+              "feedback": "Ок, но добавь как именно."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Off the top of your head, how many projects can you handle at once?",
+          "tr": "Навскидку, сколько проектов ты тянешь одновременно?",
+          "choices": [
+            {
+              "text": "Off the top of my head, two or three, if priorities are clear.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Ты повторил их фразу — это высший пилотаж."
+            },
+            {
+              "text": "Give me a second… I'd say two or three.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Отлично, спокойно и уверенно."
+            },
+            {
+              "text": "Ten!",
+              "next": "n4",
+              "score": 0,
+              "feedback": "Звучит нереально. Лучше честные 2–3."
+            }
+          ]
+        },
+        "n4": {
+          "say": "Great answers. Thank you!",
+          "tr": "Отличные ответы. Спасибо!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

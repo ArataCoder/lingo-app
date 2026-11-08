@@ -1,0 +1,286 @@
+{
+  "id": "es.survive.numbers",
+  "track": "es",
+  "level": "A0",
+  "title": "Числа, цены, время",
+  "emoji": "🔢",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "uno, dos, tres",
+      "tr": "один, два, три",
+      "ex": "Tres cafés, por favor."
+    },
+    {
+      "term": "diez, veinte, cincuenta",
+      "tr": "10, 20, 50",
+      "ex": "Son veinte euros."
+    },
+    {
+      "term": "cien",
+      "tr": "сто",
+      "ex": "Cien gramos de jamón."
+    },
+    {
+      "term": "¿Cuánto cuesta?",
+      "tr": "сколько стоит?",
+      "ex": "¿Cuánto cuesta esto?"
+    },
+    {
+      "term": "¿Cuánto es?",
+      "tr": "сколько с меня?",
+      "ex": "Perdón, ¿cuánto es?"
+    },
+    {
+      "term": "con cincuenta",
+      "tr": "и 50 центов (в цене)",
+      "ex": "Dos con cincuenta."
+    },
+    {
+      "term": "¿Qué hora es?",
+      "tr": "который час?",
+      "ex": "Perdón, ¿qué hora es?"
+    },
+    {
+      "term": "Son las cinco y media",
+      "tr": "половина шестого (5:30)",
+      "ex": "Son las cinco y media."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Продавец говорит: «Dos con cincuenta». Сколько платить?",
+      "options": [
+        "2,50 €",
+        "2,15 €",
+        "52 €"
+      ],
+      "answer": 0,
+      "explain": "<b>Con</b> в цене = «и». Dos con cincuenta = 2 евро 50."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Как спросить «Сколько с меня?» на кассе?",
+      "options": [
+        "¿Cuánto es?",
+        "¿Qué hora es?",
+        "¿Dónde está?"
+      ],
+      "answer": 0,
+      "explain": "<b>¿Cuánto es?</b> — самая частая фраза в магазине."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "veinte",
+      "back": "двадцать"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Son quince euros.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Сколько стоит?",
+      "options": [
+        "15 €",
+        "50 €",
+        "5 €"
+      ],
+      "answer": 0,
+      "explain": "<b>Quince</b> = 15. Не путай с <b>cincuenta</b> = 50."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Abrimos a las diez y cerramos a las dos.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Когда открыто?",
+      "options": [
+        "С 10:00 до 14:00",
+        "С 2:00 до 10:00",
+        "С 12:00 до 14:00"
+      ],
+      "answer": 0,
+      "explain": "В Испании многие закрываются на обед — это нормально."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Сколько стоит это?",
+      "tokens": [
+        "¿Cuánto",
+        "cuesta",
+        "esto?"
+      ],
+      "distractors": [
+        "es",
+        "hora"
+      ],
+      "pattern": "¿Cuánto cuesta + [что]?"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Сейчас пять часов.",
+      "tokens": [
+        "Son",
+        "las",
+        "cinco"
+      ],
+      "distractors": [
+        "es",
+        "los"
+      ],
+      "pattern": "Son las + [число]"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Perdón, ¿cuánto cuesta un kilo de tomates?",
+      "tr": "Извините, сколько стоит кило помидоров?",
+      "lang": "es-ES"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Son tres con cincuenta. Aquí tiene, gracias.",
+      "tr": "Три пятьдесят. Вот, держите, спасибо.",
+      "lang": "es-ES"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "es.survive.numbers.s1",
+      "title": "Рынок по пятницам",
+      "emoji": "🍅",
+      "userRole": "Ты",
+      "botRole": "Frutero",
+      "voice": "es-ES",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "¡Buenas! ¿Qué le pongo?",
+          "tr": "Здрасте! Что вам положить?",
+          "choices": [
+            {
+              "text": "Un kilo de tomates, por favor.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Чётко: сколько + что + por favor."
+            },
+            {
+              "text": "Tomates.",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Поймут! Но с «un kilo de…» точнее."
+            },
+            {
+              "text": "¿Cuánto cuestan los tomates?",
+              "next": "n1b",
+              "score": 2,
+              "feedback": "Сначала узнать цену — умно."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Dos euros el kilo.",
+          "tr": "Два евро за кило.",
+          "choices": [
+            {
+              "text": "Vale, un kilo, por favor.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Отлично!"
+            }
+          ]
+        },
+        "n2": {
+          "say": "Aquí tiene. ¿Algo más?",
+          "tr": "Вот. Что-нибудь ещё?",
+          "choices": [
+            {
+              "text": "No, gracias. ¿Cuánto es?",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Классика рынка 👌"
+            },
+            {
+              "text": "Sí, medio kilo de fresas.",
+              "next": "n2b",
+              "score": 2,
+              "feedback": "«Medio kilo» = полкило. Сильно!"
+            }
+          ]
+        },
+        "n2b": {
+          "say": "Muy bien. ¿Algo más?",
+          "tr": "Хорошо. Ещё что-то?",
+          "choices": [
+            {
+              "text": "Nada más, gracias. ¿Cuánto es?",
+              "next": "n3",
+              "score": 2,
+              "feedback": "«Nada más» = больше ничего."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Son cuatro con cincuenta.",
+          "tr": "С вас четыре пятьдесят.",
+          "choices": [
+            {
+              "text": "Aquí tiene cinco euros.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Правильно понял цену: 4,50 €."
+            },
+            {
+              "text": "¿Más despacio, por favor?",
+              "next": "n3b",
+              "score": 2,
+              "feedback": "Переспросить цену — нормально."
+            }
+          ]
+        },
+        "n3b": {
+          "say": "Cuatro… con cincuenta. Cuatro euros y cincuenta céntimos.",
+          "tr": "Четыре… пятьдесят. Четыре евро и пятьдесят центов.",
+          "choices": [
+            {
+              "text": "¡Vale! Aquí tiene cinco.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Супер 💪"
+            }
+          ]
+        },
+        "n4": {
+          "say": "Cincuenta céntimos de cambio. ¡Gracias, guapo!",
+          "tr": "Пятьдесят центов сдачи. Спасибо, красавчик!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

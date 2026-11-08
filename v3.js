@@ -1,7 +1,7 @@
 /* Lingo Brain v3: каталог тем, «Нет сил», Surprise Box, заморозка серии,
    тренажёр уха, конструктор фраз, шпаргалки и сценарии. Контент: content/*.json */
 (function () {
-  var VER = "6";
+  var VER = "7";
   var V = { cat: null, cfg: null, sur: null, topics: {}, failed: false, track: "es", run: null, lastRun: null };
   var DEF_LANG = { es: "es-ES", en: "en-US" };
   var ACCENT = { "es-ES": "🇪🇸 Кастилья", "es-MX": "🇲🇽 Латино", "es-US": "🌎 Латино", "en-GB": "🇬🇧 Британский", "en-US": "🇺🇸 Американский" };
@@ -102,13 +102,23 @@
     t.blocks.slice().sort(function (a, b) { return a.order - b.order; }).forEach(function (b) { b.topics.forEach(function (tp) { if (tp.status === "ready" && V.topics[tp.id]) out.push(tp); }); });
     return out;
   }
+  // v3.3: разблокировка внутри блока (первая тема каждого блока открыта)
+  function blockOrder(id) {
+    var out = []; if (!V.cat) return out;
+    V.cat.tracks.forEach(function (t) { t.blocks.forEach(function (b) {
+      if (b.topics.some(function (tp) { return tp.id === id; })) b.topics.forEach(function (tp) { if (tp.status === "ready" && V.topics[tp.id]) out.push(tp); });
+    }); });
+    return out;
+  }
+  function trk(ev, p) { try { if (window.lbTrack) window.lbTrack(ev, p || {}); } catch (e) {} }
   function arr(k) { if (!Array.isArray(S[k])) S[k] = []; return S[k]; }
   function isPassed(id) { return arr("passed").indexOf(id) >= 0; }
-  function prevOf(id) { var o = readyOrder(trackOf(id)), i = o.map(function (x) { return x.id; }).indexOf(id); return i > 0 ? o[i - 1] : null; }
-  function nextOf(id) { var o = readyOrder(trackOf(id)), i = o.map(function (x) { return x.id; }).indexOf(id); return i >= 0 && i + 1 < o.length ? o[i + 1] : null; }
+  function prevOf(id) { var o = blockOrder(id), i = o.map(function (x) { return x.id; }).indexOf(id); return i > 0 ? o[i - 1] : null; }
+  function nextOf(id) { var o = blockOrder(id), i = o.map(function (x) { return x.id; }).indexOf(id); return i >= 0 && i + 1 < o.length ? o[i + 1] : null; }
   function isOpen(id) {
-    var o = readyOrder(trackOf(id)).map(function (x) { return x.id; }), i = o.indexOf(id);
+    var o = blockOrder(id).map(function (x) { return x.id; }), i = o.indexOf(id);
     if (i < 0) return false; if (i === 0) return true;
+    if (V.cfg && V.cfg.unlock && (V.cfg.unlock.alwaysOpen || []).indexOf(id) >= 0) return true;
     return arr("unlocked").indexOf(id) >= 0 || isPassed(id) || isPassed(o[i - 1]);
   }
   function checkUnlock(id, ratio) {
@@ -310,7 +320,7 @@
   function openTopic(id) {
     if (V.cat && V.topics[id] && !isOpen(id)) { haptic("warning"); toast("🔒 Тема пока закрыта — пройди предыдущую от 60%"); return; }
     var t = V.topics[id]; if (!t) { toast("🛠 Скоро!"); return; }
-    V.track = t.track; setTrack(t.track); LAST = { lang: t.track, topic: id };
+    V.track = t.track; setTrack(t.track); LAST = { lang: t.track, topic: id }; trk("topic_selected", { topic_id: id, track: t.track, level: t.level || null });
     $("v3tTitle").textContent = t.emoji + " " + t.title;
     var box = $("v3topic"); box.innerHTML = "";
     box.appendChild(E("div", "v3hero glass", '<div class="em">' + t.emoji + "</div><h2>" + esc(t.title) + "</h2><p>Уровень " + esc(t.level) + " · " + t.cards.length + " карточек · " + (t.scenarios || []).length + " сценарий</p>"));
@@ -362,7 +372,7 @@
     ["es", "en"].forEach(function (l) { Object.keys(DATA[l].topics).forEach(function (k) { var tp = DATA[l].topics[k]; if (!tp.speak) tp.cards.forEach(function (c) { pool.push(fromLegacy(l, c)); }); }); });
     var cards = shuffle(pool).slice(0, m.cards || 3);
     LAST = { lang: cards[0] ? cards[0].track : "es", topic: "low" };
-    V.lastRun = { key: "low", fn: lowEnergy };
+    V.lastRun = { key: "low", fn: lowEnergy }; trk("energy_mode_used", { track: LAST.lang, cards: cards.length });
     toast("🪫 Мини-раунд. 3 лёгкие карточки — и серия цела 💛");
     startRun({ cards: cards, topicId: null, mult: 1, seconds: m.seconds || 45, title: "🪫 Нет сил" });
   }
@@ -562,8 +572,10 @@
   // ---------- старт ----------
   renderHome();
   twStart();
+  trk("app_opened", { start_param: (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.start_param) || null });
   window.addEventListener("online", function () { if (V.offline || V.failed) loadAll().then(function () { if (current === "catalog") renderCatalog(); }); });
   loadAll().then(function () {
+    try { if (window.lbTrackInit) window.lbTrackInit((V.cfg && V.cfg.analytics) || {}); } catch (e) {}
     var n = 0; if (V.cat) V.cat.tracks.forEach(function (t) { t.blocks.forEach(function (b) { n += b.topics.length; }); });
     if (n) $("v3catN").textContent = n + " тем";
     renderFreeze();

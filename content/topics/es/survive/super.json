@@ -1,0 +1,288 @@
+{
+  "id": "es.survive.super",
+  "track": "es",
+  "level": "A0",
+  "title": "Супермаркет",
+  "emoji": "🛒",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "¿Dónde está…?",
+      "tr": "где находится…?",
+      "ex": "¿Dónde está la leche?"
+    },
+    {
+      "term": "la bolsa",
+      "tr": "пакет",
+      "ex": "¿Quiere bolsa?"
+    },
+    {
+      "term": "la caja",
+      "tr": "касса",
+      "ex": "La caja está ahí."
+    },
+    {
+      "term": "con tarjeta",
+      "tr": "картой",
+      "ex": "Pago con tarjeta."
+    },
+    {
+      "term": "en efectivo",
+      "tr": "наличными",
+      "ex": "¿Puedo pagar en efectivo?"
+    },
+    {
+      "term": "el ticket",
+      "tr": "чек",
+      "ex": "¿Quiere el ticket?"
+    },
+    {
+      "term": "la oferta",
+      "tr": "скидка, акция",
+      "ex": "Está de oferta."
+    },
+    {
+      "term": "el pan / la leche / los huevos",
+      "tr": "хлеб / молоко / яйца",
+      "ex": "Necesito pan y huevos."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Кассир спрашивает: «¿Quiere bolsa?» Это…",
+      "options": [
+        "Нужен пакет?",
+        "Нужен чек?",
+        "Есть карта магазина?"
+      ],
+      "answer": 0,
+      "explain": "Пакеты в Испании платные, поэтому спрашивают всегда."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Как сказать «Я плачу картой»?",
+      "options": [
+        "Pago con tarjeta.",
+        "Tengo una tarjeta roja.",
+        "Pago la tarjeta."
+      ],
+      "answer": 0,
+      "explain": "<b>Pago con</b> + способ оплаты."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "en efectivo",
+      "back": "наличными"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "¿Tiene la tarjeta de cliente?",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Что спрашивают?",
+      "options": [
+        "Есть ли у вас карта магазина?",
+        "Будете платить картой?",
+        "Нужен ли пакет?"
+      ],
+      "answer": 0,
+      "explain": "<b>Tarjeta de cliente</b> = карта покупателя. Можно ответить: «No, gracias»."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Los huevos están en el pasillo cinco, al fondo.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Где яйца?",
+      "options": [
+        "В 5-м ряду, в конце",
+        "На кассе 5",
+        "Закончились"
+      ],
+      "answer": 0,
+      "explain": "<b>El pasillo</b> = проход, ряд. <b>Al fondo</b> = в конце."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Где молоко?",
+      "tokens": [
+        "¿Dónde",
+        "está",
+        "la",
+        "leche?"
+      ],
+      "distractors": [
+        "es",
+        "el"
+      ],
+      "pattern": "¿Dónde está + [что]?"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Нет, спасибо, пакет не нужно.",
+      "tokens": [
+        "No,",
+        "gracias,",
+        "sin",
+        "bolsa"
+      ],
+      "distractors": [
+        "con",
+        "sí"
+      ],
+      "pattern": "sin + [что] = без чего-то"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Perdón, ¿dónde está el pan?",
+      "tr": "Извините, где хлеб?",
+      "lang": "es-ES"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Sin bolsa, gracias. Pago con tarjeta.",
+      "tr": "Без пакета, спасибо. Плачу картой.",
+      "lang": "es-ES"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "es.survive.super.s1",
+      "title": "Касса в Mercadona",
+      "emoji": "🧾",
+      "userRole": "Ты",
+      "botRole": "Cajera",
+      "voice": "es-ES",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Hola, buenas. ¿Quiere bolsa?",
+          "tr": "Здрасте. Пакет нужен?",
+          "choices": [
+            {
+              "text": "No, gracias, tengo.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "«Tengo» = у меня есть. Экономишь 15 центов 😄"
+            },
+            {
+              "text": "Sí, una, por favor.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Чётко!"
+            },
+            {
+              "text": "¿Perdón?",
+              "next": "n1b",
+              "score": 1,
+              "feedback": "Переспросить — норм. Слушай ключевое слово."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "¿Bolsa? ¿Necesita una bolsa?",
+          "tr": "Пакет? Вам нужен пакет?",
+          "choices": [
+            {
+              "text": "Ah, no, gracias.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Вот! Понял по слову «bolsa» 👍"
+            }
+          ]
+        },
+        "n2": {
+          "say": "¿Tiene la tarjeta de cliente?",
+          "tr": "У вас есть карта покупателя?",
+          "choices": [
+            {
+              "text": "No, no tengo.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Просто и правильно."
+            },
+            {
+              "text": "No, gracias.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Тоже работает."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Son doce con veinte. ¿Tarjeta o efectivo?",
+          "tr": "С вас 12,20. Картой или наличными?",
+          "choices": [
+            {
+              "text": "Con tarjeta, por favor.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Идеально."
+            },
+            {
+              "text": "En efectivo. Aquí tiene.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Отлично!"
+            },
+            {
+              "text": "Tarjeta.",
+              "next": "n4",
+              "score": 1,
+              "feedback": "Поймут! С «Con… por favor» звучит мягче."
+            }
+          ]
+        },
+        "n4": {
+          "say": "Perfecto. ¿Quiere el ticket?",
+          "tr": "Отлично. Чек нужен?",
+          "choices": [
+            {
+              "text": "No, gracias. ¡Que vaya bien!",
+              "next": "n5",
+              "score": 2,
+              "feedback": "«Que vaya bien» = хорошего дня. Звучишь как местный 😎"
+            },
+            {
+              "text": "Sí, por favor.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Норм. Чек пригодится для возврата."
+            }
+          ]
+        },
+        "n5": {
+          "say": "Gracias, igualmente. ¡Hasta luego!",
+          "tr": "Спасибо, и вам. До свидания!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

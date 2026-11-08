@@ -42,8 +42,8 @@
               "tags": [
                 "basics"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/es/survive/hello.json"
             },
             {
               "id": "es.survive.numbers",
@@ -53,8 +53,8 @@
               "tags": [
                 "basics"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/es/survive/numbers.json"
             },
             {
               "id": "es.survive.super",
@@ -64,8 +64,8 @@
               "tags": [
                 "shopping"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/es/survive/super.json"
             },
             {
               "id": "es.survive.cafe",
@@ -75,8 +75,8 @@
               "tags": [
                 "food"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/es/survive/cafe.json"
             },
             {
               "id": "es.survive.transport",
@@ -86,8 +86,8 @@
               "tags": [
                 "city"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/es/survive/transport.json"
             }
           ]
         },
@@ -395,8 +395,8 @@
               "tags": [
                 "fluency"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/en/barriers/fillers.json"
             },
             {
               "id": "en.barriers.paraphrase",
@@ -461,8 +461,8 @@
                 "work",
                 "remote"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/en/interview/about.json"
             },
             {
               "id": "en.interview.star",

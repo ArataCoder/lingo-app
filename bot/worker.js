@@ -3,10 +3,14 @@
 //   BOT_TOKEN       токен от BotFather (только тут, нигде больше!)
 //   WEBHOOK_SECRET  любая длинная строка, например 40 случайных букв
 //   SETUP_KEY       ещё одна случайная строка, для одноразовой настройки
-// Необязательно (тип Text): ADMIN_CHAT_ID, твой chat id, сюда придут отзывы
+// Необязательно (тип Text): ADMIN_CHAT_ID, твой chat id, сюда придут отзывы и доступна /stats
+// Binding D1 (имя DB): база lingo-brain-db для статистики (users, events)
 // Настройка одним кликом: открой https://<твой-воркер>.workers.dev/setup?key=<SETUP_KEY>
 
-const APP_URL = "https://aratacoder.github.io/lingo-app/?v=4";
+const APP_URL = "https://aratacoder.github.io/lingo-app/?v=7";
+const APP_ORIGIN = "https://aratacoder.github.io";
+const EVENTS = ["app_opened", "topic_selected", "round_completed", "energy_mode_used"];
+const TRACK_NAME = { es: "🇪🇸 Испанский", en: "🇬🇧 Английский" };
 const NL = String.fromCharCode(10);
 const FEEDBACK_MARK = "📝 Отзыв";
 
@@ -94,13 +98,153 @@ function tokenCheck(env) {
   };
 }
 
+// Все вызовы Telegram API: никогда не бросают исключение
 async function tg(env, method, body) {
-  const r = await fetch("https://api.telegram.org/bot" + token(env) + "/" + method, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(body)
+  try {
+    const r = await fetch("https://api.telegram.org/bot" + token(env) + "/" + method, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body)
+    });
+    try { return await r.json(); } catch (e) { return { ok: false, error: "bad json", status: r.status }; }
+  } catch (e) {
+    console.log("tg error", method, e && e.message);
+    return { ok: false, error: String((e && e.message) || e) };
+  }
+}
+
+// ---------- D1: все вызовы обёрнуты, при ошибке возвращают null ----------
+let schemaReady = false;
+async function ensureSchema(env) {
+  if (schemaReady || !env.DB) return !!env.DB;
+  try {
+    await env.DB.batch([
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, first_seen INTEGER, last_seen INTEGER, track TEXT)"),
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, event TEXT, track TEXT, xp INTEGER, ts INTEGER)"),
+      env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_events_event_ts ON events(event, ts)")
+    ]);
+    schemaReady = true;
+  } catch (e) {
+    console.log("d1 schema error", e && e.message);
+  }
+  return schemaReady;
+}
+
+async function dbFirst(env, sql, args) {
+  if (!env.DB) return null;
+  try { return await env.DB.prepare(sql).bind(...(args || [])).first(); }
+  catch (e) { console.log("d1 error", e && e.message); return null; }
+}
+
+async function dbRun(env, sql, args) {
+  if (!env.DB) return null;
+  try { return await env.DB.prepare(sql).bind(...(args || [])).run(); }
+  catch (e) { console.log("d1 error", e && e.message); return null; }
+}
+
+const now = () => Math.floor(Date.now() / 1000);
+
+async function touchUser(env, id, track) {
+  if (!id || !(await ensureSchema(env))) return;
+  await dbRun(env,
+    "INSERT INTO users (id, first_seen, last_seen, track) VALUES (?1, ?2, ?2, ?3) " +
+    "ON CONFLICT(id) DO UPDATE SET last_seen = excluded.last_seen, track = COALESCE(excluded.track, users.track)",
+    [id, now(), track || null]);
+}
+
+// ---------- Проверка подписи Telegram initData (HMAC-SHA256) ----------
+const enc = (s) => new TextEncoder().encode(s);
+async function hmac(keyBytes, data) {
+  const k = await crypto.subtle.importKey("raw", keyBytes, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  return new Uint8Array(await crypto.subtle.sign("HMAC", k, typeof data === "string" ? enc(data) : data));
+}
+const hex = (b) => Array.from(b).map((x) => x.toString(16).padStart(2, "0")).join("");
+
+async function verifyInitData(initData, env) {
+  try {
+    if (typeof initData !== "string" || initData.length > 4096) return null;
+    const p = new URLSearchParams(initData);
+    const hash = p.get("hash");
+    if (!hash) return null;
+    const pairs = [];
+    p.forEach((v, k) => { if (k !== "hash") pairs.push(k + "=" + v); });
+    pairs.sort();
+    const secret = await hmac(enc("WebAppData"), token(env));
+    if (hex(await hmac(secret, pairs.join(NL))) !== hash) return null;
+    const authDate = Number(p.get("auth_date") || 0);
+    if (!authDate || now() - authDate > 7 * 86400) return null;
+    const user = JSON.parse(p.get("user") || "null");
+    return user && user.id ? user : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function cors(status) {
+  return new Response(null, {
+    status: status || 204,
+    headers: {
+      "Access-Control-Allow-Origin": APP_ORIGIN,
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "content-type",
+      "Access-Control-Max-Age": "86400"
+    }
   });
-  return r.json();
+}
+
+// POST /api/event из Mini App. Всегда отвечает 204, чтобы не мешать приложению.
+async function onEvent(request, env) {
+  try {
+    const raw = await request.text();
+    if (raw.length > 8192) return cors();
+    const body = JSON.parse(raw);
+    if (!body || EVENTS.indexOf(body.event) < 0) return cors();
+    const user = await verifyInitData(body.initData, env);
+    if (!user) return cors();
+    if (!(await ensureSchema(env))) return cors();
+    const track = body.track === "es" || body.track === "en" ? body.track : null;
+    const xp = Number.isFinite(body.xp) ? Math.max(0, Math.min(10000, Math.round(body.xp))) : null;
+    await dbRun(env, "INSERT INTO events (user_id, event, track, xp, ts) VALUES (?1, ?2, ?3, ?4, ?5)",
+      [user.id, body.event, track, xp, now()]);
+    await touchUser(env, user.id, track);
+  } catch (e) {
+    console.log("event error", e && e.message);
+  }
+  return cors();
+}
+
+// /stats: только для ADMIN_CHAT_ID
+async function onStats(m, env) {
+  const fromId = String((m.from && m.from.id) || "");
+  if (!env.ADMIN_CHAT_ID) {
+    return send(env, m.chat.id, "⚙️ /stats пока не настроена." + NL + "Твой Telegram ID: <code>" + esc(fromId) + "</code>" + NL +
+      "Добавь его в Cloudflare → Worker → Settings → Variables как ADMIN_CHAT_ID (тип Text).");
+  }
+  if (fromId !== String(env.ADMIN_CHAT_ID).trim()) {
+    return send(env, m.chat.id, TEXT.fallback, { reply_markup: appKeyboard() });
+  }
+  if (!env.DB || !(await ensureSchema(env))) return send(env, m.chat.id, "⚠️ База не подключена (нет binding DB).");
+  const day = now() - 86400;
+  const total = await dbFirst(env, "SELECT COUNT(*) AS n FROM users");
+  const dau = await dbFirst(env, "SELECT COUNT(*) AS n FROM users WHERE last_seen >= ?1", [day]);
+  const rounds = await dbFirst(env, "SELECT COUNT(*) AS n, COALESCE(SUM(xp), 0) AS xp FROM events WHERE event = 'round_completed'");
+  const rounds24 = await dbFirst(env, "SELECT COUNT(*) AS n FROM events WHERE event = 'round_completed' AND ts >= ?1", [day]);
+  let top = await dbFirst(env, "SELECT track, COUNT(*) AS n FROM events WHERE event = 'round_completed' AND track IN ('es', 'en') GROUP BY track ORDER BY n DESC LIMIT 1");
+  if (!top) top = await dbFirst(env, "SELECT track, COUNT(*) AS n FROM events WHERE event = 'topic_selected' AND track IN ('es', 'en') GROUP BY track ORDER BY n DESC LIMIT 1");
+  const low = await dbFirst(env, "SELECT COUNT(*) AS n FROM events WHERE event = 'energy_mode_used'");
+  const v = (r, k) => (r && r[k] != null ? r[k] : "?");
+  const lines = [
+    "📊 <b>Lingo Brain: статистика</b>",
+    "",
+    "👥 Всего юзеров: <b>" + v(total, "n") + "</b>",
+    "🔥 Активные за 24 ч (DAU): <b>" + v(dau, "n") + "</b>",
+    "✅ Раундов за всё время: <b>" + v(rounds, "n") + "</b> (за 24 ч: " + v(rounds24, "n") + ")",
+    "🏆 Самый популярный трек: <b>" + (top && top.track ? TRACK_NAME[top.track] + " (" + top.n + ")" : "пока нет данных") + "</b>",
+    "🪫 Режим «Нет сил»: " + v(low, "n") + " раз",
+    "⭐ XP заработано: " + v(rounds, "xp")
+  ];
+  if ([total, dau, rounds].some((x) => x === null)) lines.push("", "⚠️ Часть запросов к базе не удалась, смотри логи Worker.");
+  return send(env, m.chat.id, lines.join(NL));
 }
 
 function send(env, chatId, text, extra) {
@@ -132,7 +276,10 @@ async function onUpdate(update, env) {
     return onFeedback(m, env);
   }
 
+  if (m.from && m.from.id) await touchUser(env, m.from.id, null);
+
   const cmd = text.startsWith("/") ? text.split(" ")[0].split("@")[0].slice(1).toLowerCase() : "";
+  if (cmd === "stats") return onStats(m, env);
   if (cmd === "start") return send(env, chatId, TEXT.start(name), { reply_markup: appKeyboard("🚀 Начать раунд") });
   if (cmd === "app") return send(env, chatId, TEXT.app, { reply_markup: appKeyboard() });
   if (cmd === "help") return send(env, chatId, TEXT.help, { reply_markup: appKeyboard() });
@@ -175,7 +322,15 @@ async function setup(url, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.pathname === "/setup") return setup(url, env);
+    if (url.pathname === "/api/event") {
+      if (request.method === "OPTIONS") return cors();
+      if (request.method === "POST") return onEvent(request, env);
+      return cors(405);
+    }
+    if (url.pathname === "/setup") {
+      try { return await setup(url, env); }
+      catch (e) { return new Response("setup error: " + ((e && e.message) || e), { status: 500 }); }
+    }
     if (url.pathname === "/webhook" && request.method === "POST") {
       if (request.headers.get("X-Telegram-Bot-Api-Secret-Token") !== env.WEBHOOK_SECRET) {
         return new Response("forbidden", { status: 403 });

@@ -53,5 +53,16 @@
   },
   "dailyGoal": {
     "rounds": 1
+  },
+  "analytics": {
+    "posthogKey": "",
+    "posthogHost": "https://eu.i.posthog.com",
+    "statsUrl": "https://lingo-brain-bot.lingobrain.workers.dev/api/event"
+  },
+  "unlock": {
+    "alwaysOpen": [
+      "es.life.nie",
+      "en.interview.salary"
+    ]
   }
 }

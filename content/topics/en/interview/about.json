@@ -1,0 +1,279 @@
+{
+  "id": "en.interview.about",
+  "track": "en",
+  "level": "B1",
+  "title": "«Tell me about yourself»",
+  "emoji": "🙋",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "I'm currently…",
+      "tr": "сейчас я… (начало рассказа)",
+      "ex": "I'm currently based in Spain."
+    },
+    {
+      "term": "I have a background in…",
+      "tr": "у меня опыт / образование в…",
+      "ex": "I have a background in customer support."
+    },
+    {
+      "term": "Over the past X years…",
+      "tr": "за последние X лет…",
+      "ex": "Over the past three years, I've worked with clients."
+    },
+    {
+      "term": "What I enjoy most is…",
+      "tr": "больше всего мне нравится…",
+      "ex": "What I enjoy most is solving problems."
+    },
+    {
+      "term": "Recently, I…",
+      "tr": "недавно я…",
+      "ex": "Recently, I built a small app."
+    },
+    {
+      "term": "hands-on experience",
+      "tr": "практический опыт",
+      "ex": "I have hands-on experience with Notion."
+    },
+    {
+      "term": "I'm looking for…",
+      "tr": "я ищу…",
+      "ex": "I'm looking for a remote role."
+    },
+    {
+      "term": "That's why…",
+      "tr": "поэтому…",
+      "ex": "That's why this role caught my eye."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "С чего лучше начать ответ «Tell me about yourself»?",
+      "options": [
+        "Настоящее: кто ты сейчас",
+        "Детство и школа",
+        "Твоя зарплата"
+      ],
+      "answer": 0,
+      "explain": "Формула: <b>настоящее → прошлое → будущее</b>. Всего 60–90 секунд."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Чем закончить рассказ о себе?",
+      "options": [
+        "Почему тебе интересна эта роль",
+        "Списком хобби",
+        "«That's all»"
+      ],
+      "answer": 0,
+      "explain": "Свяжи себя с вакансией: «That's why this role…»"
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "hands-on experience",
+      "back": "практический опыт"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "So, walk me through your background.",
+        "lang": "en-US",
+        "rate": 0.9
+      },
+      "q": "О чём просят?",
+      "options": [
+        "Рассказать о своём опыте",
+        "Пройтись по офису",
+        "Показать резюме на экране"
+      ],
+      "answer": 0,
+      "explain": "<b>Walk me through</b> = расскажи по порядку. Это тот же «Tell me about yourself»."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "What I enjoy most is turning messy processes into simple systems.",
+        "lang": "en-GB",
+        "rate": 0.9
+      },
+      "q": "Что ему нравится?",
+      "options": [
+        "Превращать хаос в простые системы",
+        "Работать в одиночку",
+        "Писать длинные отчёты"
+      ],
+      "answer": 0,
+      "explain": "<b>Messy</b> = запутанный. Отличная фраза для резюме."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Сейчас я живу в Испании.",
+      "tokens": [
+        "I'm",
+        "currently",
+        "based",
+        "in",
+        "Spain"
+      ],
+      "distractors": [
+        "live",
+        "on"
+      ],
+      "pattern": "I'm currently based in + [место]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Я ищу удалённую роль.",
+      "tokens": [
+        "I'm",
+        "looking",
+        "for",
+        "a",
+        "remote",
+        "role"
+      ],
+      "distractors": [
+        "searching",
+        "at"
+      ],
+      "pattern": "I'm looking for + [что]"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "I'm currently based in Spain, and I have a background in customer support.",
+      "tr": "Сейчас я живу в Испании, у меня опыт в поддержке клиентов.",
+      "lang": "en-US"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Recently, I built a language-learning app on my own. That's why I'm excited about product roles.",
+      "tr": "Недавно я сам сделал приложение для изучения языков. Поэтому мне интересны продуктовые роли.",
+      "lang": "en-US"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "en.interview.about.s1",
+      "title": "Первая минута собеса",
+      "emoji": "🎤",
+      "userRole": "Кандидат",
+      "botRole": "Recruiter",
+      "voice": "en-US",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Hi, thanks for joining! So, tell me a bit about yourself.",
+          "tr": "Привет, спасибо, что пришёл! Расскажи немного о себе.",
+          "choices": [
+            {
+              "text": "Sure! I'm currently based in Spain, and I have a background in customer support.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Старт с настоящего. Чётко!"
+            },
+            {
+              "text": "I was born in 1995 in a small town…",
+              "next": "n2",
+              "score": 0,
+              "feedback": "Слишком издалека 😅 Начни с того, кто ты сейчас."
+            },
+            {
+              "text": "What do you want to know?",
+              "next": "n1b",
+              "score": 1,
+              "feedback": "Можно, но лучше сразу дать короткий рассказ."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Just a quick overview: where you are now and what you're looking for.",
+          "tr": "Просто коротко: где ты сейчас и что ищешь.",
+          "choices": [
+            {
+              "text": "Got it. I'm currently based in Spain, with a background in customer support.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Вот! «Got it» = понял."
+            }
+          ]
+        },
+        "n2": {
+          "say": "Nice. What have you been working on recently?",
+          "tr": "Здорово. Над чем ты работал в последнее время?",
+          "choices": [
+            {
+              "text": "Recently, I built a Telegram app for learning languages, using no-code and AI tools.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Конкретный проект — это сильно 🔥"
+            },
+            {
+              "text": "Nothing special.",
+              "next": "n3",
+              "score": 0,
+              "feedback": "Не принижай себя! Расскажи про свой проект."
+            },
+            {
+              "text": "To be honest, I've been learning a lot on my own: English, Spanish and some product tools.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Честно и с ростом. Хорошо."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Interesting! And what are you looking for in your next role?",
+          "tr": "Интересно! А что ты ищешь в следующей работе?",
+          "choices": [
+            {
+              "text": "I'm looking for a remote role where I can solve user problems. That's why this position caught my eye.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Идеальная концовка: будущее + связь с вакансией."
+            },
+            {
+              "text": "Money.",
+              "next": "n4",
+              "score": 0,
+              "feedback": "Честно, но 😅 Лучше про задачи и рост."
+            },
+            {
+              "text": "A stable job with a good team.",
+              "next": "n4",
+              "score": 1,
+              "feedback": "Нормально. Добавь, почему именно эта роль."
+            }
+          ]
+        },
+        "n4": {
+          "say": "That sounds great. Let's talk about the role!",
+          "tr": "Звучит отлично. Давай поговорим о роли!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}
