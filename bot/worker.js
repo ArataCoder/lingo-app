@@ -6,7 +6,7 @@
 // Необязательно (тип Text): ADMIN_CHAT_ID, твой chat id, сюда придут отзывы
 // Настройка одним кликом: открой https://<твой-воркер>.workers.dev/setup?key=<SETUP_KEY>
 
-const APP_URL = "https://aratacoder.github.io/lingo-app/?v=3";
+const APP_URL = "https://aratacoder.github.io/lingo-app/?v=4";
 const NL = String.fromCharCode(10);
 const FEEDBACK_MARK = "📝 Отзыв";
 
