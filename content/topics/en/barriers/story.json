@@ -1,0 +1,279 @@
+{
+ "id": "en.barriers.story",
+ "track": "en",
+ "level": "B2",
+ "title": "Рассказать историю",
+ "emoji": "📖",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "So, the other day…",
+   "tr": "короче, на днях…",
+   "ex": "So, the other day I got lost in Madrid."
+  },
+  {
+   "term": "It turned out that…",
+   "tr": "оказалось, что…",
+   "ex": "It turned out that the store was closed."
+  },
+  {
+   "term": "All of a sudden",
+   "tr": "вдруг, внезапно",
+   "ex": "All of a sudden, the lights went out."
+  },
+  {
+   "term": "Long story short",
+   "tr": "короче говоря",
+   "ex": "Long story short, I missed the flight."
+  },
+  {
+   "term": "At first… but then…",
+   "tr": "сначала… но потом…",
+   "ex": "At first I was nervous, but then it was fine."
+  },
+  {
+   "term": "You won't believe this.",
+   "tr": "ты не поверишь",
+   "ex": "You won't believe what happened."
+  },
+  {
+   "term": "In the end",
+   "tr": "в итоге",
+   "ex": "In the end, everything worked out."
+  },
+  {
+   "term": "The funny thing is…",
+   "tr": "самое смешное, что…",
+   "ex": "The funny thing is, I had the keys all along."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как естественно начать историю?",
+   "options": [
+    "So, the other day…",
+    "History: one day…",
+    "I want tell you story."
+   ],
+   "answer": 0,
+   "explain": "<b>So, the other day…</b> — классический заход. History = история как наука, а рассказ — <b>story</b>."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Long story short» значит…",
+   "options": [
+    "Короче говоря",
+    "Это длинная история",
+    "История была короткой"
+   ],
+   "answer": 0,
+   "explain": "Связка, чтобы сразу перейти к финалу."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "It turned out that…",
+   "back": "оказалось, что…"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "All of a sudden, my phone died and I had no map.",
+    "lang": "en-US",
+    "rate": 0.9
+   },
+   "q": "Что произошло?",
+   "options": [
+    "Внезапно сел телефон, и не было карты",
+    "Телефон украли вместе с картой",
+    "Упала карта, разбился телефон"
+   ],
+   "answer": 0,
+   "explain": "<b>my phone died</b> = телефон сел."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Long story short, we missed the last bus.",
+    "lang": "en-US",
+    "rate": 0.9
+   },
+   "q": "Чем закончилось?",
+   "options": [
+    "Опоздали на последний автобус",
+    "Успели на последний автобус",
+    "Автобус сломался"
+   ],
+   "answer": 0,
+   "explain": "<b>miss the bus</b> = опоздать на автобус."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "В итоге всё получилось.",
+   "tokens": [
+    "In",
+    "the",
+    "end,",
+    "everything",
+    "worked",
+    "out."
+   ],
+   "distractors": [
+    "finally",
+    "at"
+   ],
+   "pattern": "In the end, + [итог]"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Ты не поверишь, что случилось.",
+   "tokens": [
+    "You",
+    "won't",
+    "believe",
+    "what",
+    "happened."
+   ],
+   "distractors": [
+    "don't",
+    "that"
+   ],
+   "pattern": "You won't believe + what…"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "So, the other day, something funny happened at work.",
+   "tr": "Короче, на днях на работе случилась смешная штука.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "At first I was nervous, but in the end it turned out fine.",
+   "tr": "Сначала я нервничал(а), но в итоге всё оказалось нормально.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.barriers.story.s1",
+   "title": "История на перерыве",
+   "emoji": "📖",
+   "userRole": "Ты",
+   "botRole": "Coworker",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hey, how was your weekend? Anything fun?",
+     "tr": "Привет, как выходные? Было что-то интересное?",
+     "choices": [
+      {
+       "text": "Actually, yes! You won't believe what happened.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Отличный крючок для истории 🔥"
+      },
+      {
+       "text": "Good.",
+       "next": "n2b",
+       "score": 1,
+       "feedback": "Нормально, но разговор гаснет. Добавь деталь."
+      }
+     ]
+    },
+    "n2b": {
+     "say": "Just good? Come on, tell me something!",
+     "tr": "Просто хорошо? Да ладно, расскажи что-нибудь!",
+     "choices": [
+      {
+       "text": "Okay, so, I went to the beach, and all of a sudden it started raining.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Вот, история пошла 💪"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Oh no, what happened?",
+     "tr": "Ой, что случилось?",
+     "choices": [
+      {
+       "text": "So, I went to the beach, and all of a sudden it started raining.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Связки работают: so → all of a sudden."
+      },
+      {
+       "text": "I go to beach, rain.",
+       "next": "n3",
+       "score": 0,
+       "feedback": "Поймут, но нужно прошедшее: «I went to the beach and it started raining»."
+      }
+     ]
+    },
+    "n3": {
+     "say": "No way! So what did you do?",
+     "tr": "Да ладно! И что ты сделал(а)?",
+     "choices": [
+      {
+       "text": "At first we waited, but then we ran to a café.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "At first… but then… — скелет любой истории 👍"
+      },
+      {
+       "text": "Long story short, we got completely wet.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Ха, «long story short» к месту."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Ha! That sounds like a fun day anyway.",
+     "tr": "Ха! Всё равно звучит как классный день.",
+     "choices": [
+      {
+       "text": "The funny thing is, it was sunny again ten minutes later.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Панчлайн! Так истории и заканчивают 😂"
+      },
+      {
+       "text": "Yeah, in the end it was a good day.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "«In the end» — аккуратное завершение."
+      }
+     ]
+    },
+    "n5": {
+     "say": "Classic. Okay, back to work!",
+     "tr": "Классика. Ладно, за работу!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

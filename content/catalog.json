@@ -185,8 +185,8 @@
        "tags": [
         "social"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/es/social/neighbors.json"
       },
       {
        "id": "es.social.plans",
@@ -196,8 +196,8 @@
        "tags": [
         "social"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/es/social/plans.json"
       },
       {
        "id": "es.social.opinions",
@@ -429,8 +429,8 @@
         "fluency",
         "past"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/en/barriers/story.json"
       },
       {
        "id": "en.barriers.pron",
@@ -683,8 +683,8 @@
        "tags": [
         "opinion"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/en/debate/opinion.json"
       },
       {
        "id": "en.debate.persuade",

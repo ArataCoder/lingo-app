@@ -17,7 +17,11 @@
 """
 import argparse, asyncio, hashlib, json, os, re, sys, unicodedata
 
-VOICES = {"es": "es-ES-ElviraNeural", "en": "en-US-AriaNeural"}
+VOICES = {"es": "es-ES-ElviraNeural", "en": "en-US-AndrewNeural"}
+# Голоса, которыми озвучены старые файлы (имя = sha1(key)). Для любого другого голоса
+# имя = sha1(key|voice), поэтому смена голоса = автоматическая переозвучка этого языка.
+# Пока новый mp3 не сгенерирован, в manifest остаётся старый файл (фолбэк).
+LEGACY_VOICES = {"es": "es-ES-ElviraNeural", "en": "en-US-AriaNeural"}
 SPOKEN_KEYS = {"term", "ex", "front", "text", "say", "phrase", "target"}
 CYR = re.compile("[\u0400-\u04ff]")
 TAG = re.compile("<[^>]*>")
@@ -95,7 +99,8 @@ def main():
 
     todo = []
     for key, (lg, text) in sorted(items.items()):
-        rel = lg + "/" + hashlib.sha1(key.encode("utf-8")).hexdigest()[:12] + ".mp3"
+        hk = key if VOICES[lg] == LEGACY_VOICES.get(lg) else key + "|" + VOICES[lg]
+        rel = lg + "/" + hashlib.sha1(hk.encode("utf-8")).hexdigest()[:12] + ".mp3"
         full = os.path.join(out_dir, rel)
         if os.path.exists(full) and os.path.getsize(full) > 500:
             manifest["items"][key] = rel
@@ -154,4 +159,4 @@ def save(path, manifest, items):
 if __name__ == "__main__":
     main()
 
-# rev 3.7: full neural audio for all ready topics
+# rev 3.8: EN voice -> en-US-AndrewNeural (full EN re-voice)

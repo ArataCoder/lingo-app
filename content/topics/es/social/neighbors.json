@@ -1,0 +1,294 @@
+{
+ "id": "es.social.neighbors",
+ "track": "es",
+ "level": "A1",
+ "title": "Соседи и small talk",
+ "emoji": "🏘️",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "¿Qué tal?",
+   "tr": "как дела?",
+   "ex": "¡Hola! ¿Qué tal?"
+  },
+  {
+   "term": "¡Qué calor!",
+   "tr": "как жарко!",
+   "ex": "¡Qué calor hace hoy!"
+  },
+  {
+   "term": "la vecina / el vecino",
+   "tr": "соседка / сосед",
+   "ex": "Mi vecina es muy simpática."
+  },
+  {
+   "term": "el edificio",
+   "tr": "дом (здание)",
+   "ex": "¿Vives en este edificio?"
+  },
+  {
+   "term": "el ruido",
+   "tr": "шум",
+   "ex": "Perdona, hay mucho ruido por la noche."
+  },
+  {
+   "term": "el ascensor",
+   "tr": "лифт",
+   "ex": "El ascensor no funciona."
+  },
+  {
+   "term": "¡Que tengas buen día!",
+   "tr": "хорошего дня!",
+   "ex": "Bueno, me voy. ¡Que tengas buen día!"
+  },
+  {
+   "term": "¡Igualmente!",
+   "tr": "и тебе того же!",
+   "ex": "¡Buen fin de semana! ¡Igualmente!"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Сосед в лифте говорит «¡Qué calor!». Что ответить?",
+   "options": [
+    "Sí, ¡muchísimo calor!",
+    "No entiendo calor.",
+    "Calor es malo, adiós."
+   ],
+   "answer": 0,
+   "explain": "Погода — универсальный small talk. Просто согласись."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«El ascensor no funciona» значит…",
+   "options": [
+    "Лифт не работает",
+    "Лифт занят",
+    "Лифт едет вниз"
+   ],
+   "answer": 0,
+   "explain": "<b>funcionar</b> = работать (о технике)."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "¡Que tengas buen día!",
+   "back": "Хорошего дня!"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Perdona, ¿puedes bajar un poco la música?",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "О чём просит сосед?",
+   "options": [
+    "Сделать музыку потише",
+    "Включить музыку",
+    "Спуститься вниз"
+   ],
+   "answer": 0,
+   "explain": "<b>bajar la música</b> = убавить музыку."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Soy Marta, vivo en el segundo.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что сказала соседка?",
+   "options": [
+    "Она Марта, живёт на втором этаже",
+    "Она Марта, ей два года",
+    "Она пришла во второй раз"
+   ],
+   "answer": 0,
+   "explain": "<b>el segundo</b> = второй (этаж)."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Ты живёшь в этом доме?",
+   "tokens": [
+    "¿Vives",
+    "en",
+    "este",
+    "edificio?"
+   ],
+   "distractors": [
+    "eres",
+    "esta"
+   ],
+   "pattern": "¿Vives en + [где]?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Лифт не работает.",
+   "tokens": [
+    "El",
+    "ascensor",
+    "no",
+    "funciona."
+   ],
+   "distractors": [
+    "es",
+    "trabaja"
+   ],
+   "pattern": "[что] + no funciona"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Hola, vivo en el tercero. ¿Qué tal?",
+   "tr": "Привет, я живу на третьем. Как дела?",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Perdona, hay mucho ruido por la noche. ¿Podemos hablar?",
+   "tr": "Извини, ночью очень шумно. Можем поговорить?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.social.neighbors.s1",
+   "title": "Сосед у лифта",
+   "emoji": "🏘️",
+   "userRole": "Ты",
+   "botRole": "Paco",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¡Buenos días! ¡Qué calor hace hoy!",
+     "tr": "Доброе утро! Как сегодня жарко!",
+     "choices": [
+      {
+       "text": "¡Buenos días! Sí, muchísimo.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Идеально для small talk ☀️"
+      },
+      {
+       "text": "Sí, calor.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Поймут! «Muchísimo» звучит живее."
+      },
+      {
+       "text": "No hablo.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Лучше хоть короткий ответ: «Sí, mucho calor»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "¿Vives aquí desde hace poco? No te he visto antes.",
+     "tr": "Ты недавно здесь живёшь? Раньше тебя не видел.",
+     "choices": [
+      {
+       "text": "Sí, vivo en el tercero desde octubre.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Отлично: этаж + с какого времени."
+      },
+      {
+       "text": "Sí, desde hace un mes. ¿Y tú?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "И вопрос вернул(а) 🔥"
+      },
+      {
+       "text": "¿Perdón? Más despacio, por favor.",
+       "next": "n2b",
+       "score": 2,
+       "feedback": "Переспросить — это нормально."
+      }
+     ]
+    },
+    "n2b": {
+     "say": "¿Vives aquí… desde hace poco?",
+     "tr": "Ты здесь… недавно живёшь?",
+     "choices": [
+      {
+       "text": "Sí, desde hace un mes.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Вот! 💪"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Yo soy Paco, del quinto. Oye, el ascensor no funciona otra vez.",
+     "tr": "Я Пако, с пятого. Слушай, лифт опять не работает.",
+     "choices": [
+      {
+       "text": "¡Uf! ¿Llamamos al presidente de la comunidad?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Знаешь местные реалии: presidente de la comunidad = председатель дома 🔥"
+      },
+      {
+       "text": "Vaya, qué mal.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "«Vaya, qué mal» = вот блин. Очень естественно."
+      },
+      {
+       "text": "Ascensor no.",
+       "next": "n4",
+       "score": 1,
+       "feedback": "Понятно, но лучше: «El ascensor no funciona»."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Bueno, me voy. ¡Que tengas buen día!",
+     "tr": "Ладно, я пошёл. Хорошего дня!",
+     "choices": [
+      {
+       "text": "¡Igualmente, Paco!",
+       "next": "n5",
+       "score": 2,
+       "feedback": "«Igualmente» = и тебе того же. Топ-ответ."
+      },
+      {
+       "text": "Gracias, adiós.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Вежливо 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "¡Hasta luego!",
+     "tr": "До встречи!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

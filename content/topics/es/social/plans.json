@@ -1,0 +1,271 @@
+{
+ "id": "es.social.plans",
+ "track": "es",
+ "level": "A2",
+ "title": "Планы и встречи (quedar)",
+ "emoji": "📅",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "¿Quedamos?",
+   "tr": "встретимся?",
+   "ex": "¿Quedamos el sábado?"
+  },
+  {
+   "term": "¿A qué hora?",
+   "tr": "во сколько?",
+   "ex": "¿A qué hora quedamos?"
+  },
+  {
+   "term": "¿Dónde quedamos?",
+   "tr": "где встречаемся?",
+   "ex": "¿Dónde quedamos? ¿En la plaza?"
+  },
+  {
+   "term": "Me viene bien.",
+   "tr": "мне подходит (по времени)",
+   "ex": "El viernes me viene bien."
+  },
+  {
+   "term": "No puedo, lo siento.",
+   "tr": "не могу, извини",
+   "ex": "Hoy no puedo, lo siento."
+  },
+  {
+   "term": "¿Te apetece…?",
+   "tr": "хочешь…? (есть настроение)",
+   "ex": "¿Te apetece ir a la playa?"
+  },
+  {
+   "term": "tomar algo",
+   "tr": "посидеть, выпить чего-нибудь",
+   "ex": "¿Vamos a tomar algo después?"
+  },
+  {
+   "term": "Llego tarde.",
+   "tr": "я опаздываю",
+   "ex": "Perdona, llego diez minutos tarde."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как предложить встретиться в субботу?",
+   "options": [
+    "¿Quedamos el sábado?",
+    "¿Quedo tú sábado?",
+    "Sábado nosotros ver."
+   ],
+   "answer": 0,
+   "explain": "<b>quedar</b> = договориться встретиться. Главный глагол для планов."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«¿Te apetece tomar algo?» — это…",
+   "options": [
+    "Хочешь сходить посидеть?",
+    "Тебе нужно что-то купить?",
+    "Ты что-то потерял(а)?"
+   ],
+   "answer": 0,
+   "explain": "<b>tomar algo</b> = выпить кофе, пива, чего угодно в компании."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Me viene bien.",
+   "back": "Мне подходит (по времени)."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "¿Quedamos a las ocho en la plaza?",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Где и когда встреча?",
+   "options": [
+    "В 8 на площади",
+    "В 8 в баре",
+    "В 18 на пляже"
+   ],
+   "answer": 0,
+   "explain": "<b>a las ocho</b> = в восемь, <b>la plaza</b> = площадь."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Perdona, llego diez minutos tarde.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что случилось?",
+   "options": [
+    "Опаздывает на 10 минут",
+    "Придёт на 10 минут раньше",
+    "Не придёт совсем"
+   ],
+   "answer": 0,
+   "explain": "<b>llego tarde</b> = я опаздываю."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Во сколько встречаемся?",
+   "tokens": [
+    "¿A",
+    "qué",
+    "hora",
+    "quedamos?"
+   ],
+   "distractors": [
+    "cuándo",
+    "es"
+   ],
+   "pattern": "¿A qué hora + [глагол]?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Сегодня не могу, извини.",
+   "tokens": [
+    "Hoy",
+    "no",
+    "puedo,",
+    "lo",
+    "siento."
+   ],
+   "distractors": [
+    "quiero",
+    "soy"
+   ],
+   "pattern": "No puedo, lo siento."
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "¿Te apetece tomar algo el viernes?",
+   "tr": "Хочешь посидеть где-нибудь в пятницу?",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "El viernes no puedo, pero el sábado me viene bien.",
+   "tr": "В пятницу не могу, а в субботу мне подходит.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.social.plans.s1",
+   "title": "Договариваемся о встрече",
+   "emoji": "📅",
+   "userRole": "Ты",
+   "botRole": "Carlos",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¡Hola! ¿Te apetece tomar algo esta semana?",
+     "tr": "Привет! Хочешь посидеть где-нибудь на этой неделе?",
+     "choices": [
+      {
+       "text": "¡Sí, claro! ¿Cuándo te viene bien?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Отлично, и вопрос вернул(а) 🔥"
+      },
+      {
+       "text": "Sí.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Ок! Можно сразу спросить: «¿Cuándo?»"
+      }
+     ]
+    },
+    "n2": {
+     "say": "¿El viernes por la tarde?",
+     "tr": "В пятницу вечером?",
+     "choices": [
+      {
+       "text": "El viernes me viene bien.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "«Me viene bien» — как у носителя."
+      },
+      {
+       "text": "El viernes no puedo, ¿y el sábado?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Предложил(а) альтернативу — супер."
+      },
+      {
+       "text": "Viernes no.",
+       "next": "n3",
+       "score": 0,
+       "feedback": "Резковато. Лучше: «El viernes no puedo, lo siento»."
+      }
+     ]
+    },
+    "n3": {
+     "say": "Perfecto. ¿A qué hora y dónde quedamos?",
+     "tr": "Отлично. Во сколько и где встречаемся?",
+     "choices": [
+      {
+       "text": "¿A las ocho en la plaza?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Чётко: время + место."
+      },
+      {
+       "text": "Me da igual, tú decides.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "«Me da igual» = мне без разницы. Естественно."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Vale, entonces a las ocho en la plaza. Si llego tarde, te escribo.",
+     "tr": "Ок, тогда в восемь на площади. Если опоздаю, напишу.",
+     "choices": [
+      {
+       "text": "¡Genial! ¡Hasta pronto!",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Идеально."
+      },
+      {
+       "text": "Vale, nos vemos.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "«Nos vemos» = увидимся 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "¡Nos vemos!",
+     "tr": "Увидимся!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

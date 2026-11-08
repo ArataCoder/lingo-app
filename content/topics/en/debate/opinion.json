@@ -1,0 +1,275 @@
+{
+ "id": "en.debate.opinion",
+ "track": "en",
+ "level": "B2",
+ "title": "Мнение + аргумент",
+ "emoji": "🧩",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "In my opinion,",
+   "tr": "по-моему,",
+   "ex": "In my opinion, remote work is more productive."
+  },
+  {
+   "term": "The main reason is…",
+   "tr": "главная причина в том, что…",
+   "ex": "The main reason is that people save time."
+  },
+  {
+   "term": "For example,",
+   "tr": "например,",
+   "ex": "For example, I save two hours a day."
+  },
+  {
+   "term": "On the other hand,",
+   "tr": "с другой стороны,",
+   "ex": "On the other hand, it can feel lonely."
+  },
+  {
+   "term": "That's why…",
+   "tr": "поэтому…",
+   "ex": "That's why I prefer working from home."
+  },
+  {
+   "term": "It depends on…",
+   "tr": "зависит от…",
+   "ex": "It depends on the team."
+  },
+  {
+   "term": "As far as I know,",
+   "tr": "насколько я знаю,",
+   "ex": "As far as I know, the rules changed last year."
+  },
+  {
+   "term": "Overall,",
+   "tr": "в целом,",
+   "ex": "Overall, I think it's worth it."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как правильно сказать «это зависит от ситуации»?",
+   "options": [
+    "It depends on the situation.",
+    "It depends from the situation.",
+    "It's depend the situation."
+   ],
+   "answer": 0,
+   "explain": "Только <b>depends on</b>. «Depends from» — калька с русского."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Какая связка вводит противоположный аргумент?",
+   "options": [
+    "On the other hand,",
+    "For example,",
+    "That's why"
+   ],
+   "answer": 0,
+   "explain": "<b>On the other hand</b> = с другой стороны."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Overall,",
+   "back": "в целом, (вывод в конце)"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "In my opinion, it's too expensive. That's why I said no.",
+    "lang": "en-US",
+    "rate": 0.9
+   },
+   "q": "Почему человек отказался?",
+   "options": [
+    "Слишком дорого",
+    "Нет времени",
+    "Не понравилось качество"
+   ],
+   "answer": 0,
+   "explain": "<b>That's why</b> = поэтому."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "On the other hand, it saves a lot of time.",
+    "lang": "en-US",
+    "rate": 0.9
+   },
+   "q": "Что это за аргумент?",
+   "options": [
+    "Противоположный: экономит много времени",
+    "Пример: тратит много времени",
+    "Вывод: это дорого"
+   ],
+   "answer": 0,
+   "explain": "<b>save time</b> = экономить время."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Главная причина — время.",
+   "tokens": [
+    "The",
+    "main",
+    "reason",
+    "is",
+    "time."
+   ],
+   "distractors": [
+    "cause",
+    "are"
+   ],
+   "pattern": "The main reason is + [причина]"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Например, я экономлю два часа в день.",
+   "tokens": [
+    "For",
+    "example,",
+    "I",
+    "save",
+    "two",
+    "hours",
+    "a",
+    "day."
+   ],
+   "distractors": [
+    "economy",
+    "in"
+   ],
+   "pattern": "For example, + [факт]"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "In my opinion, remote work is more productive.",
+   "tr": "По-моему, удалёнка продуктивнее.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "The main reason is that I save time. For example, I don't commute.",
+   "tr": "Главная причина — я экономлю время. Например, не нужно ездить на работу.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.debate.opinion.s1",
+   "title": "Офис или удалёнка?",
+   "emoji": "🧩",
+   "userRole": "Ты",
+   "botRole": "Interviewer",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Quick question: do you prefer working remotely or in the office?",
+     "tr": "Быстрый вопрос: ты предпочитаешь удалёнку или офис?",
+     "choices": [
+      {
+       "text": "In my opinion, remote work suits me better.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Чёткая позиция с первой фразы 🔥"
+      },
+      {
+       "text": "It depends on the team, to be honest.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Взвешенно и честно."
+      },
+      {
+       "text": "Remote.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Ок, но добавь мнение: «In my opinion…»"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Interesting. Why is that?",
+     "tr": "Интересно. Почему?",
+     "choices": [
+      {
+       "text": "The main reason is focus. For example, I have fewer distractions at home.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Причина + пример = сильный ответ."
+      },
+      {
+       "text": "Because I like.",
+       "next": "n3",
+       "score": 0,
+       "feedback": "Нужен объект и аргумент: «because I like the flexibility»."
+      }
+     ]
+    },
+    "n3": {
+     "say": "But don't you miss the team?",
+     "tr": "Но разве ты не скучаешь по команде?",
+     "choices": [
+      {
+       "text": "On the other hand, yes, so I like meeting in person once a week.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Признать контраргумент — очень зрело."
+      },
+      {
+       "text": "Not really. We talk on Slack every day.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Аргумент по делу 👍"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Fair enough. So, overall?",
+     "tr": "Справедливо. Так в целом?",
+     "choices": [
+      {
+       "text": "Overall, a hybrid setup works best for me.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Идеальный вывод с «Overall»."
+      },
+      {
+       "text": "That's why I prefer remote work.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "«That's why» — логичное завершение."
+      }
+     ]
+    },
+    "n5": {
+     "say": "Makes sense. Thanks for sharing!",
+     "tr": "Логично. Спасибо, что поделился(ась)!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
