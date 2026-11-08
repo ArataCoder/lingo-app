@@ -1,0 +1,269 @@
+{
+ "id": "es.work.calls",
+ "track": "es",
+ "level": "B1",
+ "title": "Звонки и сообщения",
+ "emoji": "📞",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "¿De parte de quién?",
+   "tr": "кто спрашивает?",
+   "ex": "Un momento, ¿de parte de quién?"
+  },
+  {
+   "term": "¿Me pone con…?",
+   "tr": "соедините меня с…?",
+   "ex": "¿Me pone con el departamento de personal?"
+  },
+  {
+   "term": "No se retire",
+   "tr": "оставайтесь на линии",
+   "ex": "No se retire, por favor."
+  },
+  {
+   "term": "Está comunicando",
+   "tr": "занято (линия)",
+   "ex": "Lo siento, está comunicando."
+  },
+  {
+   "term": "dejar un recado",
+   "tr": "оставить сообщение",
+   "ex": "¿Quiere dejar un recado?"
+  },
+  {
+   "term": "devolver la llamada",
+   "tr": "перезвонить",
+   "ex": "Le devuelvo la llamada en diez minutos."
+  },
+  {
+   "term": "Se ha cortado",
+   "tr": "связь прервалась",
+   "ex": "Perdone, se ha cortado."
+  },
+  {
+   "term": "un audio",
+   "tr": "голосовое сообщение",
+   "ex": "Te mando un audio, que estoy conduciendo."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«¿De parte de quién?» — что спрашивают?",
+   "options": [
+    "Кто звонит",
+    "Из какого отдела",
+    "Сколько времени"
+   ],
+   "answer": 0,
+   "explain": "Ответ: <b>De parte de Aleks</b>."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как попросить соединить с отделом кадров?",
+   "options": [
+    "¿Me pone con el departamento de personal?",
+    "¿Me conecta a personal departamento?",
+    "¿Me pasa por personal?"
+   ],
+   "answer": 0,
+   "explain": "<b>¿Me pone con…?</b> = соедините с…"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Está comunicando.",
+   "back": "Занято (линия)."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "La señora López no está ahora. ¿Quiere dejar un recado?",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что предлагают?",
+   "options": [
+    "Оставить сообщение",
+    "Перезвонить завтра",
+    "Подождать на линии"
+   ],
+   "answer": 0,
+   "explain": "<b>un recado</b> = сообщение для кого-то."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Le devuelvo la llamada en cuanto salga de la reunión.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Когда перезвонят?",
+   "options": [
+    "Как только выйдет со встречи",
+    "Завтра утром",
+    "Никогда"
+   ],
+   "answer": 0,
+   "explain": "<b>en cuanto</b> + subjuntivo = как только."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Соедините меня с госпожой Лопес?",
+   "tokens": [
+    "¿Me",
+    "pone",
+    "con",
+    "la",
+    "señora",
+    "López?"
+   ],
+   "distractors": [
+    "pongo",
+    "a"
+   ],
+   "pattern": "¿Me pone con + [кто]?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я перезвоню тебе через десять минут.",
+   "tokens": [
+    "Te",
+    "devuelvo",
+    "la",
+    "llamada",
+    "en",
+    "diez",
+    "minutos."
+   ],
+   "distractors": [
+    "vuelvo",
+    "por"
+   ],
+   "pattern": "Te devuelvo la llamada + [когда]"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Hola, buenos días. ¿Me pone con el departamento de personal, por favor?",
+   "tr": "Здравствуйте. Соедините меня с отделом кадров, пожалуйста.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Perdone, se ha cortado. Le llamaba por la oferta de trabajo.",
+   "tr": "Простите, связь прервалась. Я звонил(а) по поводу вакансии.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.work.calls.s1",
+   "title": "Звонок в компанию",
+   "emoji": "📞",
+   "userRole": "Ты",
+   "botRole": "Recepción",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Logística Mediterráneo, buenos días.",
+     "tr": "Logística Mediterráneo, доброе утро.",
+     "choices": [
+      {
+       "text": "Buenos días. ¿Me pone con la señora López, por favor?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Вежливо и по форме 👍"
+      },
+      {
+       "text": "Hola, López.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Скажи: «¿Me pone con la señora López?»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "¿De parte de quién?",
+     "tr": "Кто её спрашивает?",
+     "choices": [
+      {
+       "text": "De parte de Aleks. La llamo por la entrevista del jueves.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Имя + причина 🔥"
+      },
+      {
+       "text": "Soy Aleks, un candidato.",
+       "next": "n3",
+       "score": 1,
+       "feedback": "Понятно, но классика: «De parte de Aleks»."
+      }
+     ]
+    },
+    "n3": {
+     "say": "No se retire, por favor. Lo siento, está comunicando.",
+     "tr": "Оставайтесь на линии, пожалуйста. Простите, занято.",
+     "choices": [
+      {
+       "text": "No pasa nada. ¿Puedo dejar un recado?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Отлично 👍"
+      },
+      {
+       "text": "Vale. ¿Cuándo puedo volver a llamar?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Тоже хорошо."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Claro. Dígame su teléfono y ella le devuelve la llamada.",
+     "tr": "Конечно. Скажите ваш телефон, и она вам перезвонит.",
+     "choices": [
+      {
+       "text": "Es el seis, cuatro, cinco, doce, treinta y cuatro, cincuenta y seis.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Номера в Испании часто диктуют парами 😉"
+      },
+      {
+       "text": "Mejor por WhatsApp. ¿Le puedo mandar un mensaje?",
+       "next": "n5",
+       "score": 1,
+       "feedback": "В Испании так бывает, но компании лучше оставить телефон."
+      }
+     ]
+    },
+    "n5": {
+     "say": "Perfecto. Le llamará esta tarde. Que tenga un buen día.",
+     "tr": "Отлично. Она перезвонит вам сегодня днём. Хорошего дня.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

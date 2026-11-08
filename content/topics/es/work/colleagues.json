@@ -1,0 +1,267 @@
+{
+ "id": "es.work.colleagues",
+ "track": "es",
+ "level": "A2",
+ "title": "Первый день и коллеги",
+ "emoji": "👥",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "Soy el nuevo / la nueva",
+   "tr": "я новенький / новенькая",
+   "ex": "Hola, soy la nueva del equipo."
+  },
+  {
+   "term": "Encantado / Encantada",
+   "tr": "очень приятно",
+   "ex": "Encantado, yo soy Aleks."
+  },
+  {
+   "term": "¿Dónde está…?",
+   "tr": "где находится…?",
+   "ex": "¿Dónde está la máquina de café?"
+  },
+  {
+   "term": "el descanso",
+   "tr": "перерыв",
+   "ex": "El descanso es a las once."
+  },
+  {
+   "term": "¿Vamos a tomar algo?",
+   "tr": "сходим куда-нибудь посидеть?",
+   "ex": "Después del trabajo, ¿vamos a tomar algo?"
+  },
+  {
+   "term": "el jefe / la jefa",
+   "tr": "начальник / начальница",
+   "ex": "La jefa llega a las nueve."
+  },
+  {
+   "term": "¿Me echas una mano?",
+   "tr": "поможешь мне?",
+   "ex": "¿Me echas una mano con la impresora?"
+  },
+  {
+   "term": "¿Cómo se hace esto?",
+   "tr": "как это делается?",
+   "ex": "Perdona, ¿cómo se hace esto?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«¿Me echas una mano?» значит…",
+   "options": [
+    "Поможешь мне?",
+    "Пожмёшь мне руку?",
+    "Пойдёшь со мной?"
+   ],
+   "answer": 0,
+   "explain": "<b>echar una mano</b> = помочь. Очень разговорное."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Девушка-новичок говорит…",
+   "options": [
+    "Soy la nueva.",
+    "Soy el nuevo.",
+    "Soy nueva persona."
+   ],
+   "answer": 0,
+   "explain": "<b>el nuevo</b> — мужчина, <b>la nueva</b> — женщина."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "El descanso es a las once.",
+   "back": "Перерыв в одиннадцать."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "La máquina de café está al fondo, a la derecha, al lado de la cocina.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Где кофемашина?",
+   "options": [
+    "В конце справа, рядом с кухней",
+    "У входа слева",
+    "На втором этаже"
+   ],
+   "answer": 0,
+   "explain": "<b>al fondo</b> = в конце, <b>al lado de</b> = рядом с."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Los viernes vamos a tomar algo después del trabajo. ¿Te apuntas?",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что предлагают?",
+   "options": [
+    "Посидеть вместе в пятницу после работы",
+    "Работать в пятницу дольше",
+    "Записаться на курс"
+   ],
+   "answer": 0,
+   "explain": "<b>¿Te apuntas?</b> = присоединишься?"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Поможешь мне с принтером?",
+   "tokens": [
+    "¿Me",
+    "echas",
+    "una",
+    "mano",
+    "con",
+    "la",
+    "impresora?"
+   ],
+   "distractors": [
+    "das",
+    "el"
+   ],
+   "pattern": "¿Me echas una mano con + [что]?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Как это делается?",
+   "tokens": [
+    "¿Cómo",
+    "se",
+    "hace",
+    "esto?"
+   ],
+   "distractors": [
+    "hago",
+    "qué"
+   ],
+   "pattern": "¿Cómo se hace + [что]?"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Hola, soy el nuevo. Encantado.",
+   "tr": "Привет, я новенький. Очень приятно.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Perdona, ¿me echas una mano? No sé cómo se hace esto.",
+   "tr": "Извини, поможешь мне? Не знаю, как это делается.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.work.colleagues.s1",
+   "title": "Первый день на работе",
+   "emoji": "👥",
+   "userRole": "Ты",
+   "botRole": "Marta",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¡Hola! No te conozco. ¿Empiezas hoy?",
+     "tr": "Привет! Я тебя не знаю. Ты сегодня начинаешь?",
+     "choices": [
+      {
+       "text": "Sí, hoy es mi primer día. Soy Aleks, encantado.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Представиться — идеально 👍 (девушки: encantada)"
+      },
+      {
+       "text": "Sí, nuevo yo.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Скажи: «Sí, soy el nuevo / la nueva»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Encantada, yo soy Marta. ¿Qué tal el primer día?",
+     "tr": "Очень приятно, я Марта. Как первый день?",
+     "choices": [
+      {
+       "text": "Bien, pero hay muchas cosas nuevas.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Честно 👍"
+      },
+      {
+       "text": "Un poco estresante, la verdad.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Нормально признать 💙"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Tranqui, es normal. Si necesitas algo, me dices.",
+     "tr": "Спокойно, это нормально. Если что-то нужно, скажи.",
+     "choices": [
+      {
+       "text": "Gracias. ¿Me echas una mano con la impresora?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Сразу пользуешься помощью 😄"
+      },
+      {
+       "text": "Gracias. ¿Dónde está la máquina de café?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Самый важный вопрос первого дня ☕"
+      }
+     ]
+    },
+    "n4": {
+     "say": "¡Claro! Ven, te enseño. Por cierto, los viernes vamos a tomar algo. ¿Te apuntas?",
+     "tr": "Конечно! Пойдём, покажу. Кстати, по пятницам мы ходим посидеть. Присоединишься?",
+     "choices": [
+      {
+       "text": "¡Me apunto! Gracias por invitarme.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Так появляются друзья на работе 🔥"
+      },
+      {
+       "text": "Esta semana no puedo, pero la próxima sí.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Вежливый отказ с планом 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "¡Genial! Te va a gustar este equipo.",
+     "tr": "Отлично! Тебе понравится эта команда.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

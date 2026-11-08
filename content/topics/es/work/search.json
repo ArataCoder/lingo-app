@@ -1,0 +1,265 @@
+{
+ "id": "es.work.search",
+ "track": "es",
+ "level": "A2",
+ "title": "Поиск работы и объявления",
+ "emoji": "🔎",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "una oferta de trabajo",
+   "tr": "вакансия",
+   "ex": "He visto una oferta de trabajo en InfoJobs."
+  },
+  {
+   "term": "Busco trabajo de…",
+   "tr": "ищу работу…",
+   "ex": "Busco trabajo de camarero."
+  },
+  {
+   "term": "el currículum",
+   "tr": "резюме",
+   "ex": "Le envío el currículum por correo."
+  },
+  {
+   "term": "la experiencia",
+   "tr": "опыт",
+   "ex": "Tengo dos años de experiencia en atención al cliente."
+  },
+  {
+   "term": "jornada completa / media jornada",
+   "tr": "полный / неполный рабочий день",
+   "ex": "Busco media jornada, por las mañanas."
+  },
+  {
+   "term": "¿Cuál es el horario?",
+   "tr": "какой график?",
+   "ex": "Perdone, ¿cuál es el horario?"
+  },
+  {
+   "term": "incorporación inmediata",
+   "tr": "выход на работу сразу",
+   "ex": "Ofrecemos incorporación inmediata."
+  },
+  {
+   "term": "una entrevista",
+   "tr": "собеседование",
+   "ex": "¿Puede venir mañana a una entrevista?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Media jornada» значит…",
+   "options": [
+    "Неполный рабочий день",
+    "Половина зарплаты",
+    "Обед на работе"
+   ],
+   "answer": 0,
+   "explain": "<b>jornada completa</b> = полный день, <b>media jornada</b> = неполный."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как сказать «я видел(а) вакансию»?",
+   "options": [
+    "He visto una oferta de trabajo.",
+    "He mirado un trabajo oferta.",
+    "Vi oferta trabajo."
+   ],
+   "answer": 0,
+   "explain": "<b>He visto</b> = я видел(а). <b>una oferta de trabajo</b> = вакансия."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Incorporación inmediata.",
+   "back": "Выход на работу сразу."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Buscamos dependiente con experiencia, media jornada, de lunes a viernes.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Кого ищут?",
+   "options": [
+    "Продавца с опытом на неполный день, пн–пт",
+    "Повара на полный день",
+    "Продавца без опыта на выходные"
+   ],
+   "answer": 0,
+   "explain": "<b>dependiente</b> = продавец в магазине."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "¿Puede venir mañana a las diez a una entrevista?",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что предлагают?",
+   "options": [
+    "Собеседование завтра в 10",
+    "Начать работать завтра",
+    "Позвонить в 10"
+   ],
+   "answer": 0,
+   "explain": "<b>una entrevista</b> = собеседование."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "У меня два года опыта.",
+   "tokens": [
+    "Tengo",
+    "dos",
+    "años",
+    "de",
+    "experiencia."
+   ],
+   "distractors": [
+    "soy",
+    "con"
+   ],
+   "pattern": "Tengo + [время] + de experiencia"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Какой график?",
+   "tokens": [
+    "¿Cuál",
+    "es",
+    "el",
+    "horario?"
+   ],
+   "distractors": [
+    "qué",
+    "hora"
+   ],
+   "pattern": "¿Cuál es + [что]?"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Hola, he visto una oferta de trabajo y busco media jornada.",
+   "tr": "Здравствуйте, я видел(а) вакансию и ищу неполный день.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Tengo dos años de experiencia en atención al cliente y puedo empezar mañana.",
+   "tr": "У меня два года опыта в обслуживании клиентов, и я могу начать завтра.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.work.search.s1",
+   "title": "Звонок по объявлению",
+   "emoji": "🔎",
+   "userRole": "Ты",
+   "botRole": "Encargada",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Tienda Sol, buenos días, dígame.",
+     "tr": "Магазин Sol, доброе утро, слушаю.",
+     "choices": [
+      {
+       "text": "Buenos días. He visto una oferta de trabajo de dependiente.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Сразу по делу 👍"
+      },
+      {
+       "text": "Hola, quiero trabajo.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Поймут, но лучше упомянуть вакансию."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Ah, sí. ¿Tiene experiencia?",
+     "tr": "А, да. У вас есть опыт?",
+     "choices": [
+      {
+       "text": "Sí, tengo dos años de experiencia en atención al cliente.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Конкретно 🔥"
+      },
+      {
+       "text": "No mucha, pero aprendo muy rápido.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Честно + плюс 💪"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Es media jornada, de nueve a dos. ¿Le viene bien?",
+     "tr": "Это неполный день, с девяти до двух. Вам удобно?",
+     "choices": [
+      {
+       "text": "Sí, me viene perfecto. ¿Cuál es el sueldo?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Спросить зарплату — нормально 👍"
+      },
+      {
+       "text": "Sí. ¿Es de lunes a viernes?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Уточнить дни — полезно."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Ochocientos euros al mes, de lunes a viernes. ¿Puede venir mañana a una entrevista?",
+     "tr": "Восемьсот евро в месяц, с понедельника по пятницу. Можете прийти завтра на собеседование?",
+     "choices": [
+      {
+       "text": "¡Claro! ¿A qué hora le va bien?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Гибко и вежливо 🔥"
+      },
+      {
+       "text": "Sí. ¿Llevo el currículum impreso?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>impreso</b> = распечатанный. Умный вопрос."
+      }
+     ]
+    },
+    "n5": {
+     "say": "A las diez. Traiga el currículum y el NIE. ¡Hasta mañana!",
+     "tr": "В десять. Принесите резюме и NIE. До завтра!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

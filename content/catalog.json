@@ -304,8 +304,8 @@
        "tags": [
         "work"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/es/work/search.json"
       },
       {
        "id": "es.work.interview",
@@ -326,8 +326,8 @@
        "tags": [
         "work"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/es/work/colleagues.json"
       },
       {
        "id": "es.work.calls",
@@ -337,8 +337,8 @@
        "tags": [
         "work"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/es/work/calls.json"
       },
       {
        "id": "es.work.rights",
