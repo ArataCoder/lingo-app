@@ -1,0 +1,318 @@
+{
+  "id": "es.life.rent",
+  "track": "es",
+  "level": "A1",
+  "title": "Аренда и лендлорд",
+  "emoji": "🔑",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "el piso",
+      "tr": "квартира",
+      "ex": "Busco un piso en Torrevieja."
+    },
+    {
+      "term": "el alquiler",
+      "tr": "аренда, плата за аренду",
+      "ex": "El alquiler es de 650 euros al mes."
+    },
+    {
+      "term": "el casero / la casera",
+      "tr": "хозяин / хозяйка квартиры",
+      "ex": "Voy a llamar a la casera."
+    },
+    {
+      "term": "la fianza",
+      "tr": "залог",
+      "ex": "La fianza es de un mes."
+    },
+    {
+      "term": "el contrato",
+      "tr": "договор",
+      "ex": "¿Puedo leer el contrato antes de firmar?"
+    },
+    {
+      "term": "los gastos",
+      "tr": "коммуналка, расходы",
+      "ex": "¿Los gastos están incluidos?"
+    },
+    {
+      "term": "amueblado",
+      "tr": "с мебелью",
+      "ex": "El piso está amueblado."
+    },
+    {
+      "term": "¿Se admiten mascotas?",
+      "tr": "можно с домашними животными?",
+      "ex": "Tengo un gato. ¿Se admiten mascotas?"
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "«La fianza» — это…",
+      "options": [
+        "Залог",
+        "Скидка",
+        "Ключ от квартиры"
+      ],
+      "answer": 0,
+      "explain": "Обычно 1–2 месяца аренды. Её возвращают при выезде, если всё в порядке."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Как спросить, включена ли коммуналка?",
+      "options": [
+        "¿Los gastos están incluidos?",
+        "¿Los gastos son bonitos?",
+        "¿Dónde están los gastos?"
+      ],
+      "answer": 0,
+      "explain": "<b>Los gastos</b> = свет, вода, интернет, плата за дом (comunidad)."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "amueblado",
+      "back": "с мебелью"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "El alquiler es de seiscientos cincuenta euros al mes, con los gastos aparte.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Что сказали про цену?",
+      "options": [
+        "650 € в месяц, коммуналка отдельно",
+        "615 € в месяц, всё включено",
+        "650 € в неделю"
+      ],
+      "answer": 0,
+      "explain": "<b>Aparte</b> = отдельно. <b>Seiscientos cincuenta</b> = 650."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Puede venir a ver el piso mañana a las cinco.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Когда можно посмотреть квартиру?",
+      "options": [
+        "Завтра в 17:00",
+        "Сегодня в 5 утра",
+        "В пятницу в 15:00"
+      ],
+      "answer": 0,
+      "explain": "<b>Ver el piso</b> = посмотреть квартиру. <b>A las cinco</b> = в пять."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Я ищу квартиру с мебелью.",
+      "tokens": [
+        "Busco",
+        "un",
+        "piso",
+        "amueblado"
+      ],
+      "distractors": [
+        "una",
+        "busca"
+      ],
+      "pattern": "Busco + [что] + [какое]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Можно прочитать договор?",
+      "tokens": [
+        "¿Puedo",
+        "leer",
+        "el",
+        "contrato?"
+      ],
+      "distractors": [
+        "la",
+        "puede"
+      ],
+      "pattern": "¿Puedo + [действие]?"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Hola, llamo por el anuncio del piso. ¿Sigue disponible?",
+      "tr": "Здравствуйте, я звоню по объявлению о квартире. Она ещё свободна?",
+      "lang": "es-ES"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "¿Cuánto es la fianza y qué gastos están incluidos?",
+      "tr": "Какой залог и какие расходы включены?",
+      "lang": "es-ES"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "es.life.rent.s1",
+      "title": "Звонок по объявлению",
+      "emoji": "📱",
+      "userRole": "Ты",
+      "botRole": "Casera",
+      "voice": "es-ES",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "¿Sí? Dígame.",
+          "tr": "Да? Слушаю.",
+          "choices": [
+            {
+              "text": "Hola, llamo por el anuncio del piso. ¿Sigue disponible?",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Идеально: приветствие + причина звонка."
+            },
+            {
+              "text": "Piso. ¿Hay?",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Понятно, но резковато. Добавь «Hola» и «llamo por el anuncio»."
+            },
+            {
+              "text": "Perdón, ¿habla inglés?",
+              "next": "n1b",
+              "score": 1,
+              "feedback": "Можно! Но давай попробуем по-испански 💪"
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Un poco… Mejor en español, despacio. ¿Llama por el piso?",
+          "tr": "Немного… Лучше по-испански, медленно. Вы звоните насчёт квартиры?",
+          "choices": [
+            {
+              "text": "Sí, por el piso. ¿Sigue disponible?",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Отлично, ты справился!"
+            }
+          ]
+        },
+        "n2": {
+          "say": "Sí, sigue disponible. Son seiscientos cincuenta euros al mes.",
+          "tr": "Да, ещё свободна. 650 евро в месяц.",
+          "choices": [
+            {
+              "text": "¿Los gastos están incluidos?",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Главный вопрос задан 👍"
+            },
+            {
+              "text": "Vale, perfecto.",
+              "next": "n3",
+              "score": 1,
+              "feedback": "Хорошо, но не забудь уточнить про коммуналку."
+            },
+            {
+              "text": "Es muy caro, adiós.",
+              "next": "n2b",
+              "score": 0,
+              "feedback": "Не сдавайся сразу — о цене иногда можно договориться."
+            }
+          ]
+        },
+        "n2b": {
+          "say": "Espere, espere. El precio se puede hablar un poco.",
+          "tr": "Подождите, подождите. О цене можно немного поговорить.",
+          "choices": [
+            {
+              "text": "Vale. ¿Los gastos están incluidos?",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Хорошо, вернулся к делу."
+            }
+          ]
+        },
+        "n3": {
+          "say": "No, el agua y la luz van aparte. La fianza es de un mes.",
+          "tr": "Нет, вода и свет отдельно. Залог — один месяц.",
+          "choices": [
+            {
+              "text": "Entendido. ¿Puedo ver el piso mañana?",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Супер: понял и сразу договариваешься о просмотре."
+            },
+            {
+              "text": "¿Puede repetir, por favor?",
+              "next": "n3b",
+              "score": 2,
+              "feedback": "Переспросить — нормально и умно."
+            },
+            {
+              "text": "Sí.",
+              "next": "n4",
+              "score": 1,
+              "feedback": "Ок, но лучше сразу спросить про просмотр."
+            }
+          ]
+        },
+        "n3b": {
+          "say": "Claro. El agua y la luz se pagan aparte. La fianza, un mes.",
+          "tr": "Конечно. Вода и свет оплачиваются отдельно. Залог — один месяц.",
+          "choices": [
+            {
+              "text": "Vale, entendido. ¿Puedo ver el piso mañana?",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Вот так — уверенно 💪"
+            }
+          ]
+        },
+        "n4": {
+          "say": "Claro. ¿Le va bien mañana a las cinco?",
+          "tr": "Конечно. Вам удобно завтра в пять?",
+          "choices": [
+            {
+              "text": "Sí, perfecto. Muchas gracias. ¡Hasta mañana!",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Договорились — вежливо и чётко."
+            },
+            {
+              "text": "Mejor a las seis, si puede.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Отлично — ты предложил своё время."
+            }
+          ]
+        },
+        "n5": {
+          "say": "Perfecto. Le envío la dirección por WhatsApp. ¡Hasta mañana!",
+          "tr": "Отлично. Пришлю адрес в WhatsApp. До завтра!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

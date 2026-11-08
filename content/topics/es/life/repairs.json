@@ -1,0 +1,317 @@
+{
+  "id": "es.life.repairs",
+  "track": "es",
+  "level": "A2",
+  "title": "Поломки и мастер",
+  "emoji": "🔧",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "No funciona",
+      "tr": "не работает",
+      "ex": "La lavadora no funciona."
+    },
+    {
+      "term": "Está roto / rota",
+      "tr": "сломан / сломана",
+      "ex": "El grifo está roto."
+    },
+    {
+      "term": "Hay una fuga de agua",
+      "tr": "протекает вода",
+      "ex": "Hay una fuga de agua en el baño."
+    },
+    {
+      "term": "el fontanero",
+      "tr": "сантехник",
+      "ex": "Necesito un fontanero urgente."
+    },
+    {
+      "term": "el electricista",
+      "tr": "электрик",
+      "ex": "El electricista viene mañana."
+    },
+    {
+      "term": "el aire acondicionado",
+      "tr": "кондиционер",
+      "ex": "El aire acondicionado no enfría."
+    },
+    {
+      "term": "el presupuesto",
+      "tr": "смета, расчёт стоимости",
+      "ex": "¿Me puede dar un presupuesto?"
+    },
+    {
+      "term": "¿Cuándo puede venir?",
+      "tr": "когда вы можете прийти?",
+      "ex": "¿Cuándo puede venir a arreglarlo?"
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "«El grifo gotea» — что случилось?",
+      "options": [
+        "Капает кран",
+        "Сломался холодильник",
+        "Нет света"
+      ],
+      "answer": 0,
+      "explain": "<b>El grifo</b> = кран, <b>gotear</b> = капать."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Кого звать, если течёт труба?",
+      "options": [
+        "Al fontanero",
+        "Al electricista",
+        "Al cartero"
+      ],
+      "answer": 0,
+      "explain": "<b>Fontanero</b> = сантехник. <b>Cartero</b> = почтальон 📮"
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "el presupuesto",
+      "back": "смета (сколько будет стоить ремонт)"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Puedo ir el jueves por la mañana, entre las nueve y las once.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Когда придёт мастер?",
+      "options": [
+        "В четверг, с 9 до 11 утра",
+        "В среду вечером",
+        "Во вторник в 11:00"
+      ],
+      "answer": 0,
+      "explain": "<b>El jueves</b> = четверг. <b>Por la mañana</b> = утром."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "La reparación cuesta unos ochenta euros, más IVA.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Сколько стоит ремонт?",
+      "options": [
+        "Около 80 € + НДС",
+        "18 € без налога",
+        "800 € с НДС"
+      ],
+      "answer": 0,
+      "explain": "<b>Unos</b> = примерно. <b>IVA</b> = НДС (21%)."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Стиральная машина не работает.",
+      "tokens": [
+        "La",
+        "lavadora",
+        "no",
+        "funciona"
+      ],
+      "distractors": [
+        "el",
+        "es"
+      ],
+      "pattern": "[вещь] + no funciona"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Когда вы можете прийти?",
+      "tokens": [
+        "¿Cuándo",
+        "puede",
+        "venir?"
+      ],
+      "distractors": [
+        "dónde",
+        "viene"
+      ],
+      "pattern": "¿Cuándo puede + [действие]?"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Hola, hay una fuga de agua en la cocina. ¿Puede venir hoy?",
+      "tr": "Здравствуйте, на кухне протекает вода. Можете прийти сегодня?",
+      "lang": "es-ES"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "El aire acondicionado no enfría. ¿Me puede dar un presupuesto?",
+      "tr": "Кондиционер не охлаждает. Можете посчитать, сколько будет стоить?",
+      "lang": "es-ES"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "es.life.repairs.s1",
+      "title": "Звонок сантехнику",
+      "emoji": "🧰",
+      "userRole": "Ты",
+      "botRole": "Fontanero",
+      "voice": "es-ES",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Fontanería Ruiz, dígame.",
+          "tr": "Сантехника Руис, слушаю.",
+          "choices": [
+            {
+              "text": "Hola, hay una fuga de agua en el baño. ¿Puede venir hoy?",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Проблема + где + когда. Идеально."
+            },
+            {
+              "text": "Agua. Problema. Baño.",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Тебя поймут 🙂 Попробуй: «Hay una fuga de agua en el baño»."
+            },
+            {
+              "text": "¿Es usted fontanero?",
+              "next": "n1b",
+              "score": 1,
+              "feedback": "Хорошее уточнение. Теперь скажи, что случилось."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Sí, soy fontanero. ¿Qué problema tiene?",
+          "tr": "Да, я сантехник. Какая у вас проблема?",
+          "choices": [
+            {
+              "text": "Hay una fuga de agua en el baño.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Вот, чётко 💪"
+            }
+          ]
+        },
+        "n2": {
+          "say": "Vale. ¿Sale mucha agua o gotea un poco?",
+          "tr": "Хорошо. Воды течёт много или немного капает?",
+          "choices": [
+            {
+              "text": "Gotea un poco, debajo del lavabo.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Супер: ещё и сказал, где именно."
+            },
+            {
+              "text": "Sale mucha agua, ¡es urgente!",
+              "next": "n3u",
+              "score": 2,
+              "feedback": "Важно сразу сказать, что срочно."
+            },
+            {
+              "text": "No sé.",
+              "next": "n3",
+              "score": 0,
+              "feedback": "Лучше описать хоть как-то: «mucha» или «poca»."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Entonces puedo ir mañana por la mañana. ¿Le va bien a las diez?",
+          "tr": "Тогда могу прийти завтра утром. Вам удобно в десять?",
+          "choices": [
+            {
+              "text": "Sí, a las diez está bien. ¿Cuánto cuesta, más o menos?",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Сразу спросил цену — по-взрослому."
+            },
+            {
+              "text": "Sí, vale.",
+              "next": "n4",
+              "score": 1,
+              "feedback": "Ок! Цену лучше уточнить заранее."
+            }
+          ]
+        },
+        "n3u": {
+          "say": "Vale, cierre la llave de paso. Llego en una hora.",
+          "tr": "Хорошо, перекройте главный кран. Буду через час.",
+          "choices": [
+            {
+              "text": "Vale, cierro la llave. ¿Cuánto cuesta, más o menos?",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Отлично — понял инструкцию и спросил цену."
+            },
+            {
+              "text": "¿Qué es la llave de paso?",
+              "next": "n3ub",
+              "score": 2,
+              "feedback": "Правильно спросил, если не знаешь."
+            }
+          ]
+        },
+        "n3ub": {
+          "say": "Es la llave general del agua. Suele estar en la cocina o en el baño.",
+          "tr": "Это главный кран воды. Обычно он на кухне или в ванной.",
+          "choices": [
+            {
+              "text": "Ah, vale, la cierro ahora. ¿Cuánto cuesta, más o menos?",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Супер, ты всё понял 💪"
+            }
+          ]
+        },
+        "n4": {
+          "say": "La visita cuesta treinta euros, y luego depende de la pieza.",
+          "tr": "Выезд — 30 евро, а дальше зависит от детали.",
+          "choices": [
+            {
+              "text": "Perfecto. Mi dirección es calle Mayor, diez, segundo B.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Адрес по-испански — молодец!"
+            },
+            {
+              "text": "Vale, gracias.",
+              "next": "n5",
+              "score": 1,
+              "feedback": "Хорошо, только мастеру нужен адрес 😉"
+            }
+          ]
+        },
+        "n5": {
+          "say": "Muy bien. Le mando un mensaje cuando salga. ¡Hasta luego!",
+          "tr": "Отлично. Напишу вам, когда выеду. До встречи!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

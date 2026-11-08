@@ -107,8 +107,8 @@
                 "spain",
                 "housing"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/es/life/rent.json"
             },
             {
               "id": "es.life.nie",
@@ -143,8 +143,8 @@
                 "health",
                 "emergency"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/es/life/doctor.json"
             },
             {
               "id": "es.life.repairs",
@@ -154,8 +154,8 @@
               "tags": [
                 "housing"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/es/life/repairs.json"
             }
           ]
         },
@@ -315,8 +315,8 @@
               "tags": [
                 "work"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/es/work/interview.json"
             },
             {
               "id": "es.work.colleagues",

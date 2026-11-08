@@ -1,0 +1,308 @@
+{
+  "id": "es.work.interview",
+  "track": "es",
+  "level": "B1",
+  "title": "CV и собеседование",
+  "emoji": "🤝",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "el currículum",
+      "tr": "резюме",
+      "ex": "Le envío mi currículum por correo."
+    },
+    {
+      "term": "la entrevista",
+      "tr": "собеседование",
+      "ex": "Tengo una entrevista el lunes."
+    },
+    {
+      "term": "la experiencia",
+      "tr": "опыт",
+      "ex": "Tengo tres años de experiencia."
+    },
+    {
+      "term": "el puesto",
+      "tr": "должность, вакансия",
+      "ex": "Me interesa mucho el puesto."
+    },
+    {
+      "term": "trabajar en equipo",
+      "tr": "работать в команде",
+      "ex": "Me gusta trabajar en equipo."
+    },
+    {
+      "term": "la jornada completa",
+      "tr": "полный рабочий день",
+      "ex": "Busco un trabajo de jornada completa."
+    },
+    {
+      "term": "el sueldo",
+      "tr": "зарплата",
+      "ex": "¿Cuál es el sueldo del puesto?"
+    },
+    {
+      "term": "Aprendo rápido",
+      "tr": "я быстро учусь",
+      "ex": "Mi español no es perfecto, pero aprendo rápido."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "«La jornada parcial» — это…",
+      "options": [
+        "Неполный рабочий день",
+        "Ночная смена",
+        "Испытательный срок"
+      ],
+      "answer": 0,
+      "explain": "<b>Parcial</b> = частичная. Полный день — <b>jornada completa</b>."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Как вежливо сказать, что тебе интересна вакансия?",
+      "options": [
+        "Me interesa mucho el puesto.",
+        "Quiero el dinero del puesto.",
+        "El puesto es interesante para usted."
+      ],
+      "answer": 0,
+      "explain": "<b>Me interesa</b> = мне интересно. Звучит мотивированно."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "Tengo experiencia en atención al cliente.",
+      "back": "У меня есть опыт в обслуживании клиентов."
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "¿Cuándo podría empezar a trabajar con nosotros?",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Что спрашивают?",
+      "options": [
+        "Когда вы можете начать работать?",
+        "Сколько вы хотите получать?",
+        "Где вы работали раньше?"
+      ],
+      "answer": 0,
+      "explain": "<b>Empezar</b> = начать. Ответ: <b>Puedo empezar el lunes</b>."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "El contrato es de seis meses, con posibilidad de ser indefinido.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Какой контракт?",
+      "options": [
+        "На 6 месяцев, потом может стать бессрочным",
+        "Бессрочный с первого дня",
+        "На 6 недель без продления"
+      ],
+      "answer": 0,
+      "explain": "<b>Indefinido</b> = бессрочный контракт. Это то, что все хотят 🙂"
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "У меня три года опыта.",
+      "tokens": [
+        "Tengo",
+        "tres",
+        "años",
+        "de",
+        "experiencia"
+      ],
+      "distractors": [
+        "soy",
+        "con"
+      ],
+      "pattern": "Tengo + [число] + años de experiencia"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Мне нравится работать в команде.",
+      "tokens": [
+        "Me",
+        "gusta",
+        "trabajar",
+        "en",
+        "equipo"
+      ],
+      "distractors": [
+        "con",
+        "gusto"
+      ],
+      "pattern": "Me gusta + [действие]"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Mi español no es perfecto, pero aprendo rápido. También hablo inglés y ruso.",
+      "tr": "Мой испанский не идеален, но я быстро учусь. Ещё я говорю по-английски и по-русски.",
+      "lang": "es-ES"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Me interesa mucho el puesto porque me gusta ayudar a los clientes.",
+      "tr": "Мне очень интересна эта вакансия, потому что мне нравится помогать клиентам.",
+      "lang": "es-ES"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "es.work.interview.s1",
+      "title": "Собеседование в отеле",
+      "emoji": "🏨",
+      "userRole": "Кандидат",
+      "botRole": "Entrevistadora",
+      "voice": "es-ES",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Buenos días. Siéntese, por favor. Hábleme un poco de usted.",
+          "tr": "Доброе утро. Садитесь, пожалуйста. Расскажите немного о себе.",
+          "choices": [
+            {
+              "text": "Buenos días. Me llamo Aleks, soy de Ucrania y vivo en Torrevieja. Tengo experiencia en atención al cliente.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Отличная мини-презентация: имя, откуда, опыт."
+            },
+            {
+              "text": "Soy Aleks.",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Хорошее начало. Добавь опыт: «Tengo experiencia en…»."
+            },
+            {
+              "text": "Perdón, estoy un poco nervioso.",
+              "next": "n1b",
+              "score": 1,
+              "feedback": "Честно и по-человечески. Это нормально!"
+            }
+          ]
+        },
+        "n1b": {
+          "say": "No pasa nada, tranquilo. ¿Cómo se llama y qué experiencia tiene?",
+          "tr": "Ничего страшного, спокойно. Как вас зовут и какой у вас опыт?",
+          "choices": [
+            {
+              "text": "Me llamo Aleks. Tengo experiencia en atención al cliente.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Вот, получилось 💪"
+            }
+          ]
+        },
+        "n2": {
+          "say": "Muy bien. ¿Por qué le interesa este puesto?",
+          "tr": "Хорошо. Почему вас интересует эта вакансия?",
+          "choices": [
+            {
+              "text": "Me gusta trabajar con gente y quiero mejorar mi español.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Мотивация + рост — сильный ответ."
+            },
+            {
+              "text": "Porque necesito trabajo.",
+              "next": "n3",
+              "score": 1,
+              "feedback": "Честно 🙂 Но лучше сказать, что тебе нравится в этой работе."
+            },
+            {
+              "text": "No sé.",
+              "next": "n3",
+              "score": 0,
+              "feedback": "Подготовь заранее одну фразу: «Me gusta…»."
+            }
+          ]
+        },
+        "n3": {
+          "say": "¿Habla otros idiomas?",
+          "tr": "Вы говорите на других языках?",
+          "choices": [
+            {
+              "text": "Sí, hablo inglés, ruso y ucraniano. Mi español no es perfecto, pero aprendo rápido.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Идеально: сильная сторона + честность."
+            },
+            {
+              "text": "Inglés y ruso.",
+              "next": "n4",
+              "score": 1,
+              "feedback": "Хорошо! Можно добавить: «aprendo rápido»."
+            }
+          ]
+        },
+        "n4": {
+          "say": "Perfecto. ¿Cuándo podría empezar?",
+          "tr": "Отлично. Когда вы могли бы начать?",
+          "choices": [
+            {
+              "text": "Puedo empezar el lunes, si le parece bien.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Конкретно и вежливо."
+            },
+            {
+              "text": "Ya mismo, mañana si quiere.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Энергично 😄 Работодатели это любят."
+            },
+            {
+              "text": "¿Cuál es el sueldo?",
+              "next": "n4b",
+              "score": 1,
+              "feedback": "Спросить можно, но сначала ответь на вопрос."
+            }
+          ]
+        },
+        "n4b": {
+          "say": "Eso lo hablamos al final. Primero, ¿cuándo podría empezar?",
+          "tr": "Это обсудим в конце. Сначала — когда вы могли бы начать?",
+          "choices": [
+            {
+              "text": "Perdón. Puedo empezar el lunes.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Хорошо исправился 👍"
+            }
+          ]
+        },
+        "n5": {
+          "say": "Muy bien, Aleks. Le llamamos esta semana. ¡Gracias por venir!",
+          "tr": "Отлично, Алекс. Мы позвоним вам на этой неделе. Спасибо, что пришли!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,326 @@
+{
+  "id": "es.life.doctor",
+  "track": "es",
+  "level": "A1",
+  "title": "Врач, аптека, скорая 112",
+  "emoji": "🚑",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "Me duele…",
+      "tr": "у меня болит…",
+      "ex": "Me duele la cabeza."
+    },
+    {
+      "term": "Tengo fiebre",
+      "tr": "у меня температура",
+      "ex": "Tengo fiebre desde ayer."
+    },
+    {
+      "term": "el centro de salud",
+      "tr": "поликлиника",
+      "ex": "Tengo cita en el centro de salud."
+    },
+    {
+      "term": "pedir cita",
+      "tr": "записаться на приём",
+      "ex": "Quiero pedir cita con el médico."
+    },
+    {
+      "term": "la farmacia de guardia",
+      "tr": "дежурная аптека",
+      "ex": "¿Dónde hay una farmacia de guardia?"
+    },
+    {
+      "term": "la receta",
+      "tr": "рецепт (от врача)",
+      "ex": "Necesito una receta para este medicamento."
+    },
+    {
+      "term": "Soy alérgico a…",
+      "tr": "у меня аллергия на… (женщина: alérgica)",
+      "ex": "Soy alérgico a la penicilina."
+    },
+    {
+      "term": "¡Llame al 112!",
+      "tr": "звоните 112!",
+      "ex": "¡Ayuda! ¡Llame al 112, por favor!"
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Единый номер экстренной помощи в Испании:",
+      "options": [
+        "112",
+        "911",
+        "03"
+      ],
+      "answer": 0,
+      "explain": "<b>112</b> — скорая, полиция и пожарные. Звонок бесплатный, операторы часто говорят и по-английски."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "«Me duele la garganta» — это…",
+      "options": [
+        "Болит горло",
+        "Болит живот",
+        "Болит голова"
+      ],
+      "answer": 0,
+      "explain": "<b>La garganta</b> = горло. <b>La cabeza</b> = голова, <b>el estómago</b> = живот."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "la receta",
+      "back": "рецепт (от врача)"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Tome una pastilla cada ocho horas, después de comer.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Как принимать лекарство?",
+      "options": [
+        "По 1 таблетке каждые 8 часов после еды",
+        "8 таблеток в день до еды",
+        "1 таблетку утром натощак"
+      ],
+      "answer": 0,
+      "explain": "<b>Cada ocho horas</b> = каждые 8 часов. <b>Después de comer</b> = после еды."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "La farmacia de guardia está en la calle Mayor, al lado del banco.",
+        "lang": "es-ES",
+        "rate": 0.85
+      },
+      "q": "Где дежурная аптека?",
+      "options": [
+        "На улице Mayor, рядом с банком",
+        "Напротив больницы",
+        "На пляже, у банка"
+      ],
+      "answer": 0,
+      "explain": "<b>Al lado de</b> = рядом с."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "У меня температура со вчерашнего дня.",
+      "tokens": [
+        "Tengo",
+        "fiebre",
+        "desde",
+        "ayer"
+      ],
+      "distractors": [
+        "soy",
+        "mañana"
+      ],
+      "pattern": "Tengo + [симптом] + desde + [когда]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Я хочу записаться к врачу.",
+      "tokens": [
+        "Quiero",
+        "pedir",
+        "cita",
+        "con",
+        "el",
+        "médico"
+      ],
+      "distractors": [
+        "la",
+        "doy"
+      ],
+      "pattern": "Quiero pedir cita con + [кто]"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Me duele mucho el estómago. ¿Necesito receta para esto?",
+      "tr": "У меня сильно болит живот. Для этого нужен рецепт?",
+      "lang": "es-ES"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Necesito una ambulancia. Estoy en la calle Mayor, número diez.",
+      "tr": "Мне нужна скорая. Я на улице Mayor, дом 10.",
+      "lang": "es-ES"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "es.life.doctor.s1",
+      "title": "В аптеке",
+      "emoji": "💊",
+      "userRole": "Ты",
+      "botRole": "Farmacéutica",
+      "voice": "es-ES",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Buenas tardes. ¿Qué necesita?",
+          "tr": "Добрый день. Что вам нужно?",
+          "choices": [
+            {
+              "text": "Buenas tardes. Me duele la garganta y tengo un poco de fiebre.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Отлично: симптомы чётко и понятно."
+            },
+            {
+              "text": "Medicina.",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Тебя поймут, но лучше назвать симптом: «Me duele…»."
+            },
+            {
+              "text": "No sé decirlo en español…",
+              "next": "n1b",
+              "score": 1,
+              "feedback": "Это нормально! Покажи на себе и используй «Me duele…»."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Tranquilo. ¿Qué le duele? ¿La cabeza, la garganta…?",
+          "tr": "Спокойно. Что у вас болит? Голова, горло…?",
+          "choices": [
+            {
+              "text": "La garganta. Y tengo un poco de fiebre.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Супер, ты справился!"
+            }
+          ]
+        },
+        "n2": {
+          "say": "¿Desde cuándo? ¿Es alérgico a algún medicamento?",
+          "tr": "С каких пор? У вас есть аллергия на какое-нибудь лекарство?",
+          "choices": [
+            {
+              "text": "Desde ayer. No, no soy alérgico.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Ответил на оба вопроса 👏"
+            },
+            {
+              "text": "Desde ayer.",
+              "next": "n2b",
+              "score": 1,
+              "feedback": "Хорошо, но фармацевт спросил ещё про аллергию."
+            },
+            {
+              "text": "Sí.",
+              "next": "n2b",
+              "score": 0,
+              "feedback": "Непонятно, на что «да». Отвечай по частям."
+            }
+          ]
+        },
+        "n2b": {
+          "say": "¿Y alergias? ¿Es alérgico a algo?",
+          "tr": "А аллергия? У вас есть на что-то аллергия?",
+          "choices": [
+            {
+              "text": "No, no soy alérgico a nada.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Чётко! «A nada» = ни на что."
+            },
+            {
+              "text": "Sí, soy alérgico a la penicilina.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Очень важная фраза — хорошо, что ты её знаешь."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Vale. Le doy este jarabe. Tome una cucharada cada ocho horas.",
+          "tr": "Хорошо. Дам вам этот сироп. Принимайте по ложке каждые 8 часов.",
+          "choices": [
+            {
+              "text": "Una cucharada cada ocho horas. ¿Necesito receta?",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Повторил главное — так меньше ошибок."
+            },
+            {
+              "text": "¿Puede repetir, por favor? Más despacio.",
+              "next": "n3b",
+              "score": 2,
+              "feedback": "С лекарствами переспрашивать — правильно!"
+            },
+            {
+              "text": "Vale.",
+              "next": "n4",
+              "score": 1,
+              "feedback": "Ок, но дозировку лучше повторить вслух."
+            }
+          ]
+        },
+        "n3b": {
+          "say": "Claro. Una cucharada… cada ocho horas. Tres veces al día.",
+          "tr": "Конечно. Одна ложка… каждые восемь часов. Три раза в день.",
+          "choices": [
+            {
+              "text": "Entendido, tres veces al día. Gracias.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Идеально 👌"
+            }
+          ]
+        },
+        "n4": {
+          "say": "Este no necesita receta. Si la fiebre sube, vaya al centro de salud.",
+          "tr": "Для этого рецепт не нужен. Если температура поднимется, идите в поликлинику.",
+          "choices": [
+            {
+              "text": "Muchas gracias. ¿Cuánto es?",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Вежливо и по делу."
+            },
+            {
+              "text": "Vale, gracias.",
+              "next": "n5",
+              "score": 1,
+              "feedback": "Хорошо, только не забудь оплатить 😄"
+            }
+          ]
+        },
+        "n5": {
+          "say": "Son seis euros con cincuenta. ¡Que se mejore!",
+          "tr": "6,50 €. Выздоравливайте!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}
