@@ -7,7 +7,7 @@
 // Binding D1 (имя DB): база lingo-brain-db для статистики (users, events)
 // Настройка одним кликом: открой https://<твой-воркер>.workers.dev/setup?key=<SETUP_KEY>
 
-const APP_URL = "https://aratacoder.github.io/lingo-app/?v=12";
+const APP_URL = "https://aratacoder.github.io/lingo-app/?v=13";
 const BOT_USERNAME = "LingoBrainBOT";
 const APP_ORIGIN = "https://aratacoder.github.io";
 const EVENTS = ["app_opened", "topic_selected", "round_completed", "energy_mode_used"];

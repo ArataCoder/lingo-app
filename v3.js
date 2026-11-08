@@ -1,7 +1,7 @@
 /* Lingo Brain v3: каталог тем, «Нет сил», Surprise Box, заморозка серии,
    тренажёр уха, конструктор фраз, шпаргалки и сценарии. Контент: content/*.json */
 (function () {
-  var VER = "12";
+  var VER = "13";
   var V = { cat: null, cfg: null, sur: null, topics: {}, failed: false, track: "es", run: null, lastRun: null };
   var DEF_LANG = { es: "es-ES", en: "en-US" };
   var ACCENT = { "es-ES": "🇪🇸 Кастилья", "es-MX": "🇲🇽 Латино", "es-US": "🌎 Латино", "en-GB": "🇬🇧 Британский", "en-US": "🇺🇸 Американский" };
@@ -171,6 +171,7 @@
   // v3.5: выбираем самый живой голос (Natural/Neural/Google/Enhanced), можно сменить вручную
   var VSKEY = "lingo_voice", VS = {};
   try { VS = JSON.parse(localStorage.getItem(VSKEY) || "{}") || {}; } catch (e) { VS = {}; }
+  if (VS.neural === false) { delete VS.neural; try { localStorage.setItem(VSKEY, JSON.stringify(VS)); } catch (e) {} } // v3.7.1
   function vsSave() { try { localStorage.setItem(VSKEY, JSON.stringify(VS)); } catch (e) {} }
   function vNorm(x) { return String(x.lang || "").split("_").join("-").toLowerCase(); }
   var BADV = /compact|espeak|novelty|whisper|bad news|bells|bubbles|cellos|jester|organ|trinoids|zarvox|superstar|wobble|boing|albert|bahh|fred|junior|ralph|kathy|grandpa|grandma|rocko|shelley|flo|eddy|reed|sandy/i;
@@ -223,14 +224,15 @@
     });
   }
   function audioFor(text, lang) { if (!text) return null; regTopicUrls(); return AUD[aKey(lang, text)] || null; }
-  function loadAudioMap() {
+  function loadAudioMap(tries) {
+    tries = tries || 0;
     try {
-      fetch("assets/audio/manifest.json?v=" + VER).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
-        if (!j || !j.items) return; var n = 0;
+      fetch("assets/audio/manifest.json?v=" + VER + "." + Math.floor(Date.now() / 600000), { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+        if (!j || !j.items) { if (tries < 2) setTimeout(function () { loadAudioMap(tries + 1); }, 4000); return; } var n = 0;
         Object.keys(j.items).forEach(function (k) { if (!AUD[k]) AUD[k] = "assets/audio/" + j.items[k]; n++; });
         AUD_N = n; document.body.classList.add("hasmp3");
         if (window.current === "words" && window.lbNeuralBox) window.lbNeuralBox();
-      }).catch(function () {});
+      }).catch(function () { if (tries < 2) setTimeout(function () { loadAudioMap(tries + 1); }, 4000); });
     } catch (e) {}
   }
   function playUrl(url, text, lang, rate) {
@@ -259,7 +261,7 @@
   function say(text, lang, rate, url) {
     if (!text) return;
     lang = lang || "es-ES";
-    if (VS.neural !== false) { var u = url || audioFor(text, lang); if (u) { playUrl(u, text, lang, rate); return; } }
+    var u = url || audioFor(text, lang); if (u) { playUrl(u, text, lang, rate); return; }
     try { if (SAY_OK && speechSynthesis.getVoices().length && !voicesFor(lang).length) { if (window.toast) toast("🔇 " + text); return; } } catch (e) {}
     ttsSay(text, lang, rate);
   }

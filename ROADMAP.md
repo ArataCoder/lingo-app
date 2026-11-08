@@ -1,5 +1,8 @@
 # Lingo Brain — роадмап (после v3.1)
 
+> 📌 Полное описание проекта, журнал КАЖДОЙ версии и план — в HANDOFF.md (читать первым).
+
+
 Принцип: одно маленькое улучшение за раз, бюджет €0, на бота не больше 1 часа в день. Сначала поиск работы, потом бот.
 
 ## ✅ Готово в v3.1
@@ -120,3 +123,8 @@
 - Player card: 1080x1350 image with XP, level, streak, words; send to chat via bot, share to Stories, save.
 - Neural voice: assets/audio/*.mp3 from edge-tts (generate_audio.py + GitHub Action), smart browser-voice fallback, toggle in Words.
 - Next: broaden content (general social / travel / work / debate topics, less personal).
+
+## v3.7 / v3.7.1 (8 Nov 2026) - done
+- Работа над ошибками в конце раунда, аватарки из Telegram, настройки голоса скрыты (только темп).
+- 832 фразы озвучены mp3 (edge-tts); mp3 всегда приоритетнее системного голоса; манифест без кэша.
+- Подробности: HANDOFF.md
