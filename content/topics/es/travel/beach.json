@@ -1,0 +1,269 @@
+{
+ "id": "es.travel.beach",
+ "track": "es",
+ "level": "A2",
+ "title": "Пляж, спорт, отдых",
+ "emoji": "🏖️",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "la sombrilla",
+   "tr": "пляжный зонт",
+   "ex": "¿Cuánto cuesta alquilar una sombrilla?"
+  },
+  {
+   "term": "la tumbona",
+   "tr": "шезлонг",
+   "ex": "Dos tumbonas para toda la mañana, por favor."
+  },
+  {
+   "term": "alquilar",
+   "tr": "арендовать",
+   "ex": "Queremos alquilar un kayak una hora."
+  },
+  {
+   "term": "la crema solar",
+   "tr": "солнцезащитный крем",
+   "ex": "No te olvides de la crema solar."
+  },
+  {
+   "term": "¿Hay medusas?",
+   "tr": "есть медузы?",
+   "ex": "Oye, ¿hay medusas hoy?"
+  },
+  {
+   "term": "la bandera roja",
+   "tr": "красный флаг (купаться нельзя)",
+   "ex": "Hoy hay bandera roja, no se puede nadar."
+  },
+  {
+   "term": "hacer deporte",
+   "tr": "заниматься спортом",
+   "ex": "Me gusta hacer deporte por la mañana."
+  },
+  {
+   "term": "el chiringuito",
+   "tr": "пляжный бар",
+   "ex": "Nos vemos en el chiringuito."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Hoy hay bandera roja» значит…",
+   "options": [
+    "Сегодня купаться нельзя",
+    "Сегодня праздник",
+    "Сегодня бесплатные шезлонги"
+   ],
+   "answer": 0,
+   "explain": "<b>bandera roja</b> = купание запрещено. <b>amarilla</b> = осторожно."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как попросить два шезлонга?",
+   "options": [
+    "Dos tumbonas, por favor.",
+    "Dos camas de playa, por favor.",
+    "Dos sillas largas, por favor."
+   ],
+   "answer": 0,
+   "explain": "<b>la tumbona</b> = шезлонг."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "¿Hay medusas?",
+   "back": "Есть медузы?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "La sombrilla son ocho euros y cada tumbona, seis.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Сколько стоят зонт и шезлонг?",
+   "options": [
+    "Зонт 8, шезлонг 6",
+    "Зонт 6, шезлонг 8",
+    "Всё вместе 8"
+   ],
+   "answer": 0,
+   "explain": "<b>cada</b> = каждый."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Cuidado, hoy hay muchas medusas cerca de las rocas.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "О чём предупреждают?",
+   "options": [
+    "Много медуз у скал",
+    "Сильные волны",
+    "Пляж закрыт"
+   ],
+   "answer": 0,
+   "explain": "<b>cerca de</b> = рядом с. <b>las rocas</b> = скалы."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Мы хотим арендовать каяк на час.",
+   "tokens": [
+    "Queremos",
+    "alquilar",
+    "un",
+    "kayak",
+    "una",
+    "hora."
+   ],
+   "distractors": [
+    "quiero",
+    "alquiler"
+   ],
+   "pattern": "Queremos alquilar + [что]"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Не забудь солнцезащитный крем.",
+   "tokens": [
+    "No",
+    "te",
+    "olvides",
+    "de",
+    "la",
+    "crema",
+    "solar."
+   ],
+   "distractors": [
+    "olvidas",
+    "del"
+   ],
+   "pattern": "No te olvides de + [что]"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Dos tumbonas y una sombrilla, por favor.",
+   "tr": "Два шезлонга и зонт, пожалуйста.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Me encanta hacer deporte en la playa, pero hoy hay bandera roja.",
+   "tr": "Обожаю заниматься спортом на пляже, но сегодня красный флаг.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.travel.beach.s1",
+   "title": "Шезлонги и медузы",
+   "emoji": "🏖️",
+   "userRole": "Ты",
+   "botRole": "Chico del chiringuito",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¡Hola! ¿Queréis tumbonas?",
+     "tr": "Привет! Хотите шезлонги?",
+     "choices": [
+      {
+       "text": "Sí, dos tumbonas y una sombrilla, por favor.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Полный заказ 👍"
+      },
+      {
+       "text": "Sí, dos camas.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Поймут, но правильно: «dos tumbonas»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Son veinte euros para todo el día.",
+     "tr": "Двадцать евро на весь день.",
+     "choices": [
+      {
+       "text": "Vale. ¿Se puede pagar con tarjeta?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>¿Se puede…?</b> = можно…? 👍"
+      },
+      {
+       "text": "¿Y solo para la mañana? Nos vamos a las dos.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Торг через время — умно 😄"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Sin problema. Oye, cuidado, que hoy hay medusas.",
+     "tr": "Без проблем. Слушай, осторожно, сегодня медузы.",
+     "choices": [
+      {
+       "text": "¡Uf! Gracias por avisar. ¿Dónde hay más?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>Gracias por avisar</b> = спасибо, что предупредил."
+      },
+      {
+       "text": "¿En serio? ¿Y se puede nadar?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Важный вопрос 👍"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Cerca de las rocas, sobre todo. Si queréis, alquilamos kayaks.",
+     "tr": "В основном у скал. Если хотите, сдаём каяки.",
+     "choices": [
+      {
+       "text": "¡Qué guay! Queremos alquilar un kayak una hora.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Спорт вместо медуз 🛶"
+      },
+      {
+       "text": "No, gracias. Hoy solo sol y crema solar.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "План на день — отдыхать 😎"
+      }
+     ]
+    },
+    "n5": {
+     "say": "¡Perfecto! Si necesitáis algo, estoy en el chiringuito.",
+     "tr": "Отлично! Если что-то нужно, я в пляжном баре.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

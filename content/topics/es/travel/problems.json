@@ -1,0 +1,263 @@
+{
+ "id": "es.travel.problems",
+ "track": "es",
+ "level": "A2",
+ "title": "Проблемы в поездке",
+ "emoji": "🧳",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "He perdido…",
+   "tr": "я потерял(а)…",
+   "ex": "He perdido la cartera."
+  },
+  {
+   "term": "Me han robado…",
+   "tr": "у меня украли…",
+   "ex": "Me han robado el móvil en el metro."
+  },
+  {
+   "term": "Mi maleta no ha llegado",
+   "tr": "мой чемодан не прилетел",
+   "ex": "Perdone, mi maleta no ha llegado."
+  },
+  {
+   "term": "poner una denuncia",
+   "tr": "написать заявление в полицию",
+   "ex": "Tengo que poner una denuncia."
+  },
+  {
+   "term": "He perdido el vuelo",
+   "tr": "я опоздал(а) на рейс",
+   "ex": "He perdido el vuelo, ¿qué hago?"
+  },
+  {
+   "term": "¿Me puede ayudar?",
+   "tr": "можете мне помочь?",
+   "ex": "Perdone, ¿me puede ayudar?"
+  },
+  {
+   "term": "la comisaría",
+   "tr": "полицейский участок",
+   "ex": "¿Dónde está la comisaría más cercana?"
+  },
+  {
+   "term": "Es urgente",
+   "tr": "это срочно",
+   "ex": "Es urgente, necesito un médico."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как сказать «у меня украли телефон»?",
+   "options": [
+    "Me han robado el móvil.",
+    "Me han perdido el móvil.",
+    "He robado el móvil."
+   ],
+   "answer": 0,
+   "explain": "<b>Me han robado</b> = у меня украли. «He robado» = я украл(а) 😅"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Poner una denuncia» значит…",
+   "options": [
+    "Написать заявление в полицию",
+    "Поставить оценку",
+    "Пожаловаться в отеле"
+   ],
+   "answer": 0,
+   "explain": "Для страховки почти всегда нужна <b>denuncia</b>."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Mi maleta no ha llegado.",
+   "back": "Мой чемодан не прилетел."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Tiene que ir a la comisaría y poner una denuncia.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что нужно сделать?",
+   "options": [
+    "Пойти в участок и написать заявление",
+    "Позвонить в банк",
+    "Купить новый билет"
+   ],
+   "answer": 0,
+   "explain": "<b>Tiene que</b> = вам нужно."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Su maleta llega mañana en el primer vuelo. Se la llevamos al hotel.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что будет с чемоданом?",
+   "options": [
+    "Завтра привезут в отель",
+    "Потерян навсегда",
+    "Нужно забрать сегодня"
+   ],
+   "answer": 0,
+   "explain": "<b>Se la llevamos</b> = мы вам его привезём."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я потерял(а) кошелёк.",
+   "tokens": [
+    "He",
+    "perdido",
+    "la",
+    "cartera."
+   ],
+   "distractors": [
+    "perdida",
+    "el"
+   ],
+   "pattern": "He perdido + [что]"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Можете мне помочь?",
+   "tokens": [
+    "¿Me",
+    "puede",
+    "ayudar?"
+   ],
+   "distractors": [
+    "ayuda",
+    "puedo"
+   ],
+   "pattern": "¿Me puede + [глагол]?"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Perdone, ¿me puede ayudar? Mi maleta no ha llegado.",
+   "tr": "Простите, можете мне помочь? Мой чемодан не прилетел.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Me han robado el móvil y tengo que poner una denuncia. ¿Dónde está la comisaría?",
+   "tr": "У меня украли телефон, и мне нужно написать заявление. Где полицейский участок?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.travel.problems.s1",
+   "title": "Чемодан не прилетел",
+   "emoji": "🧳",
+   "userRole": "Ты",
+   "botRole": "Empleada del aeropuerto",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Buenas tardes. ¿En qué puedo ayudarle?",
+     "tr": "Добрый день. Чем могу помочь?",
+     "choices": [
+      {
+       "text": "Buenas tardes. Mi maleta no ha llegado.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Сразу суть 👍"
+      },
+      {
+       "text": "Maleta no.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Нужно полное предложение: «Mi maleta no ha llegado»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Lo siento. ¿Me enseña la tarjeta de embarque y el resguardo de la maleta?",
+     "tr": "Сожалею. Покажете посадочный и багажную квитанцию?",
+     "choices": [
+      {
+       "text": "Claro, aquí tiene.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Вежливо 👍"
+      },
+      {
+       "text": "Tengo la tarjeta de embarque en el móvil. ¿Vale así?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>¿Vale así?</b> = так подойдёт?"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Gracias. ¿Cómo es la maleta?",
+     "tr": "Спасибо. Как выглядит чемодан?",
+     "choices": [
+      {
+       "text": "Es grande, negra, con una cinta roja.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Детали помогают найти 🔥"
+      },
+      {
+       "text": "Es una maleta normal.",
+       "next": "n4",
+       "score": 1,
+       "feedback": "Им нужны детали: цвет, размер."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Su maleta está en Barcelona. Llega mañana y se la llevamos al hotel.",
+     "tr": "Ваш чемодан в Барселоне. Прилетит завтра, и мы привезём его в отель.",
+     "choices": [
+      {
+       "text": "Perfecto. ¿Me puede dar un número de referencia?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Номер заявки — обязательно 💪"
+      },
+      {
+       "text": "Vale, pero es urgente. Tengo mis medicinas dentro.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Объяснить срочность — правильно."
+      }
+     ]
+    },
+    "n5": {
+     "say": "Claro. Este es su número. Le llamamos mañana por la mañana.",
+     "tr": "Конечно. Вот ваш номер. Позвоним вам завтра утром.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

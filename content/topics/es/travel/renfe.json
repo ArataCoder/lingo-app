@@ -1,0 +1,264 @@
+{
+ "id": "es.travel.renfe",
+ "track": "es",
+ "level": "A2",
+ "title": "Вокзал, Renfe, аэропорт",
+ "emoji": "🚆",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "un billete de ida y vuelta",
+   "tr": "билет туда и обратно",
+   "ex": "Un billete de ida y vuelta a Madrid, por favor."
+  },
+  {
+   "term": "solo ida",
+   "tr": "только туда",
+   "ex": "Solo ida, gracias."
+  },
+  {
+   "term": "¿De qué andén sale?",
+   "tr": "с какой платформы отправляется?",
+   "ex": "Perdone, ¿de qué andén sale el tren a Alicante?"
+  },
+  {
+   "term": "llevar retraso",
+   "tr": "опаздывать (о транспорте)",
+   "ex": "El tren lleva veinte minutos de retraso."
+  },
+  {
+   "term": "la tarjeta de embarque",
+   "tr": "посадочный талон",
+   "ex": "Tengo la tarjeta de embarque en el móvil."
+  },
+  {
+   "term": "facturar la maleta",
+   "tr": "сдать чемодан в багаж",
+   "ex": "¿Dónde puedo facturar la maleta?"
+  },
+  {
+   "term": "la puerta de embarque",
+   "tr": "выход на посадку",
+   "ex": "La puerta de embarque es la B12."
+  },
+  {
+   "term": "¿Hay descuento para…?",
+   "tr": "есть скидка для…?",
+   "ex": "¿Hay descuento para jóvenes?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как попросить билет туда и обратно?",
+   "options": [
+    "Un billete de ida y vuelta, por favor.",
+    "Un billete de ir y volver, por favor.",
+    "Un billete doble camino, por favor."
+   ],
+   "answer": 0,
+   "explain": "<b>ida y vuelta</b> = туда и обратно; <b>solo ida</b> = только туда."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«El tren lleva retraso» значит…",
+   "options": [
+    "Поезд опаздывает",
+    "Поезд отменён",
+    "Поезд уже ушёл"
+   ],
+   "answer": 0,
+   "explain": "<b>llevar retraso</b> = опаздывать."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "¿De qué andén sale?",
+   "back": "С какой платформы отправляется?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "El tren con destino Madrid sale del andén tres a las diez y cuarto.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Откуда и когда поезд?",
+   "options": [
+    "С 3-й платформы в 10:15",
+    "С 10-й платформы в 3:15",
+    "С 3-й платформы в 10:45"
+   ],
+   "answer": 0,
+   "explain": "<b>y cuarto</b> = :15. <b>menos cuarto</b> = без четверти."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Atención: el vuelo a Varsovia embarca por la puerta B12.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что объявили?",
+   "options": [
+    "Посадка на рейс в Варшаву у выхода B12",
+    "Рейс в Варшаву отменён",
+    "Рейс задерживается на 12 минут"
+   ],
+   "answer": 0,
+   "explain": "<b>embarcar</b> = садиться на борт. <b>Varsovia</b> = Варшава."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Где можно сдать чемодан?",
+   "tokens": [
+    "¿Dónde",
+    "puedo",
+    "facturar",
+    "la",
+    "maleta?"
+   ],
+   "distractors": [
+    "poder",
+    "el"
+   ],
+   "pattern": "¿Dónde puedo + [глагол]?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Только туда, спасибо.",
+   "tokens": [
+    "Solo",
+    "ida,",
+    "gracias."
+   ],
+   "distractors": [
+    "vuelta",
+    "ir"
+   ],
+   "pattern": "Solo ida."
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Un billete de ida y vuelta a Madrid, por favor.",
+   "tr": "Билет туда и обратно до Мадрида, пожалуйста.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Perdone, el tren lleva retraso. ¿De qué andén sale ahora?",
+   "tr": "Простите, поезд опаздывает. С какой платформы он теперь отправляется?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.travel.renfe.s1",
+   "title": "Билет на поезд до Мадрида",
+   "emoji": "🚆",
+   "userRole": "Ты",
+   "botRole": "Taquillera",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hola, buenos días. ¿Qué desea?",
+     "tr": "Здравствуйте, доброе утро. Что желаете?",
+     "choices": [
+      {
+       "text": "Buenos días. Un billete a Madrid para mañana, por favor.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Чётко: куда + когда 👍"
+      },
+      {
+       "text": "Madrid tren.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Слишком коротко. «Un billete a Madrid, por favor»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "¿Solo ida o ida y vuelta?",
+     "tr": "Только туда или туда и обратно?",
+     "choices": [
+      {
+       "text": "Ida y vuelta. Vuelvo el domingo.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Сразу дата возврата 🔥"
+      },
+      {
+       "text": "Solo ida, gracias.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Коротко 👍"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Hay un AVE a las nueve y otro a las doce menos cuarto.",
+     "tr": "Есть скоростной поезд в девять и ещё один в 11:45.",
+     "choices": [
+      {
+       "text": "El de las nueve, por favor. ¿Hay descuento para jóvenes?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Спросить скидку — всегда стоит 💸"
+      },
+      {
+       "text": "El de las doce menos cuarto, que no quiero madrugar.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Честно 😄"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Son sesenta y dos euros. ¿Con tarjeta o en efectivo?",
+     "tr": "С вас 62 евро. Картой или наличными?",
+     "choices": [
+      {
+       "text": "Con tarjeta. ¿De qué andén sale?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Полезный вопрос 👍"
+      },
+      {
+       "text": "En efectivo. Aquí tiene.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Вежливо 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Sale del andén cinco. Mire la pantalla por si cambia. ¡Buen viaje!",
+     "tr": "Отправляется с пятой платформы. Следите за табло на случай изменений. Хорошей поездки!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

@@ -250,8 +250,8 @@
        "tags": [
         "travel"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/es/travel/renfe.json"
       },
       {
        "id": "es.travel.directions",
@@ -272,8 +272,8 @@
        "tags": [
         "leisure"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/es/travel/beach.json"
       },
       {
        "id": "es.travel.problems",
@@ -284,8 +284,8 @@
         "travel",
         "emergency"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/es/travel/problems.json"
       }
      ]
     },
