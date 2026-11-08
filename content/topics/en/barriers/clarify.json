@@ -1,0 +1,292 @@
+{
+  "id": "en.barriers.clarify",
+  "track": "en",
+  "level": "B1",
+  "title": "Переспросить и уточнить",
+  "emoji": "❓",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "Sorry, could you repeat that?",
+      "tr": "извините, можете повторить?",
+      "ex": "Sorry, could you repeat that, please?"
+    },
+    {
+      "term": "Could you speak a bit slower?",
+      "tr": "можно чуть медленнее?",
+      "ex": "Could you speak a bit slower? The connection is bad."
+    },
+    {
+      "term": "What do you mean by…?",
+      "tr": "что вы имеете в виду под…?",
+      "ex": "What do you mean by ASAP?"
+    },
+    {
+      "term": "Just to clarify,…",
+      "tr": "просто уточню…",
+      "ex": "Just to clarify, is the deadline on Friday?"
+    },
+    {
+      "term": "So you're saying that…",
+      "tr": "то есть вы говорите, что…",
+      "ex": "So you're saying that we need more tests?"
+    },
+    {
+      "term": "Did you say…?",
+      "tr": "вы сказали…?",
+      "ex": "Did you say fifteen or fifty?"
+    },
+    {
+      "term": "Sorry, you broke up",
+      "tr": "простите, связь прервалась",
+      "ex": "Sorry, you broke up for a second."
+    },
+    {
+      "term": "Could you give me an example?",
+      "tr": "можете привести пример?",
+      "ex": "That's interesting. Could you give me an example?"
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "На созвоне пропал звук. Что сказать?",
+      "options": [
+        "Sorry, you broke up for a second.",
+        "Sorry, you are broken.",
+        "Your voice is died."
+      ],
+      "answer": 0,
+      "explain": "<b>You broke up</b> = связь прервалась. «You are broken» = «ты сломан» 😅"
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Как уточнить дедлайн и не звучать неуверенно?",
+      "options": [
+        "Just to clarify, is it due on Friday?",
+        "I didn't understand nothing.",
+        "Repeat, please, all again."
+      ],
+      "answer": 0,
+      "explain": "<b>Just to clarify</b> звучит профессионально и спокойно."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "What do you mean by that?",
+      "back": "Что вы имеете в виду?"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Did you say fifteen or fifty?",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Что уточняют?",
+      "options": [
+        "15 или 50?",
+        "50 или 500?",
+        "5 или 15?"
+      ],
+      "answer": 0,
+      "explain": "Fif<b>teen</b> — ударение в конце, <b>fif</b>ty — в начале."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "So you're saying that we should launch next month instead?",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Что уточняет собеседник?",
+      "options": [
+        "Что запуск переносят на следующий месяц",
+        "Что запуск отменили",
+        "Что запуск будет завтра"
+      ],
+      "answer": 0,
+      "explain": "<b>Instead</b> = вместо этого. <b>So you're saying…</b> — пересказ, чтобы проверить понимание."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Можете говорить чуть медленнее?",
+      "tokens": [
+        "Could",
+        "you",
+        "speak",
+        "a",
+        "bit",
+        "slower?"
+      ],
+      "distractors": [
+        "very",
+        "speaking"
+      ],
+      "pattern": "Could you + [действие] + a bit + [-er]?"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Можете привести пример?",
+      "tokens": [
+        "Could",
+        "you",
+        "give",
+        "me",
+        "an",
+        "example?"
+      ],
+      "distractors": [
+        "a",
+        "say"
+      ],
+      "pattern": "Could you + [действие]?"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Sorry, could you repeat that? I didn't quite catch it.",
+      "tr": "Извините, можете повторить? Я не совсем расслышал.",
+      "lang": "en-US"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Just to clarify, you need the report by Friday, right?",
+      "tr": "Просто уточню: отчёт нужен к пятнице, верно?",
+      "lang": "en-US"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "en.barriers.clarify.s1",
+      "title": "Созвон с плохой связью",
+      "emoji": "📶",
+      "userRole": "Ты",
+      "botRole": "Manager",
+      "voice": "en-US",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Hi! So, we need the… …by Thursday.",
+          "tr": "Привет! Значит, нам нужен… [шум] …к четвергу.",
+          "choices": [
+            {
+              "text": "Sorry, you broke up. Could you repeat that?",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Идеально и вежливо."
+            },
+            {
+              "text": "OK!",
+              "next": "n1x",
+              "score": 0,
+              "feedback": "Опасно: ты не понял, что нужно к четвергу 😬"
+            },
+            {
+              "text": "What?",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Поймут, но звучит резковато. Лучше: «Sorry, could you repeat that?»."
+            }
+          ]
+        },
+        "n1x": {
+          "say": "Great, so I'll see the presentation on Thursday!",
+          "tr": "Отлично, значит, увижу презентацию в четверг!",
+          "choices": [
+            {
+              "text": "Sorry, just to clarify: which presentation?",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Хорошо, что уточнил, пока не поздно!"
+            }
+          ]
+        },
+        "n2": {
+          "say": "Sure. We need the client presentation by Thursday.",
+          "tr": "Конечно. Нам нужна презентация для клиента к четвергу.",
+          "choices": [
+            {
+              "text": "Got it. Just to clarify, do you mean this Thursday?",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Уточнение даты — очень профессионально."
+            },
+            {
+              "text": "Got it.",
+              "next": "n3",
+              "score": 1,
+              "feedback": "Нормально, но дату лучше уточнить."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Yes, this Thursday. Around fifteen slides, nothing crazy.",
+          "tr": "Да, в этот четверг. Около 15 слайдов, ничего сложного.",
+          "choices": [
+            {
+              "text": "Did you say fifteen or fifty?",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Классическая ловушка — хорошо, что переспросил!"
+            },
+            {
+              "text": "Fifty slides? That's a lot!",
+              "next": "n4",
+              "score": 1,
+              "feedback": "Послышалось 😄 Лучше переспросить: «Did you say…?»."
+            },
+            {
+              "text": "OK, fifteen slides. No problem.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Повторил цифру — чётко."
+            }
+          ]
+        },
+        "n4": {
+          "say": "Fifteen, one-five. And keep it simple, the client isn't technical.",
+          "tr": "Пятнадцать, один-пять. И попроще: клиент не технарь.",
+          "choices": [
+            {
+              "text": "So you're saying I should avoid technical details?",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Пересказ своими словами — суперприём."
+            },
+            {
+              "text": "What do you mean by simple?",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Отличный уточняющий вопрос."
+            }
+          ]
+        },
+        "n5": {
+          "say": "Exactly. Thanks for checking, that really helps!",
+          "tr": "Именно. Спасибо, что уточнил, это очень помогает!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,299 @@
+{
+  "id": "en.biz.meetings",
+  "track": "en",
+  "level": "B2",
+  "title": "Митинги и стендапы",
+  "emoji": "🗓️",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "Yesterday I worked on…",
+      "tr": "вчера я работал над…",
+      "ex": "Yesterday I worked on the login page."
+    },
+    {
+      "term": "Today I'm going to…",
+      "tr": "сегодня я собираюсь…",
+      "ex": "Today I'm going to fix the payment bug."
+    },
+    {
+      "term": "I'm blocked by…",
+      "tr": "меня блокирует…",
+      "ex": "I'm blocked by the missing API keys."
+    },
+    {
+      "term": "on track",
+      "tr": "идём по плану",
+      "ex": "We're on track for the Friday release."
+    },
+    {
+      "term": "behind schedule",
+      "tr": "отстаём от графика",
+      "ex": "The project is a bit behind schedule."
+    },
+    {
+      "term": "Let's take this offline",
+      "tr": "давайте обсудим это отдельно",
+      "ex": "Good point. Let's take this offline after the call."
+    },
+    {
+      "term": "action items",
+      "tr": "задачи по итогам встречи",
+      "ex": "Let's go over the action items."
+    },
+    {
+      "term": "I'll keep you posted",
+      "tr": "буду держать в курсе",
+      "ex": "I'm still waiting for an answer. I'll keep you posted."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "«We're behind schedule» — это…",
+      "options": [
+        "Мы отстаём от графика",
+        "Мы опережаем график",
+        "Мы в отпуске"
+      ],
+      "answer": 0,
+      "explain": "Опережать — <b>ahead of schedule</b>, по плану — <b>on track</b>."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Как сказать на стендапе, что тебе что-то мешает?",
+      "options": [
+        "I'm blocked by the design review.",
+        "I'm blocking the design review.",
+        "The design review is my block."
+      ],
+      "answer": 0,
+      "explain": "<b>I'm blocked by…</b> = меня блокирует… «I'm blocking» — это ты блокируешь других 😅"
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "I'll keep you posted.",
+      "back": "Буду держать в курсе."
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Yesterday I finished the report. Today I'm going to start on the dashboard.",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Что планируют на сегодня?",
+      "options": [
+        "Начать дашборд",
+        "Закончить отчёт",
+        "Отправить отчёт клиенту"
+      ],
+      "answer": 0,
+      "explain": "Отчёт — это вчера (<b>finished</b>), дашборд — сегодня (<b>going to start</b>)."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Let's take this offline. Can you two set up a quick call after the meeting?",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Что предлагает руководитель?",
+      "options": [
+        "Обсудить это отдельно после встречи",
+        "Отключить интернет",
+        "Отменить встречу"
+      ],
+      "answer": 0,
+      "explain": "<b>Take it offline</b> — не про интернет, а «не тратить время всех, обсудим вдвоём»."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Мы идём по плану к релизу в пятницу.",
+      "tokens": [
+        "We're",
+        "on",
+        "track",
+        "for",
+        "the",
+        "Friday",
+        "release"
+      ],
+      "distractors": [
+        "in",
+        "way"
+      ],
+      "pattern": "We're on track for + [что]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Давайте пройдёмся по задачам.",
+      "tokens": [
+        "Let's",
+        "go",
+        "over",
+        "the",
+        "action",
+        "items"
+      ],
+      "distractors": [
+        "make",
+        "under"
+      ],
+      "pattern": "Let's go over + [что]"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Yesterday I worked on the login page. Today I'm going to write tests. No blockers.",
+      "tr": "Вчера я работал над страницей входа. Сегодня буду писать тесты. Блокеров нет.",
+      "lang": "en-US"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "I'm blocked by the missing API keys. Could someone help me with that after the call?",
+      "tr": "Меня блокирует отсутствие API-ключей. Может кто-нибудь помочь после созвона?",
+      "lang": "en-US"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "en.biz.meetings.s1",
+      "title": "Дейли-стендап",
+      "emoji": "📅",
+      "userRole": "Ты",
+      "botRole": "Team lead",
+      "voice": "en-US",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Morning, everyone! Let's start. What did you work on yesterday?",
+          "tr": "Всем доброе утро! Начинаем. Над чем ты работал вчера?",
+          "choices": [
+            {
+              "text": "Yesterday I worked on the onboarding emails and finished the first draft.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Коротко и по делу — идеальный формат стендапа."
+            },
+            {
+              "text": "Many things. Emails, meetings, some research, and also a lot of other small stuff…",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Стендап — это 30 секунд. Назови главное."
+            },
+            {
+              "text": "Emails.",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Слишком коротко. Добавь результат: «finished the first draft»."
+            }
+          ]
+        },
+        "n2": {
+          "say": "Nice. And what's the plan for today?",
+          "tr": "Отлично. А какой план на сегодня?",
+          "choices": [
+            {
+              "text": "Today I'm going to get feedback from the design team and make the final version.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Чёткий план 👍"
+            },
+            {
+              "text": "I will see.",
+              "next": "n3",
+              "score": 0,
+              "feedback": "Звучит как «не знаю». Назови одну конкретную задачу."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Any blockers?",
+          "tr": "Есть блокеры?",
+          "choices": [
+            {
+              "text": "Yes, I'm blocked by the design review. I need their comments by tomorrow.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Блокер + что нужно + когда. Профессионально!"
+            },
+            {
+              "text": "No blockers, I'm on track.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Коротко и уверенно."
+            },
+            {
+              "text": "The designers are slow and I don't like their ideas.",
+              "next": "n4",
+              "score": 0,
+              "feedback": "На общем созвоне лучше без критики. Опиши факт: «I'm blocked by…»."
+            }
+          ]
+        },
+        "n4": {
+          "say": "Okay, that sounds like a longer discussion.",
+          "tr": "Понял, похоже, это длинный разговор.",
+          "choices": [
+            {
+              "text": "Sure, let's take this offline. I'll message you after the call.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Идеально использовал «take this offline»."
+            },
+            {
+              "text": "Let me explain everything now.",
+              "next": "n5",
+              "score": 1,
+              "feedback": "На стендапе все ждут. Лучше обсудить отдельно."
+            }
+          ]
+        },
+        "n5": {
+          "say": "Thanks! Let's go over the action items at the end.",
+          "tr": "Спасибо! Пройдёмся по задачам в конце.",
+          "choices": [
+            {
+              "text": "Sounds good. I'll keep you posted on the emails.",
+              "next": "n6",
+              "score": 2,
+              "feedback": "Отличная финальная фраза."
+            },
+            {
+              "text": "OK.",
+              "next": "n6",
+              "score": 1,
+              "feedback": "Нормально. «I'll keep you posted» звучит ещё лучше."
+            }
+          ]
+        },
+        "n6": {
+          "say": "Perfect. Great update, thanks!",
+          "tr": "Отлично. Классный апдейт, спасибо!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

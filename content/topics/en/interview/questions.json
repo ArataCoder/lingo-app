@@ -1,0 +1,286 @@
+{
+  "id": "en.interview.questions",
+  "track": "en",
+  "level": "B2",
+  "title": "Вопросы работодателю",
+  "emoji": "🧾",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "Do you have any questions for us?",
+      "tr": "у вас есть вопросы к нам?",
+      "ex": "That's all from me. Do you have any questions for us?"
+    },
+    {
+      "term": "What does a typical day look like?",
+      "tr": "как выглядит обычный день?",
+      "ex": "What does a typical day look like in this role?"
+    },
+    {
+      "term": "What are the next steps?",
+      "tr": "какие следующие шаги?",
+      "ex": "Thank you! What are the next steps?"
+    },
+    {
+      "term": "How do you measure success?",
+      "tr": "как вы оцениваете успех?",
+      "ex": "How do you measure success in this position?"
+    },
+    {
+      "term": "the team I'd be working with",
+      "tr": "команда, с которой я бы работал",
+      "ex": "Could you tell me about the team I'd be working with?"
+    },
+    {
+      "term": "onboarding",
+      "tr": "адаптация новичка",
+      "ex": "What does onboarding look like for new hires?"
+    },
+    {
+      "term": "the biggest challenge",
+      "tr": "главная сложность",
+      "ex": "What's the biggest challenge for the team right now?"
+    },
+    {
+      "term": "I'm really excited about…",
+      "tr": "меня очень вдохновляет…",
+      "ex": "I'm really excited about this opportunity."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Рекрутер: «Do you have any questions for us?» Что лучше ответить?",
+      "options": [
+        "Yes! What does a typical day look like?",
+        "No, everything is clear.",
+        "How many days of vacation do I get?"
+      ],
+      "answer": 0,
+      "explain": "«No questions» = «мне неинтересно». Про отпуск лучше спрашивать после оффера."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Как правильно спросить про обычный рабочий день?",
+      "options": [
+        "What does a typical day look like?",
+        "How does a typical day look like?",
+        "How is a typical day looks?"
+      ],
+      "answer": 0,
+      "explain": "Либо <b>What does it look like?</b>, либо <b>How does it look?</b> — но не «How… look like»."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "What are the next steps?",
+      "back": "Какие следующие шаги?"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "The next step is a short call with the team lead, probably next week.",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Какой следующий этап?",
+      "options": [
+        "Короткий звонок с тимлидом на следующей неделе",
+        "Тестовое задание до завтра",
+        "Оффер сегодня вечером"
+      ],
+      "answer": 0,
+      "explain": "<b>Team lead</b> = тимлид, <b>probably</b> = скорее всего."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "We measure success by customer satisfaction and how fast we solve problems.",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Как оценивают успех?",
+      "options": [
+        "По довольству клиентов и скорости решения проблем",
+        "По количеству продаж",
+        "По числу отработанных часов"
+      ],
+      "answer": 0,
+      "explain": "<b>Customer satisfaction</b> = довольство клиентов."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Как выглядит обычный день?",
+      "tokens": [
+        "What",
+        "does",
+        "a",
+        "typical",
+        "day",
+        "look",
+        "like?"
+      ],
+      "distractors": [
+        "how",
+        "is"
+      ],
+      "pattern": "What does + [что] + look like?"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Какие следующие шаги?",
+      "tokens": [
+        "What",
+        "are",
+        "the",
+        "next",
+        "steps?"
+      ],
+      "distractors": [
+        "is",
+        "after"
+      ],
+      "pattern": "What are the next + [что]?"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Could you tell me about the team I'd be working with?",
+      "tr": "Расскажите, пожалуйста, о команде, с которой я бы работал.",
+      "lang": "en-US"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Thank you for your time. I'm really excited about this role. What are the next steps?",
+      "tr": "Спасибо за ваше время. Меня очень вдохновляет эта роль. Какие следующие шаги?",
+      "lang": "en-US"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "en.interview.questions.s1",
+      "title": "Конец собеседования",
+      "emoji": "🤝",
+      "userRole": "Кандидат",
+      "botRole": "Recruiter",
+      "voice": "en-US",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "That's all from my side. Do you have any questions for us?",
+          "tr": "С моей стороны всё. У вас есть вопросы к нам?",
+          "choices": [
+            {
+              "text": "Yes, thank you! What does a typical day look like in this role?",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Отличный первый вопрос — показывает интерес."
+            },
+            {
+              "text": "No, I think everything is clear.",
+              "next": "n1b",
+              "score": 0,
+              "feedback": "Рекрутеры ждут хотя бы 1–2 вопроса."
+            },
+            {
+              "text": "What's the salary?",
+              "next": "n1c",
+              "score": 1,
+              "feedback": "Можно, но лучше начать с вопроса про работу."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Are you sure? Nothing about the team or the role?",
+          "tr": "Вы уверены? Ничего про команду или роль?",
+          "choices": [
+            {
+              "text": "Actually, yes. What does a typical day look like?",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Хорошо спас ситуацию 👍"
+            }
+          ]
+        },
+        "n1c": {
+          "say": "We'll discuss the package at the offer stage. Anything about the role itself?",
+          "tr": "Условия обсудим на этапе оффера. Есть вопросы про саму роль?",
+          "choices": [
+            {
+              "text": "Of course. What does a typical day look like?",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Хорошо перестроился."
+            }
+          ]
+        },
+        "n2": {
+          "say": "Mostly calls with clients and working closely with the support team.",
+          "tr": "В основном звонки с клиентами и тесная работа с командой поддержки.",
+          "choices": [
+            {
+              "text": "That sounds great. How do you measure success in this role?",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Сильный вопрос — ты думаешь о результате."
+            },
+            {
+              "text": "What's the biggest challenge for the team right now?",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Отличный вопрос: показывает, что ты готов помогать."
+            },
+            {
+              "text": "OK.",
+              "next": "n3",
+              "score": 1,
+              "feedback": "Можно задать ещё один вопрос — это только плюс."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Good question. Mainly customer satisfaction and fast response times.",
+          "tr": "Хороший вопрос. В основном по довольству клиентов и скорости ответа.",
+          "choices": [
+            {
+              "text": "Thank you. I'm really excited about this role. What are the next steps?",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Идеальный финал: благодарность + мотивация + next steps."
+            },
+            {
+              "text": "OK, bye.",
+              "next": "n4",
+              "score": 0,
+              "feedback": "Слишком резко. Поблагодари и спроси про следующие шаги."
+            }
+          ]
+        },
+        "n4": {
+          "say": "We'll get back to you by Friday. Thanks for your time!",
+          "tr": "Мы свяжемся с вами до пятницы. Спасибо за ваше время!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,294 @@
+{
+  "id": "en.interview.star",
+  "track": "en",
+  "level": "B2",
+  "title": "Поведенческие вопросы (STAR)",
+  "emoji": "⭐",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "Situation",
+      "tr": "ситуация, контекст",
+      "ex": "In my last job, we had a lot of angry customers."
+    },
+    {
+      "term": "Task",
+      "tr": "задача, твоя роль",
+      "ex": "My task was to reduce the number of complaints."
+    },
+    {
+      "term": "Action",
+      "tr": "действие: что сделал именно ты",
+      "ex": "I created a simple FAQ for the team."
+    },
+    {
+      "term": "Result",
+      "tr": "результат, лучше с цифрой",
+      "ex": "As a result, complaints dropped by 30%."
+    },
+    {
+      "term": "I was responsible for…",
+      "tr": "я отвечал за…",
+      "ex": "I was responsible for onboarding new clients."
+    },
+    {
+      "term": "I took the initiative to…",
+      "tr": "я по своей инициативе…",
+      "ex": "I took the initiative to fix the process."
+    },
+    {
+      "term": "The main challenge was…",
+      "tr": "главной сложностью было…",
+      "ex": "The main challenge was the tight deadline."
+    },
+    {
+      "term": "What I learned was…",
+      "tr": "я вынес из этого…",
+      "ex": "What I learned was to ask for help earlier."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Что означает буква R в STAR?",
+      "options": [
+        "Result — результат",
+        "Reason — причина",
+        "Role — роль"
+      ],
+      "answer": 0,
+      "explain": "Всегда заканчивай результатом, лучше с цифрой: <b>by 30%</b>."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Какая фраза лучше подходит для части Action?",
+      "options": [
+        "I created a checklist for the team.",
+        "We were very busy.",
+        "The company had problems."
+      ],
+      "answer": 0,
+      "explain": "В Action говори <b>I</b>, а не <b>we</b>: что сделал именно ты."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "I was responsible for…",
+      "back": "Я отвечал за…"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "As a result, our response time dropped from two days to four hours.",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Какой результат?",
+      "options": [
+        "Клиентам отвечали за 4 часа вместо 2 дней",
+        "Время ответа выросло до 2 дней",
+        "Клиентов стало в 4 раза больше"
+      ],
+      "answer": 0,
+      "explain": "<b>Dropped from… to…</b> = снизилось с… до…"
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Tell me about a time you had to deal with a difficult deadline.",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "О чём просят рассказать?",
+      "options": [
+        "О случае со сложным дедлайном",
+        "О любимом проекте",
+        "О твоих слабых сторонах"
+      ],
+      "answer": 0,
+      "explain": "<b>Tell me about a time…</b> = сигнал: отвечай по STAR."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Главной сложностью был сжатый срок.",
+      "tokens": [
+        "The",
+        "main",
+        "challenge",
+        "was",
+        "the",
+        "tight",
+        "deadline"
+      ],
+      "distractors": [
+        "were",
+        "a"
+      ],
+      "pattern": "The main challenge was + [что]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "В итоге жалоб стало на 30% меньше.",
+      "tokens": [
+        "As",
+        "a",
+        "result,",
+        "complaints",
+        "dropped",
+        "by",
+        "30%"
+      ],
+      "distractors": [
+        "on",
+        "the"
+      ],
+      "pattern": "As a result, + [что] + dropped by + [%]"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "In my last job, I was responsible for customer support. The main challenge was long waiting times.",
+      "tr": "На прошлой работе я отвечал за поддержку клиентов. Главной проблемой было долгое ожидание.",
+      "lang": "en-US"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "I took the initiative to create a FAQ, and as a result, tickets dropped by thirty percent.",
+      "tr": "Я по своей инициативе сделал FAQ, и в итоге обращений стало на 30% меньше.",
+      "lang": "en-US"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "en.interview.star.s1",
+      "title": "Вопрос по STAR",
+      "emoji": "⭐",
+      "userRole": "Кандидат",
+      "botRole": "Hiring manager",
+      "voice": "en-US",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Tell me about a time you solved a problem at work.",
+          "tr": "Расскажи о случае, когда ты решил проблему на работе.",
+          "choices": [
+            {
+              "text": "Sure. In my last job, customers waited too long for answers.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Отличный старт: это Situation."
+            },
+            {
+              "text": "I'm good at solving problems.",
+              "next": "n1b",
+              "score": 0,
+              "feedback": "Это общее утверждение. Нужна конкретная история."
+            },
+            {
+              "text": "Let me think… One example is from my last job, where customers waited too long for answers.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Взять паузу — нормально, и ты сразу дал контекст."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Okay, but can you give me a specific example?",
+          "tr": "Хорошо, а можешь привести конкретный пример?",
+          "choices": [
+            {
+              "text": "Sure. In my last job, customers waited too long for answers.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Вот, теперь есть история 👍"
+            }
+          ]
+        },
+        "n2": {
+          "say": "I see. And what was your role?",
+          "tr": "Понятно. А какая была твоя роль?",
+          "choices": [
+            {
+              "text": "My task was to reduce the waiting time.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Task — ясно и коротко."
+            },
+            {
+              "text": "We all worked on it together.",
+              "next": "n3",
+              "score": 1,
+              "feedback": "Команда — это хорошо, но скажи, какой была твоя задача."
+            }
+          ]
+        },
+        "n3": {
+          "say": "What exactly did you do?",
+          "tr": "Что конкретно ты сделал?",
+          "choices": [
+            {
+              "text": "I took the initiative to create templates for the most common questions.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Сильный Action: «I took the initiative»."
+            },
+            {
+              "text": "We worked hard.",
+              "next": "n4",
+              "score": 0,
+              "feedback": "Слишком общо. Что сделал именно ты?"
+            },
+            {
+              "text": "I analyzed the tickets and wrote a simple FAQ.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Конкретные действия — отлично."
+            }
+          ]
+        },
+        "n4": {
+          "say": "And what was the result?",
+          "tr": "И какой был результат?",
+          "choices": [
+            {
+              "text": "As a result, the waiting time dropped from two days to four hours.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Результат с цифрами — идеально 🏆"
+            },
+            {
+              "text": "It was better.",
+              "next": "n5",
+              "score": 1,
+              "feedback": "Добавь цифру: «dropped by…» звучит сильнее."
+            }
+          ]
+        },
+        "n5": {
+          "say": "That's a very clear answer. I like that you measured the result.",
+          "tr": "Очень понятный ответ. Мне нравится, что ты измерил результат.",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

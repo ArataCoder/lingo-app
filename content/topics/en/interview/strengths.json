@@ -1,0 +1,292 @@
+{
+  "id": "en.interview.strengths",
+  "track": "en",
+  "level": "B2",
+  "title": "Сильные/слабые стороны",
+  "emoji": "💪",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "One of my strengths is…",
+      "tr": "одна из моих сильных сторон…",
+      "ex": "One of my strengths is staying calm under pressure."
+    },
+    {
+      "term": "I'm good at…",
+      "tr": "у меня хорошо получается…",
+      "ex": "I'm good at explaining complex things simply."
+    },
+    {
+      "term": "I'm a fast learner",
+      "tr": "я быстро учусь",
+      "ex": "I'm a fast learner, so I adapt quickly."
+    },
+    {
+      "term": "I'm working on…",
+      "tr": "я работаю над…",
+      "ex": "I'm working on my public speaking."
+    },
+    {
+      "term": "I tend to…",
+      "tr": "я склонен…",
+      "ex": "I tend to take on too many tasks."
+    },
+    {
+      "term": "To improve, I…",
+      "tr": "чтобы стать лучше, я…",
+      "ex": "To improve, I started using a task planner."
+    },
+    {
+      "term": "attention to detail",
+      "tr": "внимание к деталям",
+      "ex": "My attention to detail helps me avoid mistakes."
+    },
+    {
+      "term": "self-motivated",
+      "tr": "самомотивированный",
+      "ex": "I'm self-motivated, and I like learning on my own."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Какой ответ про слабую сторону лучше?",
+      "options": [
+        "I tend to take on too much, so now I prioritize my tasks.",
+        "I have no weaknesses.",
+        "I'm a perfectionist, that's all."
+      ],
+      "answer": 0,
+      "explain": "Формула: <b>слабость + что ты с ней делаешь</b>. «No weaknesses» — красный флаг."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "«I'm a fast learner» — это…",
+      "options": [
+        "Я быстро учусь",
+        "Я быстро бегаю",
+        "Я быстро ухожу"
+      ],
+      "answer": 0,
+      "explain": "Отличная фраза, если опыта пока мало."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "I'm working on…",
+      "back": "Я работаю над… (улучшаю)"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "What would your previous manager say about you?",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Что спрашивают?",
+      "options": [
+        "Что о тебе сказал бы прошлый руководитель?",
+        "Почему ты ушёл с прошлой работы?",
+        "Кем ты видишь себя через 5 лет?"
+      ],
+      "answer": 0,
+      "explain": "Отвечай через сильные стороны: <b>They would say I'm reliable…</b>"
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "One of my strengths is staying calm when things go wrong.",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Какая сильная сторона?",
+      "options": [
+        "Спокойствие, когда что-то идёт не так",
+        "Скорость работы",
+        "Знание языков"
+      ],
+      "answer": 0,
+      "explain": "<b>Staying calm</b> = сохранять спокойствие."
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "У меня хорошо получается объяснять сложные вещи.",
+      "tokens": [
+        "I'm",
+        "good",
+        "at",
+        "explaining",
+        "complex",
+        "things"
+      ],
+      "distractors": [
+        "in",
+        "explain"
+      ],
+      "pattern": "I'm good at + [глагол + -ing]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Я работаю над своими публичными выступлениями.",
+      "tokens": [
+        "I'm",
+        "working",
+        "on",
+        "my",
+        "public",
+        "speaking"
+      ],
+      "distractors": [
+        "at",
+        "work"
+      ],
+      "pattern": "I'm working on + [что]"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "One of my strengths is that I'm a fast learner. I learned two languages on my own.",
+      "tr": "Одна из моих сильных сторон — я быстро учусь. Я сам выучил два языка.",
+      "lang": "en-US"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "I tend to take on too many tasks, so I started using a planner to prioritize.",
+      "tr": "Я склонен брать слишком много задач, поэтому начал пользоваться планировщиком, чтобы расставлять приоритеты.",
+      "lang": "en-US"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "en.interview.strengths.s1",
+      "title": "Сильные и слабые стороны",
+      "emoji": "💪",
+      "userRole": "Кандидат",
+      "botRole": "Recruiter",
+      "voice": "en-US",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "What would you say is your greatest strength?",
+          "tr": "Какую свою сильную сторону ты назвал бы главной?",
+          "choices": [
+            {
+              "text": "I'd say I'm a fast learner. For example, I taught myself English and Spanish.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Сильная сторона + пример = 🔥"
+            },
+            {
+              "text": "I'm good at everything.",
+              "next": "n1b",
+              "score": 0,
+              "feedback": "Звучит самоуверенно. Выбери одну сторону и дай пример."
+            },
+            {
+              "text": "I'm good at staying calm with difficult customers.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Конкретно и полезно для работы."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Haha, okay. But if you had to choose one?",
+          "tr": "Ха-ха, ладно. А если выбрать одну?",
+          "choices": [
+            {
+              "text": "Then I'd say I'm a fast learner.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Вот, теперь конкретно 👍"
+            }
+          ]
+        },
+        "n2": {
+          "say": "Nice. And what about weaknesses?",
+          "tr": "Здорово. А что насчёт слабых сторон?",
+          "choices": [
+            {
+              "text": "I tend to take on too many tasks. Now I plan my week and say no more often.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Идеальная формула: слабость + решение."
+            },
+            {
+              "text": "I don't have any.",
+              "next": "n2b",
+              "score": 0,
+              "feedback": "Для рекрутера это красный флаг."
+            },
+            {
+              "text": "My English isn't perfect yet, but I'm working on it every day.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Честно и с действием. Отлично."
+            }
+          ]
+        },
+        "n2b": {
+          "say": "Everyone has something they're working on, though.",
+          "tr": "Но у каждого есть что-то, над чем он работает.",
+          "choices": [
+            {
+              "text": "That's true. I tend to take on too many tasks, so I'm learning to prioritize.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Хорошо исправился 💪"
+            }
+          ]
+        },
+        "n3": {
+          "say": "How do you handle feedback?",
+          "tr": "Как ты относишься к обратной связи?",
+          "choices": [
+            {
+              "text": "I see feedback as a gift. I ask questions and try to apply it quickly.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Звучит зрело и позитивно."
+            },
+            {
+              "text": "I don't like criticism.",
+              "next": "n4",
+              "score": 0,
+              "feedback": "Честно, но лучше показать, что ты растёшь благодаря ей."
+            },
+            {
+              "text": "I'm fine with it.",
+              "next": "n4",
+              "score": 1,
+              "feedback": "Нормально. Добавь, что ты с ней делаешь."
+            }
+          ]
+        },
+        "n4": {
+          "say": "Great answers. You clearly know yourself well.",
+          "tr": "Отличные ответы. Видно, что ты хорошо себя знаешь.",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,274 @@
+{
+  "id": "en.barriers.paraphrase",
+  "track": "en",
+  "level": "B1",
+  "title": "Забыл слово → перефразируй",
+  "emoji": "🔄",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "It's a kind of…",
+      "tr": "это такой вид…",
+      "ex": "It's a kind of tool for fixing things."
+    },
+    {
+      "term": "It's something you use to…",
+      "tr": "это штука, которой…",
+      "ex": "It's something you use to open bottles."
+    },
+    {
+      "term": "It's like…, but…",
+      "tr": "это как…, только…",
+      "ex": "It's like a sofa, but smaller."
+    },
+    {
+      "term": "What's the word for…?",
+      "tr": "как называется…?",
+      "ex": "What's the word for a person who fixes pipes?"
+    },
+    {
+      "term": "I can't think of the word",
+      "tr": "не могу вспомнить слово",
+      "ex": "Sorry, I can't think of the word right now."
+    },
+    {
+      "term": "the opposite of…",
+      "tr": "противоположность…",
+      "ex": "It's the opposite of cheap."
+    },
+    {
+      "term": "a person who…",
+      "tr": "человек, который…",
+      "ex": "It's a person who designs buildings."
+    },
+    {
+      "term": "Basically,…",
+      "tr": "короче, по сути",
+      "ex": "Basically, it's a plan for the whole year."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Забыл слово «plumber». Как лучше выкрутиться?",
+      "options": [
+        "A person who fixes pipes and taps.",
+        "A man for water, you know.",
+        "I don't know this word, sorry."
+      ],
+      "answer": 0,
+      "explain": "Формула <b>a person who + [действие]</b> спасает почти всегда."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Как вежливо попросить подсказку?",
+      "options": [
+        "What's the word for it?",
+        "Say me the word.",
+        "How is it called?"
+      ],
+      "answer": 0,
+      "explain": "<b>How is it called?</b> — частая ошибка. Правильно: <b>What's it called?</b> или <b>What's the word for…?</b>"
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "I can't think of the word.",
+      "back": "Не могу вспомнить слово."
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "It's something you use to keep your food cold.",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "О чём говорят?",
+      "options": [
+        "Холодильник",
+        "Плита",
+        "Духовка"
+      ],
+      "answer": 0,
+      "explain": "<b>A fridge</b> — «something you use to keep food cold»."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "It's like a meeting, but shorter, and everyone stands up.",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Что описывают?",
+      "options": [
+        "Стендап (короткий митинг)",
+        "Корпоратив",
+        "Собеседование"
+      ],
+      "answer": 0,
+      "explain": "Именно так и объясняют <b>stand-up</b> 🙂"
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Это противоположность слова «дешёвый».",
+      "tokens": [
+        "It's",
+        "the",
+        "opposite",
+        "of",
+        "cheap"
+      ],
+      "distractors": [
+        "a",
+        "for"
+      ],
+      "pattern": "It's the opposite of + [слово]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Это такой инструмент для ремонта.",
+      "tokens": [
+        "It's",
+        "a",
+        "kind",
+        "of",
+        "tool",
+        "for",
+        "repairs"
+      ],
+      "distractors": [
+        "the",
+        "to"
+      ],
+      "pattern": "It's a kind of + [категория]"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Sorry, I can't think of the word. It's a person who designs websites.",
+      "tr": "Простите, не могу вспомнить слово. Это человек, который делает дизайн сайтов.",
+      "lang": "en-US"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Basically, it's like a to-do list, but for the whole team.",
+      "tr": "По сути, это как список дел, только для всей команды.",
+      "lang": "en-US"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "en.barriers.paraphrase.s1",
+      "title": "Забыл слово на собесе",
+      "emoji": "🧩",
+      "userRole": "Кандидат",
+      "botRole": "Recruiter",
+      "voice": "en-US",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "So, what tools did you use in your last job?",
+          "tr": "Итак, какими инструментами ты пользовался на прошлой работе?",
+          "choices": [
+            {
+              "text": "We used… sorry, I can't think of the word. It's a tool for tracking tasks, like a board with cards.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Идеально! Ты не завис, а описал предмет."
+            },
+            {
+              "text": "Um… I forgot.",
+              "next": "n1b",
+              "score": 0,
+              "feedback": "Не страшно, но лучше описать: «It's a tool for…»."
+            },
+            {
+              "text": "Jira, Slack and Notion.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Помнишь слова — отлично, отвечай коротко."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "No worries. Can you describe it?",
+          "tr": "Ничего страшного. Можешь описать?",
+          "choices": [
+            {
+              "text": "Sure. It's something you use to plan tasks with your team.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Вот так! Описание спасло ответ 💪"
+            }
+          ]
+        },
+        "n2": {
+          "say": "Oh, you mean Trello or Jira?",
+          "tr": "А, ты имеешь в виду Trello или Jira?",
+          "choices": [
+            {
+              "text": "Yes, exactly, Jira! Thanks.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "«Exactly» — отличный способ подтвердить."
+            },
+            {
+              "text": "Yes.",
+              "next": "n3",
+              "score": 1,
+              "feedback": "Нормально. «Yes, exactly» звучит увереннее."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Great. And what did you do when a customer was angry?",
+          "tr": "Отлично. А что ты делал, когда клиент злился?",
+          "choices": [
+            {
+              "text": "I tried to… how do you say… stay calm and listen first. Then I offered a solution.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "«How do you say…» + описание — естественно и спокойно."
+            },
+            {
+              "text": "I was… the opposite of nervous. Calm!",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Красиво: «the opposite of» сработал 😄"
+            },
+            {
+              "text": "Angry customer… no.",
+              "next": "n4",
+              "score": 0,
+              "feedback": "Попробуй описать действия: «I listened, then I…»."
+            }
+          ]
+        },
+        "n4": {
+          "say": "That's a great answer. Your English is really clear!",
+          "tr": "Отличный ответ. Твой английский очень понятный!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+{
+  "id": "en.social.openers",
+  "track": "en",
+  "level": "B1",
+  "title": "Начать и поддержать разговор",
+  "emoji": "👋",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "How's your week going?",
+      "tr": "как проходит неделя?",
+      "ex": "Hi Tom! How's your week going?"
+    },
+    {
+      "term": "Any plans for the weekend?",
+      "tr": "есть планы на выходные?",
+      "ex": "It's almost Friday! Any plans for the weekend?"
+    },
+    {
+      "term": "Where are you based?",
+      "tr": "где вы находитесь?",
+      "ex": "By the way, where are you based?"
+    },
+    {
+      "term": "That sounds great!",
+      "tr": "звучит классно!",
+      "ex": "A trip to the mountains? That sounds great!"
+    },
+    {
+      "term": "How about you?",
+      "tr": "а у тебя как?",
+      "ex": "I'm good, thanks. How about you?"
+    },
+    {
+      "term": "Oh, really?",
+      "tr": "о, правда?",
+      "ex": "Oh, really? I didn't know that."
+    },
+    {
+      "term": "Not much, just…",
+      "tr": "да ничего особенного, просто…",
+      "ex": "Not much, just relaxing at home."
+    },
+    {
+      "term": "It was nice chatting",
+      "tr": "было приятно поболтать",
+      "ex": "It was nice chatting with you!"
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "Коллега спросил «How are you?». Как продолжить разговор?",
+      "options": [
+        "I'm good, thanks. How about you?",
+        "Normal.",
+        "I'm fine. Bye."
+      ],
+      "answer": 0,
+      "explain": "Всегда возвращай вопрос: <b>How about you?</b> «Normal» в английском звучит странно."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "«Where are you based?» — это…",
+      "options": [
+        "Где ты живёшь/работаешь?",
+        "На чём основан твой опыт?",
+        "Где ты родился?"
+      ],
+      "answer": 0,
+      "explain": "Стандартный вопрос в распределённых командах. Ответ: <b>I'm based in Torrevieja</b>."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "How's your week going?",
+      "back": "Как проходит неделя?"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Not much, just relaxing at home and catching up on some series.",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Как проходят выходные у собеседника?",
+      "options": [
+        "Отдыхает дома и смотрит сериалы",
+        "Работает над проектом",
+        "Уезжает в путешествие"
+      ],
+      "answer": 0,
+      "explain": "<b>Catch up on</b> = наверстать (сериалы, дела, новости)."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Oh, really? I've always wanted to visit Spain!",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Как отреагировал собеседник?",
+      "options": [
+        "Удивился и сказал, что давно хочет в Испанию",
+        "Сказал, что уже жил в Испании",
+        "Сказал, что не любит Испанию"
+      ],
+      "answer": 0,
+      "explain": "<b>I've always wanted to…</b> = я всегда хотел…"
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Есть планы на выходные?",
+      "tokens": [
+        "Any",
+        "plans",
+        "for",
+        "the",
+        "weekend?"
+      ],
+      "distractors": [
+        "make",
+        "do"
+      ],
+      "pattern": "Any plans for + [когда]?"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Было приятно поболтать с тобой!",
+      "tokens": [
+        "It",
+        "was",
+        "nice",
+        "chatting",
+        "with",
+        "you!"
+      ],
+      "distractors": [
+        "chat",
+        "for"
+      ],
+      "pattern": "It was nice + [глагол + -ing]"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Hi! How's your week going so far?",
+      "tr": "Привет! Как проходит твоя неделя?",
+      "lang": "en-US"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "I'm based in Torrevieja, on the coast of Spain. How about you?",
+      "tr": "Я живу в Торревьехе, на побережье Испании. А ты?",
+      "lang": "en-US"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "en.social.openers.s1",
+      "title": "5 минут до начала созвона",
+      "emoji": "☕",
+      "userRole": "Ты",
+      "botRole": "Colleague",
+      "voice": "en-US",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Hi! We're a bit early. How's your week going?",
+          "tr": "Привет! Мы немного рано. Как проходит неделя?",
+          "choices": [
+            {
+              "text": "Pretty good, thanks! A bit busy, but okay. How about you?",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Ответ + встречный вопрос = живой разговор."
+            },
+            {
+              "text": "Good.",
+              "next": "n1b",
+              "score": 1,
+              "feedback": "Нормально, но разговор затухает. Добавь «How about you?»."
+            },
+            {
+              "text": "Terrible, I hate Mondays.",
+              "next": "n2",
+              "score": 1,
+              "feedback": "Честно 😄 Но с новыми коллегами лучше полегче."
+            }
+          ]
+        },
+        "n1b": {
+          "say": "Nice. Anything interesting happening?",
+          "tr": "Здорово. Что-нибудь интересное происходит?",
+          "choices": [
+            {
+              "text": "Not much, just work and the gym. How about you?",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Вот так разговор продолжается 👍"
+            }
+          ]
+        },
+        "n2": {
+          "say": "Honestly, I'm exhausted. We just moved to a new apartment.",
+          "tr": "Честно, просто сил нет — мы только что переехали в новую квартиру.",
+          "choices": [
+            {
+              "text": "Oh, really? Congrats! How do you like it?",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Реакция + вопрос. Классика small talk."
+            },
+            {
+              "text": "OK.",
+              "next": "n3",
+              "score": 0,
+              "feedback": "Коллега поделился новостью. Попробуй «Oh, really?» + вопрос."
+            },
+            {
+              "text": "Moving is so stressful! I moved last year too.",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Эмпатия + свой опыт — супер."
+            }
+          ]
+        },
+        "n3": {
+          "say": "It's great, but there are boxes everywhere! Where are you based, by the way?",
+          "tr": "Классно, но коробки повсюду! Кстати, а ты где живёшь?",
+          "choices": [
+            {
+              "text": "I'm based in Torrevieja, in the south of Spain. It's sunny almost all year.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Факт + интересная деталь — есть за что зацепиться."
+            },
+            {
+              "text": "Spain.",
+              "next": "n4",
+              "score": 1,
+              "feedback": "Правильно, но добавь деталь — так легче продолжить."
+            }
+          ]
+        },
+        "n4": {
+          "say": "Oh, nice! That sounds amazing. Okay, I think everyone's here.",
+          "tr": "О, класс! Звучит потрясающе. Ладно, кажется, все в сборе.",
+          "choices": [
+            {
+              "text": "Great! It was nice chatting. Let's start.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Красиво закрыл small talk."
+            },
+            {
+              "text": "Yes, let's start.",
+              "next": "n5",
+              "score": 2,
+              "feedback": "Коротко и по делу."
+            }
+          ]
+        },
+        "n5": {
+          "say": "Okay, let me share my screen.",
+          "tr": "Так, сейчас покажу экран.",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

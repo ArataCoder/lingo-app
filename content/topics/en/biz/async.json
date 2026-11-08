@@ -1,0 +1,281 @@
+{
+  "id": "en.biz.async",
+  "track": "en",
+  "level": "B2",
+  "title": "Slack и email-этикет",
+  "emoji": "✉️",
+  "estMinutes": 4,
+  "cheatsheet": [
+    {
+      "term": "Quick question:",
+      "tr": "быстрый вопрос:",
+      "ex": "Quick question: is the meeting still at three?"
+    },
+    {
+      "term": "Just following up on…",
+      "tr": "напоминаю про…",
+      "ex": "Just following up on my email from Monday."
+    },
+    {
+      "term": "Could you take a look at…?",
+      "tr": "можешь глянуть…?",
+      "ex": "Could you take a look at this document?"
+    },
+    {
+      "term": "No rush",
+      "tr": "не срочно",
+      "ex": "No rush, whenever you have time."
+    },
+    {
+      "term": "by EOD",
+      "tr": "до конца рабочего дня",
+      "ex": "I'll send it by EOD."
+    },
+    {
+      "term": "Thanks for the heads-up",
+      "tr": "спасибо, что предупредил",
+      "ex": "Thanks for the heads-up about the delay."
+    },
+    {
+      "term": "Please find attached…",
+      "tr": "во вложении…",
+      "ex": "Please find attached my CV."
+    },
+    {
+      "term": "Let me know if you have any questions",
+      "tr": "если будут вопросы — пишите",
+      "ex": "Here's the plan. Let me know if you have any questions."
+    }
+  ],
+  "cards": [
+    {
+      "id": "c1",
+      "type": "choice",
+      "energy": "low",
+      "q": "«By EOD» означает…",
+      "options": [
+        "До конца рабочего дня",
+        "До конца недели",
+        "Как можно скорее"
+      ],
+      "answer": 0,
+      "explain": "<b>EOD</b> = end of day. Ещё: <b>EOW</b> = end of week, <b>ASAP</b> = as soon as possible."
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "energy": "low",
+      "q": "Как вежливо напомнить о письме без ответа?",
+      "options": [
+        "Just following up on my last email.",
+        "Why didn't you answer me?",
+        "Answer my email, please."
+      ],
+      "answer": 0,
+      "explain": "<b>Just following up</b> — мягко и без давления."
+    },
+    {
+      "id": "c3",
+      "type": "flash",
+      "energy": "low",
+      "front": "Thanks for the heads-up!",
+      "back": "Спасибо, что предупредил!"
+    },
+    {
+      "id": "c4",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Could you take a look at the draft? No rush, tomorrow is fine.",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Когда нужно ответить?",
+      "options": [
+        "Можно завтра, не срочно",
+        "Прямо сейчас",
+        "До конца сегодня"
+      ],
+      "answer": 0,
+      "explain": "<b>No rush</b> = не спеши."
+    },
+    {
+      "id": "c5",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "Thanks for the heads-up. I'll move our call to Friday.",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Что сделают со звонком?",
+      "options": [
+        "Перенесут на пятницу",
+        "Отменят совсем",
+        "Созвонятся сейчас"
+      ],
+      "answer": 0,
+      "explain": "<b>Move the call to…</b> = перенести созвон на…"
+    },
+    {
+      "id": "c6",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Я отправлю это до конца дня.",
+      "tokens": [
+        "I'll",
+        "send",
+        "it",
+        "by",
+        "EOD"
+      ],
+      "distractors": [
+        "until",
+        "sent"
+      ],
+      "pattern": "I'll + [действие] + by + [срок]"
+    },
+    {
+      "id": "c7",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Можешь глянуть на этот документ?",
+      "tokens": [
+        "Could",
+        "you",
+        "take",
+        "a",
+        "look",
+        "at",
+        "this",
+        "document?"
+      ],
+      "distractors": [
+        "see",
+        "on"
+      ],
+      "pattern": "Could you take a look at + [что]?"
+    },
+    {
+      "id": "c8",
+      "type": "speak",
+      "energy": "normal",
+      "text": "Hi Anna, quick question: is the client call still at three?",
+      "tr": "Привет, Анна, быстрый вопрос: созвон с клиентом всё ещё в три?",
+      "lang": "en-US"
+    },
+    {
+      "id": "c9",
+      "type": "speak",
+      "energy": "boost",
+      "text": "Just following up on the contract. Could you take a look at it by Friday?",
+      "tr": "Напоминаю про договор. Можешь глянуть его до пятницы?",
+      "lang": "en-US"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "en.biz.async.s1",
+      "title": "Переписка в Slack",
+      "emoji": "💬",
+      "userRole": "Ты",
+      "botRole": "Teammate",
+      "voice": "en-US",
+      "start": "n1",
+      "nodes": {
+        "n1": {
+          "say": "Hey! Did you get a chance to look at my document?",
+          "tr": "Привет! Ты успел посмотреть мой документ?",
+          "choices": [
+            {
+              "text": "Not yet, sorry! I'll take a look and send you comments by EOD.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Честно + конкретный срок. Идеально."
+            },
+            {
+              "text": "No.",
+              "next": "n2",
+              "score": 0,
+              "feedback": "В Slack короткое «No» звучит грубо. Добавь срок."
+            },
+            {
+              "text": "Yes, it looks great! Just one small comment on page two.",
+              "next": "n2",
+              "score": 2,
+              "feedback": "Позитив + конкретика. Отлично."
+            }
+          ]
+        },
+        "n2": {
+          "say": "Thanks! By the way, the client meeting moved to Thursday.",
+          "tr": "Спасибо! Кстати, встречу с клиентом перенесли на четверг.",
+          "choices": [
+            {
+              "text": "Thanks for the heads-up! Same time?",
+              "next": "n3",
+              "score": 2,
+              "feedback": "Идеальная реакция + уточнение."
+            },
+            {
+              "text": "OK.",
+              "next": "n3",
+              "score": 1,
+              "feedback": "Нормально, но «Thanks for the heads-up» звучит теплее."
+            }
+          ]
+        },
+        "n3": {
+          "say": "Yes, same time, ten a.m. Could you prepare the slides?",
+          "tr": "Да, в то же время, в 10 утра. Можешь подготовить слайды?",
+          "choices": [
+            {
+              "text": "Sure! Quick question: how many slides do you need?",
+              "next": "n4",
+              "score": 2,
+              "feedback": "«Quick question» — идеально для Slack."
+            },
+            {
+              "text": "Sure, I'll send them by Wednesday EOD.",
+              "next": "n4",
+              "score": 2,
+              "feedback": "Конкретный срок — тебе доверяют."
+            },
+            {
+              "text": "Why me?",
+              "next": "n4",
+              "score": 0,
+              "feedback": "Звучит конфликтно. Если занят: «I'm a bit busy, could it wait until Wednesday?»."
+            }
+          ]
+        },
+        "n4": {
+          "say": "Around ten is perfect. Let me know if you have any questions!",
+          "tr": "Около десяти — идеально. Если будут вопросы — пиши!",
+          "choices": [
+            {
+              "text": "Will do, thanks!",
+              "next": "n5",
+              "score": 2,
+              "feedback": "«Will do» = «сделаю». Коротко и дружелюбно."
+            },
+            {
+              "text": "OK, I will do it.",
+              "next": "n5",
+              "score": 1,
+              "feedback": "Правильно, но звучит сухо. Попробуй «Will do, thanks!»."
+            }
+          ]
+        },
+        "n5": {
+          "say": "Great, talk soon!",
+          "tr": "Отлично, до связи!",
+          "end": true
+        }
+      },
+      "ai": {
+        "enabled": false
+      }
+    }
+  ]
+}

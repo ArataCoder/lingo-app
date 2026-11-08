@@ -406,8 +406,8 @@
               "tags": [
                 "fluency"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/en/barriers/paraphrase.json"
             },
             {
               "id": "en.barriers.clarify",
@@ -417,8 +417,8 @@
               "tags": [
                 "fluency"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/en/barriers/clarify.json"
             },
             {
               "id": "en.barriers.story",
@@ -472,8 +472,8 @@
               "tags": [
                 "work"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/en/interview/star.json"
             },
             {
               "id": "en.interview.strengths",
@@ -483,8 +483,8 @@
               "tags": [
                 "work"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/en/interview/strengths.json"
             },
             {
               "id": "en.interview.salary",
@@ -509,6 +509,17 @@
               ],
               "status": "ready",
               "file": "topics/en/interview/remote.json"
+            },
+            {
+              "id": "en.interview.questions",
+              "title": "Вопросы работодателю",
+              "emoji": "🧾",
+              "level": "B2",
+              "tags": [
+                "interview"
+              ],
+              "status": "ready",
+              "file": "topics/en/interview/questions.json"
             }
           ]
         },
@@ -527,8 +538,8 @@
               "tags": [
                 "work"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/en/biz/meetings.json"
             },
             {
               "id": "en.biz.async",
@@ -539,8 +550,8 @@
                 "work",
                 "writing"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/en/biz/async.json"
             },
             {
               "id": "en.biz.idioms",
@@ -594,8 +605,8 @@
               "tags": [
                 "social"
               ],
-              "status": "planned",
-              "file": null
+              "status": "ready",
+              "file": "topics/en/social/openers.json"
             },
             {
               "id": "en.social.pub",
