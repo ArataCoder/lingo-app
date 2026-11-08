@@ -1,0 +1,266 @@
+{
+ "id": "es.travel.hotel",
+ "track": "es",
+ "level": "A2",
+ "title": "Отель и жильё на ночь",
+ "emoji": "🏨",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "Tengo una reserva a nombre de…",
+   "tr": "у меня бронь на имя…",
+   "ex": "Tengo una reserva a nombre de Aleks."
+  },
+  {
+   "term": "una habitación doble",
+   "tr": "двухместный номер",
+   "ex": "Quería una habitación doble para dos noches."
+  },
+  {
+   "term": "¿Está incluido el desayuno?",
+   "tr": "завтрак включён?",
+   "ex": "Perdone, ¿está incluido el desayuno?"
+  },
+  {
+   "term": "la llave / la tarjeta",
+   "tr": "ключ / карта-ключ",
+   "ex": "La tarjeta no funciona."
+  },
+  {
+   "term": "dejar la habitación",
+   "tr": "освободить номер",
+   "ex": "¿A qué hora hay que dejar la habitación?"
+  },
+  {
+   "term": "el aire acondicionado",
+   "tr": "кондиционер",
+   "ex": "El aire acondicionado no enfría."
+  },
+  {
+   "term": "¿Me puede guardar la maleta?",
+   "tr": "можете сохранить мой чемодан?",
+   "ex": "¿Me puede guardar la maleta hasta las cinco?"
+  },
+  {
+   "term": "con vistas al mar",
+   "tr": "с видом на море",
+   "ex": "¿Hay habitaciones con vistas al mar?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как сказать «у меня бронь на имя Алекс»?",
+   "options": [
+    "Tengo una reserva a nombre de Aleks.",
+    "Tengo una reserva en nombre Aleks.",
+    "Soy reserva de Aleks."
+   ],
+   "answer": 0,
+   "explain": "<b>a nombre de</b> = на имя."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«¿Está incluido el desayuno?» — о чём вопрос?",
+   "options": [
+    "Включён ли завтрак",
+    "Где столовая",
+    "Во сколько ужин"
+   ],
+   "answer": 0,
+   "explain": "<b>incluido</b> = включён."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "La tarjeta no funciona.",
+   "back": "Карта-ключ не работает."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "El desayuno es de siete a diez y media en la primera planta.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Когда и где завтрак?",
+   "options": [
+    "С 7 до 10:30 на первом этаже",
+    "С 7 до 10 в номере",
+    "С 10 до 12 на террасе"
+   ],
+   "answer": 0,
+   "explain": "<b>y media</b> = с половиной. <b>planta</b> = этаж."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Tiene que dejar la habitación antes de las doce.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "До скольки нужно освободить номер?",
+   "options": [
+    "До 12",
+    "До 2",
+    "До 10"
+   ],
+   "answer": 0,
+   "explain": "<b>dejar la habitación</b> = освободить номер."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Можете сохранить мой чемодан?",
+   "tokens": [
+    "¿Me",
+    "puede",
+    "guardar",
+    "la",
+    "maleta?"
+   ],
+   "distractors": [
+    "poder",
+    "el"
+   ],
+   "pattern": "¿Me puede + [глагол]?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Кондиционер не работает.",
+   "tokens": [
+    "El",
+    "aire",
+    "acondicionado",
+    "no",
+    "funciona."
+   ],
+   "distractors": [
+    "es",
+    "trabaja"
+   ],
+   "pattern": "[что] + no funciona"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Hola, tengo una reserva a nombre de Aleks.",
+   "tr": "Здравствуйте, у меня бронь на имя Алекс.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Perdone, el aire acondicionado no funciona. ¿Me puede cambiar de habitación?",
+   "tr": "Простите, кондиционер не работает. Можете поменять мне номер?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.travel.hotel.s1",
+   "title": "Заселение в отель",
+   "emoji": "🏨",
+   "userRole": "Ты",
+   "botRole": "Recepcionista",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Buenas tardes, bienvenido. ¿En qué le puedo ayudar?",
+     "tr": "Добрый день, добро пожаловать. Чем могу помочь?",
+     "choices": [
+      {
+       "text": "Buenas tardes. Tengo una reserva a nombre de Aleks.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Идеально 👍"
+      },
+      {
+       "text": "Hola, yo habitación.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Скажи полностью: «Tengo una reserva a nombre de…»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Perfecto. Una habitación doble, tres noches. ¿Me deja su pasaporte?",
+     "tr": "Отлично. Двухместный номер, три ночи. Дадите паспорт?",
+     "choices": [
+      {
+       "text": "Claro, aquí tiene.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>Aquí tiene</b> = вот, пожалуйста (вежливо)."
+      },
+      {
+       "text": "Sí, toma.",
+       "next": "n3",
+       "score": 1,
+       "feedback": "Понятно, но с ресепшеном лучше на «usted»: «Aquí tiene»."
+      }
+     ]
+    },
+    "n3": {
+     "say": "Gracias. Su habitación es la 305, en la tercera planta.",
+     "tr": "Спасибо. Ваш номер 305, на третьем этаже.",
+     "choices": [
+      {
+       "text": "Gracias. ¿Está incluido el desayuno?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Важный вопрос 🔥"
+      },
+      {
+       "text": "¿A qué hora hay que dejar la habitación?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Полезно знать заранее 👍"
+      }
+     ]
+    },
+    "n4": {
+     "say": "El desayuno está incluido, de siete a diez. Y la salida es a las doce.",
+     "tr": "Завтрак включён, с семи до десяти. А выезд в двенадцать.",
+     "choices": [
+      {
+       "text": "Genial. ¿Me puede guardar la maleta el último día?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Лайфхак путешественника 🧳"
+      },
+      {
+       "text": "Perfecto, muchas gracias.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Вежливо 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Por supuesto. ¡Que disfrute de su estancia!",
+     "tr": "Конечно. Приятного пребывания!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

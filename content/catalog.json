@@ -207,8 +207,8 @@
        "tags": [
         "social"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/es/social/opinions.json"
       },
       {
        "id": "es.social.bar",
@@ -219,8 +219,8 @@
         "slang",
         "social"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/es/social/bar.json"
       }
      ]
     },
@@ -239,8 +239,8 @@
        "tags": [
         "travel"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/es/travel/hotel.json"
       },
       {
        "id": "es.travel.renfe",

@@ -1,0 +1,264 @@
+{
+ "id": "es.social.bar",
+ "track": "es",
+ "level": "A2",
+ "title": "Бар и неформальный сленг",
+ "emoji": "🍻",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "¿Qué te pongo?",
+   "tr": "что тебе подать?",
+   "ex": "Hola, ¿qué te pongo?"
+  },
+  {
+   "term": "una caña",
+   "tr": "маленькое разливное пиво",
+   "ex": "Una caña, por favor."
+  },
+  {
+   "term": "¿Me pones…?",
+   "tr": "налей(те) мне…? (разг.)",
+   "ex": "¿Me pones otra caña?"
+  },
+  {
+   "term": "la última",
+   "tr": "последний бокал, последний раунд",
+   "ex": "Venga, la última y nos vamos."
+  },
+  {
+   "term": "¡Qué pasada!",
+   "tr": "вот это да, круто!",
+   "ex": "¡Qué pasada de terraza!"
+  },
+  {
+   "term": "Invito yo",
+   "tr": "я угощаю",
+   "ex": "Esta ronda invito yo."
+  },
+  {
+   "term": "tío / tía",
+   "tr": "чувак / подруга (разг.)",
+   "ex": "¡Tío, qué bien te veo!"
+  },
+  {
+   "term": "¿Pagamos a medias?",
+   "tr": "заплатим пополам?",
+   "ex": "¿Pagamos a medias o cada uno lo suyo?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Бармен спрашивает «¿Qué te pongo?». Это значит…",
+   "options": [
+    "Что тебе подать?",
+    "Куда тебя посадить?",
+    "Сколько ты заплатишь?"
+   ],
+   "answer": 0,
+   "explain": "<b>poner</b> в баре = подать, налить."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как предложить заплатить пополам?",
+   "options": [
+    "¿Pagamos a medias?",
+    "¿Pagamos en medio?",
+    "¿Pagamos la mitad tú?"
+   ],
+   "answer": 0,
+   "explain": "<b>a medias</b> = пополам."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Invito yo.",
+   "back": "Я угощаю."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "¿Me pones una caña y unas patatas bravas?",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что заказал человек?",
+   "options": [
+    "Пиво и картошку брава",
+    "Вино и хлеб",
+    "Кофе и тост"
+   ],
+   "answer": 0,
+   "explain": "<b>una caña</b> = маленькое разливное пиво."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Venga, la última y nos vamos, que mañana trabajo.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Почему человек хочет уйти?",
+   "options": [
+    "Завтра работает",
+    "Кончились деньги",
+    "Бар закрывается"
+   ],
+   "answer": 0,
+   "explain": "<b>la última</b> = последний раунд. <b>que</b> здесь = потому что."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Налей мне ещё одно пиво?",
+   "tokens": [
+    "¿Me",
+    "pones",
+    "otra",
+    "caña?"
+   ],
+   "distractors": [
+    "pongo",
+    "otro"
+   ],
+   "pattern": "¿Me pones + [что]?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Этот раунд угощаю я.",
+   "tokens": [
+    "Esta",
+    "ronda",
+    "invito",
+    "yo."
+   ],
+   "distractors": [
+    "invita",
+    "este"
+   ],
+   "pattern": "Invito yo."
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "¡Tío, qué pasada de terraza!",
+   "tr": "Чувак, вот это терраса!",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Esta ronda invito yo. ¿Me pones dos cañas, por favor?",
+   "tr": "Этот раунд угощаю я. Налей(те) два пива, пожалуйста.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.social.bar.s1",
+   "title": "Вечер в баре с друзьями",
+   "emoji": "🍻",
+   "userRole": "Ты",
+   "botRole": "Camarero",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¡Buenas! ¿Qué te pongo?",
+     "tr": "Добрый вечер! Что тебе подать?",
+     "choices": [
+      {
+       "text": "¡Buenas! Una caña, por favor.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Коротко и по-местному 👍"
+      },
+      {
+       "text": "Yo quiero beber cerveza grande ahora.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Поймут, но звучит как учебник. В баре: «Una caña, por favor»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "¿Algo para picar? Hoy tenemos croquetas caseras.",
+     "tr": "Что-нибудь перекусить? Сегодня есть домашние крокеты.",
+     "choices": [
+      {
+       "text": "¡Qué pasada! Unas croquetas, por favor.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Эмоция + заказ 🔥"
+      },
+      {
+       "text": "No, gracias, solo la bebida.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Вежливый отказ 👍"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Aquí tienes. Oye, ¿sois del barrio?",
+     "tr": "Держи. Слушай, вы из этого района?",
+     "choices": [
+      {
+       "text": "Sí, vivimos aquí al lado. ¡Este bar es genial, tío!",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Small talk с барменом — так и заводят знакомства 😄"
+      },
+      {
+       "text": "No, somos de Torrevieja. Estamos de visita.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Отлично. <b>de visita</b> = в гостях."
+      }
+     ]
+    },
+    "n4": {
+     "say": "¿Os pongo la última?",
+     "tr": "Налить вам последнюю?",
+     "choices": [
+      {
+       "text": "¡Venga, la última! Esta ronda invito yo.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Щедро 🍻"
+      },
+      {
+       "text": "No, gracias. ¿Nos cobras? Pagamos a medias.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>¿Nos cobras?</b> = посчитай нас."
+      }
+     ]
+    },
+    "n5": {
+     "say": "¡Perfecto! Que os vaya bien, chicos.",
+     "tr": "Отлично! Удачи вам, ребята.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

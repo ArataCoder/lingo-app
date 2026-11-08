@@ -1,0 +1,269 @@
+{
+ "id": "es.social.opinions",
+ "track": "es",
+ "level": "A2",
+ "title": "Чувства и мнение",
+ "emoji": "💭",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "Creo que…",
+   "tr": "я думаю, что…",
+   "ex": "Creo que es una buena idea."
+  },
+  {
+   "term": "En mi opinión…",
+   "tr": "по моему мнению…",
+   "ex": "En mi opinión, la playa es mejor en invierno."
+  },
+  {
+   "term": "Me encanta / me encantan",
+   "tr": "мне очень нравится / нравятся",
+   "ex": "Me encantan las tapas."
+  },
+  {
+   "term": "No me gusta nada",
+   "tr": "мне совсем не нравится",
+   "ex": "No me gusta nada el ruido."
+  },
+  {
+   "term": "Estoy de acuerdo",
+   "tr": "я согласен(на)",
+   "ex": "Sí, estoy de acuerdo contigo."
+  },
+  {
+   "term": "Depende",
+   "tr": "смотря как, зависит",
+   "ex": "¿Te gusta el calor? Depende."
+  },
+  {
+   "term": "Estoy agobiado / agobiada",
+   "tr": "я в стрессе, перегружен(а)",
+   "ex": "Estoy un poco agobiada con el trabajo."
+  },
+  {
+   "term": "¡Qué guay!",
+   "tr": "как круто!",
+   "ex": "¿Vas a Madrid? ¡Qué guay!"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как сказать «я согласен(на)»?",
+   "options": [
+    "Estoy de acuerdo.",
+    "Soy de acuerdo.",
+    "Tengo acuerdo."
+   ],
+   "answer": 0,
+   "explain": "С acuerdo всегда <b>estar</b>: estoy de acuerdo."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Estoy agobiado» значит…",
+   "options": [
+    "Я в стрессе, перегружен",
+    "Я скучаю",
+    "Я голоден"
+   ],
+   "answer": 0,
+   "explain": "<b>agobiado/a</b> = перегружен(а), в стрессе. Очень частое слово в Испании."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Me encantan las tapas.",
+   "back": "Я обожаю тапас."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Creo que el piso es bonito, pero es muy caro.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что человек думает о квартире?",
+   "options": [
+    "Красивая, но очень дорогая",
+    "Некрасивая и дорогая",
+    "Красивая и дешёвая"
+   ],
+   "answer": 0,
+   "explain": "<b>pero</b> = но. <b>caro</b> = дорогой."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "¿El calor? Depende. En agosto no me gusta nada.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Как человек относится к жаре?",
+   "options": [
+    "Смотря когда: в августе совсем не нравится",
+    "Обожает жару всегда",
+    "Никогда не был в августе"
+   ],
+   "answer": 0,
+   "explain": "<b>Depende</b> = смотря как, зависит."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "По-моему, это хорошая идея.",
+   "tokens": [
+    "En",
+    "mi",
+    "opinión,",
+    "es",
+    "una",
+    "buena",
+    "idea."
+   ],
+   "distractors": [
+    "bueno",
+    "está"
+   ],
+   "pattern": "En mi opinión, + [мысль]"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Мне совсем не нравится шум.",
+   "tokens": [
+    "No",
+    "me",
+    "gusta",
+    "nada",
+    "el",
+    "ruido."
+   ],
+   "distractors": [
+    "gustan",
+    "nadie"
+   ],
+   "pattern": "No me gusta nada + [что]"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Creo que es una buena idea, pero depende del precio.",
+   "tr": "Думаю, это хорошая идея, но зависит от цены.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Estoy un poco agobiada con el trabajo, pero me encanta mi equipo.",
+   "tr": "Я немного в стрессе из-за работы, но обожаю свою команду.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.social.opinions.s1",
+   "title": "Кофе с подругой",
+   "emoji": "💭",
+   "userRole": "Ты",
+   "botRole": "Lucía",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¡Hola! ¿Qué tal la semana?",
+     "tr": "Привет! Как неделя?",
+     "choices": [
+      {
+       "text": "Bien, pero estoy un poco agobiado con el trabajo.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Честно и естественно 👍 (девушки говорят agobiada)"
+      },
+      {
+       "text": "Yo bien semana.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Нужно: «Bien, gracias» или «La semana, bien»."
+      }
+     ]
+    },
+    "n2": {
+     "say": "¡Uf, te entiendo! ¿Y qué tal el piso nuevo?",
+     "tr": "Уф, понимаю! А как новая квартира?",
+     "choices": [
+      {
+       "text": "¡Me encanta! Es pequeño, pero muy luminoso.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Me encanta + деталь 🔥"
+      },
+      {
+       "text": "Creo que está bien, pero es un poco caro.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Мнение с «creo que» 👍"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Oye, ¿vamos a la playa el domingo?",
+     "tr": "Слушай, пойдём на пляж в воскресенье?",
+     "choices": [
+      {
+       "text": "Depende. Si hace sol, ¡vale!",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Depende + условие — очень по-испански."
+      },
+      {
+       "text": "¡Qué guay! Estoy de acuerdo.",
+       "next": "n4",
+       "score": 1,
+       "feedback": "«¡Qué guay!» отлично, но «estoy de acuerdo» — про мнение, а тут приглашение. Лучше «¡Vale!»."
+      }
+     ]
+    },
+    "n4": {
+     "say": "En mi opinión, la playa es mejor por la mañana. ¿Qué piensas?",
+     "tr": "По-моему, на пляже лучше утром. Что думаешь?",
+     "choices": [
+      {
+       "text": "Estoy de acuerdo. Hay menos gente.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Согласие + аргумент 🔥"
+      },
+      {
+       "text": "No me gusta nada madrugar, la verdad.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Честно 😄 <b>madrugar</b> = рано вставать."
+      }
+     ]
+    },
+    "n5": {
+     "say": "¡Vale, pues a las once! Me encanta el plan.",
+     "tr": "Окей, тогда в одиннадцать! Обожаю этот план.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
