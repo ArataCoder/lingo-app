@@ -626,7 +626,8 @@ if (hs === "#profile") { S.xp = 340; S.rounds = 7; S.streak = 3; S.bestStreak = 
       for(var k in props) base[k]=props[k];
       if(cfg.posthogKey){
         var pp={distinct_id:id, $process_person_profile:false, $lib:"lingo-mini-app"}; for(var j in base) pp[j]=base[j];
-        post(String(cfg.posthogHost||"https://eu.i.posthog.com").replace(/[/]+$/,"")+"/i/v0/e/",{api_key:cfg.posthogKey,event:ev,distinct_id:id,properties:pp,timestamp:new Date().toISOString()},"application/json");
+        var hs=cfg.posthogHosts||[cfg.posthogHost||"https://eu.i.posthog.com"], pl={api_key:cfg.posthogKey,event:ev,distinct_id:id,properties:pp,timestamp:new Date().toISOString()};
+        for(var h=0;h<hs.length&&h<2;h++) post(String(hs[h]).replace(/[/]+$/,"")+"/i/v0/e/",pl,"application/json");
       }
       if(cfg.statsUrl&&tg&&tg.initData){
         post(cfg.statsUrl,{initData:tg.initData,event:ev,track:props.track||null,topic:props.topic_id||null,xp:(typeof props.xp==="number")?Math.round(props.xp):null},"text/plain");
@@ -637,6 +638,6 @@ if (hs === "#profile") { S.xp = 340; S.rounds = 7; S.streak = 3; S.bestStreak = 
   window.lbTrackInit=function(c){ try{ if(cfg) return; cfg=c||{}; var x=q; q=[]; x.forEach(function(a){ send(a[0],a[1]); }); }catch(e){} };
 })();
 </script>
-<script src="v3.js?v=7"></script>
+<script src="v3.js?v=8"></script>
 </body>
 </html>

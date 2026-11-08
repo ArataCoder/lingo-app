@@ -55,9 +55,13 @@
     "rounds": 1
   },
   "analytics": {
-    "posthogKey": "",
+    "posthogKey": "phc_u67xyHUxKTVutgxbbuHuTzcm7UQHNyka4qDKe2zJuxoe",
     "posthogHost": "https://eu.i.posthog.com",
-    "statsUrl": "https://lingo-brain-bot.lingobrain.workers.dev/api/event"
+    "statsUrl": "https://lingo-brain-bot.lingobrain.workers.dev/api/event",
+    "posthogHosts": [
+      "https://eu.i.posthog.com",
+      "https://us.i.posthog.com"
+    ]
   },
   "unlock": {
     "alwaysOpen": [
