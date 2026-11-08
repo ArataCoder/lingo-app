@@ -35,6 +35,16 @@
       "term": "That's a bit below what I expected.",
       "tr": "Чуть ниже ожиданий.",
       "ex": "Honestly, that's a bit below what I expected."
+    },
+    {
+      "term": "base salary",
+      "tr": "оклад",
+      "ex": "The base salary is 30k a year."
+    },
+    {
+      "term": "benefits",
+      "tr": "соцпакет и бонусы",
+      "ex": "What benefits do you offer?"
     }
   ],
   "cards": [
@@ -122,6 +132,42 @@
       "text": "Is there any flexibility on the base salary if I start sooner?",
       "tr": "Есть ли гибкость по окладу, если я выйду раньше?",
       "lang": "en-US"
+    },
+    {
+      "id": "c8",
+      "type": "listen",
+      "energy": "normal",
+      "audio": {
+        "text": "The base salary is thirty thousand, and we also offer private health insurance.",
+        "lang": "en-US",
+        "rate": 0.85
+      },
+      "q": "Что входит в предложение?",
+      "options": [
+        "30k + медстраховка",
+        "13k + медстраховка",
+        "30k + бонус за результат"
+      ],
+      "answer": 0,
+      "explain": "<b>Health insurance</b> = медстраховка. <b>THIR-ty</b> (30) vs <b>thir-TEEN</b> (13) — слушай ударение."
+    },
+    {
+      "id": "c9",
+      "type": "build",
+      "energy": "normal",
+      "prompt": "Какой соцпакет вы предлагаете?",
+      "tokens": [
+        "What",
+        "benefits",
+        "do",
+        "you",
+        "offer?"
+      ],
+      "distractors": [
+        "give",
+        "does"
+      ],
+      "pattern": "What + [что] + do you offer?"
     }
   ],
   "scenarios": [
