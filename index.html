@@ -340,7 +340,7 @@ function dots(done, total, cur) { var h = ""; for (var i = 0; i < total; i++) h 
 function setTrack(l) { document.body.setAttribute("data-track", l); }
 
 // ================= ПРОГРЕСС =================
-function blank() { return { xp: 0, streak: 0, bestStreak: 0, lastDay: null, days: [], best: {}, rounds: 0, todayDate: null, todayRounds: 0 }; }
+function blank() { return { xp: 0, streak: 0, bestStreak: 0, lastDay: null, days: [], best: {}, rounds: 0, todayDate: null, todayRounds: 0, freezes: 0, surpriseDay: null }; }
 function merge(src) { var b = blank(); if (src) { for (var k in b) { if (src[k] !== undefined) b[k] = src[k]; } } return b; }
 function load() { var s = null; try { s = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {} return merge(s); }
 var S = load();
@@ -603,5 +603,6 @@ if (hs === "#speak") { start("en", "speak"); $("talkBtn").classList.add("rec"); 
 if (hs === "#result") { LAST = { lang: "es", topic: "cafe" }; complete(5, 5, 50); }
 if (hs === "#profile") { S.xp = 340; S.rounds = 7; S.streak = 3; S.bestStreak = 3; S.lastDay = dayStr(); S.days = [dayStr(), yesterday()]; show("profile"); }
 </script>
+<script src="v3.js?v=4"></script>
 </body>
 </html>
