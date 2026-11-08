@@ -1,0 +1,266 @@
+{
+ "id": "en.debate.conflict",
+ "track": "en",
+ "level": "C1",
+ "title": "Конфликт на работе",
+ "emoji": "🧯",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "I feel like…",
+   "tr": "мне кажется, у меня ощущение…",
+   "ex": "I feel like my ideas weren't heard."
+  },
+  {
+   "term": "Can we talk about…?",
+   "tr": "можем поговорить о…?",
+   "ex": "Can we talk about yesterday's meeting?"
+  },
+  {
+   "term": "I'd appreciate it if…",
+   "tr": "я был(а) бы благодарен(на), если…",
+   "ex": "I'd appreciate it if you let me finish."
+  },
+  {
+   "term": "It came across as…",
+   "tr": "это прозвучало как…",
+   "ex": "Your comment came across as rude."
+  },
+  {
+   "term": "I didn't mean it that way",
+   "tr": "я не это имел(а) в виду",
+   "ex": "Sorry, I didn't mean it that way."
+  },
+  {
+   "term": "to clear the air",
+   "tr": "прояснить ситуацию, снять напряжение",
+   "ex": "Let's clear the air."
+  },
+  {
+   "term": "to escalate",
+   "tr": "передать вопрос выше, обострить",
+   "ex": "I don't want to escalate this."
+  },
+  {
+   "term": "moving forward",
+   "tr": "в дальнейшем",
+   "ex": "Moving forward, let's agree on the agenda first."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как мягко начать трудный разговор?",
+   "options": [
+    "Can we talk about yesterday's meeting?",
+    "We must speak about your behavior.",
+    "Why were you like that yesterday?"
+   ],
+   "answer": 0,
+   "explain": "<b>Can we talk about…?</b> — нейтрально, без обвинений."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как сказать о своём ощущении, не обвиняя?",
+   "options": [
+    "I feel like my ideas weren't heard.",
+    "You never listen to me.",
+    "You ignored me on purpose."
+   ],
+   "answer": 0,
+   "explain": "«I»-сообщения снижают напряжение."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Let's clear the air.",
+   "back": "Давай проясним ситуацию."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Your comment came across as a bit dismissive.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Как прозвучал комментарий?",
+   "options": [
+    "Немного пренебрежительно",
+    "Очень вежливо",
+    "Смешно"
+   ],
+   "answer": 0,
+   "explain": "<b>came across as</b> = прозвучало как."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Moving forward, I'd appreciate it if we agree on the agenda first.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что предлагают на будущее?",
+   "options": [
+    "Сначала договариваться о повестке",
+    "Больше не встречаться",
+    "Звать начальника"
+   ],
+   "answer": 0,
+   "explain": "<b>moving forward</b> = в дальнейшем."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Можем поговорить о вчерашней встрече?",
+   "tokens": [
+    "Can",
+    "we",
+    "talk",
+    "about",
+    "yesterday's",
+    "meeting?"
+   ],
+   "distractors": [
+    "speak",
+    "yesterday"
+   ],
+   "pattern": "Can we talk about + [что]?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Давай проясним ситуацию.",
+   "tokens": [
+    "Let's",
+    "clear",
+    "the",
+    "air."
+   ],
+   "distractors": [
+    "clean",
+    "an"
+   ],
+   "pattern": "Let's clear the air."
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Sorry, I didn't mean it that way.",
+   "tr": "Извини, я не это имел(а) в виду.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "I feel like my ideas weren't heard, and I'd appreciate it if you let me finish.",
+   "tr": "У меня ощущение, что мои идеи не услышали, и я был(а) бы благодарен(на), если бы ты давал(а) мне договорить.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.debate.conflict.s1",
+   "title": "Разговор после напряжённой встречи",
+   "emoji": "🧯",
+   "userRole": "Ты",
+   "botRole": "Colleague",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hey, you wanted to talk?",
+     "tr": "Привет, ты хотел(а) поговорить?",
+     "choices": [
+      {
+       "text": "Yes. Can we talk about yesterday's meeting?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Спокойное начало 👍"
+      },
+      {
+       "text": "Yes. You were really rude yesterday.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Обвинение сразу закрывает разговор. Начни мягче."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Sure. What's on your mind?",
+     "tr": "Конечно. Что тебя беспокоит?",
+     "choices": [
+      {
+       "text": "I feel like my ideas weren't heard. You interrupted me a few times.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "«I»-сообщение + факт 🔥"
+      },
+      {
+       "text": "Your comment came across as dismissive.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Говоришь о впечатлении, а не о человеке."
+      }
+     ]
+    },
+    "n3": {
+     "say": "Oh. I'm sorry, I didn't mean it that way. I was stressed about the deadline.",
+     "tr": "Ой. Прости, я не это имел(а) в виду. Я нервничал(а) из-за дедлайна.",
+     "choices": [
+      {
+       "text": "I get it. Thanks for saying that.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Принять извинение — сила."
+      },
+      {
+       "text": "Okay, but I'd appreciate it if you let me finish next time.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Граница обозначена вежливо 👍"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Fair. How do you want to handle it moving forward?",
+     "tr": "Справедливо. Как предлагаешь делать дальше?",
+     "choices": [
+      {
+       "text": "Let's agree on the agenda before meetings.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Конкретное решение 🔥"
+      },
+      {
+       "text": "I don't want to escalate this. Let's just clear the air.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Зрело."
+      }
+     ]
+    },
+    "n5": {
+     "say": "Deal. Thanks for being direct.",
+     "tr": "Договорились. Спасибо, что сказал(а) прямо.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

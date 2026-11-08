@@ -695,8 +695,8 @@
         "opinion",
         "negotiation"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/en/debate/persuade.json"
       },
       {
        "id": "en.debate.conflict",
@@ -706,8 +706,8 @@
        "tags": [
         "work"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/en/debate/conflict.json"
       },
       {
        "id": "en.debate.hottakes",
@@ -717,8 +717,8 @@
        "tags": [
         "fun"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/en/debate/hottakes.json"
       }
      ]
     }

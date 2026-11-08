@@ -1,0 +1,269 @@
+{
+ "id": "en.debate.persuade",
+ "track": "en",
+ "level": "C1",
+ "title": "Убеждать и уступать",
+ "emoji": "🎤",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "I hear you, but…",
+   "tr": "понимаю тебя, но…",
+   "ex": "I hear you, but think about the long term."
+  },
+  {
+   "term": "What if we…?",
+   "tr": "а что если мы…?",
+   "ex": "What if we try it for one month?"
+  },
+  {
+   "term": "Let's meet halfway",
+   "tr": "давай найдём компромисс",
+   "ex": "Let's meet halfway: three days in the office."
+  },
+  {
+   "term": "I'm willing to…",
+   "tr": "я готов(а)…",
+   "ex": "I'm willing to work late on Fridays."
+  },
+  {
+   "term": "The bottom line is…",
+   "tr": "суть в том, что…",
+   "ex": "The bottom line is, we save money."
+  },
+  {
+   "term": "You have a point",
+   "tr": "в этом ты прав(а)",
+   "ex": "You have a point about the budget."
+  },
+  {
+   "term": "That's a deal-breaker",
+   "tr": "это для меня неприемлемо",
+   "ex": "No remote days? That's a deal-breaker for me."
+  },
+  {
+   "term": "Fair enough, I'll give you that",
+   "tr": "ладно, тут соглашусь",
+   "ex": "Fair enough, I'll give you that."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как предложить компромисс?",
+   "options": [
+    "Let's meet halfway.",
+    "Let's go to the middle way.",
+    "We meet in half."
+   ],
+   "answer": 0,
+   "explain": "<b>meet halfway</b> = пойти навстречу друг другу."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«That's a deal-breaker» значит…",
+   "options": [
+    "Это для меня неприемлемо",
+    "Это отличная сделка",
+    "Это нужно обсудить позже"
+   ],
+   "answer": 0,
+   "explain": "<b>deal-breaker</b> = условие, из-за которого ты откажешься."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "You have a point.",
+   "back": "В этом ты прав(а)."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "I hear you, but the bottom line is we can't afford it this year.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Какой главный аргумент?",
+   "options": [
+    "В этом году не потянем по деньгам",
+    "Идея плохая",
+    "Нет людей в команде"
+   ],
+   "answer": 0,
+   "explain": "<b>can't afford</b> = не можем себе позволить."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "What if we try it for one month and then decide?",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что предлагают?",
+   "options": [
+    "Попробовать месяц и потом решить",
+    "Решить прямо сейчас",
+    "Отказаться навсегда"
+   ],
+   "answer": 0,
+   "explain": "<b>What if we…?</b> — мягкое предложение."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я готов(а) работать допоздна по пятницам.",
+   "tokens": [
+    "I'm",
+    "willing",
+    "to",
+    "work",
+    "late",
+    "on",
+    "Fridays."
+   ],
+   "distractors": [
+    "will",
+    "in"
+   ],
+   "pattern": "I'm willing to + [действие]"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Ладно, тут соглашусь.",
+   "tokens": [
+    "Fair",
+    "enough,",
+    "I'll",
+    "give",
+    "you",
+    "that."
+   ],
+   "distractors": [
+    "agree",
+    "this"
+   ],
+   "pattern": "Fair enough, I'll give you that."
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "I hear you, but what if we try it for one month first?",
+   "tr": "Понимаю, но что если сначала попробуем месяц?",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "You have a point about the budget, so let's meet halfway.",
+   "tr": "Насчёт бюджета ты прав(а), так что давай найдём компромисс.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.debate.persuade.s1",
+   "title": "Переговоры о зарплате",
+   "emoji": "🎤",
+   "userRole": "Ты",
+   "botRole": "Hiring manager",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "We can offer thirty-five thousand a year.",
+     "tr": "Мы можем предложить 35 тысяч в год.",
+     "choices": [
+      {
+       "text": "Thank you. I hear you, but based on my experience, I was expecting forty.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Вежливо + аргумент + цифра 🔥"
+      },
+      {
+       "text": "Okay, I accept.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Можно, но почти всегда стоит попробовать поторговаться."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Forty is above our budget, to be honest.",
+     "tr": "Сорок выше нашего бюджета, если честно.",
+     "choices": [
+      {
+       "text": "I understand. What if we meet halfway at thirty-eight?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Классический компромисс 👍"
+      },
+      {
+       "text": "Then it's a deal-breaker for me.",
+       "next": "n3",
+       "score": 1,
+       "feedback": "Жёстко. Работает, только если есть другие офферы."
+      }
+     ]
+    },
+    "n3": {
+     "say": "I can do thirty-seven, plus two remote days.",
+     "tr": "Могу 37 плюс два дня удалёнки.",
+     "choices": [
+      {
+       "text": "Fair enough, I'll give you that. Two remote days work for me.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Принять хорошее предложение — тоже навык 🔥"
+      },
+      {
+       "text": "You have a point. Can we review it in six months?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Пересмотр через полгода — умно."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Deal. Anything else?",
+     "tr": "Договорились. Что-то ещё?",
+     "choices": [
+      {
+       "text": "No, the bottom line is I'm excited to join.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Позитивный финал 👍"
+      },
+      {
+       "text": "Just one thing: I'm willing to start on Monday.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Готовность — плюс."
+      }
+     ]
+    },
+    "n5": {
+     "say": "Great. I'll send the offer today.",
+     "tr": "Отлично. Пришлю оффер сегодня.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

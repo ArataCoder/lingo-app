@@ -1,0 +1,280 @@
+{
+ "id": "en.debate.hottakes",
+ "track": "en",
+ "level": "B2",
+ "title": "Hot takes: весёлые споры",
+ "emoji": "🔥",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "Hot take:",
+   "tr": "непопулярное мнение:",
+   "ex": "Hot take: pineapple belongs on pizza."
+  },
+  {
+   "term": "Hear me out",
+   "tr": "выслушай меня",
+   "ex": "Hear me out, it actually makes sense."
+  },
+  {
+   "term": "overrated",
+   "tr": "переоценённый",
+   "ex": "Coffee is overrated."
+  },
+  {
+   "term": "underrated",
+   "tr": "недооценённый",
+   "ex": "Tea is so underrated."
+  },
+  {
+   "term": "No way!",
+   "tr": "да ну нет!",
+   "ex": "No way! That's a crime."
+  },
+  {
+   "term": "I'll die on this hill",
+   "tr": "буду стоять на своём до конца",
+   "ex": "Mondays are fine. I'll die on this hill."
+  },
+  {
+   "term": "Fight me",
+   "tr": "спорим? (шутливо)",
+   "ex": "Cats are better than dogs. Fight me."
+  },
+  {
+   "term": "You've got a point there",
+   "tr": "тут ты прав(а)",
+   "ex": "Okay, you've got a point there."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как шутливо предложить поспорить?",
+   "options": [
+    "Fight me.",
+    "Hit me.",
+    "Attack me."
+   ],
+   "answer": 0,
+   "explain": "<b>Fight me</b> — дружеский вызов, не агрессия."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Overrated» значит…",
+   "options": [
+    "Переоценённый",
+    "Недооценённый",
+    "Устаревший"
+   ],
+   "answer": 0,
+   "explain": "<b>overrated</b> — хуже, чем о нём думают. <b>underrated</b> — наоборот."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Hear me out.",
+   "back": "Выслушай меня."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Hot take: breakfast is the most overrated meal.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Какое мнение у человека?",
+   "options": [
+    "Завтрак переоценён",
+    "Завтрак недооценён",
+    "Завтрак самый важный"
+   ],
+   "answer": 0,
+   "explain": "<b>Hot take</b> = смелое мнение."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Okay, you've got a point there, but I'm not changing my mind.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что говорит человек?",
+   "options": [
+    "Частично согласен, но мнение не меняет",
+    "Полностью согласен",
+    "Обиделся"
+   ],
+   "answer": 0,
+   "explain": "<b>you've got a point</b> = тут ты прав(а)."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Выслушай меня.",
+   "tokens": [
+    "Hear",
+    "me",
+    "out."
+   ],
+   "distractors": [
+    "listen",
+    "to"
+   ],
+   "pattern": "Hear me out."
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Кофе переоценён.",
+   "tokens": [
+    "Coffee",
+    "is",
+    "overrated."
+   ],
+   "distractors": [
+    "underrated",
+    "are"
+   ],
+   "pattern": "[что] is overrated."
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Hot take: pineapple belongs on pizza.",
+   "tr": "Непопулярное мнение: ананас на пицце — это нормально.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Hear me out, Mondays are actually great. I'll die on this hill.",
+   "tr": "Выслушай, понедельники на самом деле классные. Буду стоять на своём до конца.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.debate.hottakes.s1",
+   "title": "Спор за обедом",
+   "emoji": "🔥",
+   "userRole": "Ты",
+   "botRole": "Taylor",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hot take: pineapple on pizza is amazing.",
+     "tr": "Непопулярное мнение: ананас на пицце — это шикарно.",
+     "choices": [
+      {
+       "text": "No way! That's a crime.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Эмоционально и по-разговорному 😂"
+      },
+      {
+       "text": "Hmm, I'm not sure about that.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Вежливое сомнение 👍"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Hear me out: sweet and salty together is perfect.",
+     "tr": "Выслушай: сладкое и солёное вместе — идеально.",
+     "choices": [
+      {
+       "text": "Okay, you've got a point there.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Признать аргумент — уровень 🔥"
+      },
+      {
+       "text": "I hear you, but I'll die on this hill. No fruit on pizza.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Идиома к месту 💪"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Fine. Your turn. Give me your hot take.",
+     "tr": "Ладно. Твоя очередь. Давай своё непопулярное мнение.",
+     "choices": [
+      {
+       "text": "Coffee is overrated. Fight me.",
+       "next": "n4a",
+       "score": 2,
+       "feedback": "Смело ☕"
+      },
+      {
+       "text": "Hot take: Mondays are actually fine.",
+       "next": "n4b",
+       "score": 2,
+       "feedback": "Очень спорно 😄"
+      }
+     ]
+    },
+    "n4a": {
+     "say": "What? Coffee is life! Why overrated?",
+     "tr": "Что? Кофе — это жизнь! Почему переоценён?",
+     "choices": [
+      {
+       "text": "It's expensive, and tea is so underrated.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Аргумент + пара слов overrated/underrated 👍"
+      },
+      {
+       "text": "Because it is bad.",
+       "next": "n5",
+       "score": 0,
+       "feedback": "Слишком просто. Добавь аргумент: «It's expensive…»"
+      }
+     ]
+    },
+    "n4b": {
+     "say": "Mondays? Fine? No way!",
+     "tr": "Понедельники? Нормальные? Да ну нет!",
+     "choices": [
+      {
+       "text": "Hear me out: a fresh start every week.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Hear me out — идеально 👍"
+      },
+      {
+       "text": "I'll die on this hill. Mondays are underrated.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Две идиомы сразу 💪"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Okay, I'll give you that one.",
+     "tr": "Ладно, тут засчитаю.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
