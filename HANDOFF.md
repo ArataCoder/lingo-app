@@ -235,3 +235,16 @@ Telegram (WebApp)  ──►  GitHub Pages (статический фронт: i
 ## 8. Открытые вопросы к владельцу
 - PostHog: регион EU или US (ключ phc_... уже в config.json)?
 - Напоминания через GitHub Actions или через Cron воркера?
+
+### v5.2 — маскот + онбординг в 1 шаг (9 ноя 2026)
+- Новый файл `v52.js` (подключён после v51.js, `?v=1`). `v50.js?v=2`: в `window.__v5` добавлены `saveP, setTr, go, whenReady`. `v3.js`: VER 14 (`?v=15`), `bot/worker.js`: APP_URL `?v=14`.
+- Маскот: `assets/mascot/mascot_{start,error,win}.webp` (≈280×280, прозрачный фон). Пока файлов нет, показывается 🧠/🏆, ничего не ломается.
+  - start: шпаргалка и первая карточка урока; error: первая карточка «Работы над ошибками»; win: экран результата с «Идеально!». Учитывает prefers-reduced-motion, картинка скрыта от скринридеров, реплика в role=status.
+- Онбординг: вместо 3 шагов v5.0 один экран: язык (ES по умолчанию) + «Я с нуля (A0)» / «Уже знаю базу (A1+)». Старая модалка `#v5onb` подменяется автоматически.
+  - ES A0: lvl 1, блоки survive→life (первая тема es.survive.hello со шпаргалкой). ES A1+: lvl 2, life→social→survive.
+  - EN «с нуля»: barriers→social. EN A1+: lvl 4, interview→barriers.
+  - После выбора урок стартует, как только загружена нужная тема (не ждём все 80 файлов — раньше это могло занимать до 10 с).
+  - Событие `onboarding_done` с `variant: "1step"`.
+- Озвучка: в generate_audio.py уже es-ES-AlvaroNeural и en-US-GuyNeural (старые Elvira/Aria в LEGACY_VOICES).
+- Контент: 80/80 тем ready, validate_content.py OK, lint пунктуации/акцентов ES/EN — ошибок нет.
+- QA (headless Chromium + мок Telegram SDK): онбординг 44px+ кнопки, фокус, EN-ветка, сохранение P, повторный вход без онбординга, маскоты start/error/win, reduced-motion, 0 JS-ошибок.

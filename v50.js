@@ -374,6 +374,6 @@
     poll();
     if (window.current === "home") window.renderHome();
   }
-  window.__v5 = { P: P, RV: RV, nextTopic: nextTopic, dueCards: dueCards, runReview: runReview, onbOpen: onbOpen, home: home, today: today };
+  window.__v5 = { P: P, RV: RV, nextTopic: nextTopic, dueCards: dueCards, runReview: runReview, onbOpen: onbOpen, home: home, today: today, saveP: saveP, setTr: setTr, go: go, whenReady: whenReady };
   init();
 })();

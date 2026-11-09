@@ -1,7 +1,7 @@
 /* Lingo Brain v3: каталог тем, «Нет сил», Surprise Box, заморозка серии,
    тренажёр уха, конструктор фраз, шпаргалки и сценарии. Контент: content/*.json */
 (function () {
-  var VER = "13";
+  var VER = "14";
   var V = { cat: null, cfg: null, sur: null, topics: {}, failed: false, track: "es", run: null, lastRun: null };
   var DEF_LANG = { es: "es-ES", en: "en-US" };
   var ACCENT = { "es-ES": "🇪🇸 Кастилья", "es-MX": "🇲🇽 Латино", "es-US": "🌎 Латино", "en-GB": "🇬🇧 Британский", "en-US": "🇺🇸 Американский" };
