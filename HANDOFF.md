@@ -270,3 +270,14 @@ Telegram (WebApp)  ──►  GitHub Pages (статический фронт: i
 - Audio loads directly from GitHub Pages (AUDB in v3.js) → doesn't consume worker requests.
 - Deploy: lingo-brain-app is still an inline-file worker (90 files, /__build mode "inline"). Static Assets upload needs a real API token (the MCP OAuth fetch overrides the upload JWT → 401). With a token "Workers Scripts:Edit" we can switch to Static Assets + Workers Builds auto-deploy.
 - Cache: html no-cache; ?v= files immutable 1y; other files 10 min + SWR.
+
+
+## v5.5 (2026-11-09)
+- **Root cause of «Рейтинг не загрузился»:** the bot worker lost ALL bindings and secrets (DB, BOT_TOKEN, SETUP_KEY, WEBHOOK_SECRET, ADMIN_CHAT_ID). Without BOT_TOKEN, verifyInitData always fails, so /api/sync returns 401 "auth". This was caused by a deploy without keep_bindings / via /content.
+- Restored: D1 binding DB plus new random SETUP_KEY and WEBHOOK_SECRET (full PUT with bindings in metadata). **BOT_TOKEN and ADMIN_CHAT_ID must be re-added by the owner** in the Cloudflare dashboard (lingo-brain-bot → Settings → Variables and Secrets → Secret). After that, open /setup?key=SETUP_KEY to re-register the webhook with the new WEBHOOK_SECRET.
+- New GET /api/health on the bot: {db, tok, players, last_sync_err {t,e,d:{len,keys,age,match,tok}}, last_sync_ok}. initData itself is never stored.
+- Client (v36?v=16): error state shows "код: auth / AbortError / TypeError / http N". For "auth" it asks the user to reopen the app via the bot.
+- Play button (v51?v=3): rounded triangle centered by its centroid (no margin hack), 26px, a subtle ring.
+- Gradual unlock: content/config.json unlock.mode = "chain", alwaysOpen = []. The first topic of each block is open; the next one opens after ≥60% on the previous one. Hero/nextTopic already respect isOpen.
+- **Deploy rule (bot):** ALWAYS do a full PUT /workers/scripts/lingo-brain-bot with metadata.bindings + keep_bindings:["secret_text","plain_text"]. Never use /content.
+- App deploy: patch the inline worker in place (GET /content/v2 → JSON.parse F → replace changed files → PUT with new BUILD). Build v5.5-2026-11-09T17:51:30Z.
