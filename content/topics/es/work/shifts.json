@@ -1,0 +1,270 @@
+{
+ "id": "es.work.shifts",
+ "track": "es",
+ "level": "A2",
+ "title": "Смены и график",
+ "emoji": "🗓️",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "el turno de mañana / de tarde",
+   "tr": "утренняя / вечерняя смена",
+   "ex": "Esta semana tengo turno de mañana."
+  },
+  {
+   "term": "el horario",
+   "tr": "график",
+   "ex": "¿Ya está el horario de la semana?"
+  },
+  {
+   "term": "el día libre",
+   "tr": "выходной день",
+   "ex": "El miércoles es mi día libre."
+  },
+  {
+   "term": "cambiar el turno",
+   "tr": "поменяться сменой",
+   "ex": "¿Puedo cambiar el turno con Pablo?"
+  },
+  {
+   "term": "las horas extra",
+   "tr": "сверхурочные",
+   "ex": "¿Se pagan las horas extra?"
+  },
+  {
+   "term": "llegar tarde",
+   "tr": "опаздывать",
+   "ex": "Lo siento, voy a llegar tarde."
+  },
+  {
+   "term": "a jornada completa / a media jornada",
+   "tr": "полный / неполный день",
+   "ex": "Busco trabajo a media jornada."
+  },
+  {
+   "term": "la nómina",
+   "tr": "расчётный лист, зарплата",
+   "ex": "La nómina llega el día cinco."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Turno de tarde» значит…",
+   "options": [
+    "Вечерняя смена",
+    "Утренняя смена",
+    "Ночная смена"
+   ],
+   "answer": 0,
+   "explain": "<b>tarde</b> — после обеда и вечер; ночь — <b>noche</b> 🌇"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Нужно поменяться сменой. Что спросить?",
+   "options": [
+    "¿Puedo cambiar el turno?",
+    "¿Puedo cambiar el tren?",
+    "¿Puedo cantar el turno?"
+   ],
+   "answer": 0,
+   "explain": "<b>cambiar el turno</b> 🔄"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "El miércoles es mi día libre.",
+   "back": "В среду у меня выходной."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Esta semana trabajas de lunes a jueves, de tres a once.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Какой график?",
+   "options": [
+    "Пн–чт, с 15 до 23",
+    "Пн–пт, с 9 до 17",
+    "Только выходные"
+   ],
+   "answer": 0,
+   "explain": "<b>de tres a once</b> — с трёх до одиннадцати 🕒"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Las horas extra se pagan aparte, a doce euros la hora.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что с переработками?",
+   "options": [
+    "Оплачиваются отдельно, 12 €/час",
+    "Не оплачиваются",
+    "Идут в отпуск"
+   ],
+   "answer": 0,
+   "explain": "<b>aparte</b> — отдельно 💶"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Могу я поменяться сменой с Марией?",
+   "tokens": [
+    "¿Puedo",
+    "cambiar",
+    "el",
+    "turno",
+    "con",
+    "María?"
+   ],
+   "distractors": [
+    "cambio",
+    "para"
+   ],
+   "pattern": "¿Puedo cambiar el turno + con + кем?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Извините, я опоздаю на десять минут.",
+   "tokens": [
+    "Lo",
+    "siento,",
+    "voy",
+    "a",
+    "llegar",
+    "diez",
+    "minutos",
+    "tarde."
+   ],
+   "distractors": [
+    "llego",
+    "temprano"
+   ],
+   "pattern": "voy a llegar + сколько + tarde"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "¿Ya está el horario de la semana que viene?",
+   "tr": "График на следующую неделю уже есть?",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "El viernes tengo una cita médica. ¿Puedo cambiar el turno de mañana por el de tarde?",
+   "tr": "В пятницу у меня приём у врача. Могу я поменять утреннюю смену на вечернюю?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.work.shifts.s1",
+   "title": "Поменять смену",
+   "emoji": "🗓️",
+   "userRole": "Ты",
+   "botRole": "Encargada",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hola, ¿querías hablar conmigo?",
+     "tr": "Привет, ты хотел(а) со мной поговорить?",
+     "choices": [
+      {
+       "text": "Sí, es sobre el horario de la semana que viene.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Сразу тема разговора 👍"
+      },
+      {
+       "text": "Horario mal.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Звучит резко. Лучше: <b>Tengo una pregunta sobre el horario</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Dime. ¿Qué pasa con el horario?",
+     "tr": "Говори. Что с графиком?",
+     "choices": [
+      {
+       "text": "El viernes tengo una cita médica por la mañana. ¿Puedo cambiar al turno de tarde?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Причина + решение — идеально 🎯"
+      },
+      {
+       "text": "No puedo trabajar el viernes.",
+       "next": "n3",
+       "score": 1,
+       "feedback": "Объясни причину и предложи вариант — так легче договориться 🙂"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Mmm, el viernes por la tarde ya está Pablo. ¿Puedes cambiarlo con él?",
+     "tr": "Хм, в пятницу вечером уже стоит Пабло. Можешь поменяться с ним?",
+     "choices": [
+      {
+       "text": "Sí, hablo con él hoy y te confirmo.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>te confirmo</b> — подтвержу ✅"
+      },
+      {
+       "text": "¿Y si trabajo el sábado en lugar del viernes?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>en lugar de</b> — вместо 👌"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Vale, perfecto. Por cierto, ¿puedes hacer dos horas extra el lunes?",
+     "tr": "Хорошо, отлично. Кстати, сможешь поработать два часа сверхурочно в понедельник?",
+     "choices": [
+      {
+       "text": "Sí, puedo. ¿Se pagan aparte?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Про оплату спрашивать нормально 💶"
+      },
+      {
+       "text": "El lunes no puedo, lo siento. ¿Otro día te va bien?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Вежливый отказ с вариантом 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Sí, todo va en la nómina del mes. ¡Gracias por avisar con tiempo!",
+     "tr": "Да, всё пойдёт в зарплату за месяц. Спасибо, что предупредил(а) заранее!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

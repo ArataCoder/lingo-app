@@ -416,7 +416,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/es/travel/tours.json"
       }
      ]
     },
@@ -491,7 +492,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/es/work/cv.json"
       },
       {
        "id": "es.work.shifts",
@@ -501,7 +503,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/es/work/shifts.json"
       },
       {
        "id": "es.work.quit",
@@ -511,7 +514,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/es/work/quit.json"
       }
      ]
     }

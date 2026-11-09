@@ -1,0 +1,266 @@
+{
+ "id": "es.work.quit",
+ "track": "es",
+ "level": "B1",
+ "title": "Увольнение и paro",
+ "emoji": "🚪",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "dejar el trabajo",
+   "tr": "уйти с работы",
+   "ex": "He decidido dejar el trabajo."
+  },
+  {
+   "term": "la baja voluntaria",
+   "tr": "увольнение по собственному желанию",
+   "ex": "Quiero pedir la baja voluntaria."
+  },
+  {
+   "term": "el preaviso",
+   "tr": "предупреждение об уходе (обычно 15 дней)",
+   "ex": "Le doy quince días de preaviso."
+  },
+  {
+   "term": "el finiquito",
+   "tr": "окончательный расчёт",
+   "ex": "¿Cuándo me pagan el finiquito?"
+  },
+  {
+   "term": "el despido",
+   "tr": "увольнение по инициативе работодателя",
+   "ex": "Si es un despido, tengo derecho a paro."
+  },
+  {
+   "term": "el paro",
+   "tr": "пособие по безработице",
+   "ex": "Voy a pedir el paro en el SEPE."
+  },
+  {
+   "term": "el certificado de empresa",
+   "tr": "справка от работодателя для SEPE",
+   "ex": "Necesito el certificado de empresa."
+  },
+  {
+   "term": "las vacaciones no disfrutadas",
+   "tr": "неиспользованный отпуск",
+   "ex": "Me pagan las vacaciones no disfrutadas en el finiquito."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«El finiquito» — это…",
+   "options": [
+    "Окончательный расчёт при увольнении",
+    "Первая зарплата",
+    "Штраф"
+   ],
+   "answer": 0,
+   "explain": "В <b>finiquito</b> входят дни месяца, отпуск и доли премий 💶"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "При baja voluntaria пособие по безработице обычно…",
+   "options": [
+    "Не положено",
+    "Положено всегда",
+    "Платят двойное"
+   ],
+   "answer": 0,
+   "explain": "<b>paro</b> обычно положен при <b>despido</b> или окончании контракта, а не при уходе по своему желанию ⚠️"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Le doy quince días de preaviso.",
+   "back": "Я предупреждаю вас за пятнадцать дней."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Tu último día será el treinta, y el finiquito lo cobras con la nómina.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что сказал начальник?",
+   "options": [
+    "Последний день 30-го, расчёт вместе с зарплатой",
+    "Последний день завтра",
+    "Расчёта не будет"
+   ],
+   "answer": 0,
+   "explain": "<b>cobrar</b> — получить деньги 💶"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Para pedir el paro necesitas el certificado de empresa y la carta de despido.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что нужно для пособия?",
+   "options": [
+    "Справка от работодателя и письмо об увольнении",
+    "Только паспорт",
+    "Договор аренды"
+   ],
+   "answer": 0,
+   "explain": "Без <b>certificado de empresa</b> SEPE не начнёт выплаты 📄"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я решил(а) уйти с работы.",
+   "tokens": [
+    "He",
+    "decidido",
+    "dejar",
+    "el",
+    "trabajo."
+   ],
+   "distractors": [
+    "decido",
+    "trabajar"
+   ],
+   "pattern": "He decidido + инфинитив"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Когда мне выплатят окончательный расчёт?",
+   "tokens": [
+    "¿Cuándo",
+    "me",
+    "pagan",
+    "el",
+    "finiquito?"
+   ],
+   "distractors": [
+    "pagar",
+    "cuál"
+   ],
+   "pattern": "¿Cuándo me pagan + что?"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Quiero hablar contigo. He encontrado otro trabajo.",
+   "tr": "Хочу с тобой поговорить. У меня появилась другая работа.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "He decidido dejar el trabajo. Te doy quince días de preaviso y quiero agradecerte todo lo que he aprendido aquí.",
+   "tr": "Я решил(а) уйти с работы. Предупреждаю за пятнадцать дней и хочу поблагодарить за всё, чему я здесь научился(ась).",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.work.quit.s1",
+   "title": "Сказать начальнику, что уходишь",
+   "emoji": "🚪",
+   "userRole": "Ты",
+   "botRole": "Jefe",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hola, pasa. ¿Qué querías comentarme?",
+     "tr": "Привет, заходи. Что ты хотел(а) обсудить?",
+     "choices": [
+      {
+       "text": "Gracias. Quería decirte que he encontrado otro trabajo.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Спокойно и прямо 👍"
+      },
+      {
+       "text": "Me voy. Adiós.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Слишком резко — лучше уйти, сохранив хорошие отношения 🙂"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Vaya, qué pena. ¿Cuándo sería tu último día?",
+     "tr": "Ого, жаль. Когда будет твой последний день?",
+     "choices": [
+      {
+       "text": "Te doy quince días de preaviso, así que el día treinta.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>preaviso</b> по правилам ⚖️"
+      },
+      {
+       "text": "Si es posible, en una semana. ¿Te va bien?",
+       "next": "n3",
+       "score": 1,
+       "feedback": "Можно спросить, но обычно предупреждают за 15 дней ⚖️"
+      }
+     ]
+    },
+    "n3": {
+     "say": "De acuerdo. ¿Me lo das por escrito?",
+     "tr": "Хорошо. Дашь мне это письменно?",
+     "choices": [
+      {
+       "text": "Sí, te traigo la carta de baja voluntaria mañana.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Письменно — правильно 📄"
+      },
+      {
+       "text": "¿Es necesario? ¿Qué tengo que escribir?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Честный вопрос. Письмо защищает обе стороны 📄"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Perfecto. En el finiquito te pagamos los días del mes y las vacaciones no disfrutadas.",
+     "tr": "Отлично. В расчёт войдут дни месяца и неиспользованный отпуск.",
+     "choices": [
+      {
+       "text": "Genial, gracias. ¿Me das también el certificado de empresa?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Документ для SEPE — не забудь 👍"
+      },
+      {
+       "text": "Muchas gracias por todo. He aprendido mucho aquí.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Уходить с благодарностью — сильно 🙌"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Claro que sí. Te deseo mucha suerte en el nuevo trabajo.",
+     "tr": "Конечно. Желаю удачи на новой работе.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

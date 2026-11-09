@@ -1,0 +1,268 @@
+{
+ "id": "es.work.cv",
+ "track": "es",
+ "level": "B1",
+ "title": "Резюме и рассказ о себе",
+ "emoji": "📄",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "el currículum",
+   "tr": "резюме",
+   "ex": "Le envío mi currículum por correo."
+  },
+  {
+   "term": "la experiencia laboral",
+   "tr": "опыт работы",
+   "ex": "Tengo tres años de experiencia laboral."
+  },
+  {
+   "term": "he trabajado como…",
+   "tr": "я работал(а) кем…",
+   "ex": "He trabajado como dependiente en una tienda."
+  },
+  {
+   "term": "se me da bien…",
+   "tr": "у меня хорошо получается…",
+   "ex": "Se me da bien trabajar en equipo."
+  },
+  {
+   "term": "los idiomas",
+   "tr": "языки",
+   "ex": "Hablo ruso, ucraniano e inglés."
+  },
+  {
+   "term": "la disponibilidad",
+   "tr": "когда можешь работать",
+   "ex": "Tengo disponibilidad inmediata."
+  },
+  {
+   "term": "el permiso de trabajo",
+   "tr": "разрешение на работу",
+   "ex": "Tengo permiso de trabajo en España."
+  },
+  {
+   "term": "aprender rápido",
+   "tr": "быстро учиться",
+   "ex": "Aprendo rápido y soy muy responsable."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Tengo disponibilidad inmediata» значит…",
+   "options": [
+    "Могу начать сразу",
+    "Я сейчас занят(а)",
+    "Работаю только по утрам"
+   ],
+   "answer": 0,
+   "explain": "Очень ценная фраза на собеседовании ✅"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Хочешь сказать, что хорошо работаешь в команде.",
+   "options": [
+    "Se me da bien trabajar en equipo.",
+    "Me da bien el equipo.",
+    "Soy bien en equipo."
+   ],
+   "answer": 0,
+   "explain": "<b>Se me da bien</b> + инфинитив — у меня хорошо получается 💪"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Tengo permiso de trabajo en España.",
+   "back": "У меня есть разрешение на работу в Испании."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Buscamos a alguien con experiencia en atención al cliente y que hable inglés.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Кого ищут?",
+   "options": [
+    "С опытом работы с клиентами и английским",
+    "Только с водительскими правами",
+    "Без опыта, на ночные смены"
+   ],
+   "answer": 0,
+   "explain": "<b>atención al cliente</b> — работа с клиентами 🤝"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "¿Por qué quiere trabajar con nosotros?",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "О чём спрашивают?",
+   "options": [
+    "Почему хочешь работать у них",
+    "Сколько хочешь получать",
+    "Когда можешь начать"
+   ],
+   "answer": 0,
+   "explain": "Подготовь 2–3 фразы на этот вопрос заранее 🎯"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "У меня три года опыта работы.",
+   "tokens": [
+    "Tengo",
+    "tres",
+    "años",
+    "de",
+    "experiencia",
+    "laboral."
+   ],
+   "distractors": [
+    "tenía",
+    "laborales"
+   ],
+   "pattern": "Tengo + años + de experiencia"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я быстро учусь и очень ответственно отношусь к делу.",
+   "tokens": [
+    "Aprendo",
+    "rápido",
+    "y",
+    "soy",
+    "muy",
+    "responsable."
+   ],
+   "distractors": [
+    "aprender",
+    "estoy"
+   ],
+   "pattern": "Aprendo… y soy…"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Hablo ruso, ucraniano, inglés y un poco de español.",
+   "tr": "Я говорю по-русски, по-украински, по-английски и немного по-испански.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "He trabajado en atención al cliente. Se me da bien resolver problemas y tengo disponibilidad inmediata.",
+   "tr": "Я работал(а) с клиентами. У меня хорошо получается решать проблемы, и я могу начать сразу.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.work.cv.s1",
+   "title": "Собеседование: расскажите о себе",
+   "emoji": "📄",
+   "userRole": "Ты",
+   "botRole": "Entrevistadora",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Buenos días. Hábleme un poco de usted.",
+     "tr": "Доброе утро. Расскажите немного о себе.",
+     "choices": [
+      {
+       "text": "Buenos días. Soy de Ucrania, vivo en Torrevieja y tengo experiencia en atención al cliente.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Формула: откуда + где живёшь + опыт 🧩"
+      },
+      {
+       "text": "No sé qué decir.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Используй формулу: откуда ты + где живёшь + опыт 🧩"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Muy bien. ¿Qué idiomas habla?",
+     "tr": "Отлично. Какие языки знаете?",
+     "choices": [
+      {
+       "text": "Ruso, ucraniano e inglés. Y estoy aprendiendo español cada día.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Показываешь прогресс — супер 📈"
+      },
+      {
+       "text": "Inglés bien, español poco.",
+       "next": "n3",
+       "score": 1,
+       "feedback": "Поймут, но полнее: <b>Hablo inglés bien y un poco de español</b>."
+      }
+     ]
+    },
+    "n3": {
+     "say": "¿Cuál es su punto fuerte?",
+     "tr": "Какая ваша сильная сторона?",
+     "choices": [
+      {
+       "text": "Se me da bien hablar con la gente y resolver problemas.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>Se me da bien</b> ✅"
+      },
+      {
+       "text": "Aprendo muy rápido. En mi último trabajo aprendí el sistema en una semana.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Пример с фактом — очень сильно 💪"
+      }
+     ]
+    },
+    "n4": {
+     "say": "¿Tiene permiso de trabajo? ¿Cuándo podría empezar?",
+     "tr": "У вас есть разрешение на работу? Когда могли бы начать?",
+     "choices": [
+      {
+       "text": "Sí, tengo protección temporal con permiso de trabajo. Tengo disponibilidad inmediata.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Чётко и уверенно 🎯"
+      },
+      {
+       "text": "Sí, tengo permiso. Puedo empezar la semana que viene.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Конкретная дата — хорошо 📅"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Perfecto. Le llamaremos esta semana. Muchas gracias por venir.",
+     "tr": "Отлично. Мы позвоним вам на этой неделе. Спасибо, что пришли.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,266 @@
+{
+ "id": "es.travel.tours",
+ "track": "es",
+ "level": "A2",
+ "title": "Экскурсии и билеты",
+ "emoji": "🎟️",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "la entrada",
+   "tr": "входной билет",
+   "ex": "Dos entradas, por favor."
+  },
+  {
+   "term": "la taquilla",
+   "tr": "касса",
+   "ex": "La taquilla abre a las nueve."
+  },
+  {
+   "term": "la visita guiada",
+   "tr": "экскурсия с гидом",
+   "ex": "¿Hay visita guiada en inglés?"
+  },
+  {
+   "term": "el descuento",
+   "tr": "скидка",
+   "ex": "¿Hay descuento para estudiantes?"
+  },
+  {
+   "term": "gratis",
+   "tr": "бесплатно",
+   "ex": "Los domingos la entrada es gratis."
+  },
+  {
+   "term": "el horario",
+   "tr": "часы работы",
+   "ex": "¿Cuál es el horario del museo?"
+  },
+  {
+   "term": "agotado",
+   "tr": "распродано",
+   "ex": "Lo siento, está agotado para hoy."
+  },
+  {
+   "term": "reservar por internet",
+   "tr": "забронировать онлайн",
+   "ex": "Es mejor reservar por internet."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Agotado» значит…",
+   "options": [
+    "Распродано",
+    "Закрыто на ремонт",
+    "Бесплатно"
+   ],
+   "answer": 0,
+   "explain": "<b>agotado</b> — билетов нет 🎟️"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Хочешь экскурсию с гидом. Что спросить?",
+   "options": [
+    "¿Hay visita guiada?",
+    "¿Hay visita cerrada?",
+    "¿Hay vista guapa?"
+   ],
+   "answer": 0,
+   "explain": "<b>visita guiada</b> — экскурсия с гидом 🧭"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "¿Hay descuento para estudiantes?",
+   "back": "Есть скидка для студентов?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "La visita guiada empieza a las once y dura una hora y media.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Когда начинается и сколько длится?",
+   "options": [
+    "В 11, полтора часа",
+    "В 10, час",
+    "В 11, три часа"
+   ],
+   "answer": 0,
+   "explain": "<b>dura</b> — длится ⏱️"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Los domingos por la tarde la entrada es gratis.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Когда вход бесплатный?",
+   "options": [
+    "В воскресенье после обеда",
+    "В понедельник утром",
+    "Каждый день"
+   ],
+   "answer": 0,
+   "explain": "<b>gratis</b> — бесплатно 🆓"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Два билета, пожалуйста.",
+   "tokens": [
+    "Dos",
+    "entradas,",
+    "por",
+    "favor."
+   ],
+   "distractors": [
+    "entrada",
+    "para"
+   ],
+   "pattern": "Число + entradas, por favor"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Какие часы работы у музея?",
+   "tokens": [
+    "¿Cuál",
+    "es",
+    "el",
+    "horario",
+    "del",
+    "museo?"
+   ],
+   "distractors": [
+    "qué",
+    "de"
+   ],
+   "pattern": "¿Cuál es + el horario + del…?"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "¿A qué hora abre la taquilla?",
+   "tr": "Во сколько открывается касса?",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Hola, quería dos entradas para la visita guiada de la una. ¿Hay descuento para estudiantes?",
+   "tr": "Здравствуйте, я хотел(а) бы два билета на экскурсию в час. Есть скидка для студентов?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.travel.tours.s1",
+   "title": "Билеты на экскурсию",
+   "emoji": "🎟️",
+   "userRole": "Ты",
+   "botRole": "Taquillera",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hola, buenos días. ¿Qué desea?",
+     "tr": "Здравствуйте, доброе утро. Что желаете?",
+     "choices": [
+      {
+       "text": "Buenos días. Quería dos entradas para el castillo, por favor.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "<b>Quería</b> — вежливое «хотел(а) бы» 👍"
+      },
+      {
+       "text": "Entradas.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Лучше: <b>Dos entradas, por favor</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "¿Para la visita libre o la visita guiada?",
+     "tr": "На самостоятельное посещение или с гидом?",
+     "choices": [
+      {
+       "text": "La visita guiada. ¿A qué hora empieza?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Время — главное 🕐"
+      },
+      {
+       "text": "¿Cuál es la diferencia de precio?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Разумный вопрос 💶"
+      }
+     ]
+    },
+    "n3": {
+     "say": "La guiada cuesta doce euros. La de las once está agotada, pero hay plazas a la una.",
+     "tr": "С гидом — двенадцать евро. На одиннадцать распродано, но есть места на час дня.",
+     "choices": [
+      {
+       "text": "Vale, a la una entonces. ¿Hay descuento para estudiantes?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Гибко и про скидку 👌"
+      },
+      {
+       "text": "¿Agotada? ¡Qué mal servicio!",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Кассир не виноват 🙂 Лучше: <b>Vale, a la una</b>."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Sí, con el carné de estudiante son ocho euros.",
+     "tr": "Да, со студенческим — восемь евро.",
+     "choices": [
+      {
+       "text": "Perfecto. ¿Puedo pagar con tarjeta?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>pagar con tarjeta</b> 💳"
+      },
+      {
+       "text": "No tengo carné, entonces dos entradas normales.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Чётко ✅"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Sí, claro. Aquí tiene sus entradas. El punto de encuentro está junto a la puerta principal.",
+     "tr": "Да, конечно. Вот ваши билеты. Место сбора — у главного входа.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
