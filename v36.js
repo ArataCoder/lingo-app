@@ -102,7 +102,7 @@
   window.shareResult = function () {
     if (!me || !tg) return oldShare && oldShare();
     var xp = window.LB_LAST_XP || 0;
-    var text = "Я прошёл раунд в Lingo Brain и набрал " + xp + " XP! Попробуй обогнать меня 🧠";
+    var text = "Мой раунд в Lingo Brain: " + xp + " XP! Попробуй обогнать меня 🧠";
     hap("medium"); trk("share_clicked", { xp: xp, track: (window.LAST && LAST.lang) || null, ref: true });
     try { tg.openTelegramLink("https://t.me/share/url?url=" + encodeURIComponent(refLink()) + "&text=" + encodeURIComponent(text)); } catch (e) { if (oldShare) oldShare(); }
   };

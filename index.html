@@ -12,7 +12,7 @@
 :root{
   --bg:#1A1B26; --bg2:#12131C;
   --card:rgba(36,40,59,.78); --solid:#24283B; --line:rgba(255,255,255,.07);
-  --text:#EEEEFF; --muted:#8A93BD; --dim:#565F89;
+  --text:#EEEEFF; --muted:#A9B1D6; --dim:#7A84B0;
   --es:#F7A046; --en:#9D7CD8; --ok:#10B981; --err:#F7768E;
   --acc:var(--es);
 }
@@ -52,7 +52,7 @@ html{scrollbar-width:none}::-webkit-scrollbar{display:none}
 .goal h3{font-size:16px;margin-bottom:2px}.goal p{font-size:13px;color:var(--muted)}
 .quick{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;margin-bottom:22px;font-size:16px;font-weight:800;color:var(--text);cursor:pointer;font-family:inherit;transition:transform .12s;background:linear-gradient(90deg,rgba(247,160,70,.16),rgba(157,124,216,.16));border:1px solid rgba(255,255,255,.1);border-radius:20px}
 .quick:active{transform:scale(.97)}
-.label{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin:0 2px 10px;font-weight:800}
+.label{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin:0 2px 10px;font-weight:800}
 .track{position:relative;display:flex;gap:14px;align-items:center;padding:18px;margin-bottom:12px;cursor:pointer;transition:transform .15s;border-radius:24px}
 .track:active{transform:scale(.97)}
 .track.es{background:linear-gradient(135deg,rgba(247,160,70,.20),rgba(36,40,59,.85) 60%);border:1px solid rgba(247,160,70,.35)}
@@ -82,7 +82,7 @@ html{scrollbar-width:none}::-webkit-scrollbar{display:none}
 .topic:active{transform:scale(.95)}
 .topic .em{font-size:30px;margin-bottom:8px}
 .topic h4{font-size:15px;margin-bottom:2px}
-.topic small{color:var(--muted);font-size:12px;display:block;margin-bottom:10px}
+.topic small{color:var(--muted);font-size:13px;display:block;margin-bottom:10px}
 .topic.hero{grid-column:1/-1;display:flex;align-items:center;gap:14px;border:1px solid var(--acc);background:linear-gradient(135deg,rgba(255,255,255,.06),var(--card))}
 .topic.hero .em{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--acc);font-size:28px;margin:0;flex:none;box-shadow:0 0 22px var(--acc)}
 .topic.hero small{margin:0}
@@ -91,7 +91,7 @@ html{scrollbar-width:none}::-webkit-scrollbar{display:none}
 /* ===== КАРТОЧКА ВОПРОСА ===== */
 .qtop{display:flex;align-items:center;gap:12px;margin-bottom:22px}
 .qcard{padding:22px 18px;margin-bottom:16px;min-height:130px}
-.qlabel{font-size:12px;color:var(--dim);font-weight:800;text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px}
+.qlabel{font-size:13px;color:var(--dim);font-weight:800;text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px}
 .qtext{font-size:21px;font-weight:700;line-height:1.45}
 .opt{width:100%;text-align:left;background:var(--card);border:2px solid var(--line);color:var(--text);border-radius:20px;padding:16px 14px;font-size:16px;font-weight:700;margin-bottom:10px;cursor:pointer;transition:transform .1s,border-color .2s,background .2s,opacity .2s;display:flex;gap:12px;align-items:center;font-family:inherit;box-shadow:0 4px 0 rgba(0,0,0,.25)}
 .opt:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
@@ -140,7 +140,7 @@ html{scrollbar-width:none}::-webkit-scrollbar{display:none}
 .result h2{font-size:26px;margin-bottom:4px}.result p{color:var(--muted);margin-bottom:20px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}
 .stat{padding:14px 6px;border-radius:18px}
-.stat b{display:block;font-size:22px;color:var(--text)}.stat span{font-size:12px;color:var(--muted)}
+.stat b{display:block;font-size:22px;color:var(--text)}.stat span{font-size:13px;color:var(--muted)}
 
 /* ===== ПРОГРЕСС ===== */
 .pcard{padding:16px;margin-bottom:12px}
@@ -148,12 +148,12 @@ html{scrollbar-width:none}::-webkit-scrollbar{display:none}
 .tile{padding:16px;border-radius:20px}
 .tile .v{font-size:24px;font-weight:800}.tile .n{font-size:13px;color:var(--muted)}
 .week{display:flex;justify-content:space-between}
-.day{width:38px;height:38px;border-radius:13px;background:rgba(255,255,255,.06);display:grid;place-items:center;font-size:12px;color:var(--dim);font-weight:800}
+.day{width:38px;height:38px;border-radius:13px;background:rgba(255,255,255,.06);display:grid;place-items:center;font-size:13px;color:var(--dim);font-weight:800}
 .day.on{background:var(--ok);color:#0E1F18;box-shadow:0 0 12px rgba(16,185,129,.45)}
 
 /* ===== НАВИГАЦИЯ, ТОСТ ===== */
 .nav{position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));display:flex;padding:6px;z-index:10;border-radius:24px}
-.nav button{flex:1;background:none;border:none;color:var(--dim);font-size:12px;font-weight:800;padding:8px 4px;border-radius:18px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:inherit}
+.nav button{flex:1;background:none;border:none;color:var(--dim);font-size:13px;font-weight:800;padding:8px 4px;border-radius:18px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:inherit}
 .nav button .i{font-size:20px}
 .nav button.on{background:rgba(255,255,255,.07);color:var(--text)}
 body.focus .nav{display:none}
@@ -165,16 +165,16 @@ body.focus .nav{display:none}
 .tile.tap{cursor:pointer;position:relative}.tile.tap:after{content:"›";position:absolute;right:14px;top:12px;color:var(--muted);font-size:20px}
 .wtabs{display:flex;gap:8px;margin-bottom:12px}.wtabs button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:14px;padding:10px 6px;font:800 14px inherit;font-family:inherit;cursor:pointer}
 .wtabs button.on{color:#1A1B26;background:var(--ok);border-color:transparent}.wtabs b{opacity:.8}
-.wgrp{padding:12px 12px 4px;margin-bottom:12px}.wgh{font-weight:800;margin:0 4px 8px}.wgh span{font-weight:600;font-size:12px;color:var(--muted)}
+.wgrp{padding:12px 12px 4px;margin-bottom:12px}.wgh{font-weight:800;margin:0 4px 8px}.wgh span{font-weight:600;font-size:13px;color:var(--muted)}
 .wrow{display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;margin-bottom:8px;background:rgba(255,255,255,.03);border:1px solid transparent}
 .wrow.done{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.45);box-shadow:0 0 14px rgba(16,185,129,.18)}
-.wtx{flex:1;min-width:0}.wtx b{display:block;font-size:15px}.wtx small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.wtx{flex:1;min-width:0}.wtx b{display:block;font-size:15px}.wtx small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
 .wdots{display:flex;gap:3px;flex-shrink:0}.wdots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.14)}.wdots i.on{background:var(--ok)}
 .wempty{padding:18px;text-align:center;color:var(--muted);margin-bottom:12px}
 .vrow{display:flex;align-items:center;gap:8px;margin:10px 0}.vrow>span{width:92px;font-size:13px;color:var(--muted);flex-shrink:0}
 .vrow select{flex:1;min-width:0;background:#1A1B26;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:9px;font-family:inherit}
-.vrate{display:flex;gap:6px;flex:1}.vrate button{flex:1;border:1px solid var(--line);background:#1A1B26;color:var(--muted);border-radius:12px;padding:8px 4px;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer}.vrate button.on{color:var(--text);border-color:var(--es)}
-.vhint{color:var(--muted);font-size:12px;line-height:1.45;margin-top:8px}
+.vrate{display:flex;gap:6px;flex:1}.vrate button{flex:1;border:1px solid var(--line);background:#1A1B26;color:var(--muted);border-radius:12px;padding:8px 4px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer}.vrate button.on{color:var(--text);border-color:var(--es)}
+.vhint{color:var(--muted);font-size:13px;line-height:1.45;margin-top:8px}
 </style>
 </head>
 <body data-track="es">
@@ -196,8 +196,8 @@ body.focus .nav{display:none}
     </svg>
     <div><h3 id="goalTitle"></h3><p id="goalSub"></p></div>
   </div>
-  <button class="quick" onclick="quickRound()">⚡ Быстрый раунд · 2 мин</button>
-  <div class="label">Треки</div>
+  <button class="quick" onclick="quickRound()">⚡ Разминка · 2 мин</button>
+  <div class="label">Языки</div>
   <div class="track es" onclick="openTrack('es')"><div class="ticon">🇪🇸</div><div><h2>Испанский</h2><p>С нуля · жизнь в Испании</p><div class="dots" id="dots_es"></div></div><div class="go">›</div></div>
   <div class="track en" onclick="openTrack('en')"><div class="ticon">🇬🇧</div><div><h2>Английский</h2><p>B1+ · говорим и собесы</p><div class="dots" id="dots_en"></div></div><div class="go">›</div></div>
 </section>
@@ -272,7 +272,7 @@ body.focus .nav{display:none}
     <div class="tile glass tap" onclick="show(&quot;words&quot;)"><div class="v" id="pWDone">0</div><div class="n">🎓 выучено слов</div></div>
   </div>
   <p style="color:var(--muted);font-size:13px;text-align:center;margin-bottom:6px">5 верных ответов на слово — и оно «Выучено» 🎓</p>
-  <p style="color:var(--muted);font-size:13px;text-align:center">Пропустил день? Ничего страшного. Серия — не экзамен 💛</p>
+  <p style="color:var(--muted);font-size:13px;text-align:center">День пропущен? Ничего страшного. Серия — не экзамен 💛</p>
 </section>
 
 <section class="screen" id="scr_words">
@@ -323,7 +323,7 @@ var DATA = {
     ]},
     doctor: { title: "Врач", em: "🏥", cards: [
       { q: "Как сказать «Мне <b>нужен врач</b>»?", o: ["Necesito un médico", "Tengo un médico", "Busco una farmacia"], a: 0, tip: "🩺 <b>necesito</b> — мне нужно." },
-      { q: "«Me duele la <b>espalda</b>» значит…", o: ["У меня болит спина", "У меня болит голова", "Я устал"], a: 0, tip: "<b>Me duele</b> + часть тела · <b>cabeza</b> — голова.", say: "Me duele la espalda" },
+      { q: "«Me duele la <b>espalda</b>» значит…", o: ["У меня болит спина", "У меня болит голова", "У меня нет сил"], a: 0, tip: "<b>Me duele</b> + часть тела · <b>cabeza</b> — голова.", say: "Me duele la espalda" },
       { q: "«Quiero pedir <b>cita</b>» значит…", o: ["Хочу записаться на приём", "Хочу купить лекарство", "Хочу домой"], a: 0, tip: "📅 <b>cita</b> — запись. Главная фраза в centro de salud.", say: "Quiero pedir cita" },
       { q: "Что такое «<b>tarjeta sanitaria</b>»?", o: ["Медкарта (SIP)", "Банковская карта", "Проездной"], a: 0, tip: "🪪 В Валенсийском регионе её зовут <b>SIP</b>.", say: "tarjeta sanitaria" },
       { q: "Как сказать «Я <b>плохо</b> говорю по-испански»?", o: ["Hablo poco español", "No hablo nunca", "Hablo español bien"], a: 0, tip: "Скажи сразу — с тобой будут говорить проще 💛" }
@@ -454,7 +454,8 @@ function openTrack(l) {
 }
 function start(l, k) { LAST = { lang: l, topic: k }; setTrack(l); if (DATA[l].topics[k].speak) startSpeak(l, k); else startRound(l, k); }
 function again() { start(LAST.lang, LAST.topic); }
-function quickRound() { var l = pick(["es", "en"]); start(l, pick(Object.keys(DATA[l].topics))); }
+function lbLang() { try { var p = JSON.parse(localStorage.getItem("lingo_p") || "{}"); if (p.lang === "es" || p.lang === "en") return p.lang; } catch (e) {} return null; }
+function quickRound() { var l = lbLang() || pick(["es", "en"]); start(l, pick(Object.keys(DATA[l].topics))); }
 function swapTopic() { var ks = Object.keys(DATA[LAST.lang].topics).filter(function (k) { return k !== LAST.topic; }); toast("🔀 Новая тема"); start(LAST.lang, pick(ks)); }
 function quit() { stopRec(true); toast("Пауза — это ок 💛"); openTrack(LAST.lang); }
 
@@ -679,8 +680,8 @@ if (hs === "#profile") { S.xp = 340; S.rounds = 7; S.streak = 3; S.bestStreak = 
   window.lbTrackInit=function(c){ try{ if(cfg) return; cfg=c||{}; var x=q; q=[]; x.forEach(function(a){ send(a[0],a[1]); }); }catch(e){} };
 })();
 </script>
-<script src="v3.js?v=13"></script>
-<script src="v36.js?v=13"></script>
-<script src="v41.js?v=1"></script>
+<script src="v3.js?v=14"></script>
+<script src="v36.js?v=14"></script>
+<script src="v41.js?v=2"></script>
 </body>
 </html>

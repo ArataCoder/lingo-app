@@ -415,7 +415,7 @@
   // ---------- v3.4: поделиться с другом ----------
   window.shareResult = function () {
     var xp = window.LB_LAST_XP || 0, app = "https://t.me/LingoBrainBOT";
-    var text = "Я прошёл раунд в Lingo Brain и набрал " + xp + " XP! Попробуй обогнать меня 🧠";
+    var text = "Мой раунд в Lingo Brain: " + xp + " XP! Попробуй обогнать меня 🧠";
     var url = "https://t.me/share/url?url=" + encodeURIComponent(app) + "&text=" + encodeURIComponent(text);
     haptic("medium"); trk("share_clicked", { xp: xp, track: (window.LAST && LAST.lang) || null });
     var tg = window.Telegram && Telegram.WebApp;
@@ -503,7 +503,7 @@
   nav.insertBefore(nb, nav.lastElementChild);
   // прогресс: заморозки
   var prof = $("scr_profile");
-  var fzCard = E("div", "pcard glass", '<div class="v3fz"><span class="e">🧊</span><div style="flex:1"><b>Заморозка серии: <span id="v3fzP">0</span>/2</b><p>Пропустил день — заморозка сама спасёт серию. Без чувства вины.</p></div></div><button class="btn" id="v3fzBuy" style="margin-top:12px">Купить за 50 XP</button>');
+  var fzCard = E("div", "pcard glass", '<div class="v3fz"><span class="e">🧊</span><div style="flex:1"><b>Заморозка серии: <span id="v3fzP">0</span>/2</b><p>День пропущен — заморозка сама спасёт серию. Без чувства вины.</p></div></div><button class="btn" id="v3fzBuy" style="margin-top:12px">Купить за 50 XP</button>');
   prof.insertBefore(fzCard, prof.children[2] || null);
 
   $("v3low").onclick = function () { lowEnergy(); };
@@ -559,6 +559,7 @@
   window.start = function (l, k) { if (k && String(k).indexOf(".") > 0) return openTopic(k); return _start(l, k); };
   if (window.tg && ver("6.1")) { try { tg.BackButton.offClick(_goBack); } catch (e) {} tg.BackButton.onClick(function () { window.goBack(); }); }
 
+  window.__v3.openTopic = openTopic; window.__v3.renderCatalog = renderCatalog; window.__v3.lowEnergy = lowEnergy; window.__v3.surprise = surprise; window.__v3.openCheat = openCheat; window.__v3.runTopicCards = runTopicCards; window.__v3.prep = prep; window.__v3.isPassed = isPassed; window.__v3.setTrack = setTrack;
   // ---------- каталог ----------
   function renderCatalog() {
     Array.prototype.forEach.call(document.querySelectorAll(".v3seg button"), function (b) { b.classList.toggle("on", b.getAttribute("data-t") === V.track); });
@@ -643,8 +644,9 @@
   function lowEnergy() {
     var m = (V.cfg && V.cfg.energyModes && V.cfg.energyModes.low) || { seconds: 45, cards: 3 };
     var pool = [];
-    Object.keys(V.topics).forEach(function (id) { var t = V.topics[id]; t.cards.forEach(function (c) { if (c.energy === "low") pool.push(prep(t, c)); }); });
-    ["es", "en"].forEach(function (l) { Object.keys(DATA[l].topics).forEach(function (k) { var tp = DATA[l].topics[k]; if (!tp.speak) tp.cards.forEach(function (c) { pool.push(fromLegacy(l, c)); }); }); });
+    var LL = window.lbLang ? window.lbLang() : null;
+    Object.keys(V.topics).forEach(function (id) { var t = V.topics[id]; if (LL && t.track !== LL) return; t.cards.forEach(function (c) { if (c.energy === "low") pool.push(prep(t, c)); }); });
+    ["es", "en"].forEach(function (l) { if (LL && l !== LL) return; Object.keys(DATA[l].topics).forEach(function (k) { var tp = DATA[l].topics[k]; if (!tp.speak) tp.cards.forEach(function (c) { pool.push(fromLegacy(l, c)); }); }); });
     var cards = shuffle(pool).slice(0, m.cards || 3);
     LAST = { lang: cards[0] ? cards[0].track : "es", topic: "low" };
     V.lastRun = { key: "low", fn: lowEnergy }; trk("energy_mode_used", { track: LAST.lang, cards: cards.length });
@@ -697,6 +699,7 @@
     setTimeout(function () { fb.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
   }
   function grade(ok, pts) {
+    try { if (window.lbOnGrade) window.lbOnGrade(V.run && V.run.cards && V.run.cards[V.run.pos], ok, V.run); } catch (e) {}
     try { wordMark(V.run && V.run.cards && V.run.cards[V.run.pos], ok); } catch (e) {}
     var r = V.run, cur = r.cards && r.cards[r.pos];
     if (!ok && r.mistakes && cur && r.mistakes.indexOf(cur) < 0) r.mistakes.push(cur);
