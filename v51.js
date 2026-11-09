@@ -39,8 +39,8 @@
     ".v51f{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px}",
     ".v51go{display:block;font-size:17px;font-weight:800;color:var(--text)}",
     ".v51go small{display:block;font-size:13px;font-weight:700;color:#A9B1D6;margin-top:2px}",
-    ".v51p{flex:none;width:56px;height:56px;border-radius:50%;background:var(--acc);color:#12131C;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px -8px var(--acc)}",
-    ".v51p svg{width:22px;height:22px;margin-left:3px}",
+    ".v51p{flex:none;width:56px;height:56px;border-radius:50%;background:var(--acc);color:#12131C;display:grid;place-items:center;box-shadow:0 0 0 6px rgba(255,255,255,.04),0 8px 20px -8px var(--acc)}",
+    ".v51p svg{display:block;width:26px;height:26px}",
     "#v51net{position:fixed;left:12px;right:12px;top:calc(8px + env(safe-area-inset-top));z-index:60;padding:12px 14px;border-radius:14px;background:#3B2F1E;color:#FFE2B8;font-size:14px;font-weight:700;line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,.35);display:none}",
     "#v51net.on{display:block}",
     "#v51rv{width:100%}",
@@ -111,7 +111,7 @@
       '<span class="v51t">' + esc(nt.tp.title) + "</span>" +
       '<span class="v51m"><span>' + esc(nt.block.title || "") + "</span><b>" + Math.max(i, 1) + " \u0438\u0437 " + n + "</b></span>" + seg +
       '<span class="v51f"><span class="v51go">' + label + "<small>\u2248 2 \u043c\u0438\u043d\u0443\u0442\u044b</small></span>" +
-      '<span class="v51p"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.6v12.8a1 1 0 0 0 1.53.85l10.1-6.4a1 1 0 0 0 0-1.7L9.53 4.75A1 1 0 0 0 8 5.6z"/></svg></span></span></span>';
+      '<span class="v51p"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7.3v9.4a1.1 1.1 0 0 0 1.66.94l7.5-4.7a1.1 1.1 0 0 0 0-1.88l-7.5-4.7A1.1 1.1 0 0 0 9 7.3z" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span></span></span>';
   }
 
   // ---------- 5. Offline banner ----------

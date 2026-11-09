@@ -64,11 +64,8 @@
     ]
   },
   "unlock": {
-    "alwaysOpen": [
-      "es.life.nie",
-      "en.interview.salary"
-    ],
-    "mode": "open",
+    "alwaysOpen": [],
+    "mode": "chain",
     "modeHelp": "open = все готовые темы открыты, порядок подсказывается; chain = замок до 60% в предыдущей теме"
   }
 }

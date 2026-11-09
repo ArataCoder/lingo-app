@@ -327,19 +327,41 @@ async function notifyNewFriend(env, inviterId, friend) {
     { reply_markup: appKeyboard("👥 Открыть рейтинг") });
 }
 
+// v5.5: диагностика синхронизации (без хранения initData)
+async function diagInit(initData, env) {
+  const d = { len: typeof initData === "string" ? initData.length : -1 };
+  try {
+    const p = new URLSearchParams(initData || "");
+    d.keys = [...p.keys()].join(",");
+    d.age = now() - Number(p.get("auth_date") || 0);
+    const hash = p.get("hash"); const pairs = [];
+    p.forEach((v, k) => { if (k !== "hash") pairs.push(k + "=" + v); });
+    pairs.sort();
+    const secret = await hmac(enc("WebAppData"), token(env));
+    d.match = !!hash && hex(await hmac(secret, pairs.join(NL))) === hash;
+  } catch (e) { d.err = String((e && e.message) || e).slice(0, 120); }
+  d.tok = /^[0-9]{6,}:[A-Za-z0-9_-]{30,}$/.test(token(env));
+  return d;
+}
+async function noteMeta(env, k, v) {
+  try { if (await ensureSchema(env)) await env.DB.prepare("INSERT OR REPLACE INTO meta (k, v) VALUES (?1, ?2)").bind(k, JSON.stringify(v)).run(); } catch (e) {}
+}
+
 // POST /api/sync {initData, stats?, ref?} -> {ok, me, friends, invite}
 async function onSync(request, env) {
   let body;
   try { const raw = await request.text(); if (raw.length > 8192) return json({ ok: false, error: "too big" }, 413); body = JSON.parse(raw); }
-  catch (e) { return json({ ok: false, error: "bad json" }, 400); }
+  catch (e) { await noteMeta(env, "last_sync_err", { t: now(), e: "bad json" }); return json({ ok: false, error: "bad json" }, 400); }
   const user = await verifyInitData(body && body.initData, env);
-  if (!user) return json({ ok: false, error: "auth" }, 401);
+  if (!user) { await noteMeta(env, "last_sync_err", { t: now(), e: "auth", d: await diagInit(body && body.initData, env) }); return json({ ok: false, error: "auth" }, 401); }
   if (!(await ensureSchema(env))) return json({ ok: false, error: "db" }, 503);
   if (body.stats && typeof body.stats === "object") await upsertPlayer(env, user, body.stats);
   else await ensurePlayer(env, user);
   const ref = parseRef(body.ref);
   if (ref && ref !== user.id && (await link(env, user.id, ref))) await notifyNewFriend(env, ref, user);
-  return json({ ok: true, me: user.id, friends: await listFriends(env, user.id), invite: refLink(user.id) });
+  const fl = await listFriends(env, user.id);
+  await noteMeta(env, "last_sync_ok", { t: now(), n: (fl || []).length });
+  return json({ ok: true, me: user.id, friends: fl, invite: refLink(user.id) });
 }
 
 function b64bytes(b64) {
@@ -368,7 +390,7 @@ async function tgPhoto(env, chatId, bytes, caption, markup) {
 async function onCard(request, env) {
   let body;
   try { const raw = await request.text(); if (raw.length > 2600000) return json({ ok: false, error: "too big" }, 413); body = JSON.parse(raw); }
-  catch (e) { return json({ ok: false, error: "bad json" }, 400); }
+  catch (e) { await noteMeta(env, "last_sync_err", { t: now(), e: "bad json" }); return json({ ok: false, error: "bad json" }, 400); }
   const user = await verifyInitData(body && body.initData, env);
   if (!user) return json({ ok: false, error: "auth" }, 401);
   const b64 = String(body.image || "").split(",").pop();
@@ -541,11 +563,19 @@ export default {
       if (request.method === "POST") return onEvent(request, env);
       return cors(405);
     }
+    if (url.pathname === "/api/health") {
+      const db = await ensureSchema(env); const out = { db, now: now(), tok: /^[0-9]{6,}:[A-Za-z0-9_-]{30,}$/.test(token(env)) };
+      if (db) {
+        try { out.players = (await env.DB.prepare("SELECT COUNT(*) AS n FROM players").first()).n; } catch (e) { out.pe = String(e && e.message).slice(0, 120); }
+        try { const r = await env.DB.prepare("SELECT k, v FROM meta WHERE k IN ('last_sync_err','last_sync_ok')").all(); (r.results || []).forEach((x) => { out[x.k] = JSON.parse(x.v); }); } catch (e) {}
+      }
+      return new Response(JSON.stringify(out), { headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", "Access-Control-Allow-Origin": "*" } });
+    }
     if (url.pathname === "/api/sync" || url.pathname === "/api/card") {
       if (request.method === "OPTIONS") return cors();
       if (request.method !== "POST") return cors(405);
       try { return url.pathname === "/api/sync" ? await onSync(request, env) : await onCard(request, env); }
-      catch (e) { console.log("api error", e && e.stack); return json({ ok: false, error: "server" }, 500); }
+      catch (e) { console.log("api error", e && e.stack); await noteMeta(env, "last_sync_err", { t: now(), e: "server", m: String((e && e.message) || e).slice(0, 200), p: url.pathname }); return json({ ok: false, error: "server" }, 500); }
     }
     if (url.pathname.startsWith("/ava/") && request.method === "GET") {
       try { return await onAva(url.pathname.slice(5).replace(".jpg", ""), env); } catch (e) { return new Response("err", { status: 500, headers: { "Access-Control-Allow-Origin": "*" } }); }
