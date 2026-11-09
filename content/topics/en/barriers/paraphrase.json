@@ -2,7 +2,7 @@
   "id": "en.barriers.paraphrase",
   "track": "en",
   "level": "B1",
-  "title": "Забыл слово → перефразируй",
+  "title": "Не помнишь слово → перефразируй",
   "emoji": "🔄",
   "estMinutes": 4,
   "cheatsheet": [
@@ -52,7 +52,7 @@
       "id": "c1",
       "type": "choice",
       "energy": "low",
-      "q": "Забыл слово «plumber». Как лучше выкрутиться?",
+      "q": "Не помнишь слово «plumber». Как лучше выкрутиться?",
       "options": [
         "A person who fixes pipes and taps.",
         "A man for water, you know.",
@@ -175,7 +175,7 @@
   "scenarios": [
     {
       "id": "en.barriers.paraphrase.s1",
-      "title": "Забыл слово на собесе",
+      "title": "Слово вылетело на собесе",
       "emoji": "🧩",
       "userRole": "Кандидат",
       "botRole": "Recruiter",

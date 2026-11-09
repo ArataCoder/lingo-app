@@ -631,7 +631,7 @@ if (user && user.photo_url) {
   im.onerror = setInitial;
   im.src = user.photo_url;
 }
-var POKES = ["Ты зашёл — это уже победа 💛", "Привет-привет 👋", "Мозг, мы справимся 🧠", "2 минуты — и ты красавчик ⚡", "Горжусь тобой 🔥"];
+var POKES = ["Ты зашёл — это уже победа 💛", "Привет-привет 👋", "Мозг, мы справимся 🧠", "2 минуты — и день засчитан ⚡", "Горжусь тобой 🔥"];
 function poke() { haptic("soft"); toast(pick(POKES)); }
 var hr = new Date().getHours();
 $("hello").textContent = hr < 12 ? "Доброе утро ☀️" : hr < 18 ? "Привет 👋" : "Добрый вечер 🌙";
