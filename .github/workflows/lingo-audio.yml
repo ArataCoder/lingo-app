@@ -11,19 +11,31 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: lingo-audio
+  cancel-in-progress: false
+
 jobs:
   audio:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
+          cache-dependency-path: generate_audio.py
       - run: pip install edge-tts
-      - run: python generate_audio.py
+      - name: Generate mp3 (es-ES-AlvaroNeural / en-US-GuyNeural)
+        run: python generate_audio.py --prune
+      - run: python generate_audio.py --check
       - name: Commit mp3
         run: |
           git config user.name "lingo-audio-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add assets/audio
-          if git diff --cached --quiet; then echo "nothing new"; else git commit -m "audio: neural voices" && git push; fi
+          git add -A assets/audio
+          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
+          git commit -m "audio: neural voices [skip ci]"
+          for i in 1 2 3; do git pull --rebase origin main && git push && exit 0; sleep 5; done
+          exit 1

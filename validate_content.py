@@ -56,7 +56,7 @@ def lint(lang, s, where, strict=True):
         if " " + p in s: err.append(where + ": space before '" + p + "': " + s)
     ws = s.split()
     for a, b in zip(ws, ws[1:]):
-        if not a.endswith((",", "…", "?", "!")) and words(a) and words(b) and words(a) == words(b):
+        if not a.endswith((",", "…", "?", "!", ".", ":", ";")) and words(a) and words(b) and words(a) == words(b):
             err.append(where + ": repeated word '" + b + "': " + s)
     pd = padded(s)
     if lang == "es":

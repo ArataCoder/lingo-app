@@ -1,0 +1,38 @@
+name: Lingo Brain CI
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "assets/audio/**"
+      - "*.md"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: JS syntax
+        run: for f in v*.js; do node --check "$f" || exit 1; done
+      - name: Content grammar and structure
+        run: python validate_content.py
+      - name: Audio manifest
+        run: python generate_audio.py --check
+      - name: Install Playwright
+        run: |
+          npm i --no-save playwright@1.48.2
+          npx playwright install --with-deps chromium
+      - name: E2E (Telegram mocks, offline, 44px, contrast)
+        run: |
+          python -m http.server 8080 > /tmp/http.log 2>&1 &
+          sleep 1
+          node tests/e2e.cjs

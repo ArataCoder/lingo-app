@@ -52,7 +52,7 @@
    "id": "c1",
    "type": "choice",
    "energy": "low",
-   "q": "How do you say 2.5 in English?",
+   "q": "Как сказать по-английски 2.5?",
    "options": [
     "two point five",
     "two comma five",
