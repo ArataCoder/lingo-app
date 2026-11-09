@@ -1,0 +1,270 @@
+{
+ "id": "en.social.hobbies",
+ "track": "en",
+ "level": "B1",
+ "title": "Hobbies & weekends",
+ "emoji": "🎸",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "be into something",
+   "tr": "увлекаться чем-то",
+   "ex": "I'm really into hiking."
+  },
+  {
+   "term": "take up",
+   "tr": "начать заниматься (хобби)",
+   "ex": "I took up yoga last year."
+  },
+  {
+   "term": "in my free time",
+   "tr": "в свободное время",
+   "ex": "In my free time, I play guitar."
+  },
+  {
+   "term": "I'm not much of a…",
+   "tr": "я не особо (любитель)…",
+   "ex": "I'm not much of a reader."
+  },
+  {
+   "term": "binge-watch",
+   "tr": "смотреть запоем",
+   "ex": "I binge-watched the whole series."
+  },
+  {
+   "term": "get hooked on",
+   "tr": "подсесть на",
+   "ex": "I got hooked on chess online."
+  },
+  {
+   "term": "chill out",
+   "tr": "расслабиться",
+   "ex": "On Sundays I just chill out at the beach."
+  },
+  {
+   "term": "What do you do for fun?",
+   "tr": "чем увлекаешься?",
+   "ex": "So, what do you do for fun?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«I'm into board games» значит…",
+   "options": [
+    "Я увлекаюсь настолками",
+    "Я внутри настолки",
+    "Я ненавижу настолки"
+   ],
+   "answer": 0,
+   "explain": "<b>be into</b> — увлекаться 🎲"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как сказать «я начал(а) бегать»?",
+   "options": [
+    "I took up running.",
+    "I took off running.",
+    "I took in running."
+   ],
+   "answer": 0,
+   "explain": "<b>take up</b> — начать новое хобби 🏃"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "What do you do for fun?",
+   "back": "Чем ты увлекаешься?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "I got hooked on rock climbing after one class with a friend.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что случилось?",
+   "options": [
+    "Подсел(а) на скалолазание после одного занятия",
+    "Получил(а) травму",
+    "Бросил(а) скалолазание"
+   ],
+   "answer": 0,
+   "explain": "<b>get hooked on</b> — подсесть 🧗"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "I'm not much of a party person. I'd rather stay in and cook.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что предпочитает человек?",
+   "options": [
+    "Остаться дома и готовить",
+    "Ходить на вечеринки",
+    "Работать допоздна"
+   ],
+   "answer": 0,
+   "explain": "<b>I'd rather</b> — я бы лучше 🍝"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "В свободное время я играю на гитаре.",
+   "tokens": [
+    "In",
+    "my",
+    "free",
+    "time,",
+    "I",
+    "play",
+    "guitar."
+   ],
+   "distractors": [
+    "playing",
+    "on"
+   ],
+   "pattern": "In my free time + I + verb"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я не особо любитель спорта.",
+   "tokens": [
+    "I'm",
+    "not",
+    "much",
+    "of",
+    "a",
+    "sports",
+    "person."
+   ],
+   "distractors": [
+    "many",
+    "more"
+   ],
+   "pattern": "I'm not much of a + noun"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "I'm really into hiking. Last weekend I climbed a mountain near Alicante.",
+   "tr": "Я очень увлекаюсь походами. В прошлые выходные поднялся(лась) на гору под Аликанте.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "I took up running a few months ago, and now I'm totally hooked. What do you do for fun?",
+   "tr": "Я начал(а) бегать пару месяцев назад и теперь совсем подсел(а). А ты чем увлекаешься?",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.social.hobbies.s1",
+   "title": "Small talk at a meetup",
+   "emoji": "🎸",
+   "userRole": "Ты",
+   "botRole": "Jordan",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hey, I'm Jordan. First time at this meetup?",
+     "tr": "Привет, я Джордан. Первый раз на этой встрече?",
+     "choices": [
+      {
+       "text": "Hi Jordan, yeah, first time. A friend told me about it.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Деталь помогает разговору 👍"
+      },
+      {
+       "text": "Yes.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Добавь деталь: <b>Yes, a friend told me about it</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Cool. So, what do you do for fun?",
+     "tr": "Круто. Чем увлекаешься?",
+     "choices": [
+      {
+       "text": "I'm really into hiking, and I recently took up chess.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>be into</b> + <b>take up</b> 💪"
+      },
+      {
+       "text": "Honestly, I mostly binge-watch series and chill out.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Честно и живо 😄"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Nice! I got hooked on chess during the pandemic. Do you play online?",
+     "tr": "Класс! Я подсел(а) на шахматы в пандемию. Ты играешь онлайн?",
+     "choices": [
+      {
+       "text": "Yeah, mostly on my phone. We should play a game sometime.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Предложение — отличный шаг 🤝"
+      },
+      {
+       "text": "No. Chess is boring.",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Резко, особенно если собеседник это любит 🙂"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Definitely. There's a chess night here every Thursday, actually.",
+     "tr": "Обязательно. Кстати, здесь каждый четверг шахматный вечер.",
+     "choices": [
+      {
+       "text": "Oh, I didn't know that! I'm in. What time does it start?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>I'm in</b> — я в деле 🙌"
+      },
+      {
+       "text": "Sounds fun, but I'm not much of a night person. Is there anything on weekends?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Мягкий отказ + альтернатива 👌"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Seven o'clock. I'll save you a seat!",
+     "tr": "В семь. Займу тебе место!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

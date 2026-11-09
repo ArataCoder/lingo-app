@@ -1,0 +1,268 @@
+{
+ "id": "en.barriers.phone",
+ "track": "en",
+ "level": "B1",
+ "title": "Phone calls without panic",
+ "emoji": "📞",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "This is … calling",
+   "tr": "это … звонит (представиться)",
+   "ex": "Hi, this is Alex calling about my appointment."
+  },
+  {
+   "term": "I'm calling about…",
+   "tr": "я звоню по поводу…",
+   "ex": "I'm calling about the job ad."
+  },
+  {
+   "term": "Could you speak up a bit?",
+   "tr": "можете погромче?",
+   "ex": "Sorry, could you speak up a bit?"
+  },
+  {
+   "term": "You're breaking up.",
+   "tr": "связь прерывается",
+   "ex": "Sorry, you're breaking up."
+  },
+  {
+   "term": "hold the line",
+   "tr": "подождать на линии",
+   "ex": "Could you hold the line, please?"
+  },
+  {
+   "term": "put you through",
+   "tr": "соединить",
+   "ex": "I'll put you through to the manager."
+  },
+  {
+   "term": "call back",
+   "tr": "перезвонить",
+   "ex": "Can I call you back in five minutes?"
+  },
+  {
+   "term": "leave a message",
+   "tr": "оставить сообщение",
+   "ex": "Can I leave a message for Dr. Lopez?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«You're breaking up» значит…",
+   "options": [
+    "Связь прерывается",
+    "Вы со мной расстаётесь",
+    "Вы сломали телефон"
+   ],
+   "answer": 0,
+   "explain": "Классика плохой связи 📶"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как вежливо попросить говорить громче?",
+   "options": [
+    "Could you speak up a bit?",
+    "Could you speak down a bit?",
+    "Speak louder now."
+   ],
+   "answer": 0,
+   "explain": "<b>speak up</b> — говорить громче 🔊"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Can I call you back in five minutes?",
+   "back": "Могу перезвонить через пять минут?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Please hold the line while I check the schedule.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что просят?",
+   "options": [
+    "Подождать на линии",
+    "Перезвонить завтра",
+    "Оставить сообщение"
+   ],
+   "answer": 0,
+   "explain": "<b>hold the line</b> — оставайтесь на линии ⏳"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Dr. Lopez is with a patient. Would you like to leave a message?",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что предлагают?",
+   "options": [
+    "Оставить сообщение",
+    "Прийти без записи",
+    "Позвонить в другую клинику"
+   ],
+   "answer": 0,
+   "explain": "<b>leave a message</b> ✉️"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я звоню по поводу записи.",
+   "tokens": [
+    "I'm",
+    "calling",
+    "about",
+    "my",
+    "appointment."
+   ],
+   "distractors": [
+    "call",
+    "for"
+   ],
+   "pattern": "I'm calling about + что"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Соединю вас с менеджером.",
+   "tokens": [
+    "I'll",
+    "put",
+    "you",
+    "through",
+    "to",
+    "the",
+    "manager."
+   ],
+   "distractors": [
+    "putting",
+    "with"
+   ],
+   "pattern": "put someone through to…"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Hi, this is Alex calling. I'd like to reschedule my appointment.",
+   "tr": "Здравствуйте, это Алекс. Я хотел(а) бы перенести запись.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Sorry, you're breaking up. Could you repeat the time? And could you send me a text to confirm?",
+   "tr": "Извините, связь прерывается. Можете повторить время? И пришлёте СМС для подтверждения?",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.barriers.phone.s1",
+   "title": "Calling a clinic to reschedule",
+   "emoji": "📞",
+   "userRole": "Ты",
+   "botRole": "Receptionist",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Good morning, Sunrise Clinic. How can I help?",
+     "tr": "Доброе утро, клиника Sunrise. Чем могу помочь?",
+     "choices": [
+      {
+       "text": "Hi, I'm calling about my appointment on Friday. I need to reschedule.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Цель звонка в первой фразе 🎯"
+      },
+      {
+       "text": "Hello? Appointment. Friday.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Лучше полным предложением: <b>I'm calling about my appointment</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Sure. Could I get your full name and date of birth?",
+     "tr": "Конечно. Назовите полное имя и дату рождения.",
+     "choices": [
+      {
+       "text": "Of course. It's Alex Petrenko, born on March third, nineteen ninety-five.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Дата по-американски: <b>March third</b> 📅"
+      },
+      {
+       "text": "Sorry, could you speak up a bit? It's noisy here.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>speak up</b> 🔊"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Thanks. Please hold the line while I check.",
+     "tr": "Спасибо. Подождите на линии, я проверю.",
+     "choices": [
+      {
+       "text": "Sure, no problem.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "👍"
+      },
+      {
+       "text": "Okay, I'll hold.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>I'll hold</b> — подожду ⏳"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Thanks for holding. I can offer Tuesday at ten fifteen or Wednesday at four.",
+     "tr": "Спасибо за ожидание. Могу предложить вторник в 10:15 или среду в 16:00.",
+     "choices": [
+      {
+       "text": "Sorry, you're breaking up. Was that ten fifteen or ten fifty?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Уточнил(а) цифры — отлично 🔢"
+      },
+      {
+       "text": "Tuesday at ten fifteen works for me.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>works for me</b> — мне подходит ✅"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Ten fifteen, one-five. You're all set. We'll send you a text to confirm.",
+     "tr": "Десять пятнадцать, один-пять. Всё готово. Мы пришлём СМС для подтверждения.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

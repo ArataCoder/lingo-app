@@ -616,7 +616,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/en/barriers/numbers.json"
       },
       {
        "id": "en.barriers.phrasal",
@@ -626,7 +627,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/en/barriers/phrasal.json"
       },
       {
        "id": "en.barriers.phone",
@@ -636,7 +638,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/en/barriers/phone.json"
       }
      ]
     },
@@ -908,7 +911,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/en/social/hobbies.json"
       },
       {
        "id": "en.social.travel",

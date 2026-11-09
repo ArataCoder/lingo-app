@@ -1,0 +1,270 @@
+{
+ "id": "en.barriers.phrasal",
+ "track": "en",
+ "level": "B1",
+ "title": "Everyday phrasal verbs",
+ "emoji": "🧩",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "figure out",
+   "tr": "разобраться, понять",
+   "ex": "I can't figure out this form."
+  },
+  {
+   "term": "run out of",
+   "tr": "закончиться (о запасах)",
+   "ex": "We've run out of milk."
+  },
+  {
+   "term": "put off",
+   "tr": "откладывать",
+   "ex": "I keep putting off the dentist."
+  },
+  {
+   "term": "come up with",
+   "tr": "придумать",
+   "ex": "She came up with a great idea."
+  },
+  {
+   "term": "sort out",
+   "tr": "уладить, решить",
+   "ex": "I need to sort out my bank account."
+  },
+  {
+   "term": "look forward to",
+   "tr": "ждать с нетерпением",
+   "ex": "I'm looking forward to the weekend."
+  },
+  {
+   "term": "turn down",
+   "tr": "отклонить (предложение)",
+   "ex": "He turned down the job offer."
+  },
+  {
+   "term": "catch up",
+   "tr": "поболтать после перерыва",
+   "ex": "Let's catch up over coffee."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«We've run out of coffee» значит…",
+   "options": [
+    "Кофе закончился",
+    "Мы убежали за кофе",
+    "Кофе слишком крепкий"
+   ],
+   "answer": 0,
+   "explain": "<b>run out of</b> — закончиться ☕"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как сказать «я всё откладываю звонок»?",
+   "options": [
+    "I keep putting off the call.",
+    "I keep putting on the call.",
+    "I keep putting up the call."
+   ],
+   "answer": 0,
+   "explain": "<b>put off</b> — откладывать; <b>put on</b> — надевать 🧥"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Let's catch up soon.",
+   "back": "Давай скоро встретимся и поболтаем."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "I finally figured out how the new app works.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что произошло?",
+   "options": [
+    "Наконец разобрался(ась) в приложении",
+    "Удалил(а) приложение",
+    "Купил(а) новый телефон"
+   ],
+   "answer": 0,
+   "explain": "<b>figure out</b> — разобраться 🧠"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "They offered me the job, but I turned it down.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что с работой?",
+   "options": [
+    "Предложили, но отказался(ась)",
+    "Не предложили",
+    "Согласился(ась)"
+   ],
+   "answer": 0,
+   "explain": "<b>turn down</b> — отклонить ❌"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Мне нужно решить вопрос с банком.",
+   "tokens": [
+    "I",
+    "need",
+    "to",
+    "sort",
+    "out",
+    "my",
+    "bank",
+    "account."
+   ],
+   "distractors": [
+    "sorting",
+    "off"
+   ],
+   "pattern": "need to + sort out + что"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я с нетерпением жду выходных.",
+   "tokens": [
+    "I'm",
+    "looking",
+    "forward",
+    "to",
+    "the",
+    "weekend."
+   ],
+   "distractors": [
+    "look",
+    "for"
+   ],
+   "pattern": "looking forward to + noun"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "We've run out of milk. Can you grab some on your way home?",
+   "tr": "У нас закончилось молоко. Захватишь по дороге домой?",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "I keep putting off the paperwork, but this weekend I'm going to sort it out once and for all.",
+   "tr": "Я всё откладываю бумажки, но в эти выходные разберусь с ними раз и навсегда.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.barriers.phrasal.s1",
+   "title": "Flatmate catch-up",
+   "emoji": "🧩",
+   "userRole": "Ты",
+   "botRole": "Sam",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hey! Long time no see. How's everything going?",
+     "tr": "Привет! Давно не виделись. Как дела?",
+     "choices": [
+      {
+       "text": "Hey! Good, thanks. We should catch up properly.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "<b>catch up</b> в деле 👍"
+      },
+      {
+       "text": "Everything is going.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Звучит странно. Лучше: <b>Pretty good, thanks!</b>"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Totally. By the way, we've run out of coffee again.",
+     "tr": "Точно. Кстати, у нас опять закончился кофе.",
+     "choices": [
+      {
+       "text": "Oh no. I'll pick some up on my way home.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>pick up</b> — захватить по пути 🛒"
+      },
+      {
+       "text": "Again? Let's come up with a system, like a shopping list.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>come up with</b> — придумать 💡"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Good idea. Did you sort out that bank thing?",
+     "tr": "Хорошая идея. Ты разобрался(ась) с банком?",
+     "choices": [
+      {
+       "text": "Not yet, I keep putting it off. It's so stressful.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Честно — и phrasal verb в деле 👌"
+      },
+      {
+       "text": "Yes, I finally figured it out last week.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>figured it out</b> ✅"
+      }
+     ]
+    },
+    "n4": {
+     "say": "I get it. Want me to help you go through it this weekend?",
+     "tr": "Понимаю. Хочешь, помогу разобраться в выходные?",
+     "choices": [
+      {
+       "text": "That would be amazing. Honestly, I'm looking forward to finally finishing it.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>look forward to + -ing</b> 🙌"
+      },
+      {
+       "text": "Thanks, but I'll turn that down. I want to try on my own first.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Вежливый отказ с причиной 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Deal. Let me know if you change your mind. And don't forget the coffee!",
+     "tr": "Договорились. Скажи, если передумаешь. И не забудь кофе!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

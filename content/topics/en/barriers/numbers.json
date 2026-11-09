@@ -1,0 +1,269 @@
+{
+ "id": "en.barriers.numbers",
+ "track": "en",
+ "level": "B1",
+ "title": "Numbers & dates fluently",
+ "emoji": "🔢",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "thirteen vs thirty",
+   "tr": "13 и 30 — ударение решает",
+   "ex": "Was that thirteen or thirty?"
+  },
+  {
+   "term": "oh (for zero)",
+   "tr": "«оу» вместо нуля в номерах",
+   "ex": "My number is oh seven nine, four five two."
+  },
+  {
+   "term": "double",
+   "tr": "две одинаковые цифры подряд",
+   "ex": "That's double five, six."
+  },
+  {
+   "term": "May fifth",
+   "tr": "5 мая (американский вариант)",
+   "ex": "The meeting is on May fifth."
+  },
+  {
+   "term": "a quarter past / to",
+   "tr": "четверть после / без",
+   "ex": "See you at a quarter to ten."
+  },
+  {
+   "term": "two point five",
+   "tr": "2,5 — через point, не comma",
+   "ex": "Prices went up two point five percent."
+  },
+  {
+   "term": "the nineties",
+   "tr": "девяностые",
+   "ex": "I grew up in the nineties."
+  },
+  {
+   "term": "Could you read that back?",
+   "tr": "можете повторить, чтобы сверить?",
+   "ex": "Could you read that back to me?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "How do you say 2.5 in English?",
+   "options": [
+    "two point five",
+    "two comma five",
+    "two and five"
+   ],
+   "answer": 0,
+   "explain": "В английском дробная часть — через <b>point</b> 🔢"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«A quarter to ten» — это…",
+   "options": [
+    "9:45",
+    "10:15",
+    "10:45"
+   ],
+   "answer": 0,
+   "explain": "<b>to</b> — без, <b>past</b> — после ⏰"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Was that thirteen or thirty?",
+   "back": "Это было тринадцать или тридцать?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Your order number is four, double seven, oh, two.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Какой номер заказа?",
+   "options": [
+    "47702",
+    "4772",
+    "47720"
+   ],
+   "answer": 0,
+   "explain": "<b>double seven</b> = 77, <b>oh</b> = 0 📦"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "The delivery is on Thursday the fifteenth, between two and four.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Когда доставка?",
+   "options": [
+    "Четверг, 15-е, с 14 до 16",
+    "Четверг, 13-е, с 14 до 16",
+    "Четверг, 5-е, утром"
+   ],
+   "answer": 0,
+   "explain": "<b>fifteenth</b> — ударение в конце: fif-TEENTH 📅"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Можете повторить, чтобы я сверил(а)?",
+   "tokens": [
+    "Could",
+    "you",
+    "read",
+    "that",
+    "back",
+    "to",
+    "me?"
+   ],
+   "distractors": [
+    "reading",
+    "for"
+   ],
+   "pattern": "Could you read that back + to me?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Встреча — пятого мая.",
+   "tokens": [
+    "The",
+    "meeting",
+    "is",
+    "on",
+    "May",
+    "fifth."
+   ],
+   "distractors": [
+    "five",
+    "at"
+   ],
+   "pattern": "on + May fifth"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "My phone number is six, double two, four, oh, nine, one, three, eight.",
+   "tr": "Мой номер телефона: 6 22 4 0 9 1 3 8.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Sorry, was that thirteen or thirty? Could you read the whole number back to me, please?",
+   "tr": "Извините, это было тринадцать или тридцать? Можете продиктовать весь номер ещё раз, пожалуйста?",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.barriers.numbers.s1",
+   "title": "Booking a delivery slot",
+   "emoji": "🔢",
+   "userRole": "Ты",
+   "botRole": "Dispatcher",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hi, this is Swift Delivery. I'm calling to book your delivery slot.",
+     "tr": "Здравствуйте, это Swift Delivery. Звоню, чтобы согласовать время доставки.",
+     "choices": [
+      {
+       "text": "Great, thanks for calling. What dates do you have?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Вежливо и по делу 👍"
+      },
+      {
+       "text": "Yes. Delivery. Okay.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Понятно, но звучит как робот. Лучше: <b>Great, what dates do you have?</b>"
+      }
+     ]
+    },
+    "n2": {
+     "say": "We have Thursday the thirteenth or Monday the seventeenth.",
+     "tr": "Есть четверг, тринадцатое, или понедельник, семнадцатое.",
+     "choices": [
+      {
+       "text": "Sorry, was that thirteen or thirty?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Переспросить цифры — это профессионально ✅"
+      },
+      {
+       "text": "Thursday is fine.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Чётко 👌"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Thirteen, one-three. Morning or afternoon?",
+     "tr": "Тринадцатое, один-три. Утро или день?",
+     "choices": [
+      {
+       "text": "Afternoon, please. Ideally after a quarter past two.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>a quarter past two</b> = 14:15 ⏰"
+      },
+      {
+       "text": "Morning, before eleven if possible.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>if possible</b> — смягчает просьбу 🙂"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Done. Your reference number is seven, double four, oh, nine.",
+     "tr": "Готово. Ваш номер заказа: 7 44 0 9.",
+     "choices": [
+      {
+       "text": "Could you read that back to me? Seven, four, four, zero, nine?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Сверка номера — супер привычка 🔢"
+      },
+      {
+       "text": "What? Too fast.",
+       "next": "n5",
+       "score": 1,
+       "feedback": "Лучше вежливо: <b>Could you say that more slowly, please?</b>"
+      }
+     ]
+    },
+    "n5": {
+     "say": "That's right. See you on the thirteenth. Have a great day!",
+     "tr": "Всё верно. До встречи тринадцатого. Хорошего дня!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
