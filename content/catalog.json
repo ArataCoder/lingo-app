@@ -88,6 +88,39 @@
        ],
        "status": "ready",
        "file": "topics/es/survive/transport.json"
+      },
+      {
+       "id": "es.survive.pharmacy",
+       "title": "Аптека: боль, простуда, рецепт",
+       "emoji": "💊",
+       "level": "A1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "ready",
+       "file": "topics/es/survive/pharmacy.json"
+      },
+      {
+       "id": "es.survive.clothes",
+       "title": "Магазин одежды: размер и возврат",
+       "emoji": "👕",
+       "level": "A1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "ready",
+       "file": "topics/es/survive/clothes.json"
+      },
+      {
+       "id": "es.survive.emergency",
+       "title": "Экстренные ситуации: 112",
+       "emoji": "🚨",
+       "level": "A1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "ready",
+       "file": "topics/es/survive/emergency.json"
       }
      ]
     },
@@ -156,6 +189,36 @@
        ],
        "status": "ready",
        "file": "topics/es/life/repairs.json"
+      },
+      {
+       "id": "es.life.padron",
+       "title": "Падрон в ayuntamiento",
+       "emoji": "🏛️",
+       "level": "A1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "es.life.utilities",
+       "title": "Свет, вода, интернет",
+       "emoji": "💡",
+       "level": "A2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "es.life.post",
+       "title": "Почта и посылки",
+       "emoji": "📦",
+       "level": "A2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
       }
      ]
     },
@@ -221,6 +284,36 @@
        ],
        "status": "ready",
        "file": "topics/es/social/bar.json"
+      },
+      {
+       "id": "es.social.family",
+       "title": "Семья и о себе",
+       "emoji": "👨‍👩‍👧",
+       "level": "A2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "es.social.hobbies",
+       "title": "Хобби и выходные",
+       "emoji": "🎨",
+       "level": "A2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "es.social.fiestas",
+       "title": "Праздники и fiestas",
+       "emoji": "🎉",
+       "level": "A2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
       }
      ]
     },
@@ -286,6 +379,36 @@
        ],
        "status": "ready",
        "file": "topics/es/travel/problems.json"
+      },
+      {
+       "id": "es.travel.restaurant",
+       "title": "Ресторан: menú del día",
+       "emoji": "🍽️",
+       "level": "A2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "es.travel.car",
+       "title": "Аренда машины",
+       "emoji": "🚗",
+       "level": "B1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "es.travel.tours",
+       "title": "Экскурсии и билеты",
+       "emoji": "🎟️",
+       "level": "A2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
       }
      ]
     },
@@ -351,6 +474,36 @@
        ],
        "status": "ready",
        "file": "topics/es/work/rights.json"
+      },
+      {
+       "id": "es.work.cv",
+       "title": "Резюме и рассказ о себе",
+       "emoji": "📄",
+       "level": "B1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "es.work.shifts",
+       "title": "Смены и график",
+       "emoji": "🗓️",
+       "level": "A2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "es.work.quit",
+       "title": "Увольнение и paro",
+       "emoji": "🚪",
+       "level": "B1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
       }
      ]
     }
@@ -442,6 +595,36 @@
        ],
        "status": "ready",
        "file": "topics/en/barriers/pron.json"
+      },
+      {
+       "id": "en.barriers.numbers",
+       "title": "Numbers & dates fluently",
+       "emoji": "🔢",
+       "level": "B1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "en.barriers.phrasal",
+       "title": "Everyday phrasal verbs",
+       "emoji": "🧩",
+       "level": "B1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "en.barriers.phone",
+       "title": "Phone calls without panic",
+       "emoji": "📞",
+       "level": "B1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
       }
      ]
     },
@@ -520,6 +703,26 @@
        ],
        "status": "ready",
        "file": "topics/en/interview/questions.json"
+      },
+      {
+       "id": "en.interview.gaps",
+       "title": "CV gaps & career change",
+       "emoji": "🔄",
+       "level": "B2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "en.interview.followup",
+       "title": "Follow-up & thank-you",
+       "emoji": "✉️",
+       "level": "B2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
       }
      ]
     },
@@ -587,6 +790,36 @@
        ],
        "status": "ready",
        "file": "topics/en/biz/product.json"
+      },
+      {
+       "id": "en.biz.email",
+       "title": "Emails that sound native",
+       "emoji": "📧",
+       "level": "B2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "en.biz.standup",
+       "title": "Standups & status updates",
+       "emoji": "📊",
+       "level": "B2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "en.biz.feedback",
+       "title": "Giving & receiving feedback",
+       "emoji": "🗣️",
+       "level": "C1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
       }
      ]
     },
@@ -654,6 +887,36 @@
        ],
        "status": "ready",
        "file": "topics/en/social/texting.json"
+      },
+      {
+       "id": "en.social.hobbies",
+       "title": "Hobbies & weekends",
+       "emoji": "🎸",
+       "level": "B1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "en.social.travel",
+       "title": "Travel stories",
+       "emoji": "✈️",
+       "level": "B2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "en.social.support",
+       "title": "Support & sympathy",
+       "emoji": "🤝",
+       "level": "B2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
       }
      ]
     },
@@ -719,6 +982,36 @@
        ],
        "status": "ready",
        "file": "topics/en/debate/hottakes.json"
+      },
+      {
+       "id": "en.debate.negotiate",
+       "title": "Negotiation",
+       "emoji": "🤝",
+       "level": "C1",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "en.debate.interrupt",
+       "title": "Interrupting politely",
+       "emoji": "✋",
+       "level": "B2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
+      },
+      {
+       "id": "en.debate.compromise",
+       "title": "Conceding & compromise",
+       "emoji": "⚖️",
+       "level": "B2",
+       "tags": [
+        "v4.1"
+       ],
+       "status": "soon"
       }
      ]
     }

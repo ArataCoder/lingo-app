@@ -1,0 +1,264 @@
+{
+ "id": "es.survive.emergency",
+ "track": "es",
+ "level": "A1",
+ "title": "Экстренные ситуации: 112",
+ "emoji": "🚨",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "¡Ayuda!",
+   "tr": "помогите!",
+   "ex": "¡Ayuda, por favor!"
+  },
+  {
+   "term": "una ambulancia",
+   "tr": "скорая помощь",
+   "ex": "Necesito una ambulancia."
+  },
+  {
+   "term": "un accidente",
+   "tr": "авария, несчастный случай",
+   "ex": "Ha habido un accidente."
+  },
+  {
+   "term": "está herido / herida",
+   "tr": "он ранен / она ранена",
+   "ex": "Un hombre está herido."
+  },
+  {
+   "term": "no respira",
+   "tr": "не дышит",
+   "ex": "Mi amigo no respira."
+  },
+  {
+   "term": "la dirección",
+   "tr": "адрес",
+   "ex": "La dirección es calle Mayor, cinco."
+  },
+  {
+   "term": "me han robado",
+   "tr": "меня обокрали",
+   "ex": "Me han robado el móvil."
+  },
+  {
+   "term": "la comisaría",
+   "tr": "полицейский участок",
+   "ex": "¿Dónde está la comisaría?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Какой номер экстренных служб в Испании?",
+   "options": [
+    "112",
+    "911",
+    "03"
+   ],
+   "answer": 0,
+   "explain": "<b>112</b> — единый бесплатный номер: скорая, полиция, пожарные. Можно спросить <b>¿Habla inglés?</b> 🚨"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Me han robado el móvil» значит…",
+   "options": [
+    "У меня украли телефон",
+    "Я потерял(а) телефон",
+    "Мой телефон сломался"
+   ],
+   "answer": 0,
+   "explain": "<b>robar</b> — украсть. Заявление пишут в <b>comisaría</b> 👮"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Necesito una ambulancia.",
+   "back": "Мне нужна скорая."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Emergencias, dígame. ¿Cuál es la dirección exacta?",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что спрашивает оператор?",
+   "options": [
+    "Точный адрес",
+    "Ваше имя",
+    "Номер телефона"
+   ],
+   "answer": 0,
+   "explain": "<b>dirección exacta</b> — точный адрес. Скажи улицу и номер 📍"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "La ambulancia llega en diez minutos. No cuelgue.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что нужно делать?",
+   "options": [
+    "Не вешать трубку, скорая через 10 минут",
+    "Перезвонить через 10 минут",
+    "Ехать в больницу самому"
+   ],
+   "answer": 0,
+   "explain": "<b>No cuelgue</b> — не вешайте трубку 📞"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Мой друг не дышит.",
+   "tokens": [
+    "Mi",
+    "amigo",
+    "no",
+    "respira."
+   ],
+   "distractors": [
+    "está",
+    "respiro"
+   ],
+   "pattern": "Mi + человек + no + глагол"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Произошла авария.",
+   "tokens": [
+    "Ha",
+    "habido",
+    "un",
+    "accidente."
+   ],
+   "distractors": [
+    "habida",
+    "he"
+   ],
+   "pattern": "Ha habido + что случилось"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Necesito una ambulancia. Ha habido un accidente.",
+   "tr": "Мне нужна скорая. Произошла авария.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Hola, necesito ayuda. Un hombre está herido. La dirección es calle Mayor, número cinco.",
+   "tr": "Здравствуйте, мне нужна помощь. Мужчина ранен. Адрес: улица Майор, дом пять.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.survive.emergency.s1",
+   "title": "Звонок в 112",
+   "emoji": "🚨",
+   "userRole": "Ты",
+   "botRole": "Operadora del 112",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Emergencias 112, dígame.",
+     "tr": "Служба 112, слушаю.",
+     "choices": [
+      {
+       "text": "Hola, necesito una ambulancia. Ha habido un accidente.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Главное сказано сразу 👍"
+      },
+      {
+       "text": "Ayuda... no hablo bien español.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Нормально! Но сразу скажи, что нужно: <b>Necesito una ambulancia</b>"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Mantenga la calma. ¿Cuál es la dirección?",
+     "tr": "Сохраняйте спокойствие. Какой адрес?",
+     "choices": [
+      {
+       "text": "Calle Mayor, número cinco, en Torrevieja.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Улица + номер + город 📍 идеально"
+      },
+      {
+       "text": "No sé.",
+       "next": "n3",
+       "score": 1,
+       "feedback": "Посмотри вокруг и скажи ориентир: <b>Estoy cerca de…</b> — я рядом с…"
+      }
+     ]
+    },
+    "n3": {
+     "say": "¿Cuántas personas están heridas?",
+     "tr": "Сколько человек пострадало?",
+     "choices": [
+      {
+       "text": "Una persona. Un hombre está herido, pero respira.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Чётко и важно: <b>respira</b> ✅"
+      },
+      {
+       "text": "Dos personas, pero están conscientes.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>conscientes</b> — в сознании 👍"
+      }
+     ]
+    },
+    "n4": {
+     "say": "La ambulancia llega en diez minutos. No cuelgue, por favor.",
+     "tr": "Скорая будет через десять минут. Не вешайте трубку, пожалуйста.",
+     "choices": [
+      {
+       "text": "Vale, no cuelgo. Gracias.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Правильно: остаёшься на линии 📞"
+      },
+      {
+       "text": "¿Puede repetir más despacio, por favor?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Отличная фраза, если не понял(а) 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Muy bien. La ayuda está en camino.",
+     "tr": "Хорошо. Помощь уже едет.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

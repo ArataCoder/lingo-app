@@ -1,0 +1,265 @@
+{
+ "id": "es.survive.pharmacy",
+ "track": "es",
+ "level": "A1",
+ "title": "Аптека: боль, простуда, рецепт",
+ "emoji": "💊",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "Me duele la cabeza.",
+   "tr": "у меня болит голова",
+   "ex": "Me duele la cabeza desde ayer."
+  },
+  {
+   "term": "la garganta",
+   "tr": "горло",
+   "ex": "Me duele la garganta."
+  },
+  {
+   "term": "tengo fiebre",
+   "tr": "у меня температура",
+   "ex": "Tengo fiebre y tos."
+  },
+  {
+   "term": "la tos",
+   "tr": "кашель",
+   "ex": "¿Tiene algo para la tos?"
+  },
+  {
+   "term": "la receta",
+   "tr": "рецепт врача",
+   "ex": "¿Necesito receta?"
+  },
+  {
+   "term": "el ibuprofeno",
+   "tr": "ибупрофен",
+   "ex": "Una caja de ibuprofeno, por favor."
+  },
+  {
+   "term": "cada ocho horas",
+   "tr": "каждые восемь часов",
+   "ex": "Tome una pastilla cada ocho horas."
+  },
+  {
+   "term": "la farmacia de guardia",
+   "tr": "дежурная аптека (ночью и в выходные)",
+   "ex": "¿Dónde está la farmacia de guardia?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Me duele la garganta» значит…",
+   "options": [
+    "У меня болит горло",
+    "У меня болит голова",
+    "У меня температура"
+   ],
+   "answer": 0,
+   "explain": "<b>garganta</b> — горло, <b>cabeza</b> — голова 👌"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Ночью нужна аптека. Что искать?",
+   "options": [
+    "La farmacia de guardia",
+    "La farmacia cerrada",
+    "La receta de noche"
+   ],
+   "answer": 0,
+   "explain": "<b>De guardia</b> — дежурная. Список висит на двери любой аптеки 🌙"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "¿Necesito receta?",
+   "back": "Мне нужен рецепт?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Tome una pastilla cada ocho horas, después de comer.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Как принимать?",
+   "options": [
+    "Каждые 8 часов, после еды",
+    "8 таблеток в день",
+    "Раз в день, до еды"
+   ],
+   "answer": 0,
+   "explain": "<b>cada ocho horas</b> — каждые 8 часов, <b>después de comer</b> — после еды ⏰"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Para esto necesita receta del médico.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что говорит фармацевт?",
+   "options": [
+    "Нужен рецепт врача",
+    "Можно без рецепта",
+    "Аптека закрыта"
+   ],
+   "answer": 0,
+   "explain": "<b>necesita receta</b> — нужен рецепт 📄"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "У меня болит голова.",
+   "tokens": [
+    "Me",
+    "duele",
+    "la",
+    "cabeza."
+   ],
+   "distractors": [
+    "duelo",
+    "el"
+   ],
+   "pattern": "Me duele + la/el + часть тела"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "У вас есть что-нибудь от кашля?",
+   "tokens": [
+    "¿Tiene",
+    "algo",
+    "para",
+    "la",
+    "tos?"
+   ],
+   "distractors": [
+    "con",
+    "tose"
+   ],
+   "pattern": "¿Tiene algo para + проблема?"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Tengo fiebre y me duele la garganta.",
+   "tr": "У меня температура и болит горло.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Buenas tardes. Me duele la cabeza y tengo tos. ¿Necesito receta para esto?",
+   "tr": "Добрый день. У меня болит голова и кашель. Мне нужен рецепт для этого?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.survive.pharmacy.s1",
+   "title": "В аптеке без рецепта",
+   "emoji": "💊",
+   "userRole": "Ты",
+   "botRole": "Farmacéutica",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Buenas tardes. ¿Qué le pasa?",
+     "tr": "Добрый день. Что случилось?",
+     "choices": [
+      {
+       "text": "Buenas tardes. Me duele mucho la garganta.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Отлично: <b>me duele</b> + часть тела 👍"
+      },
+      {
+       "text": "Garganta. Dolor.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Поймут, но лучше: <b>Me duele la garganta</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "¿Tiene fiebre también?",
+     "tr": "Температура тоже есть?",
+     "choices": [
+      {
+       "text": "Sí, un poco. Desde ayer.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>Desde ayer</b> — со вчерашнего дня ✅"
+      },
+      {
+       "text": "No, no tengo fiebre, solo tos.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Чётко и понятно 👌"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Le puedo dar este jarabe. No necesita receta.",
+     "tr": "Могу дать вам этот сироп. Рецепт не нужен.",
+     "choices": [
+      {
+       "text": "Perfecto. ¿Cada cuántas horas lo tomo?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Отличный вопрос: <b>¿cada cuántas horas?</b> ⏰"
+      },
+      {
+       "text": "Dame eso.",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Грубовато. Скажи: <b>Vale, me lo llevo</b>."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Cada ocho horas, después de comer. Son seis euros con cincuenta.",
+     "tr": "Каждые восемь часов, после еды. С вас шесть пятьдесят.",
+     "choices": [
+      {
+       "text": "Vale, gracias. ¿Puedo pagar con tarjeta?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Вежливо и по делу 💳"
+      },
+      {
+       "text": "Muy bien, me lo llevo. Gracias.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>Me lo llevo</b> — беру 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Claro. ¡Que se mejore!",
+     "tr": "Конечно. Выздоравливайте!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

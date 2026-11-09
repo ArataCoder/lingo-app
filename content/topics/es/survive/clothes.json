@@ -1,0 +1,265 @@
+{
+ "id": "es.survive.clothes",
+ "track": "es",
+ "level": "A1",
+ "title": "Магазин одежды: размер и возврат",
+ "emoji": "👕",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "la talla",
+   "tr": "размер (одежды)",
+   "ex": "¿Tiene una talla más grande?"
+  },
+  {
+   "term": "el probador",
+   "tr": "примерочная",
+   "ex": "¿Dónde están los probadores?"
+  },
+  {
+   "term": "probarse",
+   "tr": "примерить",
+   "ex": "¿Me lo puedo probar?"
+  },
+  {
+   "term": "me queda grande / pequeño",
+   "tr": "мне велико / мало",
+   "ex": "Me queda un poco pequeño."
+  },
+  {
+   "term": "¿Cuánto cuesta?",
+   "tr": "сколько стоит?",
+   "ex": "¿Cuánto cuesta esta camiseta?"
+  },
+  {
+   "term": "las rebajas",
+   "tr": "распродажа, скидки",
+   "ex": "En enero hay rebajas."
+  },
+  {
+   "term": "devolver",
+   "tr": "вернуть (товар)",
+   "ex": "Quiero devolver estos pantalones."
+  },
+  {
+   "term": "el ticket",
+   "tr": "чек",
+   "ex": "¿Tiene el ticket?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Me queda pequeño» значит…",
+   "options": [
+    "Мне мало",
+    "Мне велико",
+    "Мне нравится"
+   ],
+   "answer": 0,
+   "explain": "<b>queda pequeño</b> — мало, <b>queda grande</b> — велико"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Хочешь примерить. Что спросить?",
+   "options": [
+    "¿Me lo puedo probar?",
+    "¿Me lo puedo devolver?",
+    "¿Me lo puedo regalar?"
+   ],
+   "answer": 0,
+   "explain": "<b>probarse</b> — примерить 👕"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "¿Dónde están los probadores?",
+   "back": "Где примерочные?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Para devolverlo necesita el ticket. Tiene treinta días.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что нужно для возврата?",
+   "options": [
+    "Чек, в течение 30 дней",
+    "Паспорт, в течение 3 дней",
+    "Ничего не нужно"
+   ],
+   "answer": 0,
+   "explain": "<b>ticket</b> — чек, <b>treinta días</b> — 30 дней 🧾"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Esta camiseta está en rebajas. Ahora cuesta doce euros.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что с футболкой?",
+   "options": [
+    "Скидка, теперь 12 евро",
+    "Её нельзя вернуть",
+    "Она стоит 20 евро"
+   ],
+   "answer": 0,
+   "explain": "<b>en rebajas</b> — со скидкой 🏷️"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "У вас есть размер побольше?",
+   "tokens": [
+    "¿Tiene",
+    "una",
+    "talla",
+    "más",
+    "grande?"
+   ],
+   "distractors": [
+    "grando",
+    "tallo"
+   ],
+   "pattern": "¿Tiene + una talla + más grande / pequeña?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я хочу вернуть эти брюки.",
+   "tokens": [
+    "Quiero",
+    "devolver",
+    "estos",
+    "pantalones."
+   ],
+   "distractors": [
+    "este",
+    "devuelvo"
+   ],
+   "pattern": "Quiero + инфинитив"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Me queda un poco grande. ¿Tiene la talla M?",
+   "tr": "Мне немного велико. У вас есть размер M?",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Hola, quiero devolver esta camiseta. Me queda pequeña. Aquí tiene el ticket.",
+   "tr": "Здравствуйте, я хочу вернуть эту футболку. Она мне мала. Вот чек.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.survive.clothes.s1",
+   "title": "Примерка и возврат",
+   "emoji": "👕",
+   "userRole": "Ты",
+   "botRole": "Dependienta",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¡Hola! ¿Te puedo ayudar?",
+     "tr": "Привет! Могу помочь?",
+     "choices": [
+      {
+       "text": "Hola, sí. ¿Tiene esta camiseta en talla M?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Чётко: <b>en talla M</b> 👍"
+      },
+      {
+       "text": "Talla M.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Понятно, но лучше: <b>¿Tiene…en talla M?</b>"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Sí, aquí tienes. Los probadores están al fondo.",
+     "tr": "Да, вот. Примерочные в конце зала.",
+     "choices": [
+      {
+       "text": "Gracias. ¿Me la puedo probar?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>probarse</b> 👕 отлично"
+      },
+      {
+       "text": "Vale, gracias.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Коротко и вежливо ✅"
+      }
+     ]
+    },
+    "n3": {
+     "say": "¿Qué tal te queda?",
+     "tr": "Ну как, подходит?",
+     "choices": [
+      {
+       "text": "Me queda un poco grande. ¿Tiene una talla más pequeña?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Идеально 🎯"
+      },
+      {
+       "text": "Mal.",
+       "next": "n4",
+       "score": 1,
+       "feedback": "Скажи, что не так: <b>Me queda grande / pequeña</b>"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Sí, la S. Si no te queda bien, puedes devolverla con el ticket.",
+     "tr": "Да, S. Если не подойдёт, можно вернуть с чеком.",
+     "choices": [
+      {
+       "text": "Perfecto. ¿Cuántos días tengo para devolverla?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Полезный вопрос 🧾"
+      },
+      {
+       "text": "Vale, me la llevo. ¿Cuánto cuesta?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>Me la llevo</b> — беру 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Tienes treinta días. Y hoy está en rebajas: doce euros. ¡Gracias!",
+     "tr": "У тебя тридцать дней. А сегодня скидка: двенадцать евро. Спасибо!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
