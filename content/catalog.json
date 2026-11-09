@@ -629,8 +629,8 @@
         "social",
         "humor"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/en/social/banter.json"
       },
       {
        "id": "en.social.plans",
@@ -652,8 +652,8 @@
         "social",
         "slang"
        ],
-       "status": "planned",
-       "file": null
+       "status": "ready",
+       "file": "topics/en/social/texting.json"
       }
      ]
     },

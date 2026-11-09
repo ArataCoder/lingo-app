@@ -1,0 +1,266 @@
+{
+ "id": "en.social.banter",
+ "track": "en",
+ "level": "C1",
+ "title": "Шутки, сарказм, banter",
+ "emoji": "😏",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "I'm just pulling your leg",
+   "tr": "я просто прикалываюсь",
+   "ex": "Relax, I'm just pulling your leg."
+  },
+  {
+   "term": "Oh, great. Just what I needed.",
+   "tr": "ну отлично, только этого не хватало (сарказм)",
+   "ex": "The printer's broken again? Oh, great. Just what I needed."
+  },
+  {
+   "term": "No offense, but…",
+   "tr": "без обид, но…",
+   "ex": "No offense, but your coffee is terrible."
+  },
+  {
+   "term": "to roast someone",
+   "tr": "по-дружески разнести, подколоть",
+   "ex": "They roasted him at his birthday party."
+  },
+  {
+   "term": "Touché",
+   "tr": "туше, справедливо подмечено",
+   "ex": "Touché. You got me there."
+  },
+  {
+   "term": "Don't take it personally",
+   "tr": "не принимай на свой счёт",
+   "ex": "It's just banter. Don't take it personally."
+  },
+  {
+   "term": "Look who's talking!",
+   "tr": "кто бы говорил!",
+   "ex": "You're always late? Look who's talking!"
+  },
+  {
+   "term": "dry humor",
+   "tr": "сухой юмор с невозмутимым лицом",
+   "ex": "British people love dry humor."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«I'm just pulling your leg» значит…",
+   "options": [
+    "Я просто прикалываюсь",
+    "Я тяну тебя за ногу",
+    "Я тебя жду"
+   ],
+   "answer": 0,
+   "explain": "<b>pull someone's leg</b> = разыгрывать, шутить."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Коллега: «Oh, great. Another meeting.» Это…",
+   "options": [
+    "Сарказм: он недоволен",
+    "Он рад встрече",
+    "Он предлагает встречу"
+   ],
+   "answer": 0,
+   "explain": "Сарказм слышен по интонации: медленно, без энтузиазма."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Look who's talking!",
+   "back": "Кто бы говорил!"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "You call that parking? My grandma parks better, and she doesn't even drive.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что это?",
+   "options": [
+    "Дружеский подкол про парковку",
+    "Жалоба в полицию",
+    "Комплимент"
+   ],
+   "answer": 0,
+   "explain": "Это <b>banter</b> — дружеская подколка."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "No offense, but your playlist sounds like a dentist's waiting room.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что имеют в виду?",
+   "options": [
+    "Плейлист скучный",
+    "Плейлист слишком громкий",
+    "Пора к стоматологу"
+   ],
+   "answer": 0,
+   "explain": "<b>No offense, but…</b> смягчает подкол."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Расслабься, я просто прикалываюсь.",
+   "tokens": [
+    "Relax,",
+    "I'm",
+    "just",
+    "pulling",
+    "your",
+    "leg."
+   ],
+   "distractors": [
+    "pushing",
+    "arm"
+   ],
+   "pattern": "I'm just pulling your leg."
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Не принимай на свой счёт.",
+   "tokens": [
+    "Don't",
+    "take",
+    "it",
+    "personally."
+   ],
+   "distractors": [
+    "person",
+    "make"
+   ],
+   "pattern": "Don't take it personally."
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Touché. You got me there.",
+   "tr": "Туше. Тут ты меня подловил(а).",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Relax, it's just banter. I'm pulling your leg, don't take it personally.",
+   "tr": "Расслабься, это просто подколы. Я прикалываюсь, не принимай на свой счёт.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.social.banter.s1",
+   "title": "Подколы в офисе",
+   "emoji": "😏",
+   "userRole": "Ты",
+   "botRole": "Sam",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Nice of you to join us. Did your alarm clock quit?",
+     "tr": "Как мило, что ты к нам присоединился(ась). Твой будильник уволился?",
+     "choices": [
+      {
+       "text": "Ha! It filed a complaint about working conditions.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Ответить шуткой на шутку — топ banter 😂"
+      },
+      {
+       "text": "Sorry, I'm late because of the bus.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Нормально, но это шутка — можно подыграть."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Classic. And you brought coffee only for yourself? Wow, team player.",
+     "tr": "Классика. И кофе ты взял(а) только себе? Ого, командный игрок.",
+     "choices": [
+      {
+       "text": "Look who's talking! You ate my sandwich last week.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "«Кто бы говорил» — идеально 🔥"
+      },
+      {
+       "text": "You're rude.",
+       "next": "n3",
+       "score": 0,
+       "feedback": "Это была шутка. Обидеться всерьёз — убить banter. Ответь подколом."
+      }
+     ]
+    },
+    "n3": {
+     "say": "Touché. Okay, I'm just pulling your leg.",
+     "tr": "Туше. Ладно, я просто прикалываюсь.",
+     "choices": [
+      {
+       "text": "I know. Don't worry, I'll get my revenge at lunch.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Сухой юмор 😎"
+      },
+      {
+       "text": "No worries. I'll buy you a coffee tomorrow, deal?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Мило и по-дружески 👍"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Deal. By the way, nice shirt. Did you lose a bet?",
+     "tr": "Договорились. Кстати, классная рубашка. Ты проиграл(а) спор?",
+     "choices": [
+      {
+       "text": "Yes, and the bet was about your haircut.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Roast в ответ, но по-доброму 😂"
+      },
+      {
+       "text": "Ouch. No offense, but your fashion advice isn't great either.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>No offense, but…</b> — смягчение 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Okay, okay, you win this round. Coffee's on me tomorrow.",
+     "tr": "Ладно, ладно, этот раунд за тобой. Завтра кофе с меня.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

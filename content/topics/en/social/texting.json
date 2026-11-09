@@ -1,0 +1,264 @@
+{
+ "id": "en.social.texting",
+ "track": "en",
+ "level": "B2",
+ "title": "Переписка и мемы",
+ "emoji": "📱",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "lol",
+   "tr": "смешно (laughing out loud)",
+   "ex": "lol that's so true"
+  },
+  {
+   "term": "tbh",
+   "tr": "если честно (to be honest)",
+   "ex": "tbh I'm too tired to go out"
+  },
+  {
+   "term": "ngl",
+   "tr": "не буду врать (not gonna lie)",
+   "ex": "ngl that movie was amazing"
+  },
+  {
+   "term": "brb",
+   "tr": "скоро вернусь (be right back)",
+   "ex": "brb, grabbing food"
+  },
+  {
+   "term": "idk",
+   "tr": "не знаю (I don't know)",
+   "ex": "idk, what do you think?"
+  },
+  {
+   "term": "wanna / gonna",
+   "tr": "хочешь / собираюсь (разговорное)",
+   "ex": "Wanna grab coffee later?"
+  },
+  {
+   "term": "omw",
+   "tr": "уже в пути (on my way)",
+   "ex": "omw, five minutes"
+  },
+  {
+   "term": "left on read",
+   "tr": "прочитал(а) и не ответил(а)",
+   "ex": "She left me on read again."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«ngl» значит…",
+   "options": [
+    "not gonna lie — не буду врать",
+    "no good luck — не повезло",
+    "never go late — не опаздывай"
+   ],
+   "answer": 0,
+   "explain": "<b>ngl</b> = not gonna lie."
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Друг написал «omw». Что это?",
+   "options": [
+    "Уже в пути",
+    "Боже мой",
+    "Подожди меня"
+   ],
+   "answer": 0,
+   "explain": "<b>omw</b> = on my way. «omg» — это «боже мой»."
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "left on read",
+   "back": "прочитал(а) и не ответил(а)"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Not gonna lie, I'm too tired tonight. Wanna get brunch tomorrow instead?",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что предлагают?",
+   "options": [
+    "Перенести на бранч завтра",
+    "Встретиться сегодня ночью",
+    "Отменить всё"
+   ],
+   "answer": 0,
+   "explain": "<b>instead</b> = вместо этого."
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Be right back, my pizza just arrived.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что случилось?",
+   "options": [
+    "Привезли пиццу, скоро вернётся",
+    "Ушёл(ушла) спать",
+    "Только заказывает пиццу"
+   ],
+   "answer": 0,
+   "explain": "<b>brb</b> = be right back."
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Хочешь выпить кофе позже?",
+   "tokens": [
+    "Wanna",
+    "grab",
+    "coffee",
+    "later?"
+   ],
+   "distractors": [
+    "want",
+    "drink"
+   ],
+   "pattern": "Wanna + [глагол]?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Если честно, я слишком устал(а).",
+   "tokens": [
+    "Tbh",
+    "I'm",
+    "too",
+    "tired."
+   ],
+   "distractors": [
+    "much",
+    "tire"
+   ],
+   "pattern": "tbh + [мысль]"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Ngl that was the best concert ever lol",
+   "tr": "Не буду врать, это был лучший концерт в жизни, лол",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Sorry for leaving you on read, I was at work. Wanna grab coffee tomorrow?",
+   "tr": "Прости, что прочитал(а) и не ответил(а), я был(а) на работе. Хочешь выпить кофе завтра?",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.social.texting.s1",
+   "title": "Переписка с новым другом",
+   "emoji": "📱",
+   "userRole": "Ты",
+   "botRole": "Taylor",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "hey! it was so nice meeting you at the language exchange",
+     "tr": "привет! было так приятно познакомиться на языковом обмене",
+     "choices": [
+      {
+       "text": "Hey! Same here, lol. You were the funniest person there.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Тёплый и живой ответ 👍"
+      },
+      {
+       "text": "Hello. Yes. Nice to meet you too.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Корректно, но звучит как робот 🤖 В чатах проще."
+      }
+     ]
+    },
+    "n2": {
+     "say": "haha thanks! wanna grab coffee this week?",
+     "tr": "хаха спасибо! хочешь выпить кофе на этой неделе?",
+     "choices": [
+      {
+       "text": "For sure! Ngl I need a break from studying.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>ngl</b> к месту 🔥"
+      },
+      {
+       "text": "Idk, I'm pretty busy, but maybe Saturday?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Честно + вариант 👍"
+      }
+     ]
+    },
+    "n3": {
+     "say": "saturday works! 11am at the cafe near the beach?",
+     "tr": "суббота подходит! в 11 в кафе у пляжа?",
+     "choices": [
+      {
+       "text": "Perfect, see you there!",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Коротко и ясно 👍"
+      },
+      {
+       "text": "Sounds good. Tbh 11 is early for me, can we do 12?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Вежливо перенести время 💪"
+      }
+     ]
+    },
+    "n4": {
+     "say": "sure! sorry if i reply late, i'm at work till 6",
+     "tr": "конечно! извини, если буду отвечать поздно, я на работе до 6",
+     "choices": [
+      {
+       "text": "No worries! Brb, my dinner's ready.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Естественно 😄"
+      },
+      {
+       "text": "Why are you always busy?",
+       "next": "n5",
+       "score": 0,
+       "feedback": "Звучит как претензия. В начале дружбы — легче: «No worries!»."
+      }
+     ]
+    },
+    "n5": {
+     "say": "lol enjoy! see you saturday",
+     "tr": "лол, приятного! увидимся в субботу",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
