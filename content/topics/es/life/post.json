@@ -1,0 +1,263 @@
+{
+ "id": "es.life.post",
+ "track": "es",
+ "level": "A2",
+ "title": "Почта и посылки",
+ "emoji": "📦",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "un paquete",
+   "tr": "посылка",
+   "ex": "Vengo a recoger un paquete."
+  },
+  {
+   "term": "el aviso de llegada",
+   "tr": "уведомление о посылке",
+   "ex": "Tengo un aviso de llegada."
+  },
+  {
+   "term": "recoger",
+   "tr": "забрать",
+   "ex": "¿Puedo recogerlo hoy?"
+  },
+  {
+   "term": "enviar",
+   "tr": "отправить",
+   "ex": "Quiero enviar esta carta a Ucrania."
+  },
+  {
+   "term": "certificada",
+   "tr": "заказное (письмо)",
+   "ex": "La quiero enviar certificada."
+  },
+  {
+   "term": "el código de seguimiento",
+   "tr": "трек-номер",
+   "ex": "Aquí tiene el código de seguimiento."
+  },
+  {
+   "term": "la oficina de Correos",
+   "tr": "почтовое отделение",
+   "ex": "La oficina de Correos cierra a las dos."
+  },
+  {
+   "term": "el remitente / el destinatario",
+   "tr": "отправитель / получатель",
+   "ex": "Escriba aquí el destinatario."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Vengo a recoger un paquete» значит…",
+   "options": [
+    "Я за посылкой",
+    "Я хочу отправить посылку",
+    "Я потерял(а) посылку"
+   ],
+   "answer": 0,
+   "explain": "<b>recoger</b> — забрать 📦"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Важное письмо с подтверждением. Как отправить?",
+   "options": [
+    "Certificada",
+    "Sin sello",
+    "Por la ventana"
+   ],
+   "answer": 0,
+   "explain": "<b>carta certificada</b> — заказное письмо с подписью ✉️"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "¿Tiene el código de seguimiento?",
+   "back": "У вас есть трек-номер?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Necesito su NIE o pasaporte para entregarle el paquete.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что нужно, чтобы получить посылку?",
+   "options": [
+    "NIE или паспорт",
+    "Только уведомление",
+    "Заплатить 10 евро"
+   ],
+   "answer": 0,
+   "explain": "Без документа посылку не выдадут 🪪"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "El envío a Ucrania tarda entre siete y diez días.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Сколько идёт отправка?",
+   "options": [
+    "7–10 дней",
+    "2 дня",
+    "Месяц"
+   ],
+   "answer": 0,
+   "explain": "<b>tarda</b> — идёт, занимает 📦"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я хочу отправить эту посылку.",
+   "tokens": [
+    "Quiero",
+    "enviar",
+    "este",
+    "paquete."
+   ],
+   "distractors": [
+    "envío",
+    "esta"
+   ],
+   "pattern": "Quiero + enviar + что"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Могу забрать его сегодня?",
+   "tokens": [
+    "¿Puedo",
+    "recogerlo",
+    "hoy?"
+   ],
+   "distractors": [
+    "recojo",
+    "ayer"
+   ],
+   "pattern": "¿Puedo + инфинитив + lo?"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Hola, tengo un aviso de llegada. Vengo a recoger un paquete.",
+   "tr": "Здравствуйте, у меня уведомление. Я за посылкой.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Buenos días. Quiero enviar este paquete a Ucrania. ¿Cuánto cuesta y cuánto tarda?",
+   "tr": "Доброе утро. Я хочу отправить эту посылку в Украину. Сколько стоит и сколько идёт?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.life.post.s1",
+   "title": "Посылка на Correos",
+   "emoji": "📦",
+   "userRole": "Ты",
+   "botRole": "Empleado de Correos",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Buenos días. Siguiente, por favor.",
+     "tr": "Доброе утро. Следующий, пожалуйста.",
+     "choices": [
+      {
+       "text": "Hola, buenos días. Tengo un aviso de llegada.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Сразу по делу 👍"
+      },
+      {
+       "text": "Paquete.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Поймут, но лучше: <b>Vengo a recoger un paquete</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "¿Me deja el aviso y un documento de identidad?",
+     "tr": "Дадите уведомление и документ?",
+     "choices": [
+      {
+       "text": "Sí, aquí tiene el aviso y mi NIE.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>Aquí tiene</b> ✅"
+      },
+      {
+       "text": "Tengo el aviso en el móvil. ¿Le vale?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>¿Le vale?</b> — подойдёт? 📱"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Aquí está su paquete. ¿Algo más?",
+     "tr": "Вот ваша посылка. Что-нибудь ещё?",
+     "choices": [
+      {
+       "text": "Sí, también quiero enviar una carta certificada.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Отлично: <b>certificada</b> ✉️"
+      },
+      {
+       "text": "Dámelo rápido.",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Грубо. Лучше: <b>Gracias, nada más</b>."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Muy bien. Escriba aquí el destinatario y el remitente.",
+     "tr": "Хорошо. Напишите здесь получателя и отправителя.",
+     "choices": [
+      {
+       "text": "Vale. ¿Me da el código de seguimiento después?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Трек-номер — важно 🔢"
+      },
+      {
+       "text": "El remitente soy yo, ¿verdad?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Правильно уточнил(а) 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Sí. Son cuatro euros con veinte. Aquí tiene el resguardo con el código.",
+     "tr": "Да. С вас четыре двадцать. Вот квитанция с номером.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

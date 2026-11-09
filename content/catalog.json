@@ -198,7 +198,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/es/life/padron.json"
       },
       {
        "id": "es.life.utilities",
@@ -208,7 +209,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/es/life/utilities.json"
       },
       {
        "id": "es.life.post",
@@ -218,7 +220,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/es/life/post.json"
       }
      ]
     },
@@ -293,7 +296,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/es/social/family.json"
       },
       {
        "id": "es.social.hobbies",

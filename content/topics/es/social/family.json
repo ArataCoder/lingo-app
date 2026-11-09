@@ -1,0 +1,267 @@
+{
+ "id": "es.social.family",
+ "track": "es",
+ "level": "A2",
+ "title": "Семья и о себе",
+ "emoji": "👨‍👩‍👧",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "tengo un hermano / una hermana",
+   "tr": "у меня есть брат / сестра",
+   "ex": "Tengo una hermana mayor."
+  },
+  {
+   "term": "mayor / menor",
+   "tr": "старше / младше",
+   "ex": "Mi hermano es menor que yo."
+  },
+  {
+   "term": "mis padres",
+   "tr": "мои родители",
+   "ex": "Mis padres viven en Ucrania."
+  },
+  {
+   "term": "soltero / soltera",
+   "tr": "не в браке",
+   "ex": "Mi primo está soltero."
+  },
+  {
+   "term": "los primos",
+   "tr": "двоюродные братья и сёстры",
+   "ex": "Tengo muchos primos."
+  },
+  {
+   "term": "echar de menos",
+   "tr": "скучать",
+   "ex": "Echo de menos a mi familia."
+  },
+  {
+   "term": "llevarse bien",
+   "tr": "ладить",
+   "ex": "Me llevo muy bien con mi madre."
+  },
+  {
+   "term": "compartir piso",
+   "tr": "снимать квартиру вместе",
+   "ex": "Comparto piso con dos amigos."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Echo de menos a mi familia» значит…",
+   "options": [
+    "Я скучаю по семье",
+    "Я живу с семьёй",
+    "Я звоню семье"
+   ],
+   "answer": 0,
+   "explain": "<b>echar de menos</b> — скучать 💙"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Mi hermano es menor» значит…",
+   "options": [
+    "Брат младше",
+    "Брат старше",
+    "Брат выше"
+   ],
+   "answer": 0,
+   "explain": "<b>menor</b> — младше, <b>mayor</b> — старше"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Me llevo bien con mis padres.",
+   "back": "Я хорошо лажу с родителями."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Tengo dos hijos. El mayor tiene doce años y la pequeña tiene cinco.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Сколько детей и какого возраста?",
+   "options": [
+    "Двое: 12 и 5 лет",
+    "Трое: 12, 10 и 5",
+    "Один ребёнок, 12 лет"
+   ],
+   "answer": 0,
+   "explain": "<b>el mayor</b> — старший, <b>la pequeña</b> — младшая 👧"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Mis padres viven en el pueblo, pero los veo cada domingo.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Как часто видит родителей?",
+   "options": [
+    "Каждое воскресенье",
+    "Раз в год",
+    "Каждый день"
+   ],
+   "answer": 0,
+   "explain": "<b>cada domingo</b> — каждое воскресенье"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Мои родители живут в Украине.",
+   "tokens": [
+    "Mis",
+    "padres",
+    "viven",
+    "en",
+    "Ucrania."
+   ],
+   "distractors": [
+    "vive",
+    "mi"
+   ],
+   "pattern": "Mis + кто + viven en + где"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я скучаю по своей семье.",
+   "tokens": [
+    "Echo",
+    "de",
+    "menos",
+    "a",
+    "mi",
+    "familia."
+   ],
+   "distractors": [
+    "mis",
+    "más"
+   ],
+   "pattern": "Echo de menos + a + кого"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Tengo una hermana menor. Vive en Polonia.",
+   "tr": "У меня есть младшая сестра. Она живёт в Польше.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Mi familia vive lejos y la echo de menos, pero hablamos por videollamada casi cada día.",
+   "tr": "Моя семья живёт далеко, и я по ней скучаю, но мы созваниваемся по видео почти каждый день.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.social.family.s1",
+   "title": "Соседка спрашивает о семье",
+   "emoji": "👨‍👩‍👧",
+   "userRole": "Ты",
+   "botRole": "Carmen",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¡Hola! Oye, ¿vives aquí con tu familia?",
+     "tr": "Привет! Слушай, ты живёшь здесь с семьёй?",
+     "choices": [
+      {
+       "text": "Hola, Carmen. Sí, ahora vivo con mi madre.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Естественно и тепло 👍"
+      },
+      {
+       "text": "No familia aquí.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Лучше: <b>Mi familia no está aquí</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "¡Qué bien! ¿Y tienes hermanos?",
+     "tr": "Как здорово! А братья или сёстры у тебя есть?",
+     "choices": [
+      {
+       "text": "Sí, tengo un hermano mayor. Vive en Polonia.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>mayor</b> + где живёт ✅"
+      },
+      {
+       "text": "No, no tengo hermanos. ¿Y tú?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Вопрос в ответ — отличный small talk 👍"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Yo tengo tres hijos, ¡una locura! ¿Echas de menos tu país?",
+     "tr": "У меня трое детей, это сумасшествие! Скучаешь по своей стране?",
+     "choices": [
+      {
+       "text": "Sí, echo mucho de menos a mis amigos de allí.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>echar de menos</b> в деле 💙"
+      },
+      {
+       "text": "Esa pregunta es muy personal.",
+       "next": "n4",
+       "score": 1,
+       "feedback": "Можно и так, но мягче: <b>Un poco, es complicado</b>."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Te entiendo. Mi madre es de Argentina y también echa de menos su tierra.",
+     "tr": "Понимаю тебя. Моя мама из Аргентины и тоже скучает по родине.",
+     "choices": [
+      {
+       "text": "¿De verdad? ¿Y vuelve a Argentina a veces?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Интерес к собеседнику — супер 🙌"
+      },
+      {
+       "text": "Es normal. Pero aquí la gente es muy amable.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Тёплый ответ 😊"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Sí, eso es verdad. ¡Ven un día a tomar café con nosotros!",
+     "tr": "Да, это правда. Приходи как-нибудь к нам на кофе!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

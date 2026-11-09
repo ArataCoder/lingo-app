@@ -1,0 +1,267 @@
+{
+ "id": "es.life.padron",
+ "track": "es",
+ "level": "A1",
+ "title": "Падрон в ayuntamiento",
+ "emoji": "🏛️",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "empadronarse",
+   "tr": "прописаться (встать на учёт по адресу)",
+   "ex": "Quiero empadronarme en Torrevieja."
+  },
+  {
+   "term": "el certificado de empadronamiento",
+   "tr": "справка о прописке",
+   "ex": "Necesito el certificado de empadronamiento."
+  },
+  {
+   "term": "la cita previa",
+   "tr": "предварительная запись",
+   "ex": "¿Hay que pedir cita previa?"
+  },
+  {
+   "term": "el contrato de alquiler",
+   "tr": "договор аренды",
+   "ex": "Aquí tiene mi contrato de alquiler."
+  },
+  {
+   "term": "el pasaporte",
+   "tr": "паспорт",
+   "ex": "Traigo el pasaporte original."
+  },
+  {
+   "term": "rellenar el formulario",
+   "tr": "заполнить бланк",
+   "ex": "Tiene que rellenar este formulario."
+  },
+  {
+   "term": "el casero / la casera",
+   "tr": "арендодатель",
+   "ex": "El contrato está a nombre de mi casero."
+  },
+  {
+   "term": "tarda unos días",
+   "tr": "это занимает несколько дней",
+   "ex": "El certificado tarda unos días."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Empadronarse» значит…",
+   "options": [
+    "Встать на учёт по адресу",
+    "Открыть счёт в банке",
+    "Получить NIE"
+   ],
+   "answer": 0,
+   "explain": "<b>Padrón</b> — учёт жителей по адресу. Нужен для врача, школы и многих документов 🏛️"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Нужно сначала записаться. Что спросить?",
+   "options": [
+    "¿Hay que pedir cita previa?",
+    "¿Hay que pagar el alquiler?",
+    "¿Hay que cerrar la puerta?"
+   ],
+   "answer": 0,
+   "explain": "<b>cita previa</b> — запись заранее 📅"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Quiero empadronarme.",
+   "back": "Я хочу прописаться."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Necesita el pasaporte y el contrato de alquiler.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Какие документы нужны?",
+   "options": [
+    "Паспорт и договор аренды",
+    "Только паспорт",
+    "Справка с работы"
+   ],
+   "answer": 0,
+   "explain": "<b>contrato de alquiler</b> — договор аренды 📄"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "El certificado tarda unos tres días.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Когда будет справка?",
+   "options": [
+    "Примерно через три дня",
+    "Сегодня",
+    "Через три недели"
+   ],
+   "answer": 0,
+   "explain": "<b>tarda</b> — занимает по времени ⏳"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Мне нужна справка о прописке.",
+   "tokens": [
+    "Necesito",
+    "el",
+    "certificado",
+    "de",
+    "empadronamiento."
+   ],
+   "distractors": [
+    "necesidad",
+    "certificada"
+   ],
+   "pattern": "Necesito + el + документ"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Вот мой договор аренды.",
+   "tokens": [
+    "Aquí",
+    "tiene",
+    "mi",
+    "contrato",
+    "de",
+    "alquiler."
+   ],
+   "distractors": [
+    "tengo",
+    "alquilar"
+   ],
+   "pattern": "Aquí tiene + документ"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Hola, quiero empadronarme. ¿Qué documentos necesito?",
+   "tr": "Здравствуйте, я хочу прописаться. Какие документы мне нужны?",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Buenos días. Tengo cita previa para empadronarme. Aquí tiene mi pasaporte y el contrato de alquiler.",
+   "tr": "Доброе утро. У меня запись на прописку. Вот мой паспорт и договор аренды.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.life.padron.s1",
+   "title": "Запись в падрон",
+   "emoji": "🏛️",
+   "userRole": "Ты",
+   "botRole": "Funcionaria",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Buenos días. ¿Tiene cita previa?",
+     "tr": "Доброе утро. У вас есть предварительная запись?",
+     "choices": [
+      {
+       "text": "Sí, a las diez. Es para empadronarme.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Время + цель визита 👍"
+      },
+      {
+       "text": "No. Padrón.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Лучше полностью: <b>No, quiero empadronarme</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Muy bien. ¿Me da el pasaporte y el contrato de alquiler?",
+     "tr": "Хорошо. Дадите паспорт и договор аренды?",
+     "choices": [
+      {
+       "text": "Sí, claro. Aquí tiene.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>Aquí tiene</b> — вот, пожалуйста ✅"
+      },
+      {
+       "text": "Tengo el pasaporte, pero el contrato está a nombre de mi casero.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Честно и понятно. <b>casero</b> — арендодатель 👌"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Rellene este formulario, por favor. Aquí, nombre y dirección.",
+     "tr": "Заполните, пожалуйста, этот бланк. Здесь имя и адрес.",
+     "choices": [
+      {
+       "text": "Vale. ¿Escribo la dirección completa, con el piso?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Хороший уточняющий вопрос 🏠"
+      },
+      {
+       "text": "No entiendo nada.",
+       "next": "n4",
+       "score": 1,
+       "feedback": "Лучше конкретно: <b>¿Qué pongo aquí?</b> — что здесь писать?"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Sí: calle, número, piso y puerta. El certificado tarda unos días.",
+     "tr": "Да: улица, номер, этаж и дверь. Справка будет через несколько дней.",
+     "choices": [
+      {
+       "text": "Perfecto. ¿Me lo envían o vengo a recogerlo?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Отличный вопрос 📬"
+      },
+      {
+       "text": "¿Unos días? ¡Qué lento!",
+       "next": "n5",
+       "score": 0,
+       "feedback": "Невежливо с чиновником. Лучше: <b>Vale, gracias</b>."
+      }
+     ]
+    },
+    "n5": {
+     "say": "Puede descargarlo en la sede electrónica o venir a recogerlo. ¡Que tenga buen día!",
+     "tr": "Можно скачать на сайте мэрии или прийти забрать. Хорошего дня!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

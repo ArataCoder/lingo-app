@@ -1,0 +1,267 @@
+{
+ "id": "es.life.utilities",
+ "track": "es",
+ "level": "A2",
+ "title": "Свет, вода, интернет",
+ "emoji": "💡",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "la factura de la luz",
+   "tr": "счёт за свет",
+   "ex": "La factura de la luz es muy alta."
+  },
+  {
+   "term": "dar de alta",
+   "tr": "подключить, оформить услугу",
+   "ex": "Quiero dar de alta el agua."
+  },
+  {
+   "term": "cambiar de titular",
+   "tr": "переоформить договор на себя",
+   "ex": "Quiero cambiar de titular el contrato de la luz."
+  },
+  {
+   "term": "no funciona el wifi",
+   "tr": "не работает вай-фай",
+   "ex": "No funciona el wifi desde esta mañana."
+  },
+  {
+   "term": "reiniciar el router",
+   "tr": "перезагрузить роутер",
+   "ex": "He reiniciado el router dos veces."
+  },
+  {
+   "term": "un técnico",
+   "tr": "мастер, техник",
+   "ex": "¿Puede venir un técnico?"
+  },
+  {
+   "term": "el número de cliente",
+   "tr": "номер клиента",
+   "ex": "Mi número de cliente es el cinco, cuatro, dos."
+  },
+  {
+   "term": "la avería",
+   "tr": "поломка, неисправность",
+   "ex": "Hay una avería en su zona."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Dar de alta la luz» значит…",
+   "options": [
+    "Подключить электричество",
+    "Отключить электричество",
+    "Оплатить свет"
+   ],
+   "answer": 0,
+   "explain": "<b>dar de alta</b> — оформить, <b>dar de baja</b> — отключить ⚡"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Интернет не работает. Как сказать?",
+   "options": [
+    "No funciona el internet.",
+    "No me gusta el internet.",
+    "No pago el internet."
+   ],
+   "answer": 0,
+   "explain": "<b>No funciona</b> — не работает 📶"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "He reiniciado el router.",
+   "back": "Я перезагрузил(а) роутер."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Hay una avería en su zona. La arreglamos antes de las seis.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что случилось?",
+   "options": [
+    "Поломка в районе, починят до шести",
+    "Нужно купить новый роутер",
+    "Счёт не оплачен"
+   ],
+   "answer": 0,
+   "explain": "<b>avería</b> — поломка, <b>arreglar</b> — починить 🔧"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "¿Me puede decir su número de cliente o su NIE?",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что просят?",
+   "options": [
+    "Номер клиента или NIE",
+    "Адрес и этаж",
+    "Пароль от вай-фая"
+   ],
+   "answer": 0,
+   "explain": "<b>número de cliente</b> — номер в договоре 🔢"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Вай-фай не работает с утра.",
+   "tokens": [
+    "No",
+    "funciona",
+    "el",
+    "wifi",
+    "desde",
+    "esta",
+    "mañana."
+   ],
+   "distractors": [
+    "funcionar",
+    "después"
+   ],
+   "pattern": "No funciona + что + desde + когда"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Может прийти мастер?",
+   "tokens": [
+    "¿Puede",
+    "venir",
+    "un",
+    "técnico?"
+   ],
+   "distractors": [
+    "viene",
+    "una"
+   ],
+   "pattern": "¿Puede venir + кто?"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Quiero dar de alta la luz en mi piso nuevo.",
+   "tr": "Я хочу подключить свет в моей новой квартире.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Hola, no funciona el internet desde ayer. Ya he reiniciado el router. ¿Puede venir un técnico?",
+   "tr": "Здравствуйте, интернет не работает со вчера. Я уже перезагрузил(а) роутер. Может прийти мастер?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.life.utilities.s1",
+   "title": "Нет интернета: звонок провайдеру",
+   "emoji": "💡",
+   "userRole": "Ты",
+   "botRole": "Atención al cliente",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Atención al cliente, le atiende Laura. ¿En qué puedo ayudarle?",
+     "tr": "Служба поддержки, вас слушает Лаура. Чем могу помочь?",
+     "choices": [
+      {
+       "text": "Hola, no funciona el internet desde ayer.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Проблема + с какого времени 👍"
+      },
+      {
+       "text": "Internet mal.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Лучше: <b>No funciona el internet</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Lo siento. ¿Me dice su número de cliente, por favor?",
+     "tr": "Сожалею. Назовите, пожалуйста, номер клиента.",
+     "choices": [
+      {
+       "text": "Sí, es el cinco, cuatro, dos, ocho, uno.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Цифры по одной — так понятнее 🔢"
+      },
+      {
+       "text": "No lo tengo aquí. ¿Le vale mi NIE?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>¿Le vale…?</b> — вам подойдёт…? 👌"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Gracias. ¿Ha reiniciado el router?",
+     "tr": "Спасибо. Вы перезагружали роутер?",
+     "choices": [
+      {
+       "text": "Sí, dos veces, pero la luz roja sigue encendida.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Детали помогают поддержке 🔴"
+      },
+      {
+       "text": "¡Claro que sí! ¿Qué se cree?",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Грубовато. Просто: <b>Sí, ya lo he reiniciado</b>."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Veo una avería en su zona. Un técnico puede ir mañana por la mañana.",
+     "tr": "Вижу поломку в вашем районе. Мастер может прийти завтра утром.",
+     "choices": [
+      {
+       "text": "Vale. ¿A qué hora más o menos?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Уточнить время — правильно ⏰"
+      },
+      {
+       "text": "¿Me van a descontar estos días de la factura?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Отличный вопрос про скидку в счёте 💶"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Entre las nueve y las doce. Y sí, le aplicamos un descuento. ¡Gracias por llamar!",
+     "tr": "С девяти до двенадцати. И да, мы сделаем вам скидку. Спасибо за звонок!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
