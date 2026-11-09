@@ -5,7 +5,7 @@
   var tg = window.Telegram && Telegram.WebApp && Telegram.WebApp.initData ? Telegram.WebApp : null;
   var me = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user : null;
   var COL = { es: "#F7A046", en: "#9D7CD8" }, OK = "#10B981";
-  var FKEY = "lingo_friends", MODE = "week", LAST_SYNC = 0, BUSY = false;
+  var FKEY = "lingo_friends", MODE = "week", LAST_SYNC = 0, BUSY = false, FR_ERR = false;
   var FR = null; try { FR = JSON.parse(localStorage.getItem(FKEY) || "null"); } catch (e) { FR = null; }
   function $(id) { return document.getElementById(id); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
@@ -20,7 +20,8 @@
   function trk(n, p) { try { if (window.lbTrack) window.lbTrack(n, p || {}); } catch (e) {} }
   function note(t) { try { if (window.toast) return window.toast(t); } catch (e) {} try { if (tg && tg.showAlert) tg.showAlert(t); } catch (e) {} }
   function post(path, body) {
-    return fetch(base() + path, { method: "POST", headers: { "content-type": "text/plain" }, body: JSON.stringify(body) })
+    var ac = window.AbortController ? new AbortController() : null; if (ac) setTimeout(function () { ac.abort(); }, 12000);
+    return fetch(base() + path, { method: "POST", headers: { "content-type": "text/plain" }, body: JSON.stringify(body), signal: ac ? ac.signal : undefined })
       .then(function (r) { return r.json().catch(function () { return { ok: false, status: r.status }; }); });
   }
   function myStats() {
@@ -42,6 +43,7 @@
     ".fav{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#12131C;flex:none;position:relative;overflow:hidden}", ".fav img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover}",
     ".fnm{flex:1;min-width:0}.fnm b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fnm span{color:var(--dim);font-size:13px}",
     ".fxp{text-align:right;font-weight:900;font-size:18px}.fxp span{display:block;color:var(--dim);font-size:11px;font-weight:700}",
+    "#frList{margin-bottom:18px}.fr>.btn{display:block;position:relative;margin:0}.frretry{margin-top:14px;min-height:44px;padding:10px 20px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);font-family:inherit;font-size:15px;font-weight:800;cursor:pointer}.frspin{display:inline-block;width:14px;height:14px;margin-right:8px;vertical-align:-2px;border:2px solid rgba(255,255,255,.18);border-top-color:var(--acc);border-radius:50%;animation:frsp .8s linear infinite}@keyframes frsp{to{transform:rotate(360deg)}}",
     ".frempty{text-align:center;color:var(--dim);padding:22px 8px;line-height:1.5}.frhint{color:var(--dim);font-size:13px;text-align:center;line-height:1.45;margin-top:10px}",
     ".nav button{font-size:11px;padding:8px 2px}",
     "#cardOv{position:fixed;inset:0;z-index:50;background:rgba(10,11,18,.92);display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:10px;overflow:auto}",
@@ -57,18 +59,19 @@
     BUSY = true; LAST_SYNC = Date.now();
     var sp = (tg.initDataUnsafe && tg.initDataUnsafe.start_param) || "";
     return post("/api/sync", { initData: tg.initData, stats: myStats(), ref: sp }).then(function (j) {
-      BUSY = false;
+      BUSY = false; FR_ERR = !(j && j.ok); if (FR_ERR && window.current === "friends") render();
       if (j && j.ok) { FR = { list: j.friends || [], ts: Date.now() }; try { localStorage.setItem(FKEY, JSON.stringify(FR)); } catch (e) {} if (window.current === "friends") render(); }
       return FR;
-    }).catch(function () { BUSY = false; return FR; });
+    }).catch(function () { BUSY = false; FR_ERR = true; if (window.current === "friends") render(); return FR; });
   }
   window.lbSync = sync;
+  window.lbFrRetry = function () { FR_ERR = false; render(); sync(true); };
 
   function render() {
     var box = $("frList"); if (!box) return;
     if (!tg) { box.innerHTML = '<div class="frempty glass">👥 Рейтинг друзей работает внутри Telegram.<br>Открой приложение через @' + BOT + '</div>'; return; }
     var list = (FR && FR.list ? FR.list : []).slice();
-    if (!list.length) { box.innerHTML = '<div class="frempty glass">⏳ Загружаю рейтинг…</div>'; return; }
+    if (!list.length) { box.innerHTML = FR_ERR ? '<div class="frempty glass" role="status"><b>Рейтинг не загрузился</b><br>Проверь интернет и попробуй ещё раз.<br><button type="button" class="frretry" onclick="lbFrRetry()">Повторить</button></div>' : '<div class="frempty glass" role="status"><span class="frspin" aria-hidden="true"></span>Загружаю рейтинг…</div>'; if (!FR_ERR && !BUSY) sync(true); return; }
     var key = MODE === "week" ? "week" : "xp";
     list.sort(function (a, b) { return (b[key] - a[key]) || (b.xp - a.xp); });
     var medals = ["🥇", "🥈", "🥉"], pal = ["#F7A046", "#9D7CD8", "#10B981", "#7AA2F7", "#F7768E", "#E0AF68"];

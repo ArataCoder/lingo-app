@@ -24,16 +24,23 @@
     ".screen h2,.screen h3,.screen p,.screen b,.screen span,.screen button{overflow-wrap:break-word;word-break:normal;hyphens:manual}",
     ".top .chips .v51off{display:none!important}",
     "#v51st{margin-top:4px;font-size:13px;color:var(--muted);font-weight:700}",
-    ".v5hero.v51a{background:var(--card);color:var(--text);border:1px solid var(--line);gap:12px;padding:16px}",
-    ".v51h{display:flex;gap:12px;align-items:center;width:100%}",
-    ".v51e{flex:none;width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:28px}",
-    ".v51x{display:flex;flex-direction:column;gap:2px;min-width:0}",
-    ".v51x .k{font-size:13px;color:var(--muted);letter-spacing:.06em;font-weight:800}",
-    ".v51x .t{font-size:18px;font-weight:800;line-height:1.25}",
-    ".v51x .s{font-size:13px;color:var(--muted);font-weight:700;opacity:1}",
-    ".v51bar{display:block;width:100%;height:6px;border-radius:6px;background:rgba(255,255,255,.1);overflow:hidden}",
-    ".v51bar i{display:block;height:100%;background:var(--acc);border-radius:6px}",
-    ".v51go{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;border-radius:14px;background:var(--acc);color:#12131C;font-size:16px;font-weight:800}",
+    ".v5hero.v51a{position:relative;display:block;text-align:left;background:#24283B;background:color-mix(in srgb,var(--acc) 9%,#24283B);color:var(--text);border:1px solid #3B4261;border-color:color-mix(in srgb,var(--acc) 30%,#3B4261);border-radius:24px;padding:20px 18px 16px;box-shadow:0 14px 30px -14px rgba(0,0,0,.6);transition:transform .18s cubic-bezier(.16,1,.3,1)}",
+    ".v5hero.v51a:active{transform:scale(.985)}",
+    ".v51h{display:flex;flex-direction:column;gap:12px;width:100%}",
+    ".v51t{display:block;font-size:22px;line-height:1.2;font-weight:800;letter-spacing:-.01em;text-wrap:balance}",
+    ".v51m{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:13px;font-weight:700;color:#A9B1D6}",
+    ".v51m b{color:var(--text);font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}",
+    ".v51seg{display:flex;gap:4px;width:100%}",
+    ".v51seg i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.1)}",
+    ".v51seg i.d{background:var(--acc)}",
+    ".v51seg i.c{background:transparent;box-shadow:inset 0 0 0 1.5px var(--acc)}",
+    ".v51bar{display:block;width:100%;height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}",
+    ".v51bar i{display:block;height:100%;background:var(--acc);border-radius:3px}",
+    ".v51f{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px}",
+    ".v51go{display:block;font-size:17px;font-weight:800;color:var(--text)}",
+    ".v51go small{display:block;font-size:13px;font-weight:700;color:#A9B1D6;margin-top:2px}",
+    ".v51p{flex:none;width:56px;height:56px;border-radius:50%;background:var(--acc);color:#12131C;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px -8px var(--acc)}",
+    ".v51p svg{width:22px;height:22px;margin-left:3px}",
     "#v51net{position:fixed;left:12px;right:12px;top:calc(8px + env(safe-area-inset-top));z-index:60;padding:12px 14px;border-radius:14px;background:#3B2F1E;color:#FFE2B8;font-size:14px;font-weight:700;line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,.35);display:none}",
     "#v51net.on{display:block}",
     "#v51rv{width:100%}",
@@ -96,12 +103,15 @@
     var label = start ? "\u041d\u0430\u0447\u0430\u0442\u044c" : "\u041f\u0440\u043e\u0434\u043e\u043b\u0436\u0438\u0442\u044c";
     h.classList.add("v51a");
     h.setAttribute("aria-label", label + ": " + nt.tp.title + ", \u0442\u0435\u043c\u0430 " + Math.max(i, 1) + " \u0438\u0437 " + n + ", \u043e\u043a\u043e\u043b\u043e 2 \u043c\u0438\u043d\u0443\u0442");
+    var seg = "";
+    if (n <= 12) { seg = '<span class="v51seg">'; for (var q = 0; q < n; q++) { var tq = tps[q] || {}; seg += '<i class="' + (passedId(tq.id) ? "d" : (q === i - 1 ? "c" : "")) + '"></i>'; } seg += "</span>"; }
+    else seg = '<span class="v51bar"><i style="width:' + pct + '%"></i></span>';
     h.innerHTML =
-      '<span class="v51h" aria-hidden="true"><span class="v51e">' + esc(nt.tp.emoji || "\uD83D\uDCD8") + '</span><span class="v51x">' +
-      '<span class="k">' + (start ? "\u041d\u041e\u0412\u0410\u042f \u0422\u0415\u041c\u0410" : "\u0422\u0412\u041e\u0419 \u0421\u041b\u0415\u0414\u0423\u042e\u0429\u0418\u0419 \u0428\u0410\u0413") + '</span><span class="t">' + esc(nt.tp.title) + "</span>" +
-      '<span class="s">' + esc(nt.block.emoji || "") + " " + esc(nt.block.title || "") + " \u00B7 \u0442\u0435\u043c\u0430 " + Math.max(i, 1) + " \u0438\u0437 " + n + "</span></span></span>" +
-      '<span class="v51bar" aria-hidden="true"><i style="width:' + pct + '%"></i></span>' +
-      '<span class="v51go" aria-hidden="true">\u25B6 ' + label + " \u00B7 ~2 \u043c\u0438\u043d</span>";
+      '<span class="v51h" aria-hidden="true">' +
+      '<span class="v51t">' + esc(nt.tp.title) + "</span>" +
+      '<span class="v51m"><span>' + esc(nt.block.title || "") + "</span><b>" + Math.max(i, 1) + " \u0438\u0437 " + n + "</b></span>" + seg +
+      '<span class="v51f"><span class="v51go">' + label + "<small>\u2248 2 \u043c\u0438\u043d\u0443\u0442\u044b</small></span>" +
+      '<span class="v51p"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.6v12.8a1 1 0 0 0 1.53.85l10.1-6.4a1 1 0 0 0 0-1.7L9.53 4.75A1 1 0 0 0 8 5.6z"/></svg></span></span></span>';
   }
 
   // ---------- 5. Offline banner ----------

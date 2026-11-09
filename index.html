@@ -590,7 +590,7 @@ function renderProfile() {
   var lvl = Math.floor(S.xp / 200) + 1, inL = S.xp % 200;
   $("pLvl").textContent = "Уровень " + lvl; $("pLvlTxt").textContent = "до следующего: " + (200 - inL) + " XP";
   $("pLvlDots").innerHTML = dots(Math.floor(inL / 40), 5);
-  var w = $("week"), names = ["Вс", "Пн", "Вт", "Ср", "��т", "Пт", "Сб"]; w.innerHTML = "";
+  var w = $("week"), names = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]; w.innerHTML = "";
   for (var i = 6; i >= 0; i--) { var d = new Date(); d.setDate(d.getDate() - i); var el = document.createElement("div"); el.className = "day" + (S.days.indexOf(dayStr(d)) >= 0 ? " on" : ""); el.textContent = names[d.getDay()]; w.appendChild(el); }
 }
 
@@ -680,11 +680,11 @@ if (hs === "#profile") { S.xp = 340; S.rounds = 7; S.streak = 3; S.bestStreak = 
   window.lbTrackInit=function(c){ try{ if(cfg) return; cfg=c||{}; var x=q; q=[]; x.forEach(function(a){ send(a[0],a[1]); }); }catch(e){} };
 })();
 </script>
-<script src="v3.js?v=15"></script>
-<script src="v36.js?v=14"></script>
+<script src="v3.js?v=16"></script>
+<script src="v36.js?v=15"></script>
 <script src="v41.js?v=2"></script>
 <script src="v50.js?v=2"></script>
-<script src="v51.js?v=1"></script>
+<script src="v51.js?v=2"></script>
 <script src="v52.js?v=1"></script>
 </body>
 </html>

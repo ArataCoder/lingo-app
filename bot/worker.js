@@ -207,7 +207,7 @@ function cors(status) {
   return new Response(null, {
     status: status || 204,
     headers: {
-      "Access-Control-Allow-Origin": APP_ORIGIN,
+      "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "POST, OPTIONS",
       "Access-Control-Allow-Headers": "content-type",
       "Access-Control-Max-Age": "86400"
@@ -249,7 +249,7 @@ function json(obj, status) {
     status: status || 200,
     headers: {
       "content-type": "application/json; charset=utf-8",
-      "Access-Control-Allow-Origin": APP_ORIGIN,
+      "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "POST, OPTIONS",
       "Access-Control-Allow-Headers": "content-type"
     }

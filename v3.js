@@ -223,13 +223,14 @@
       })(V.topics[id], String(id).slice(0, 2));
     });
   }
+  var AUDB = (/github\.io$/.test(location.hostname) ? "" : "https://aratacoder.github.io/lingo-app/") + "assets/audio/";
   function audioFor(text, lang) { if (!text) return null; regTopicUrls(); return AUD[aKey(lang, text)] || null; }
   function loadAudioMap(tries) {
     tries = tries || 0;
     try {
-      fetch("assets/audio/manifest.json?v=" + VER + "." + Math.floor(Date.now() / 600000), { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      fetch(AUDB + "manifest.json?v=" + VER + "." + Math.floor(Date.now() / 600000), { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
         if (!j || !j.items) { if (tries < 2) setTimeout(function () { loadAudioMap(tries + 1); }, 4000); return; } var n = 0;
-        Object.keys(j.items).forEach(function (k) { if (!AUD[k]) AUD[k] = "assets/audio/" + j.items[k]; n++; });
+        Object.keys(j.items).forEach(function (k) { if (!AUD[k]) AUD[k] = AUDB + j.items[k]; n++; });
         AUD_N = n; document.body.classList.add("hasmp3");
         if (window.current === "words" && window.lbNeuralBox) window.lbNeuralBox();
       }).catch(function () { if (tries < 2) setTimeout(function () { loadAudioMap(tries + 1); }, 4000); });
@@ -455,7 +456,7 @@
     ".v3hero{padding:20px;margin-bottom:14px;text-align:center}.v3hero .em{font-size:46px;line-height:1.2;min-height:60px;display:flex;align-items:center;justify-content:center}.v3hero h2{font-size:21px;margin:6px 0 4px}.v3hero p{color:var(--muted);font-size:13px}" +
     ".v3act{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:15px 14px;margin-bottom:10px;border-radius:20px;background:var(--card);border:1px solid var(--line);color:var(--text);font-weight:800;font-size:15px;font-family:inherit;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.25)}" +
     ".v3act .e{font-size:24px;width:32px;flex:none;display:flex;justify-content:center;line-height:1}.v3act small{display:block;color:var(--muted);font-weight:700;font-size:12px;margin-top:2px}.v3act:active{transform:translateY(3px)}" +
-    ".v3bar{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin:4px 0 16px}.v3bar i{display:block;height:100%;width:100%;background:var(--acc);transition:width 1s linear}" +
+    ".v3bar{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin:4px 0 16px}.v3bar i{display:block;height:100%;width:100%;background:var(--acc);border-radius:99px;transform-origin:left center;will-change:transform}" +
     ".v3cs{padding:13px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;cursor:pointer}.v3cs .w{flex:1}.v3cs b{font-size:16px}.v3cs .tr{color:var(--muted);font-size:13px;margin-top:2px}.v3cs .ex{color:var(--dim);font-size:13px;font-style:italic;margin-top:4px}" +
     ".v3timer{min-width:44px;height:44px;border-radius:15px;display:grid;place-items:center;font-weight:800;background:var(--card);border:1px solid var(--line);color:var(--ok)}" +
     ".v3fb{padding:16px;margin-top:6px;border-radius:20px;border:1px solid var(--line);animation:fade .25s}" +
@@ -608,7 +609,7 @@
 
   // ---------- шпаргалка ----------
   var cheatT = null;
-  function stopCheat() { if (cheatT) { clearInterval(cheatT); cheatT = null; } }
+  function stopCheat() { if (cheatT) { cancelAnimationFrame(cheatT); cheatT = null; } }
   function openCheat(id) {
     var t = V.topics[id]; V.cheatId = id;
     var lang = DEF_LANG[t.track], box = $("v3cheat"); box.innerHTML = "";
@@ -622,11 +623,11 @@
     });
     var go = E("button", "btn", "🃏 Закрепить карточками →"); go.style.marginTop = "8px"; go.onclick = function () { runTopicCards(id, "normal"); }; box.appendChild(go);
     $("v3cBack").onclick = function () { openTopic(id); };
-    var left = 30, bar = $("v3cBar"); bar.style.transition = "none"; bar.style.width = "100%";
+    var bar = $("v3cBar"), t0 = 0, DUR = 30000; bar.style.transition = "none"; bar.style.width = "100%"; bar.style.transform = "scaleX(1)";
     show("cheat");
-    setTimeout(function () { bar.style.transition = "width 1s linear"; }, 30);
     stopCheat();
-    cheatT = setInterval(function () { left--; bar.style.width = Math.max(0, left / 30 * 100) + "%"; if (left <= 0) { stopCheat(); haptic("success"); toast("⏱ 30 сек! Теперь закрепим 💪"); } }, 1000);
+    var tick = function (now) { if (!t0) t0 = now; var k = Math.max(0, 1 - (now - t0) / DUR); bar.style.transform = "scaleX(" + k.toFixed(4) + ")"; if (k > 0) cheatT = requestAnimationFrame(tick); else { cheatT = null; haptic("success"); toast("⏱ 30 сек! Теперь закрепим 💪"); } };
+    cheatT = requestAnimationFrame(tick);
   }
 
   // ---------- карточки ----------
