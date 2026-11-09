@@ -84,7 +84,7 @@ Telegram (WebApp)  ──►  GitHub Pages (статический фронт: i
 | js/blocks.js (v41) | Блоки тем на экране трека |
 | js/learn.js (v50) | Hero «следующая тема», повторение ошибок (SRS), подсказки, профиль |
 | js/shell.js (v51) | Нижняя навигация, шапка, офлайн-баннер, «повторить ошибки» на итоге, a11y |
-| js/mascot-img.js, js/mascot.js (v52), js/mascot-frames.js (v53) | Маскот: встроенные позы, где какая поза + онбординг в 1 шаг, покадровая анимация |
+| js/mascot-img.js, js/mascot.js (v52), js/mascot-fx.js (v53), js/mascot-home.js (v54) | Маскот: встроенные позы; где какая поза + онбординг в 1 шаг; моушн-эффекты; приветствие на главной |
 | content/catalog.json | Список треков, блоков и тем (status: ready / soon). Пути тем относительно content/ |
 | content/topics/es/{life,survive,work}/*.json, content/topics/en/... | Темы: шпаргалка из 8 слов, ~9 карточек, сценарий |
 | content/config.json | Настройки: unlock.mode ("open" / "chain"), analytics.posthogKey |
@@ -341,3 +341,5 @@ LB.handle("share", function () { ... return true; });
 - Тесты: `tests/worker*.test.mjs` больше не зависят от путей `/data/...` и запускаются в CI (Node 24). Обновлены устаревшие проверки (CORS `*`, APP_URL на Cloudflare, текст hero).
 - Одноразовые скрипты → `tools/archive/`, старые qa3x.js → `tests/legacy/`.
 - **Деплой:** фронт нужно выкладывать с новыми папками `css/` и `js/`.
+- **Перенесено из прода в репозиторий** (v5.8–v5.9.2 были задеплоены в Cloudflare без коммита): `sayAfter` в js/engine.js (реплика собеседника ждёт конца твоей фразы), js/mascot-fx.js (бывш. прод-v53: парение, аура, искры/Zzz вместо смены кадров), js/mascot-home.js (бывш. v54: приветствие маскота на главной), новые позы в js/mascot-img.js. `mascot_frames.js` в проде не подключался — не перенесён.
+- **Правило:** всё, что выкладывается в Cloudflare, сначала коммитится сюда. Иначе следующий деплой из репозитория откатит прод.

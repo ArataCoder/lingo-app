@@ -268,6 +268,10 @@
   }
   // старые экраны (v1/v2) тоже говорят через новый движок
   window.speak = function (t, l) { say(t, l, 0.85); };
+  // v5.9.1: реплика собеседника ждёт, пока договорится твоя фраза
+  function sayBusy() { try { if (CUR_AUDIO && !CUR_AUDIO.paused && !CUR_AUDIO.ended) return true; if (SAY_OK && (speechSynthesis.speaking || speechSynthesis.pending)) return true; } catch (e) {} return false; }
+  function sayAfter(text, lang, rate) { var t0 = Date.now(), was = false; setTimeout(function tick() { var b = sayBusy(); if (b) was = true; if (b && Date.now() - t0 < 9000) { setTimeout(tick, 120); return; } setTimeout(function () { say(text, lang, rate); }, was ? 300 : 0); }, 150); }
+
 
   // ---------- v3.4: словарный трекер (Учу / Выучено) ----------
   // WD = { topicId: "строка, 1 символ на карточку" }  "-" не видел, "0".."4" учу, "5" выучено
@@ -812,7 +816,7 @@
     var m = E("div", "v3msg bot", '<div class="who"></div><span class="tx"></span><button class="sp sayb">🔊</button>' + (n.tr ? '<div class="tr"></div>' : ""));
     m.querySelector(".who").textContent = s.botRole; m.querySelector(".tx").textContent = n.say; if (n.tr) m.querySelector(".tr").textContent = n.tr;
     m.querySelector(".sp").onclick = function () { say(n.say, lang, 0.9); };
-    chat.appendChild(m); say(n.say, lang, 0.9);
+    chat.appendChild(m); sayAfter(n.say, lang, 0.9);
     ch.innerHTML = "";
     if (n.end || !n.choices || !n.choices.length) {
       var r = V.run, fin = E("button", "btn ok", "🏁 Итог"); fin.style.marginTop = "8px";
