@@ -38,10 +38,7 @@
       g.appendChild(c);
     });
   }
-  var _ot = window.openTrack;
-  window.openTrack = function (l) { _ot(l); render(l); };
-  var _show = window.show;
-  window.show = function (n) { if (["catalog", "topic", "play", "scen", "cheat", "result"].indexOf(n) < 0) FROM = null; _show(n); };
-  var _gb = window.goBack;
-  window.goBack = function () { if (window.current === "catalog" && FROM) { var l = FROM; FROM = null; window.openTrack(l); return; } _gb(); };
+  LB.on("track", render);
+  LB.on("show", function (n) { if (["catalog", "topic", "play", "scen", "cheat", "result"].indexOf(n) < 0) FROM = null; });
+  LB.handle("back", function () { if (window.current === "catalog" && FROM) { var l = FROM; FROM = null; window.openTrack(l); return true; } return false; });
 })();

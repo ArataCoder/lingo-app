@@ -1,9 +1,8 @@
 // v3.6 worker tests: friends/sync/referral/cards on a real SQLite (fake D1)
 import { createHmac } from "node:crypto";
 import { DatabaseSync } from "node:sqlite";
-import fs from "node:fs";
-fs.copyFileSync("/data/lr34/bot/worker.js", "/tmp/_w36.mjs");
-const W = (await import("/tmp/_w36.mjs")).default;
+import { loadWorker } from "./load-worker.mjs";
+const W = await loadWorker("social");
 const NL = String.fromCharCode(10);
 const TOKEN = "123456789:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 let sent = [], photos = [], fails = 0;
@@ -34,7 +33,7 @@ const hook = (text, id, name) => W.fetch(new Request("https://x.dev/webhook", { 
 
 let r = await post("/api/sync", { initData: initData(777, "Aleks"), stats: { xp: 300, streak: 2, learned: 4, rounds: 6 } });
 let j = await r.json();
-ok("sync ok + CORS header", r.status === 200 && j.ok && r.headers.get("Access-Control-Allow-Origin") === "https://aratacoder.github.io");
+ok("sync ok + CORS header", r.status === 200 && j.ok && r.headers.get("Access-Control-Allow-Origin") === "*");
 ok("first sync: only me, week starts at 0", j.friends.length === 1 && j.friends[0].me && j.friends[0].week === 0 && j.friends[0].xp === 300);
 ok("invite link is personal", j.invite === "https://t.me/LingoBrainBOT?start=ref_777");
 j = await (await post("/api/sync", { initData: initData(777, "Aleks"), stats: { xp: 340, streak: 3, learned: 5, rounds: 7 } })).json();
@@ -87,5 +86,9 @@ ok("non-jpeg rejected", (await post("/api/card", { initData: initData(777, "Alek
 // old routes still alive
 ok("/api/event still 204", (await post("/api/event", { initData: initData(777, "Aleks"), event: "app_opened" })).status === 204);
 ok("root alive", (await (await W.fetch(new Request("https://x.dev/"), env)).text()).includes("alive"));
+const health = async (q) => (await W.fetch(new Request("https://x.dev/api/health" + q), env)).json();
+ok("health without key hides details", JSON.stringify(await health("")) === '{"ok":true}');
+ok("health with wrong key hides details", JSON.stringify(await health("?key=nope")) === '{"ok":true}');
+ok("health with SETUP_KEY shows diagnostics", (await health("?key=K")).players >= 1);
 console.log(fails ? "WORKER TESTS FAILED: " + fails : "WORKER TESTS ALL PASSED");
 process.exit(fails ? 1 : 0);

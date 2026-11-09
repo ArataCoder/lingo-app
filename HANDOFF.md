@@ -2,7 +2,7 @@
 
 > Читать ПЕРВЫМ, если ты новый разработчик или другой ИИ-ассистент.
 > Правило: после КАЖДОЙ версии обновлять этот файл (раздел «Журнал версий» + «Статус» + «Что дальше»).
-> Последнее обновление: v3.7.1, 8 ноября 2026.
+> Последнее обновление: v6.0 (рефакторинг структуры), 9 ноября 2026.
 
 ---
 
@@ -74,21 +74,42 @@ Telegram (WebApp)  ──►  GitHub Pages (статический фронт: i
 
 | Файл | Что внутри |
 |---|---|
-| index.html | Оболочка, экраны (home / play / result / words / progress / friends), базовая логика v1–v2, complete() — экран итога |
-| v3.js | Движок v3: треки, каталог тем, раунды (startRun / grade / nextStep / finishRun), работа над ошибками, сценарии-диалоги, озвучка (say / mp3 / Web Speech), трекер слов, синхронизация. `var VER` = версия для сброса кэша контента |
-| v36.js | Друзья и рейтинг, аватарки, «Карточка игрока» (canvas 1080x1350), шер в Stories/чат |
+| index.html | Только разметка экранов и список `<script>` (порядок важен, см. ниже) |
+| css/app.css | Базовые стили (палитра, экраны). Стили модулей v5.x пока вставляются из JS |
+| js/core.js | **Грузится первым.** Хуки `LB.on/emit` и обработчики `LB.handle/run`, сбор ошибок `LB.report` (+ window.onerror → событие `js_error` в PostHog) |
+| js/analytics.js | PostHog + свой /api/event (`lbTrack`, `lbTrackInit`) |
+| js/base.js | Базовая логика v1–v2: состояние `S`, `show()`, `goBack()`, `renderHome()`, `openTrack()`, квиз/говорилка, `complete()` — экран итога |
+| js/engine.js (бывш. v3.js) | Движок: треки, каталог тем, раунды (startRun / grade / nextStep / finishRun), сценарии, озвучка, трекер слов, заморозка серии. `var VER` = версия для сброса кэша контента |
+| js/friends.js (v36) | Друзья и рейтинг, аватарки, «Карточка игрока», шер с реф-ссылкой |
+| js/blocks.js (v41) | Блоки тем на экране трека |
+| js/learn.js (v50) | Hero «следующая тема», повторение ошибок (SRS), подсказки, профиль |
+| js/shell.js (v51) | Нижняя навигация, шапка, офлайн-баннер, «повторить ошибки» на итоге, a11y |
+| js/mascot-img.js, js/mascot.js (v52), js/mascot-fx.js (v53), js/mascot-home.js (v54) | Маскот: встроенные позы; где какая поза + онбординг в 1 шаг; моушн-эффекты; приветствие на главной |
 | content/catalog.json | Список треков, блоков и тем (status: ready / soon). Пути тем относительно content/ |
 | content/topics/es/{life,survive,work}/*.json, content/topics/en/... | Темы: шпаргалка из 8 слов, ~9 карточек, сценарий |
 | content/config.json | Настройки: unlock.mode ("open" / "chain"), analytics.posthogKey |
-| assets/audio/{es,en}/<hash>.mp3 + manifest.json | Нейроозвучка. Ключ = `lang|слова в нижнем регистре без пунктуации` (aKey в v3.js = akey в generate_audio.py, должны совпадать!) |
+| assets/audio/{es,en}/<hash>.mp3 + manifest.json | Нейроозвучка. Ключ = `lang|слова в нижнем регистре без пунктуации` (aKey в js/engine.js = akey в generate_audio.py, должны совпадать!) |
 | generate_audio.py | Собирает все фразы из контента и генерирует отсутствующие mp3 через edge-tts (голоса es-ES-ElviraNeural / en-US-…Neural). Инкрементально |
 | .github/workflows/lingo-audio.yml | Запускает generate_audio.py при push в content/** или generate_audio.py и коммитит mp3 (в сайте — вариант lingo-audio-site.yml с --root lingo-app) |
+| .github/workflows/ci.yml | На каждый push/PR: node --check, тесты воркера, validate_content.py, аудио-манифест, e2e Playwright |
 | validate_content.py | Проверка контента: структура, граф сценариев, линт ES/EN |
 | bot/worker.js | Cloudflare Worker (бот + API) |
-| qa34/35/36/37/37b.js | Playwright-тесты фронта (нужен локальный http.server 8765 в корне) |
-| test_worker*.mjs | Тесты воркера с моками D1 / Telegram |
-| patch_v3x.py | Патчи, которыми вносились изменения (история, можно не запускать) |
+| tests/e2e.cjs | Playwright e2e: моки Telegram, офлайн, 44px, контраст, a11y |
+| tests/worker.test.mjs, tests/worker-social.test.mjs | Тесты воркера с моками D1 / Telegram (`node tests/worker.test.mjs`) |
+| tests/legacy/qa3*.js | Старые Playwright-скрипты (заменены tests/e2e.cjs) |
+| tools/archive/ | Одноразовые patch_/gen_-скрипты прошлых версий (история, не запускать) |
 | ROADMAP.md | Старый план по этапам |
+
+### Как расширять экраны (v6.0+)
+Не переопределяй `window.show / goBack / renderHome / openTrack / shareResult` — это ломало порядок цепочек. Используй хуки из js/core.js:
+```js
+LB.on("show", function (name) { ... });      // после показа экрана, модули в порядке загрузки
+LB.on("home", function () { ... });          // после renderHome()
+LB.on("track", function (lang) { ... });     // после openTrack()
+LB.handle("back", function () { if (...) { ...; return true; } return false; }); // новые первыми
+LB.handle("share", function () { ... return true; });
+```
+Ошибку, которую нельзя показывать пользователю, не глотай пустым `catch (e) {}`, а отправляй в `LB.report(e, "где")`.
 
 ### Хранилище прогресса
 - localStorage + Telegram CloudStorage (лимит 4096 символов на ключ), слияние по максимуму.
@@ -98,10 +119,10 @@ Telegram (WebApp)  ──►  GitHub Pages (статический фронт: i
 ---
 
 ## 4. Как выпускать версию (чеклист)
-1. Поднять `VER` в v3.js и `?v=N` у script-тегов в index.html и APP_URL в bot/worker.js.
-2. `node --check v3.js v36.js`, `python3 validate_content.py`, прогнать qa-тесты и test_worker.
+1. Поднять `VER` в js/engine.js (если менялся контент), одно общее `?v=N` у всех `<script>`/`<link>` в index.html и APP_URL в bot/worker.js (если нужно).
+2. Локально: `python3 -m http.server 8080 & node tests/e2e.cjs`, `node tests/worker.test.mjs`, `node tests/worker-social.test.mjs`, `python3 validate_content.py`. То же самое гоняет CI.
 3. Задеплоить воркер (если менялся) с keep_bindings.
-4. Push во `lingo-app` и в `aratacoder.github.io/lingo-app/`.
+4. Задеплоить фронт целиком (index.html, css/, js/, content/, assets/) в lingo-brain-app и в `aratacoder.github.io/lingo-app/`. Файлы лежат в папках css/ и js/ — при inline-деплое их нужно добавить, а не только заменить старые v*.js.
 5. Владелец открывает /setup?key=SETUP_KEY, чтобы кнопка бота открыла новую версию.
 6. **Обновить этот HANDOFF.md** (журнал + статус).
 
@@ -307,3 +328,20 @@ Telegram (WebApp)  ──►  GitHub Pages (статический фронт: i
 - Если картинка есть, круглая подложка убирается (`.pic:has(img)`), маскот — «стикер».
 - Анимации по позам: start — покачивание (wave ×2), error — смущённое «мотание» ×1, tired — медленное дыхание ×3, win — прыжок со squash&stretch ×2 + оранжевое свечение + CSS-конфетти (::before/::after).
 - Всё конечное (не бесконечные циклы), `prefers-reduced-motion` отключает.
+
+
+## v6.0 — рефакторинг структуры кода (9 ноя 2026)
+Поведение приложения не менялось; e2e-тесты и тесты воркера зелёные.
+- Фронт разложен по папкам: `css/app.css`, `js/core.js`, `js/analytics.js`, `js/base.js` (вынесено из index.html), `v*.js` переименованы по смыслу (таблица в разделе 3). Все теги грузятся с единым `?v=60`.
+- **Цепочки перехвата убраны.** Раньше `show()` переопределяли 6 файлов подряд, `goBack()` — 3, `renderHome()` — 3. Теперь base.js вызывает хуки `LB.on / LB.handle` из js/core.js, модули только подписываются. Порядок вызова тот же, что и раньше.
+- `js/core.js`: ошибки из хуков и `window.onerror` / `unhandledrejection` уходят в PostHog событием `js_error` (не больше 10 за сессию, без дублей).
+- `js/mascot-frames.js` (v53, покадровая анимация) теперь подключён и в index.html репозитория (раньше был только в задеплоенной версии).
+- a11y: кнопка 🔊 в шторке получила aria-label (Twemoji заменял эмодзи картинкой раньше, чем a11y() читал текст).
+- Воркер: `/api/health` без `?key=SETUP_KEY` отвечает только `{"ok":true}`; диагностика — с ключом. Удалена неиспользуемая константа APP_ORIGIN.
+- Тесты: `tests/worker*.test.mjs` больше не зависят от путей `/data/...` и запускаются в CI (Node 24). Обновлены устаревшие проверки (CORS `*`, APP_URL на Cloudflare, текст hero).
+- Одноразовые скрипты → `tools/archive/`, старые qa3x.js → `tests/legacy/`.
+- **Деплой:** фронт нужно выкладывать с новыми папками `css/` и `js/`.
+- **Перенесено из прода в репозиторий** (v5.8–v5.9.2 были задеплоены в Cloudflare без коммита): `sayAfter` в js/engine.js (реплика собеседника ждёт конца твоей фразы), js/mascot-fx.js (бывш. прод-v53: парение, аура, искры/Zzz вместо смены кадров), js/mascot-home.js (бывш. v54: приветствие маскота на главной), новые позы в js/mascot-img.js. `mascot_frames.js` в проде не подключался — не перенесён.
+- **Правило:** всё, что выкладывается в Cloudflare, сначала коммитится сюда. Иначе следующий деплой из репозитория откатит прод.
+- **Задеплоено 9 ноя 2026, 23:46 UTC:** `lingo-brain-app` build `v6.0-2026-11-09T23:46:18.158Z` (97 файлов: index.html, css/, js/, content/; старые v*.js и неиспользуемый mascot_frames.js убраны из сборки), `lingo-brain-bot` с закрытым /api/health. Привязки и секреты сохранены (keep_bindings). Зеркало aratacoder.github.io/lingo-app/ осталось на v5.7.
+- **Безопасность:** BOT_TOKEN у `lingo-brain-bot` хранится как Text (plain_text), а не Secret. Владельцу: в Cloudflare → lingo-brain-bot → Settings → Variables and Secrets пересоздать BOT_TOKEN с типом Secret.

@@ -10,7 +10,6 @@
 const APP_URL = "https://lingo-brain-app.lingobrain.workers.dev/"; // v5.3: приложение на Cloudflare (lingo-brain-app), index.html без кэша
 const APP_URL_FALLBACK = "https://aratacoder.github.io/lingo-app/";
 const BOT_USERNAME = "LingoBrainBOT";
-const APP_ORIGIN = "https://aratacoder.github.io";
 const EVENTS = ["app_opened", "topic_selected", "round_completed", "energy_mode_used"];
 const TRACK_NAME = { es: "🇪🇸 Испанский", en: "🇬🇧 Английский" };
 const NL = String.fromCharCode(10);
@@ -564,12 +563,15 @@ export default {
       return cors(405);
     }
     if (url.pathname === "/api/health") {
+      const hh = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", "Access-Control-Allow-Origin": "*" };
+      // Player count and sync diagnostics are admin-only: /api/health?key=<SETUP_KEY>
+      if (!env.SETUP_KEY || url.searchParams.get("key") !== env.SETUP_KEY) return new Response(JSON.stringify({ ok: true }), { headers: hh });
       const db = await ensureSchema(env); const out = { db, now: now(), tok: /^[0-9]{6,}:[A-Za-z0-9_-]{30,}$/.test(token(env)) };
       if (db) {
         try { out.players = (await env.DB.prepare("SELECT COUNT(*) AS n FROM players").first()).n; } catch (e) { out.pe = String(e && e.message).slice(0, 120); }
         try { const r = await env.DB.prepare("SELECT k, v FROM meta WHERE k IN ('last_sync_err','last_sync_ok')").all(); (r.results || []).forEach((x) => { out[x.k] = JSON.parse(x.v); }); } catch (e) {}
       }
-      return new Response(JSON.stringify(out), { headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", "Access-Control-Allow-Origin": "*" } });
+      return new Response(JSON.stringify(out), { headers: hh });
     }
     if (url.pathname === "/api/sync" || url.pathname === "/api/card") {
       if (request.method === "OPTIONS") return cors();

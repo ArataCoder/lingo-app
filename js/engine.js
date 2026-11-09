@@ -268,6 +268,10 @@
   }
   // старые экраны (v1/v2) тоже говорят через новый движок
   window.speak = function (t, l) { say(t, l, 0.85); };
+  // v5.9.1: реплика собеседника ждёт, пока договорится твоя фраза
+  function sayBusy() { try { if (CUR_AUDIO && !CUR_AUDIO.paused && !CUR_AUDIO.ended) return true; if (SAY_OK && (speechSynthesis.speaking || speechSynthesis.pending)) return true; } catch (e) {} return false; }
+  function sayAfter(text, lang, rate) { var t0 = Date.now(), was = false; setTimeout(function tick() { var b = sayBusy(); if (b) was = true; if (b && Date.now() - t0 < 9000) { setTimeout(tick, 120); return; } setTimeout(function () { say(text, lang, rate); }, was ? 300 : 0); }, 150); }
+
 
   // ---------- v3.4: словарный трекер (Учу / Выучено) ----------
   // WD = { topicId: "строка, 1 символ на карточку" }  "-" не видел, "0".."4" учу, "5" выучено
@@ -413,8 +417,8 @@
   }
   if (SAY_OK) { try { speechSynthesis.addEventListener("voiceschanged", function () { if (window.current === "words") renderVoiceBox(); }); } catch (e) {} }
 
-  // ---------- v3.4: поделиться с другом ----------
-  window.shareResult = function () {
+  // ---------- v3.4: поделиться с другом (запасной вариант; friends.js добавляет реф-ссылку) ----------
+  function shareDefault() {
     var xp = window.LB_LAST_XP || 0, app = "https://t.me/LingoBrainBOT";
     var text = "Мой раунд в Lingo Brain: " + xp + " XP! Попробуй обогнать меня 🧠";
     var url = "https://t.me/share/url?url=" + encodeURIComponent(app) + "&text=" + encodeURIComponent(text);
@@ -424,7 +428,8 @@
     try { if (navigator.share) { navigator.share({ text: text, url: app }).catch(function () {}); return; } } catch (e) {}
     try { if (navigator.clipboard) navigator.clipboard.writeText(text + " " + app); toast("📋 Текст скопирован"); } catch (e) {}
     try { window.open(url, "_blank"); } catch (e) {}
-  };
+  }
+  window.shareResult = function () { LB.run("share", shareDefault); };
 
   (function () {
     var st = document.createElement("style");
@@ -538,27 +543,25 @@
     b.style.opacity = (n >= fzMax() || S.xp < c) ? ".5" : "1";
   }
 
-  // ---------- обёртки над старыми функциями ----------
-  var _show = window.show, _goBack = window.goBack, _renderHome = window.renderHome, _again = window.again, _start = window.start;
-  window.show = function (n) {
-    _show(n);
+  // ---------- хуки поверх базовых экранов (base.js) ----------
+  var _again = window.again, _start = window.start;
+  LB.on("show", function (n) {
     if (n === "play" || n === "scen" || n === "cheat") document.body.classList.add("focus");
     if (n === "catalog") renderCatalog();
     if (n === "profile") renderFreeze();
     if (n !== "play") stopTimer();
     if (n !== "cheat") stopCheat();
-  };
-  window.goBack = function () {
-    if (current === "play" || current === "scen") { if (window.speechSynthesis) speechSynthesis.cancel(); toast("Пауза — это ок 💛"); if (V.run && V.run.topicId) openTopic(V.run.topicId); else show("home"); return; }
-    if (current === "cheat") { openTopic(V.cheatId); return; }
-    if (current === "topic") { show("catalog"); return; }
-    if (current === "catalog") { show("home"); return; }
-    _goBack();
-  };
-  window.renderHome = function () { _renderHome(); applyFreeze(); $("streak").textContent = currentStreak(); $("xp").textContent = S.xp; renderFreeze(); };
+  });
+  LB.handle("back", function () {
+    if (current === "play" || current === "scen") { if (window.speechSynthesis) speechSynthesis.cancel(); toast("Пауза — это ок 💛"); if (V.run && V.run.topicId) openTopic(V.run.topicId); else show("home"); return true; }
+    if (current === "cheat") { openTopic(V.cheatId); return true; }
+    if (current === "topic") { show("catalog"); return true; }
+    if (current === "catalog") { show("home"); return true; }
+    return false;
+  });
+  LB.on("home", function () { applyFreeze(); $("streak").textContent = currentStreak(); $("xp").textContent = S.xp; renderFreeze(); });
   window.again = function () { if (V.lastRun && LAST.topic === V.lastRun.key) V.lastRun.fn(); else _again(); };
   window.start = function (l, k) { if (k && String(k).indexOf(".") > 0) return openTopic(k); return _start(l, k); };
-  if (window.tg && ver("6.1")) { try { tg.BackButton.offClick(_goBack); } catch (e) {} tg.BackButton.onClick(function () { window.goBack(); }); }
 
   window.__v3.openTopic = openTopic; window.__v3.renderCatalog = renderCatalog; window.__v3.lowEnergy = lowEnergy; window.__v3.surprise = surprise; window.__v3.openCheat = openCheat; window.__v3.runTopicCards = runTopicCards; window.__v3.prep = prep; window.__v3.isPassed = isPassed; window.__v3.setTrack = setTrack;
   // ---------- каталог ----------
@@ -813,7 +816,7 @@
     var m = E("div", "v3msg bot", '<div class="who"></div><span class="tx"></span><button class="sp sayb">🔊</button>' + (n.tr ? '<div class="tr"></div>' : ""));
     m.querySelector(".who").textContent = s.botRole; m.querySelector(".tx").textContent = n.say; if (n.tr) m.querySelector(".tr").textContent = n.tr;
     m.querySelector(".sp").onclick = function () { say(n.say, lang, 0.9); };
-    chat.appendChild(m); say(n.say, lang, 0.9);
+    chat.appendChild(m); sayAfter(n.say, lang, 0.9);
     ch.innerHTML = "";
     if (n.end || !n.choices || !n.choices.length) {
       var r = V.run, fin = E("button", "btn ok", "🏁 Итог"); fin.style.marginTop = "8px";
