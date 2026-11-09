@@ -319,23 +319,18 @@
     P.lang = c.en > c.es ? "en" : "es"; saveP(); setTr(P.lang);
   }
 
-  // ---------- \u043e\u0431\u0451\u0440\u0442\u043a\u0438 \u043d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u0438 ----------
-  var _show = window.show, _rh = window.renderHome, _gb = window.goBack;
-  window.renderHome = function () { var r = _rh.apply(this, arguments); try { home(); } catch (e) { console.error(e); } return r; };
-  window.show = function (name) {
-    var r = _show.apply(this, arguments);
-    try {
-      if (name !== "quiz" && name !== "play" && window.hideSheet) window.hideSheet();
-      if (name === "words" || name === "friends") navOn("profile");
-      if (name === "topic" || name === "cheat") navOn("catalog");
-      if (name === "profile") renderProf();
-      if (name === "catalog") whenReady(function () { if (window.current === "catalog") tip("catalog"); });
-      if (name !== "home" && name !== "catalog") { var t = $("v5tip"); if (t && t.parentNode) t.parentNode.removeChild(t); }
-      navFriends();
-    } catch (e) { console.error(e); }
-    return r;
-  };
-  window.goBack = function () { if (window.current === "words" || window.current === "friends") { window.show("profile"); return; } return _gb.apply(this, arguments); };
+  // ---------- навигация: хуки core.js (LB.on / LB.handle) ----------
+  LB.on("home", home);
+  LB.on("show", function (name) {
+    if (name !== "quiz" && name !== "play" && window.hideSheet) window.hideSheet();
+    if (name === "words" || name === "friends") navOn("profile");
+    if (name === "topic" || name === "cheat") navOn("catalog");
+    if (name === "profile") renderProf();
+    if (name === "catalog") whenReady(function () { if (window.current === "catalog") tip("catalog"); });
+    if (name !== "home" && name !== "catalog") { var t = $("v5tip"); if (t && t.parentNode) t.parentNode.removeChild(t); }
+    navFriends();
+  });
+  LB.handle("back", function () { if (window.current === "words" || window.current === "friends") { window.show("profile"); return true; } return false; });
 
   // ---------- \u0441\u0442\u0438\u043b\u0438 ----------
   function css() {

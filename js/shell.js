@@ -147,6 +147,8 @@
     root = root || document;
     Array.prototype.forEach.call(root.querySelectorAll("button"), function (b) {
       var txt = (b.textContent || "").trim();
+      // Twemoji may already have swapped the emoji for <img alt="🔊">, leaving no text.
+      if (!txt) { var em = b.querySelector("img.emj[alt]"); if (em) txt = em.getAttribute("alt"); }
       if (!/[A-Za-z\u0400-\u04FF0-9]/.test(txt)) {
         b.classList.add("v51ic");
         if (!b.getAttribute("aria-label")) { var lab = ICON[txt] || b.title; if (lab) b.setAttribute("aria-label", lab); }
@@ -169,14 +171,8 @@
     if (g === "home") { try { hero(); } catch (e) {} }
     if (g === "result") { try { resultReview(); } catch (e) {} }
   }
-  var _show = window.show;
-  if (typeof _show === "function") {
-    window.show = function (g) { var r = _show.apply(this, arguments); after(g); return r; };
-  }
-  var _rh = window.renderHome;
-  if (typeof _rh === "function") {
-    window.renderHome = function () { var r = _rh.apply(this, arguments); try { header(); hero(); } catch (e) {} return r; };
-  }
+  LB.on("show", after);
+  LB.on("home", function () { try { header(); hero(); } catch (e) { LB.report(e, "shell:home"); } });
   // v50 rebuilds the hero asynchronously after content loads
   try { var hh = $("v5hero"); if (hh) new MutationObserver(function () { if (!hh.querySelector(".v51h") && !/\bwait\b/.test(hh.className)) hero(); }).observe(hh, { childList: true }); } catch (e) {}
 

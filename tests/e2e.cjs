@@ -72,8 +72,10 @@ const SKIP_ONB = `try { if (!localStorage.getItem('lingo_p')) localStorage.setIt
   const tabs = await p.evaluate(() => Array.from(document.querySelectorAll('.nav button')).filter(b => b.offsetParent !== null).map(b => b.getAttribute('data-go')).join(','));
   ok(tabs === 'home,catalog,profile,friends', 'exactly 4 tabs in fixed order', tabs);
   ok(await p.evaluate(() => !!document.querySelector('.nav button.on[aria-current="page"]')), 'active tab has aria-current');
+  // Visible text is short ("1 из 8", "≈ 2 минуты"); the full "тема N из M" phrase lives in aria-label.
   const hero = (await p.textContent('#v5hero')).replace(/\s+/g, ' ');
-  ok(/~2 \u043c\u0438\u043d/.test(hero) && /\u0442\u0435\u043c\u0430 \d+ \u0438\u0437 \d+/.test(hero), 'hero variant A (topic N of M, ~2 min)', hero.slice(0, 90));
+  const heroLabel = (await p.getAttribute('#v5hero', 'aria-label')) || '';
+  ok(/2 \u043c\u0438\u043d/.test(hero) && /\d+ \u0438\u0437 \d+/.test(hero) && /\u0442\u0435\u043c\u0430 \d+ \u0438\u0437 \d+/.test(heroLabel), 'hero variant A (topic N of M, ~2 min)', hero.slice(0, 90) + ' | ' + heroLabel);
   const chips = await p.evaluate(() => Array.from(document.querySelectorAll('.top .chips > *')).filter(c => c.offsetParent !== null).length);
   ok(chips === 1, 'header shows only the streak chip', 'visible=' + chips);
   ok(/XP/.test(await p.textContent('#v51st')), 'freezes + XP moved into the goal card');

@@ -115,12 +115,11 @@
   }
   watch("v3body", onPlay);
   watch("v3cheat", onCheat);
-  var _show = window.show;
-  if (_show) window.show = function (name) {
-    var r = _show.apply(this, arguments);
-    try { if (name === "result") setTimeout(onResult, 0); if (name === "cheat") setTimeout(onCheat, 0); if (name === "play") setTimeout(onPlay, 0); } catch (e) {}
-    return r;
-  };
+  LB.on("show", function (name) {
+    if (name === "result") setTimeout(onResult, 0);
+    if (name === "cheat") setTimeout(onCheat, 0);
+    if (name === "play") setTimeout(onPlay, 0);
+  });
 
   // ---------- 2. Онбординг в 1 шаг ----------
   // ES A0  → блок «Выживание», первая тема со шпаргалкой.  ES A1+ → «Быт и документы», темы от A1.

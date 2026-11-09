@@ -102,24 +102,19 @@
   };
 
   // «Поделиться» теперь с личной реф-ссылкой (друг сразу попадёт в твой рейтинг)
-  var oldShare = window.shareResult;
-  window.shareResult = function () {
-    if (!me || !tg) return oldShare && oldShare();
+  LB.handle("share", function () {
+    if (!me || !tg) return false;
     var xp = window.LB_LAST_XP || 0;
     var text = "Мой раунд в Lingo Brain: " + xp + " XP! Попробуй обогнать меня 🧠";
     hap("medium"); trk("share_clicked", { xp: xp, track: (window.LAST && LAST.lang) || null, ref: true });
-    try { tg.openTelegramLink("https://t.me/share/url?url=" + encodeURIComponent(refLink()) + "&text=" + encodeURIComponent(text)); } catch (e) { if (oldShare) oldShare(); }
-  };
+    try { tg.openTelegramLink("https://t.me/share/url?url=" + encodeURIComponent(refLink()) + "&text=" + encodeURIComponent(text)); return true; } catch (e) { return false; }
+  });
 
-  // хук на переключение экранов
-  var oldShow = window.show;
-  if (oldShow) window.show = function (name) {
-    var r = oldShow.apply(this, arguments);
+  LB.on("show", function (name) {
     if (name === "friends") { render(); sync(true); }
     if (name === "result") setTimeout(function () { sync(true); }, 300);
     if (name === "words") setTimeout(neuralBox, 0);
-    return r;
-  };
+  });
 
   // ---------- тумблер нейроголоса (mp3) ----------
   function neuralBox() {
