@@ -295,3 +295,8 @@ Telegram (WebApp)  ──►  GitHub Pages (статический фронт: i
 - CSS: картинка не выше 130px (win 120px), анимации pop + 2 подпрыгивания, учитывается prefers-reduced-motion. У .lbm стоит pointer-events:none, поэтому маскот никогда не перехватывает нажатия на кнопки.
 - После загрузки картинок поднимите MV в v52.js, иначе останутся закэшированные 404.
 - Онбординг в 1 шаг (A0 / A1+) уже есть с v5.2 (#lbonb), он не менялся.
+
+## v5.6.1 — первая поза маскота (start)
+- `mascot_img.js`: картинки маскота встроены как data:URI (webp 256px, фон вырезан) в `window.LB_MASCOT` — обход того, что пуш через MCP умеет только текст.
+- `v52.js` сначала берёт `LB_MASCOT[pose]`, иначе `assets/mascot/mascot_<pose>.webp`, иначе эмодзи.
+- Готово: start. Ждём: win, error, tired — добавлять ключами в `mascot_img.js` и поднимать `?v=` у mascot_img.js.

@@ -61,7 +61,7 @@
     var pic = E("div", "pic"); pic.setAttribute("aria-hidden", "true");
     if (okImg[pose] !== false) {
       var img = new Image(); img.alt = ""; img.decoding = "async"; img.width = 120; img.height = 120;
-      img.src = "assets/mascot/mascot_" + pose + ".webp?v=" + MV;
+      img.src = (window.LB_MASCOT || {})[pose] || ("assets/mascot/mascot_" + pose + ".webp?v=" + MV);
       img.onload = function () { okImg[pose] = true; };
       img.onerror = function () { okImg[pose] = false; pic.innerHTML = '<span class="fb">' + p.fb + "</span>"; };
       pic.appendChild(img);
@@ -70,7 +70,7 @@
     w.appendChild(pic); w.appendChild(say);
     return w;
   }
-  ["start", "error", "win", "tired"].forEach(function (k) { var i = new Image(); i.onload = function () { okImg[k] = true; }; i.onerror = function () { okImg[k] = false; }; i.src = "assets/mascot/mascot_" + k + ".webp?v=" + MV; });
+  ["start", "error", "win", "tired"].forEach(function (k) { var i = new Image(); i.onload = function () { okImg[k] = true; }; i.onerror = function () { okImg[k] = false; }; i.src = (window.LB_MASCOT || {})[k] || ("assets/mascot/mascot_" + k + ".webp?v=" + MV); });
 
   function plural(n, a, b, c) { n = Math.abs(n) % 100; var m = n % 10; if (n > 10 && n < 20) return c; if (m > 1 && m < 5) return b; if (m === 1) return a; return c; }
 
