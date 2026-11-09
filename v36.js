@@ -200,14 +200,14 @@
   function upload(send) {
     if (!tg) { note("Открой в Telegram, чтобы отправить карточку"); return Promise.resolve(null); }
     if (CARD_URL && !send) return Promise.resolve(CARD_URL);
-    var b = $(send ? "cardSend" : "cardStory"), old = b ? b.textContent : ""; if (b) b.textContent = "⏳ Секунду…";
+    var b = $(send ? "cardSend" : "cardStory"), old = b ? b.textContent : ""; if (b) { if (b.disabled) return Promise.resolve(null); b.disabled = true; b.textContent = "⏳ Секунду…"; }
     return post("/api/card", { initData: tg.initData, image: CARD, send: !!send }).then(function (j) {
-      if (b) b.textContent = old;
+      if (b) { b.textContent = old; b.disabled = false; }
       if (!j || !j.ok) { note("Не получилось — попробуй ещё раз"); return null; }
       CARD_URL = j.url; trk("card_" + (send ? "sent" : "uploaded"), {});
       if (send) { if (j.sent) { hap("medium"); note("✅ Карточка в чате с ботом — перешли друзьям!"); } else note("Бот не смог прислать — нажми «Старт» в чате с @" + BOT); }
       return j.url;
-    }).catch(function () { if (b) b.textContent = old; note("Нет связи — попробуй позже"); return null; });
+    }).catch(function () { if (b) { b.textContent = old; b.disabled = false; } note("Нет связи — попробуй позже"); return null; });
   }
   function story() {
     if (!ver("7.8") || !tg.shareToStory) { note("Сторис доступны в свежем Telegram на телефоне. Сохрани картинку или пришли в чат 😉"); return; }
