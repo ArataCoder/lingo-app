@@ -7,7 +7,8 @@
 // Binding D1 (имя DB): база lingo-brain-db для статистики (users, events)
 // Настройка одним кликом: открой https://<твой-воркер>.workers.dev/setup?key=<SETUP_KEY>
 
-const APP_URL = "https://aratacoder.github.io/lingo-app/?v=14";
+const APP_URL = "https://lingo-brain-app.lingobrain.workers.dev/"; // v5.3: приложение на Cloudflare (lingo-brain-app), index.html без кэша
+const APP_URL_FALLBACK = "https://aratacoder.github.io/lingo-app/";
 const BOT_USERNAME = "LingoBrainBOT";
 const APP_ORIGIN = "https://aratacoder.github.io";
 const EVENTS = ["app_opened", "topic_selected", "round_completed", "energy_mode_used"];
@@ -125,7 +126,8 @@ async function ensureSchema(env) {
       env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_events_event_ts ON events(event, ts)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS players (id INTEGER PRIMARY KEY, name TEXT, username TEXT, xp INTEGER DEFAULT 0, week_key TEXT, week_base INTEGER DEFAULT 0, streak INTEGER DEFAULT 0, learned INTEGER DEFAULT 0, rounds INTEGER DEFAULT 0, updated INTEGER)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS friends (a INTEGER, b INTEGER, ts INTEGER, PRIMARY KEY (a, b))"),
-      env.DB.prepare("CREATE TABLE IF NOT EXISTS cards (id TEXT PRIMARY KEY, user_id INTEGER, data TEXT, ts INTEGER)")
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS cards (id TEXT PRIMARY KEY, user_id INTEGER, data TEXT, ts INTEGER)"),
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT)")
     ]);
     schemaReady = true;
   } catch (e) {
@@ -487,6 +489,18 @@ async function onUpdate(update, env) {
   return send(env, chatId, TEXT.fallback, { reply_markup: appKeyboard() });
 }
 
+// Автообновление кнопки меню: если APP_URL поменялся — бот сам переставит кнопку (без /setup и SETUP_KEY)
+let menuSynced = false;
+async function syncMenu(env, force) {
+  if (menuSynced && !force) return { ok: true, cached: true };
+  await ensureSchema(env);
+  const row = await dbFirst(env, "SELECT v FROM meta WHERE k = 'menu_url'");
+  if (!force && row && row.v === APP_URL) { menuSynced = true; return { ok: true, same: true }; }
+  const res = await tg(env, "setChatMenuButton", { menu_button: { type: "web_app", text: BOT.menuButtonText, web_app: { url: APP_URL } } });
+  if (res && res.ok) { await dbRun(env, "INSERT OR REPLACE INTO meta (k, v) VALUES ('menu_url', ?1)", [APP_URL]); menuSynced = true; }
+  return res;
+}
+
 async function setup(url, env) {
   if (url.searchParams.get("key") !== env.SETUP_KEY) return new Response("forbidden", { status: 403 });
   const check = tokenCheck(env);
@@ -516,8 +530,12 @@ async function setup(url, env) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    if (url.pathname === "/sync-menu") {
+      const res = await syncMenu(env, url.searchParams.has("force"));
+      return new Response(JSON.stringify({ app: APP_URL, result: res }), { headers: { "content-type": "application/json; charset=utf-8" } });
+    }
     if (url.pathname === "/api/event") {
       if (request.method === "OPTIONS") return cors();
       if (request.method === "POST") return onEvent(request, env);
@@ -544,6 +562,7 @@ export default {
         return new Response("forbidden", { status: 403 });
       }
       try {
+        if (ctx && ctx.waitUntil) ctx.waitUntil(syncMenu(env).catch(() => {}));
         await onUpdate(await request.json(), env);
       } catch (e) {
         console.log("update error", e && e.stack);
