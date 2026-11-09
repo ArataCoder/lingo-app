@@ -248,3 +248,15 @@ Telegram (WebApp)  ──►  GitHub Pages (статический фронт: i
 - Озвучка: в generate_audio.py уже es-ES-AlvaroNeural и en-US-GuyNeural (старые Elvira/Aria в LEGACY_VOICES).
 - Контент: 80/80 тем ready, validate_content.py OK, lint пунктуации/акцентов ES/EN — ошибок нет.
 - QA (headless Chromium + мок Telegram SDK): онбординг 44px+ кнопки, фокус, EN-ветка, сохранение P, повторный вход без онбординга, маскоты start/error/win, reduced-motion, 0 JS-ошибок.
+
+
+## v5.3 — хостинг приложения на Cloudflare (бесплатно)
+
+- **Основной адрес мини-аппа:** https://lingo-brain-app.lingobrain.workers.dev/ (воркер `lingo-brain-app`, Workers Free).
+- GitHub Pages (https://aratacoder.github.io/lingo-app/) остаётся зеркалом/фолбэком, ничего не удалено.
+- Воркер `lingo-brain-app` генерируется при деплое: index.html, v*.js и весь content/** вшиты в код. `/assets/*` (аудио, маскот) проксируются с GitHub Pages (фолбэк raw.githubusercontent) и кэшируются на edge.
+- Кэш: index.html и файлы без `?v=` — `no-cache` + ETag (обновы видны сразу после деплоя). Файлы с `?v=` — immutable на год, поэтому при изменении JS/контента **обязательно бампать ?v= / VER**.
+- `/__build` показывает время сборки и количество файлов — быстрый способ проверить, что деплой долетел.
+- Бот `lingo-brain-bot`: APP_URL = новый адрес; кнопка меню синхронизируется сама (таблица D1 `meta`, ключ `menu_url`) при первом апдейте после деплоя, либо вручную: `/sync-menu?force=1`. SETUP_KEY больше не нужен для смены ссылки.
+- Деплой: после пуша в main агент пересобирает воркер через Cloudflare API (PUT script). Автодеплой из GitHub (Workers Builds / GitHub Action) можно добавить позже — для этого нужен API-токен Cloudflare в секретах репо.
+- Прогресс: localStorage привязан к домену, поэтому на новом адресе локальный прогресс начинается заново; прогресс из Telegram CloudStorage и XP в D1 подтягиваются.
