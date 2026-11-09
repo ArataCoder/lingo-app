@@ -260,3 +260,13 @@ Telegram (WebApp)  ──►  GitHub Pages (статический фронт: i
 - Бот `lingo-brain-bot`: APP_URL = новый адрес; кнопка меню синхронизируется сама (таблица D1 `meta`, ключ `menu_url`) при первом апдейте после деплоя, либо вручную: `/sync-menu?force=1`. SETUP_KEY больше не нужен для смены ссылки.
 - Деплой: после пуша в main агент пересобирает воркер через Cloudflare API (PUT script). Автодеплой из GitHub (Workers Builds / GitHub Action) можно добавить позже — для этого нужен API-токен Cloudflare в секретах репо.
 - Прогресс: localStorage привязан к домену, поэтому на новом адресе локальный прогресс начинается заново; прогресс из Telegram CloudStorage и XP в D1 подтягиваются.
+
+
+## v5.4 (2026-11-09)
+- Cheat timer: requestAnimationFrame + transform:scaleX (smooth, not killed by reduced-motion rule). stopCheat uses cancelAnimationFrame.
+- Friends: bot CORS is now "*" (workers.dev origin was blocked → rating never loaded). 12s timeout, loading spinner, error state with "Повторить" (lbFrRetry). Fixed invite-button overlap (#frList margin, .fr>.btn static).
+- Fixed "Чт" (U+FFFD from bad UTF-8 transport). ALWAYS push via JSON/ASCII-safe transport and check for U+FFFD.
+- Hero "Твой следующий шаг" redesigned per impeccable: no eyebrow, no emoji icon, title + block + "i из n", segmented progress (bar if >12 topics), label + "≈ 2 минуты", round SVG play button, soft shadow.
+- Audio loads directly from GitHub Pages (AUDB in v3.js) → doesn't consume worker requests.
+- Deploy: lingo-brain-app is still an inline-file worker (90 files, /__build mode "inline"). Static Assets upload needs a real API token (the MCP OAuth fetch overrides the upload JWT → 401). With a token "Workers Scripts:Edit" we can switch to Static Assets + Workers Builds auto-deploy.
+- Cache: html no-cache; ?v= files immutable 1y; other files 10 min + SWR.
