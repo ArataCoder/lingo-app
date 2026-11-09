@@ -300,3 +300,10 @@ Telegram (WebApp)  ──►  GitHub Pages (статический фронт: i
 - `mascot_img.js`: картинки маскота встроены как data:URI (webp 256px, фон вырезан) в `window.LB_MASCOT` — обход того, что пуш через MCP умеет только текст.
 - `v52.js` сначала берёт `LB_MASCOT[pose]`, иначе `assets/mascot/mascot_<pose>.webp`, иначе эмодзи.
 - Готово: start. Ждём: win, error, tired — добавлять ключами в `mascot_img.js` и поднимать `?v=` у mascot_img.js.
+
+
+## v5.6.2 — все 4 позы + анимации
+- `mascot_img.js`: start, error, win, tired (webp 256px, фон вырезан, ~78 KB).
+- Если картинка есть, круглая подложка убирается (`.pic:has(img)`), маскот — «стикер».
+- Анимации по позам: start — покачивание (wave ×2), error — смущённое «мотание» ×1, tired — медленное дыхание ×3, win — прыжок со squash&stretch ×2 + оранжевое свечение + CSS-конфетти (::before/::after).
+- Всё конечное (не бесконечные циклы), `prefers-reduced-motion` отключает.
