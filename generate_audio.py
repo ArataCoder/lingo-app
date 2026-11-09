@@ -11,7 +11,7 @@ Usage (locally or in GitHub Actions):
 
 Output: assets/audio/<lang>/<hash>.mp3 + assets/audio/manifest.json
     {"version": 2, "voices": {...}, "count": N, "items": {"es|hola que tal": "es/1a2b3c4d5e6f.mp3"}}
-The key format is the same as aKey() in v3.js, so the app finds an mp3 by the phrase text.
+The key format is the same as aKey() in js/engine.js, so the app finds an mp3 by the phrase text.
 Anything missing is spoken by the phone voice (speechSynthesis fallback).
 
 The script is incremental and idempotent: file name = sha1(key|voice), so existing files are
@@ -38,7 +38,7 @@ def clean(text):
 
 
 def akey(lang, text):
-    """Same key as aKey() in v3.js: lang|lower-case words separated by one space."""
+    """Same key as aKey() in js/engine.js: lang|lower-case words separated by one space."""
     t = unicodedata.normalize("NFC", TAG.sub(" ", str(text))).lower()
     return lang[:2].lower() + "|" + " ".join(WORD.findall(t))
 

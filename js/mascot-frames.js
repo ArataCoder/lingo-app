@@ -1,9 +1,8 @@
-/* Lingo Brain v5.7: frame-by-frame mascot animation. Loaded AFTER v52.js.
+/* Lingo Brain v5.7: frame-by-frame mascot animation. Loaded after js/mascot.js (v52).
    Frames (webp 256x256, aligned per pose) live on GitHub Pages:
    https://aratacoder.github.io/lingo-app/assets/mascot/f/{start1..3,error1..3,win1..3,tired1..4}.webp
    If frames are missing, nothing changes (v52 still shows the static pose + CSS animation).
-   NOTE: in the Cloudflare worker index.html already has <script src="v53.js?v=1"></script> after v52.js.
-   Add the same line to index.html in this repo on next full edit. */
+   Loaded from index.html after js/mascot.js. */
 (function () {
   "use strict";
   var BASE = "https://aratacoder.github.io/lingo-app/assets/mascot/f/", FV = "1";

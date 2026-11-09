@@ -1,5 +1,5 @@
 /* Lingo Brain v5.6: маскот-кошкодевочка (start / error / win / tired) + онбординг в 1 шаг (A0 / A1+).
-   Подключается ПОСЛЕ v51.js. Старые файлы не меняются, кроме экспорта в v50.js. */
+   Подключается после js/shell.js (v51) и js/mascot-img.js. */
 (function () {
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
