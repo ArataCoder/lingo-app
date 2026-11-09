@@ -57,9 +57,17 @@ const SKIP_ONB = `try { if (!localStorage.getItem('lingo_p')) localStorage.setIt
 
   // 1. Fresh user + async CloudStorage
   let { ctx, p, errs } = await open(br);
-  ok(await p.isVisible('#v5onb'), 'onboarding shown for a new user');
-  for (let i = 0; i < 3; i++) { await p.click('#v5onb .v5opt >> nth=0'); await p.waitForTimeout(250); }
-  await p.waitForTimeout(600);
+  // v5.2: one-step onboarding (#lbonb) replaces the 3-step #v5onb
+  ok(await p.isVisible('#lbonb'), 'one-step onboarding shown for a new user');
+  ok(!(await p.isVisible('#v5onb')), 'old 3-step onboarding is replaced');
+  const onbSmall = await p.evaluate(() => Array.from(document.querySelectorAll('#lbonb button')).filter(b => { const r = b.getBoundingClientRect(); return r.height < 43.5 || r.width < 43.5; }).length);
+  ok(onbSmall === 0, 'onboarding buttons >= 44px', 'small=' + onbSmall);
+  await p.click('#lbonb button[data-lv=a0]');
+  await p.waitForTimeout(1500);
+  const onbP = await p.evaluate(() => JSON.parse(localStorage.getItem('lingo_p') || '{}'));
+  ok(onbP.onb === 1 && onbP.lang === 'es' && onbP.lvl && onbP.lvl.es === 1, 'A0 choice saves ES track + level', JSON.stringify({ onb: onbP.onb, lang: onbP.lang, lvl: onbP.lvl }));
+  ok(await p.evaluate(() => window.current === 'cheat' && !!document.querySelector('#v3cheat .lbm[data-pose=start]')), 'A0 starts the first lesson with the mascot', await p.evaluate(() => window.current));
+  await p.waitForTimeout(300);
   await p.evaluate(() => show('home')); await p.waitForTimeout(400);
   const tabs = await p.evaluate(() => Array.from(document.querySelectorAll('.nav button')).filter(b => b.offsetParent !== null).map(b => b.getAttribute('data-go')).join(','));
   ok(tabs === 'home,catalog,profile,friends', 'exactly 4 tabs in fixed order', tabs);
