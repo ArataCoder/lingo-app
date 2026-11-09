@@ -287,3 +287,11 @@ Telegram (WebApp)  ──►  GitHub Pages (статический фронт: i
 
 - **v5.5.3, IMPORTANT, content cache:** v3.js fetches content/*.json?v=VER, and the app worker used to serve any URL with a query as "immutable, 1 year". After config.json changed (open → chain), old clients kept the cached old config, so every topic stayed open. Fixes: VER bumped to "15", and the worker now serves .json with max-age=300. **Whenever content/*.json changes, bump VER in v3.js and the ?v= of v3.js in index.html.**
 - v5.5.1: the toast is above the card overlay (z 10001), and the card buttons have a busy state. v5.5.2: locked topics are gray (.v3t.locked).
+
+
+## v5.6 — маскот-кошкодевочка (4 позы)
+- v52.js: позы start / error / win / tired. Картинки: assets/mascot/mascot_{start,error,win,tired}.webp (квадрат 512×512, прозрачный фон). Пока файлов нет, вместо них эмодзи 🧠 🏆 ☕.
+- Где какая поза: start — шпаргалка и первая карточка темы; tired — первая карточка в режиме «Нет сил» (lastRun.key === "low"); error — старт работы над ошибками и итог раунда «Ошибки — это учёба»; win — итог «Идеально!» и «Мозг прокачан».
+- CSS: картинка не выше 130px (win 120px), анимации pop + 2 подпрыгивания, учитывается prefers-reduced-motion. У .lbm стоит pointer-events:none, поэтому маскот никогда не перехватывает нажатия на кнопки.
+- После загрузки картинок поднимите MV в v52.js, иначе останутся закэшированные 404.
+- Онбординг в 1 шаг (A0 / A1+) уже есть с v5.2 (#lbonb), он не менялся.
