@@ -1,0 +1,268 @@
+{
+ "id": "en.debate.negotiate",
+ "track": "en",
+ "level": "C1",
+ "title": "Negotiation",
+ "emoji": "🤝",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "the going rate",
+   "tr": "рыночная ставка",
+   "ex": "The going rate for this role is higher."
+  },
+  {
+   "term": "Is there any flexibility on…?",
+   "tr": "есть ли гибкость по…?",
+   "ex": "Is there any flexibility on the salary?"
+  },
+  {
+   "term": "meet me halfway",
+   "tr": "пойти навстречу, найти середину",
+   "ex": "Could you meet me halfway?"
+  },
+  {
+   "term": "a counteroffer",
+   "tr": "встречное предложение",
+   "ex": "I'd like to make a counteroffer."
+  },
+  {
+   "term": "non-negotiable",
+   "tr": "не обсуждается",
+   "ex": "Remote work is non-negotiable for me."
+  },
+  {
+   "term": "a deal-breaker",
+   "tr": "условие, без которого сделки не будет",
+   "ex": "A six-day week would be a deal-breaker."
+  },
+  {
+   "term": "Would you be open to…?",
+   "tr": "вы были бы готовы…?",
+   "ex": "Would you be open to a review after six months?"
+  },
+  {
+   "term": "That sounds reasonable",
+   "tr": "звучит разумно",
+   "ex": "That sounds reasonable to me."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«A deal-breaker» — это…",
+   "options": [
+    "Условие, из-за которого откажешься от сделки",
+    "Удачная сделка",
+    "Юрист по контрактам"
+   ],
+   "answer": 0,
+   "explain": "Знай свои deal-breakers до переговоров 🎯"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как мягко попросить больше денег?",
+   "options": [
+    "Is there any flexibility on the salary?",
+    "Give me more money.",
+    "Your salary is too low for me."
+   ],
+   "answer": 0,
+   "explain": "<b>Is there any flexibility on…</b> — вежливо и сильно 💼"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Would you be open to a review after six months?",
+   "back": "Вы были бы готовы пересмотреть условия через полгода?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "We can't go higher on the base salary, but we could add a signing bonus.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что предлагают?",
+   "options": [
+    "Бонус при подписании вместо повышения оклада",
+    "Повысить оклад",
+    "Отозвать оффер"
+   ],
+   "answer": 0,
+   "explain": "<b>signing bonus</b> — разовый бонус при найме 💰"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Based on my research, the going rate for this role in Madrid is around thirty-two thousand.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "На что ссылается кандидат?",
+   "options": [
+    "На рыночную ставку",
+    "На прошлую зарплату",
+    "На слова друга"
+   ],
+   "answer": 0,
+   "explain": "Аргумент цифрами — сильнее всего 📊"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Есть ли гибкость по зарплате?",
+   "tokens": [
+    "Is",
+    "there",
+    "any",
+    "flexibility",
+    "on",
+    "the",
+    "salary?"
+   ],
+   "distractors": [
+    "flexible",
+    "at"
+   ],
+   "pattern": "Is there any flexibility on + noun?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Можете пойти мне навстречу?",
+   "tokens": [
+    "Could",
+    "you",
+    "meet",
+    "me",
+    "halfway?"
+   ],
+   "distractors": [
+    "half",
+    "meeting"
+   ],
+   "pattern": "Could you meet me halfway?"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Thank you for the offer. Is there any flexibility on the salary?",
+   "tr": "Спасибо за предложение. Есть ли гибкость по зарплате?",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "I'm really excited about the role. Based on the going rate, I was hoping for thirty-two thousand. Would you be open to meeting me halfway?",
+   "tr": "Я очень рад(а) этой роли. Исходя из рыночной ставки, я рассчитывал(а) на 32 тысячи. Вы были бы готовы пойти мне навстречу?",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.debate.negotiate.s1",
+   "title": "Negotiating a job offer",
+   "emoji": "🤝",
+   "userRole": "Ты",
+   "botRole": "HR manager",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "We're happy to offer you the position at twenty-eight thousand a year.",
+     "tr": "Мы рады предложить вам позицию с окладом 28 тысяч в год.",
+     "choices": [
+      {
+       "text": "Thank you, I'm really excited about the role. Is there any flexibility on the salary?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Благодарность + вопрос о гибкости 💼"
+      },
+      {
+       "text": "That's lower than I expected.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Честно, но без аргумента. Добавь рынок и цифры 📊"
+      }
+     ]
+    },
+    "n2": {
+     "say": "There might be some room. What did you have in mind?",
+     "tr": "Возможно, есть пространство. Что вы имели в виду?",
+     "choices": [
+      {
+       "text": "Based on the going rate for similar roles, I was hoping for thirty-two thousand.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>the going rate</b> — аргумент рынка 📊"
+      },
+      {
+       "text": "I'd like to make a counteroffer of thirty-two thousand, given my experience in customer support.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>counteroffer</b> + обоснование 💪"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Thirty-two is above our budget. The most we can do is thirty.",
+     "tr": "32 — выше нашего бюджета. Максимум, что можем, — 30.",
+     "choices": [
+      {
+       "text": "I understand. Could you meet me halfway at thirty-one, with a review after six months?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Компромисс + пересмотр — уровень C1 🧠"
+      },
+      {
+       "text": "Then I'm not interested.",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Слишком жёстко, если это не настоящий deal-breaker 🙂"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Let me check with the team. Apart from salary, is there anything else that matters to you?",
+     "tr": "Я уточню у команды. Помимо зарплаты, есть ли что-то ещё важное для вас?",
+     "choices": [
+      {
+       "text": "Yes. Two remote days a week are non-negotiable for me.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>non-negotiable</b> — чёткая граница ✅"
+      },
+      {
+       "text": "Flexible hours would mean a lot. Would you be open to that?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>Would you be open to…</b> 👌"
+      }
+     ]
+    },
+    "n5": {
+     "say": "That sounds reasonable. I'll send you an updated offer tomorrow.",
+     "tr": "Звучит разумно. Завтра пришлю обновлённое предложение.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

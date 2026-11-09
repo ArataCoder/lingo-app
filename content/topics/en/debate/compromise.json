@@ -1,0 +1,267 @@
+{
+ "id": "en.debate.compromise",
+ "track": "en",
+ "level": "B2",
+ "title": "Conceding & compromise",
+ "emoji": "⚖️",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "You have a point",
+   "tr": "в этом есть смысл",
+   "ex": "You have a point about the budget."
+  },
+  {
+   "term": "Fair enough",
+   "tr": "справедливо, ладно",
+   "ex": "Fair enough, let's do it your way."
+  },
+  {
+   "term": "I can live with that",
+   "tr": "меня это устроит",
+   "ex": "Friday instead of Thursday? I can live with that."
+  },
+  {
+   "term": "meet in the middle",
+   "tr": "найти середину",
+   "ex": "Let's meet in the middle on this."
+  },
+  {
+   "term": "How about we…?",
+   "tr": "как насчёт того, чтобы…?",
+   "ex": "How about we split the cost?"
+  },
+  {
+   "term": "I'll give you that",
+   "tr": "тут соглашусь",
+   "ex": "I'll give you that, it's cheaper."
+  },
+  {
+   "term": "on one condition",
+   "tr": "при одном условии",
+   "ex": "Okay, on one condition: we finish by nine."
+  },
+  {
+   "term": "a win-win",
+   "tr": "выгодно обеим сторонам",
+   "ex": "That's a win-win for everyone."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«I can live with that» значит…",
+   "options": [
+    "Меня это устроит",
+    "Я буду там жить",
+    "Мне это не нравится"
+   ],
+   "answer": 0,
+   "explain": "Согласие без восторга, но без спора 🤝"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как предложить компромисс?",
+   "options": [
+    "How about we meet in the middle?",
+    "You must do what I say.",
+    "Whatever, I don't care."
+   ],
+   "answer": 0,
+   "explain": "<b>meet in the middle</b> ⚖️"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Fair enough.",
+   "back": "Справедливо. / Ладно."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "I'll give you that, the bowling place is cheaper. But it's really far.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что признаёт человек?",
+   "options": [
+    "Боулинг дешевле",
+    "Боулинг ближе",
+    "Боулинг скучный"
+   ],
+   "answer": 0,
+   "explain": "<b>I'll give you that</b> — признаю твою правоту в этом 👍"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Okay, let's do the dinner, on one condition: we book it for six, not eight.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Какое условие?",
+   "options": [
+    "Забронировать на шесть, а не на восемь",
+    "Пригласить восемь человек",
+    "Пойти в другой ресторан"
+   ],
+   "answer": 0,
+   "explain": "<b>on one condition</b> — при одном условии ☝️"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Как насчёт того, чтобы разделить расходы?",
+   "tokens": [
+    "How",
+    "about",
+    "we",
+    "split",
+    "the",
+    "cost?"
+   ],
+   "distractors": [
+    "splits",
+    "to"
+   ],
+   "pattern": "How about we + verb?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Это выгодно всем.",
+   "tokens": [
+    "That's",
+    "a",
+    "win-win",
+    "for",
+    "everyone."
+   ],
+   "distractors": [
+    "winner",
+    "to"
+   ],
+   "pattern": "a win-win for + кого"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "You have a point. How about we meet in the middle?",
+   "tr": "В этом есть смысл. Как насчёт найти середину?",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Fair enough, I'll give you that. Let's do the dinner on Friday, on one condition: we keep it under thirty euros each.",
+   "tr": "Справедливо, тут соглашусь. Давай ужин в пятницу, но при одном условии: не дороже тридцати евро с человека.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.debate.compromise.s1",
+   "title": "Planning a team event",
+   "emoji": "⚖️",
+   "userRole": "Ты",
+   "botRole": "Mia",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "For the team event, I really think we should do a fancy dinner downtown.",
+     "tr": "Для командного мероприятия я правда думаю, что нам нужен шикарный ужин в центре.",
+     "choices": [
+      {
+       "text": "You have a point, it'd be nice. But I'm worried about the cost.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Признание + аргумент ⚖️"
+      },
+      {
+       "text": "No, that's a terrible idea.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Слишком резко. Начни с признания: <b>You have a point, but…</b>"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Hmm, what would you suggest instead?",
+     "tr": "Хм, а что ты предлагаешь?",
+     "choices": [
+      {
+       "text": "How about bowling? It's cheaper, and everyone can join in.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>How about…</b> 🎳"
+      },
+      {
+       "text": "Maybe a picnic at the beach? It's free and more relaxed.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Конкретная альтернатива 👍"
+      }
+     ]
+    },
+    "n3": {
+     "say": "I'll give you that, it's cheaper. But some people won't enjoy it.",
+     "tr": "Тут соглашусь, это дешевле. Но некоторым не понравится.",
+     "choices": [
+      {
+       "text": "Fair enough. How about we meet in the middle: a casual restaurant near the office?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>meet in the middle</b> — идеально ⚖️"
+      },
+      {
+       "text": "That's true. Maybe a casual restaurant could work for everyone?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Мягкий компромисс 👍"
+      }
+     ]
+    },
+    "n4": {
+     "say": "A casual place could work. On one condition: there are vegetarian options.",
+     "tr": "Простое место может подойти. При одном условии: там должны быть вегетарианские блюда.",
+     "choices": [
+      {
+       "text": "Absolutely, I can live with that. I'll check the menu today.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>I can live with that</b> ✅"
+      },
+      {
+       "text": "Deal. That's a win-win for everyone.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>win-win</b> 🤝"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Perfect. You book it, I'll send the invite.",
+     "tr": "Отлично. Ты бронируешь, я рассылаю приглашение.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

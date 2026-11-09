@@ -1,0 +1,269 @@
+{
+ "id": "en.debate.interrupt",
+ "track": "en",
+ "level": "B2",
+ "title": "Interrupting politely",
+ "emoji": "✋",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "Sorry to interrupt, but…",
+   "tr": "извините, что перебиваю, но…",
+   "ex": "Sorry to interrupt, but I have a quick question."
+  },
+  {
+   "term": "Can I jump in here?",
+   "tr": "можно я вставлю слово?",
+   "ex": "Can I jump in here for a second?"
+  },
+  {
+   "term": "If I could just add something…",
+   "tr": "если позволите добавить…",
+   "ex": "If I could just add something about the budget…"
+  },
+  {
+   "term": "Just to build on that…",
+   "tr": "развивая эту мысль…",
+   "ex": "Just to build on that, we could test it first."
+  },
+  {
+   "term": "Hold that thought",
+   "tr": "подожди с этой мыслью",
+   "ex": "Hold that thought, I'll come back to you."
+  },
+  {
+   "term": "Let me finish my point",
+   "tr": "дайте закончить мысль",
+   "ex": "Let me just finish my point, please."
+  },
+  {
+   "term": "Go ahead",
+   "tr": "давай, говори",
+   "ex": "Sure, go ahead."
+  },
+  {
+   "term": "Where was I?",
+   "tr": "на чём я остановился(ась)?",
+   "ex": "Sorry, where was I?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Самый вежливый способ перебить:",
+   "options": [
+    "Sorry to interrupt, but can I add something?",
+    "Stop, I want to speak.",
+    "You're wrong, listen to me."
+   ],
+   "answer": 0,
+   "explain": "Извинение + вопрос = вежливо ✋"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Hold that thought» значит…",
+   "options": [
+    "Подожди с этой мыслью, вернёмся к ней",
+    "Запиши мысль",
+    "Забудь об этом"
+   ],
+   "answer": 0,
+   "explain": "Удобно, когда тебя перебили 🧠"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Can I jump in here?",
+   "back": "Можно я вставлю слово?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Sorry, let me just finish my point, and then you can jump in.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что говорит человек?",
+   "options": [
+    "Просит дать закончить мысль",
+    "Отдаёт слово",
+    "Заканчивает встречу"
+   ],
+   "answer": 0,
+   "explain": "<b>let me finish my point</b> 🗣️"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Just to build on what Dan said, we could run a small test first.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что делает говорящий?",
+   "options": [
+    "Развивает мысль Дэна",
+    "Спорит с Дэном",
+    "Меняет тему"
+   ],
+   "answer": 0,
+   "explain": "<b>build on</b> — развить чужую мысль 🧱"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Извините, что перебиваю, но у меня вопрос.",
+   "tokens": [
+    "Sorry",
+    "to",
+    "interrupt,",
+    "but",
+    "I",
+    "have",
+    "a",
+    "question."
+   ],
+   "distractors": [
+    "interrupting",
+    "for"
+   ],
+   "pattern": "Sorry to interrupt, but…"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Можно я вставлю слово?",
+   "tokens": [
+    "Can",
+    "I",
+    "jump",
+    "in",
+    "here?"
+   ],
+   "distractors": [
+    "jumping",
+    "on"
+   ],
+   "pattern": "Can I jump in here?"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Sorry to interrupt, but can I jump in here for a second?",
+   "tr": "Извините, что перебиваю, можно я на секунду вставлю слово?",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "If I could just add something, we could test it with ten users first. Sorry, go ahead and finish your point.",
+   "tr": "Если позволите добавить: мы могли бы сначала протестировать на десяти пользователях. Простите, продолжайте, закончите мысль.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.debate.interrupt.s1",
+   "title": "Getting a word in at a meeting",
+   "emoji": "✋",
+   "userRole": "Ты",
+   "botRole": "Dan",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "So basically, we launch the whole thing next month, in all markets at once, and then—",
+     "tr": "Короче, запускаем всё в следующем месяце, сразу на всех рынках, а потом—",
+     "choices": [
+      {
+       "text": "Sorry to interrupt, Dan, but can I jump in here for a second?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Вежливо перебил(а) ✋"
+      },
+      {
+       "text": "No, no, no. Bad idea.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Резко и без аргумента ✋"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Sure, go ahead.",
+     "tr": "Конечно, говори.",
+     "choices": [
+      {
+       "text": "Thanks. I'm worried about launching everywhere at once. What if we start with one market?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Беспокойство + альтернатива 👍"
+      },
+      {
+       "text": "Just to build on your idea, we could launch in Spain first and learn from it.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>build on</b> — дипломатично 🧱"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Hmm, but if we wait, our competitors might—",
+     "tr": "Хм, но если мы подождём, конкуренты могут—",
+     "choices": [
+      {
+       "text": "Sorry, let me just finish my point. A small test would take two weeks, not months.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Отстоял(а) право договорить 💪"
+      },
+      {
+       "text": "Hold that thought, Dan. Let me finish, and then I'd love to hear your concern.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>Hold that thought</b> — уважительно 👌"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Okay, fair. Two weeks isn't that long, actually.",
+     "tr": "Ладно, справедливо. Две недели — это и правда не так долго.",
+     "choices": [
+      {
+       "text": "Exactly. Sorry, you were saying something about competitors?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Вернул(а) слово — красиво 🤝"
+      },
+      {
+       "text": "Thanks. Go ahead, what was your concern?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>Go ahead</b> ✅"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Just that they're moving fast. But a two-week test sounds smart. Let's do it.",
+     "tr": "Только то, что они быстро двигаются. Но двухнедельный тест звучит разумно. Давайте так и сделаем.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

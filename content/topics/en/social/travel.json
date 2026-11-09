@@ -1,0 +1,273 @@
+{
+ "id": "en.social.travel",
+ "track": "en",
+ "level": "B2",
+ "title": "Travel stories",
+ "emoji": "✈️",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "off the beaten track",
+   "tr": "вдали от туристических троп",
+   "ex": "We found a village off the beaten track."
+  },
+  {
+   "term": "a layover",
+   "tr": "пересадка с ожиданием",
+   "ex": "I had a six-hour layover in Istanbul."
+  },
+  {
+   "term": "get ripped off",
+   "tr": "переплатить, быть обманутым",
+   "ex": "We got ripped off by a taxi driver."
+  },
+  {
+   "term": "backpacking",
+   "tr": "путешествие с рюкзаком",
+   "ex": "I went backpacking around Portugal."
+  },
+  {
+   "term": "jet-lagged",
+   "tr": "с джетлагом",
+   "ex": "I was so jet-lagged on the first day."
+  },
+  {
+   "term": "a hidden gem",
+   "tr": "скрытая жемчужина",
+   "ex": "That café was a hidden gem."
+  },
+  {
+   "term": "It was totally worth it",
+   "tr": "оно того стоило",
+   "ex": "The hike was hard, but it was totally worth it."
+  },
+  {
+   "term": "You'll never guess what happened",
+   "tr": "ты не поверишь, что случилось",
+   "ex": "You'll never guess what happened at the airport."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«We got ripped off» значит…",
+   "options": [
+    "Нас обманули с ценой",
+    "Нам порвали одежду",
+    "Мы опоздали на рейс"
+   ],
+   "answer": 0,
+   "explain": "<b>get ripped off</b> — переплатить 💸"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«A layover» — это…",
+   "options": [
+    "Пересадка с ожиданием",
+    "Отмена рейса",
+    "Ночёвка в палатке"
+   ],
+   "answer": 0,
+   "explain": "<b>a six-hour layover</b> ✈️"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "It was totally worth it.",
+   "back": "Оно того стоило."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Our flight was canceled, so we ended up spending a night in Lisbon.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что случилось?",
+   "options": [
+    "Рейс отменили, пришлось ночевать в Лиссабоне",
+    "Они опоздали в Лиссабон",
+    "Решили не лететь"
+   ],
+   "answer": 0,
+   "explain": "<b>ended up</b> — в итоге оказались 🧳"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "The town was a hidden gem, completely off the beaten track.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Каким был город?",
+   "options": [
+    "Малоизвестным и красивым",
+    "Шумным и туристическим",
+    "Дорогим и скучным"
+   ],
+   "answer": 0,
+   "explain": "<b>hidden gem</b> + <b>off the beaten track</b> 💎"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "У меня была шестичасовая пересадка в Стамбуле.",
+   "tokens": [
+    "I",
+    "had",
+    "a",
+    "six-hour",
+    "layover",
+    "in",
+    "Istanbul."
+   ],
+   "distractors": [
+    "hours",
+    "on"
+   ],
+   "pattern": "a six-hour layover in + city"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Поход был тяжёлый, но оно того стоило.",
+   "tokens": [
+    "The",
+    "hike",
+    "was",
+    "hard,",
+    "but",
+    "it",
+    "was",
+    "totally",
+    "worth",
+    "it."
+   ],
+   "distractors": [
+    "worthy",
+    "total"
+   ],
+   "pattern": "…, but it was totally worth it"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Last summer I went backpacking around Portugal. It was totally worth it.",
+   "tr": "Прошлым летом я путешествовал(а) с рюкзаком по Португалии. Оно того стоило.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "You'll never guess what happened. Our flight was canceled, we got ripped off by a taxi, and it was still the best trip ever.",
+   "tr": "Ты не поверишь, что случилось. Рейс отменили, таксист нас обманул, и всё равно это была лучшая поездка.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.social.travel.s1",
+   "title": "Swapping travel stories",
+   "emoji": "✈️",
+   "userRole": "Ты",
+   "botRole": "Chris",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "So, did you go anywhere nice this summer?",
+     "tr": "Ну что, ездил(а) куда-нибудь летом?",
+     "choices": [
+      {
+       "text": "Yes! I went backpacking around Portugal for two weeks.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Деталь + эмоция 👍"
+      },
+      {
+       "text": "Portugal.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Добавь деталь: <b>I went backpacking around Portugal</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "No way! How was it?",
+     "tr": "Да ладно! Как было?",
+     "choices": [
+      {
+       "text": "Amazing, but you'll never guess what happened on the first day.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Интрига — так рассказывают истории 😄"
+      },
+      {
+       "text": "It was nice. Good weather.",
+       "next": "n3",
+       "score": 1,
+       "feedback": "Окей, но сухо. Добавь эмоцию: <b>It was amazing!</b>"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Tell me everything!",
+     "tr": "Рассказывай всё!",
+     "choices": [
+      {
+       "text": "Our flight was canceled, and then a taxi driver totally ripped us off.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>ripped us off</b> 💸"
+      },
+      {
+       "text": "I was so jet-lagged that I fell asleep on the beach for three hours.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>so … that</b> — отличная конструкция 😴"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Oh no! But did you find any cool places?",
+     "tr": "О нет! Но нашёл(шла) какие-то классные места?",
+     "choices": [
+      {
+       "text": "Yes, a tiny village off the beaten track. A real hidden gem.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Две идиомы подряд 💎"
+      },
+      {
+       "text": "Definitely. The hike to the cliffs was hard, but it was totally worth it.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>totally worth it</b> ✅"
+      }
+     ]
+    },
+    "n5": {
+     "say": "That sounds incredible. Send me the name, I need to go there!",
+     "tr": "Звучит потрясающе. Скинь название, мне надо туда!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

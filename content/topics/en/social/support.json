@@ -1,0 +1,269 @@
+{
+ "id": "en.social.support",
+ "track": "en",
+ "level": "B2",
+ "title": "Support & sympathy",
+ "emoji": "🤝",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "I'm so sorry to hear that",
+   "tr": "мне очень жаль это слышать",
+   "ex": "I'm so sorry to hear about your job."
+  },
+  {
+   "term": "That must be really hard",
+   "tr": "это, должно быть, очень тяжело",
+   "ex": "That must be really hard for you."
+  },
+  {
+   "term": "I'm here for you",
+   "tr": "я рядом",
+   "ex": "Whatever happens, I'm here for you."
+  },
+  {
+   "term": "Take your time",
+   "tr": "не торопись",
+   "ex": "Take your time, there's no rush."
+  },
+  {
+   "term": "Is there anything I can do?",
+   "tr": "могу я чем-то помочь?",
+   "ex": "Is there anything I can do to help?"
+  },
+  {
+   "term": "vent",
+   "tr": "выговориться",
+   "ex": "Sometimes you just need to vent."
+  },
+  {
+   "term": "hang in there",
+   "tr": "держись",
+   "ex": "Hang in there, it'll get better."
+  },
+  {
+   "term": "check in on someone",
+   "tr": "узнать, как у человека дела",
+   "ex": "I'll check in on you tomorrow."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Друг говорит, что его уволили. Лучший ответ:",
+   "options": [
+    "I'm so sorry to hear that. How are you feeling?",
+    "Well, find a new one.",
+    "That happens to everyone."
+   ],
+   "answer": 0,
+   "explain": "Сначала эмпатия, потом советы 🤝"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«I just need to vent» значит…",
+   "options": [
+    "Мне просто нужно выговориться",
+    "Мне нужно проветрить комнату",
+    "Мне нужен совет юриста"
+   ],
+   "answer": 0,
+   "explain": "Иногда человеку нужны уши, а не решения 👂"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Hang in there.",
+   "back": "Держись."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "I don't need advice right now. I just need someone to listen.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что нужно другу?",
+   "options": [
+    "Чтобы его выслушали",
+    "Конкретный совет",
+    "Побыть одному"
+   ],
+   "answer": 0,
+   "explain": "Слушай, не чини 🙂"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Thanks for checking in on me. It really means a lot.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что чувствует человек?",
+   "options": [
+    "Благодарность за поддержку",
+    "Раздражение",
+    "Скуку"
+   ],
+   "answer": 0,
+   "explain": "<b>It means a lot</b> — это очень важно для меня 💛"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Это, должно быть, очень тяжело для тебя.",
+   "tokens": [
+    "That",
+    "must",
+    "be",
+    "really",
+    "hard",
+    "for",
+    "you."
+   ],
+   "distractors": [
+    "musts",
+    "to"
+   ],
+   "pattern": "That must be + adj"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Могу я чем-то помочь?",
+   "tokens": [
+    "Is",
+    "there",
+    "anything",
+    "I",
+    "can",
+    "do?"
+   ],
+   "distractors": [
+    "any",
+    "doing"
+   ],
+   "pattern": "Is there anything I can + verb?"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "I'm so sorry to hear that. I'm here for you, okay?",
+   "tr": "Мне очень жаль это слышать. Я рядом, слышишь?",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "That must be really hard. Take your time, there's no rush. Is there anything I can do to help?",
+   "tr": "Это, должно быть, очень тяжело. Не торопись, спешить некуда. Могу я чем-то помочь?",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.social.support.s1",
+   "title": "Supporting a friend",
+   "emoji": "🤝",
+   "userRole": "Ты",
+   "botRole": "Taylor",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hey... sorry, I'm not in a great mood today.",
+     "tr": "Привет... извини, у меня сегодня не лучшее настроение.",
+     "choices": [
+      {
+       "text": "Hey, no need to apologize. Do you want to talk about it?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Мягко и открыто 🤝"
+      },
+      {
+       "text": "Why? What's wrong with you?",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Звучит резковато. Мягче: <b>Do you want to talk about it?</b>"
+      }
+     ]
+    },
+    "n2": {
+     "say": "I didn't get the job I really wanted. I thought the interview went well.",
+     "tr": "Меня не взяли на работу, которую я очень хотел(а). Мне казалось, интервью прошло хорошо.",
+     "choices": [
+      {
+       "text": "I'm so sorry to hear that. That must be really disappointing.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Эмпатия ✅"
+      },
+      {
+       "text": "Oh well, there are lots of other jobs.",
+       "next": "n3",
+       "score": 0,
+       "feedback": "Обесценивает чувства. Сначала эмпатия 🤝"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Yeah. I just feel like I keep failing.",
+     "tr": "Да. Мне кажется, что я постоянно проваливаюсь.",
+     "choices": [
+      {
+       "text": "I get it. But one rejection doesn't define you. You got the interview, and that counts.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Поддержка + факт 💪"
+      },
+      {
+       "text": "That's a lot to carry. Do you want advice, or do you just need to vent?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Спросить, что нужно, — очень зрело 🧠"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Honestly, I think I just needed to vent. Thanks for listening.",
+     "tr": "Честно, мне просто нужно было выговориться. Спасибо, что выслушал(а).",
+     "choices": [
+      {
+       "text": "Anytime. I'm here for you. Is there anything I can do this week?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>I'm here for you</b> 💛"
+      },
+      {
+       "text": "Of course. Hang in there, okay? I'll check in on you tomorrow.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>check in on you</b> 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "That really means a lot. Maybe coffee on Saturday?",
+     "tr": "Это очень много для меня значит. Может, кофе в субботу?",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
