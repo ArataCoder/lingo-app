@@ -1,0 +1,270 @@
+{
+ "id": "en.biz.standup",
+ "track": "en",
+ "level": "B2",
+ "title": "Standups & status updates",
+ "emoji": "📊",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "Yesterday I worked on…",
+   "tr": "вчера я работал(а) над…",
+   "ex": "Yesterday I worked on the onboarding flow."
+  },
+  {
+   "term": "Today I'm planning to…",
+   "tr": "сегодня планирую…",
+   "ex": "Today I'm planning to finish the tests."
+  },
+  {
+   "term": "a blocker",
+   "tr": "блокер, то, что мешает",
+   "ex": "I have one blocker: I don't have access to the database."
+  },
+  {
+   "term": "on track",
+   "tr": "по плану",
+   "ex": "The release is on track for Friday."
+  },
+  {
+   "term": "behind schedule",
+   "tr": "отстаём от графика",
+   "ex": "We're a bit behind schedule."
+  },
+  {
+   "term": "take this offline",
+   "tr": "обсудить отдельно, не на общем созвоне",
+   "ex": "Let's take this offline after the call."
+  },
+  {
+   "term": "a heads-up",
+   "tr": "предупреждение заранее",
+   "ex": "Just a heads-up, I'm off on Friday."
+  },
+  {
+   "term": "ETA",
+   "tr": "ожидаемый срок",
+   "ex": "What's the ETA on the fix?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Let's take this offline» значит…",
+   "options": [
+    "Обсудим отдельно после созвона",
+    "Выключим интернет",
+    "Отменим задачу"
+   ],
+   "answer": 0,
+   "explain": "Стандарт, чтобы не затягивать стендап ⏱️"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как сказать, что что-то мешает работе?",
+   "options": [
+    "I have a blocker.",
+    "I have a blocking.",
+    "I am blocked by myself."
+   ],
+   "answer": 0,
+   "explain": "<b>blocker</b> — препятствие 🚧"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Just a heads-up, I'm off on Friday.",
+   "back": "Предупреждаю: в пятницу меня не будет."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Yesterday I fixed the login bug. Today I'm reviewing Tom's pull request. No blockers.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что делает сегодня?",
+   "options": [
+    "Ревьюит pull request Тома",
+    "Чинит баг логина",
+    "Ничего, у него блокер"
+   ],
+   "answer": 0,
+   "explain": "Формула стендапа: вчера → сегодня → блокеры 📊"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "We're about two days behind schedule because of the API changes.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что с графиком?",
+   "options": [
+    "Отстают на два дня из-за API",
+    "Опережают на два дня",
+    "Всё по плану"
+   ],
+   "answer": 0,
+   "explain": "<b>behind schedule</b> — отставание ⏳"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Сегодня планирую закончить тесты.",
+   "tokens": [
+    "Today",
+    "I'm",
+    "planning",
+    "to",
+    "finish",
+    "the",
+    "tests."
+   ],
+   "distractors": [
+    "plan",
+    "finishing"
+   ],
+   "pattern": "I'm planning to + verb"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Релиз идёт по плану на пятницу.",
+   "tokens": [
+    "The",
+    "release",
+    "is",
+    "on",
+    "track",
+    "for",
+    "Friday."
+   ],
+   "distractors": [
+    "in",
+    "at"
+   ],
+   "pattern": "on track for + date"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "I have one blocker: I still don't have access to the staging server.",
+   "tr": "У меня один блокер: всё ещё нет доступа к тестовому серверу.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Yesterday I finished the payment form. Today I'm planning to write tests. One blocker: I need access to staging. What's the ETA on that?",
+   "tr": "Вчера закончил(а) платёжную форму. Сегодня планирую писать тесты. Один блокер: нужен доступ к staging. Когда примерно его дадут?",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.biz.standup.s1",
+   "title": "Daily standup",
+   "emoji": "📊",
+   "userRole": "Ты",
+   "botRole": "Team lead",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Morning, everyone. Alex, you're up. What's your update?",
+     "tr": "Всем доброе утро. Алекс, твоя очередь. Что у тебя?",
+     "choices": [
+      {
+       "text": "Morning! Yesterday I worked on the checkout page. Today I'm planning to fix the mobile layout.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Вчера → сегодня ✅"
+      },
+      {
+       "text": "Uh, I did many things. Very busy.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Слишком размыто. Конкретно: <b>Yesterday I worked on…</b>"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Sounds good. Any blockers?",
+     "tr": "Звучит хорошо. Есть блокеры?",
+     "choices": [
+      {
+       "text": "One: I'm still waiting for the new designs from the design team.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Конкретный блокер 🚧"
+      },
+      {
+       "text": "No blockers, everything's on track.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>on track</b> 👍"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Okay. Are we still on track for the Friday release?",
+     "tr": "Хорошо. Мы всё ещё успеваем к релизу в пятницу?",
+     "choices": [
+      {
+       "text": "Mostly, but we might be a day behind schedule if the designs are late.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Честно о рисках — это профессионально 👌"
+      },
+      {
+       "text": "Yes, one hundred percent, no problem at all.",
+       "next": "n4",
+       "score": 1,
+       "feedback": "Уверенность хороша, но не обещай больше, чем знаешь 🙂"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Got it. Let's take the design question offline after the call.",
+     "tr": "Понял(а). Вопрос с дизайном обсудим отдельно после созвона.",
+     "choices": [
+      {
+       "text": "Sure. And just a heads-up, I'm off on Monday.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>heads-up</b> ✅"
+      },
+      {
+       "text": "Sounds good. I'll ping you right after.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>ping</b> — написать коротко 💬"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Thanks, Alex. Okay, who's next?",
+     "tr": "Спасибо, Алекс. Так, кто следующий?",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

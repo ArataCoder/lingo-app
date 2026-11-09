@@ -1,0 +1,269 @@
+{
+ "id": "en.interview.followup",
+ "track": "en",
+ "level": "B2",
+ "title": "Follow-up & thank-you",
+ "emoji": "✉️",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "follow up",
+   "tr": "уточнить статус, напомнить о себе",
+   "ex": "I'm following up on my interview last Tuesday."
+  },
+  {
+   "term": "a thank-you note",
+   "tr": "благодарственное письмо после интервью",
+   "ex": "I sent a thank-you note the same day."
+  },
+  {
+   "term": "touch base",
+   "tr": "связаться, свериться",
+   "ex": "I just wanted to touch base about the position."
+  },
+  {
+   "term": "the hiring process",
+   "tr": "процесс найма",
+   "ex": "Where are you in the hiring process?"
+  },
+  {
+   "term": "the next steps",
+   "tr": "следующие шаги",
+   "ex": "Could you tell me about the next steps?"
+  },
+  {
+   "term": "I remain very interested",
+   "tr": "я по-прежнему очень заинтересован(а)",
+   "ex": "I remain very interested in the role."
+  },
+  {
+   "term": "a timeline",
+   "tr": "сроки",
+   "ex": "Is there a timeline for the decision?"
+  },
+  {
+   "term": "keep me in mind",
+   "tr": "имейте меня в виду",
+   "ex": "Please keep me in mind for future roles."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Когда лучше отправить thank-you note?",
+   "options": [
+    "В течение 24 часов после интервью",
+    "Через месяц",
+    "Только если позвали на работу"
+   ],
+   "answer": 0,
+   "explain": "Короткое письмо в тот же день — сильный плюс ✉️"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Touch base» значит…",
+   "options": [
+    "Связаться, свериться",
+    "Коснуться пола",
+    "Закончить разговор"
+   ],
+   "answer": 0,
+   "explain": "Деловой разговорный оборот 📞"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Is there a timeline for the decision?",
+   "back": "Есть ли сроки принятия решения?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "We're still interviewing a few candidates and expect to decide by the end of next week.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Когда решение?",
+   "options": [
+    "К концу следующей недели",
+    "Сегодня",
+    "Через два месяца"
+   ],
+   "answer": 0,
+   "explain": "<b>expect to decide by</b> — планируют решить к… 📅"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Unfortunately, we've decided to move forward with another candidate.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что это значит?",
+   "options": [
+    "Выбрали другого кандидата",
+    "Зовут на второй этап",
+    "Хотят обсудить зарплату"
+   ],
+   "answer": 0,
+   "explain": "Вежливая формула отказа. Ответь с благодарностью 🙏"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я хотел(а) уточнить статус по моему интервью.",
+   "tokens": [
+    "I'm",
+    "following",
+    "up",
+    "on",
+    "my",
+    "interview."
+   ],
+   "distractors": [
+    "follow",
+    "to"
+   ],
+   "pattern": "I'm following up on + noun"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я по-прежнему очень заинтересован(а) в этой роли.",
+   "tokens": [
+    "I",
+    "remain",
+    "very",
+    "interested",
+    "in",
+    "the",
+    "role."
+   ],
+   "distractors": [
+    "remaining",
+    "on"
+   ],
+   "pattern": "I remain + interested in…"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Thank you for your time yesterday. I really enjoyed learning about the team.",
+   "tr": "Спасибо за вчерашнюю встречу. Мне было очень интересно узнать о команде.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Hi, I just wanted to touch base about the support role. I remain very interested. Is there a timeline for the decision?",
+   "tr": "Здравствуйте, хотел(а) уточнить по позиции в поддержке. Я по-прежнему очень заинтересован(а). Есть ли сроки решения?",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.interview.followup.s1",
+   "title": "Follow-up call after the interview",
+   "emoji": "✉️",
+   "userRole": "Ты",
+   "botRole": "Recruiter",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hi, this is Maya from BrightHire. How can I help?",
+     "tr": "Здравствуйте, это Майя из BrightHire. Чем могу помочь?",
+     "choices": [
+      {
+       "text": "Hi Maya, this is Alex. I'm following up on my interview for the support role last Tuesday.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Имя + позиция + дата — идеально 🎯"
+      },
+      {
+       "text": "Did I get the job?",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Слишком в лоб. Сначала представься и назови позицию 🙂"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Oh yes, hi Alex! Thanks for the thank-you note, by the way.",
+     "tr": "О да, привет, Алекс! Кстати, спасибо за письмо с благодарностью.",
+     "choices": [
+      {
+       "text": "My pleasure. I really enjoyed meeting the team. Could you tell me about the next steps?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Тепло + вопрос о шагах 👍"
+      },
+      {
+       "text": "No problem. So, is there any news?",
+       "next": "n3",
+       "score": 1,
+       "feedback": "Нормально, но мягче: <b>Could you tell me about the next steps?</b>"
+      }
+     ]
+    },
+    "n3": {
+     "say": "We're finishing the last interviews this week, and we expect to decide by Friday.",
+     "tr": "Мы заканчиваем последние интервью на этой неделе и планируем решить к пятнице.",
+     "choices": [
+      {
+       "text": "That's great to know. I remain very interested in the role.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>I remain very interested</b> ✅"
+      },
+      {
+       "text": "Is there anything else I can send to support my application?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Отличный проактивный вопрос 💪"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Good to hear. If anything changes, I'll let you know right away.",
+     "tr": "Приятно слышать. Если что-то изменится, сразу сообщу.",
+     "choices": [
+      {
+       "text": "Thank you. And if it's not a match this time, please keep me in mind for future roles.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Профессионально и с запасом на будущее 🙌"
+      },
+      {
+       "text": "Perfect, thanks. I'll wait for your email then.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Чётко 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Will do. Talk soon, Alex!",
+     "tr": "Обязательно. До связи, Алекс!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

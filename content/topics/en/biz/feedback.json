@@ -1,0 +1,269 @@
+{
+ "id": "en.biz.feedback",
+ "track": "en",
+ "level": "C1",
+ "title": "Giving & receiving feedback",
+ "emoji": "🗣️",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "Could I share some feedback?",
+   "tr": "можно дать обратную связь?",
+   "ex": "Could I share some feedback on the presentation?"
+  },
+  {
+   "term": "What worked well was…",
+   "tr": "что хорошо сработало, так это…",
+   "ex": "What worked well was your opening story."
+  },
+  {
+   "term": "One thing to work on…",
+   "tr": "над чем стоит поработать…",
+   "ex": "One thing to work on is time management."
+  },
+  {
+   "term": "I hear you",
+   "tr": "я вас слышу, понимаю",
+   "ex": "I hear you, and I see your point."
+  },
+  {
+   "term": "That's fair",
+   "tr": "справедливо",
+   "ex": "That's fair. I'll keep that in mind."
+  },
+  {
+   "term": "constructive",
+   "tr": "конструктивный",
+   "ex": "Thanks, that's really constructive."
+  },
+  {
+   "term": "going forward",
+   "tr": "в дальнейшем",
+   "ex": "Going forward, I'll send updates earlier."
+  },
+  {
+   "term": "take something on board",
+   "tr": "принять к сведению",
+   "ex": "I'll definitely take that on board."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«I'll take that on board» значит…",
+   "options": [
+    "Я приму это к сведению",
+    "Я возьму это на борт самолёта",
+    "Я с этим не согласен(на)"
+   ],
+   "answer": 0,
+   "explain": "Зрелая реакция на критику 🧠"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Какой вариант звучит как конструктивная критика?",
+   "options": [
+    "One thing to work on is the structure of your slides.",
+    "Your slides were bad.",
+    "Never do slides like that again."
+   ],
+   "answer": 0,
+   "explain": "Формула: факт + конкретика + как улучшить 🎯"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Going forward, I'll send updates earlier.",
+   "back": "В дальнейшем я буду присылать апдейты раньше."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Your report was thorough, but the key numbers got a bit lost. Maybe put a summary at the top?",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что советует менеджер?",
+   "options": [
+    "Добавить резюме в начале",
+    "Сократить отчёт вдвое",
+    "Убрать все цифры"
+   ],
+   "answer": 0,
+   "explain": "<b>got lost</b> — затерялись 📈"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "I hear you, but from my side, the deadline wasn't clear.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Как реагирует сотрудник?",
+   "options": [
+    "Признаёт и объясняет свою позицию",
+    "Полностью соглашается",
+    "Злится и уходит"
+   ],
+   "answer": 0,
+   "explain": "<b>I hear you, but…</b> — мягкое несогласие 🤝"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Хорошо сработало твоё вступление.",
+   "tokens": [
+    "What",
+    "worked",
+    "well",
+    "was",
+    "your",
+    "introduction."
+   ],
+   "distractors": [
+    "works",
+    "good"
+   ],
+   "pattern": "What worked well was + noun"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Справедливо. Я учту это.",
+   "tokens": [
+    "That's",
+    "fair.",
+    "I'll",
+    "keep",
+    "that",
+    "in",
+    "mind."
+   ],
+   "distractors": [
+    "fairly",
+    "on"
+   ],
+   "pattern": "I'll keep that in mind"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Thanks, that's really constructive. I'll definitely take that on board.",
+   "tr": "Спасибо, это очень конструктивно. Обязательно приму к сведению.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "I hear you, and that's fair. From my side, the priorities changed twice that week. Going forward, I'll flag it earlier.",
+   "tr": "Понимаю, и это справедливо. С моей стороны, приоритеты менялись дважды за ту неделю. В дальнейшем буду сообщать об этом раньше.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.biz.feedback.s1",
+   "title": "One-on-one feedback",
+   "emoji": "🗣️",
+   "userRole": "Ты",
+   "botRole": "Manager",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Thanks for making time. Could I share some feedback on last week's client call?",
+     "tr": "Спасибо, что нашёл(шла) время. Можно дать обратную связь по звонку с клиентом на прошлой неделе?",
+     "choices": [
+      {
+       "text": "Of course, I'd really appreciate it.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Открытость — сильная позиция 👍"
+      },
+      {
+       "text": "Did I do something wrong?",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Понятная тревога, но лучше открыто: <b>Of course, go ahead</b> 🙂"
+      }
+     ]
+    },
+    "n2": {
+     "say": "What worked well was how calmly you handled their complaints. Really impressive.",
+     "tr": "Хорошо сработало то, как спокойно ты отвечал(а) на их жалобы. Очень впечатляет.",
+     "choices": [
+      {
+       "text": "Thank you, that means a lot. It wasn't easy.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Принять похвалу — тоже навык 🙌"
+      },
+      {
+       "text": "Thanks! I prepared a few answers in advance.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Показываешь, что это не случайность 💪"
+      }
+     ]
+    },
+    "n3": {
+     "say": "One thing to work on: you agreed to a deadline we can't realistically meet.",
+     "tr": "Над чем стоит поработать: ты согласился(ась) на срок, который мы реально не успеем.",
+     "choices": [
+      {
+       "text": "That's fair. I felt pressured in the moment. Going forward, I'll check with the team before committing.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Признание + план — уровень C1 🧠"
+      },
+      {
+       "text": "That's not my fault, they pushed me.",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Защищаться естественно, но лучше признать и предложить решение 🧠"
+      }
+     ]
+    },
+    "n4": {
+     "say": "I appreciate that. How can I support you with that?",
+     "tr": "Ценю это. Как я могу тебе в этом помочь?",
+     "choices": [
+      {
+       "text": "Maybe we could agree on a phrase I can use, like: let me confirm with the team and get back to you.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Конкретное решение 🎯"
+      },
+      {
+       "text": "It would help to have a quick check-in before big client calls.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>check-in</b> — короткая сверка 👌"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Great idea. Let's do that. Thanks for taking it so constructively.",
+     "tr": "Отличная идея. Так и сделаем. Спасибо, что воспринял(а) это так конструктивно.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

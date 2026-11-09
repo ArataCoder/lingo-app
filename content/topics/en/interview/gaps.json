@@ -1,0 +1,270 @@
+{
+ "id": "en.interview.gaps",
+ "track": "en",
+ "level": "B2",
+ "title": "CV gaps & career change",
+ "emoji": "🔄",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "a gap in my résumé",
+   "tr": "перерыв в резюме",
+   "ex": "You may notice a gap in my résumé."
+  },
+  {
+   "term": "I took time off to…",
+   "tr": "я взял(а) паузу, чтобы…",
+   "ex": "I took time off to relocate and settle my family."
+  },
+  {
+   "term": "relocate",
+   "tr": "переехать (в другую страну или город)",
+   "ex": "I relocated to Spain in 2022."
+  },
+  {
+   "term": "career change",
+   "tr": "смена профессии",
+   "ex": "This role is part of a deliberate career change."
+  },
+  {
+   "term": "transferable skills",
+   "tr": "переносимые навыки",
+   "ex": "My transferable skills include customer communication."
+  },
+  {
+   "term": "upskill",
+   "tr": "повышать квалификацию",
+   "ex": "During that time, I upskilled with online courses."
+  },
+  {
+   "term": "hit the ground running",
+   "tr": "быстро влиться и сразу приносить пользу",
+   "ex": "I'm ready to hit the ground running."
+  },
+  {
+   "term": "pivot",
+   "tr": "поворот в карьере",
+   "ex": "I'm pivoting into tech support."
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Transferable skills» — это…",
+   "options": [
+    "Навыки, которые пригодятся в новой сфере",
+    "Навыки перевода",
+    "Устаревшие навыки"
+   ],
+   "answer": 0,
+   "explain": "Главный аргумент при смене профессии 🔄"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Как лучше объяснить перерыв в работе?",
+   "options": [
+    "Briefly and honestly, then focus on what you learned.",
+    "Hide it and hope they don't notice.",
+    "Apologize for a long time."
+   ],
+   "answer": 0,
+   "explain": "Формула: факт → чем занимался(ась) → почему готов(а) сейчас 🎯"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "I'm ready to hit the ground running.",
+   "back": "Я готов(а) сразу включиться в работу."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "I see a two-year gap here. Can you walk me through it?",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что просит интервьюер?",
+   "options": [
+    "Рассказать о двухлетнем перерыве",
+    "Показать дипломы",
+    "Назвать зарплату"
+   ],
+   "answer": 0,
+   "explain": "<b>walk me through</b> — расскажите по шагам 🧭"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "During that time, I completed two certifications and volunteered at a local charity.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что делал кандидат в перерыве?",
+   "options": [
+    "Получил сертификаты и волонтёрил",
+    "Путешествовал",
+    "Ничего не делал"
+   ],
+   "answer": 0,
+   "explain": "Пауза с обучением — это плюс 📚"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я взял(а) паузу, чтобы переехать в Испанию.",
+   "tokens": [
+    "I",
+    "took",
+    "time",
+    "off",
+    "to",
+    "relocate",
+    "to",
+    "Spain."
+   ],
+   "distractors": [
+    "taking",
+    "for"
+   ],
+   "pattern": "I took time off + to + verb"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Это осознанная смена профессии.",
+   "tokens": [
+    "This",
+    "is",
+    "a",
+    "deliberate",
+    "career",
+    "change."
+   ],
+   "distractors": [
+    "deliberately",
+    "an"
+   ],
+   "pattern": "This is a + adj + noun"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "I relocated to Spain in twenty twenty-two and used that time to upskill.",
+   "tr": "Я переехал(а) в Испанию в 2022 году и использовал(а) это время, чтобы повысить квалификацию.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Yes, there's a gap in my résumé. I took time off to relocate, I upskilled with online courses, and now I'm ready to hit the ground running.",
+   "tr": "Да, в моём резюме есть перерыв. Я брал(а) паузу на переезд, прошёл(шла) онлайн-курсы и теперь готов(а) сразу включиться в работу.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.interview.gaps.s1",
+   "title": "Explaining a gap in your résumé",
+   "emoji": "🔄",
+   "userRole": "Ты",
+   "botRole": "Hiring manager",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Thanks for coming in. I noticed a gap in your résumé. Can you walk me through it?",
+     "tr": "Спасибо, что пришли. Я вижу перерыв в резюме. Расскажете?",
+     "choices": [
+      {
+       "text": "Of course. I took time off to relocate to Spain and settle in.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Спокойно и по факту 👍"
+      },
+      {
+       "text": "Sorry, sorry, it's a long story, I'm really sorry.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Не извиняйся — перерыв это нормально. Просто факт 🙂"
+      }
+     ]
+    },
+    "n2": {
+     "say": "I see. What did you do during that time?",
+     "tr": "Понятно. Чем вы занимались в это время?",
+     "choices": [
+      {
+       "text": "I upskilled with online courses in customer support and improved my Spanish.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>upskilled</b> — сильное слово 📚"
+      },
+      {
+       "text": "Honestly, I dealt with some personal matters, and I also took a few online courses.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Честно и без лишних деталей — идеальный баланс 👌"
+      }
+     ]
+    },
+    "n3": {
+     "say": "This role is quite different from your past jobs. Why the change?",
+     "tr": "Эта роль сильно отличается от прошлых. Почему такая смена?",
+     "choices": [
+      {
+       "text": "It's a deliberate career change. My transferable skills, like communication and problem-solving, fit this role well.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>transferable skills</b> — точно в цель 🎯"
+      },
+      {
+       "text": "I just need any job right now.",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Честно, но отпугивает. Покажи мотивацию именно к этой роли 🎯"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Fair enough. How quickly could you get up to speed?",
+     "tr": "Справедливо. Как быстро вы сможете войти в курс дела?",
+     "choices": [
+      {
+       "text": "I learn fast. In my last job, I was fully independent in two weeks, so I'm ready to hit the ground running.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Факт + идиома — супер 💪"
+      },
+      {
+       "text": "Pretty quickly, I think. I'm used to learning new tools on my own.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>I'm used to</b> — я привык(ла) 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "That's great to hear. Let's talk about the next steps.",
+     "tr": "Рад(а) это слышать. Давайте обсудим следующие шаги.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

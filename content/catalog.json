@@ -727,7 +727,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/en/interview/gaps.json"
       },
       {
        "id": "en.interview.followup",
@@ -737,7 +738,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/en/interview/followup.json"
       }
      ]
     },
@@ -814,7 +816,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/en/biz/email.json"
       },
       {
        "id": "en.biz.standup",
@@ -824,7 +827,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/en/biz/standup.json"
       },
       {
        "id": "en.biz.feedback",
@@ -834,7 +838,8 @@
        "tags": [
         "v4.1"
        ],
-       "status": "soon"
+       "status": "ready",
+       "file": "topics/en/biz/feedback.json"
       }
      ]
     },

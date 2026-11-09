@@ -1,0 +1,268 @@
+{
+ "id": "en.biz.email",
+ "track": "en",
+ "level": "B2",
+ "title": "Emails that sound native",
+ "emoji": "📧",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "I hope this email finds you well",
+   "tr": "надеюсь, у вас всё хорошо (формальное начало)",
+   "ex": "I hope this email finds you well."
+  },
+  {
+   "term": "Just following up on…",
+   "tr": "напоминаю о…",
+   "ex": "Just following up on my email from Monday."
+  },
+  {
+   "term": "Please find attached…",
+   "tr": "во вложении…",
+   "ex": "Please find attached the updated invoice."
+  },
+  {
+   "term": "at your earliest convenience",
+   "tr": "как только будет возможность",
+   "ex": "Please reply at your earliest convenience."
+  },
+  {
+   "term": "Could you clarify…?",
+   "tr": "не могли бы вы уточнить…?",
+   "ex": "Could you clarify the deadline?"
+  },
+  {
+   "term": "Let me know if you have any questions",
+   "tr": "пишите, если будут вопросы",
+   "ex": "Let me know if you have any questions."
+  },
+  {
+   "term": "loop in",
+   "tr": "добавить в переписку",
+   "ex": "I'm looping in Sara from finance."
+  },
+  {
+   "term": "Best regards",
+   "tr": "с уважением",
+   "ex": "Best regards, Alex"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Какая фраза звучит естественнее в деловом письме?",
+   "options": [
+    "Please find attached the report.",
+    "In attachment you can see report.",
+    "I attach you the report."
+   ],
+   "answer": 0,
+   "explain": "<b>Please find attached</b> — стандарт 📎"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Loop in» значит…",
+   "options": [
+    "Добавить человека в переписку",
+    "Закольцевать задачу",
+    "Удалить из чата"
+   ],
+   "answer": 0,
+   "explain": "<b>I'm looping in…</b> — добавляю в копию 🔁"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "Just following up on my last email.",
+   "back": "Напоминаю о моём прошлом письме."
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Apologies for the delay. The payment will go out by Thursday.",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что пишет клиент?",
+   "options": [
+    "Извиняется, оплатят до четверга",
+    "Отказывается платить",
+    "Просит скидку"
+   ],
+   "answer": 0,
+   "explain": "<b>go out</b> — будет отправлена 💸"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Could you resend the invoice with our new billing address?",
+    "lang": "en-US",
+    "rate": 0.85
+   },
+   "q": "Что просят?",
+   "options": [
+    "Переслать счёт с новым адресом",
+    "Отменить счёт",
+    "Позвонить бухгалтеру"
+   ],
+   "answer": 0,
+   "explain": "<b>billing address</b> — платёжный адрес 🧾"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Во вложении — обновлённый счёт.",
+   "tokens": [
+    "Please",
+    "find",
+    "attached",
+    "the",
+    "updated",
+    "invoice."
+   ],
+   "distractors": [
+    "attaching",
+    "an"
+   ],
+   "pattern": "Please find attached + noun"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Ответьте, пожалуйста, как будет возможность.",
+   "tokens": [
+    "Please",
+    "reply",
+    "at",
+    "your",
+    "earliest",
+    "convenience."
+   ],
+   "distractors": [
+    "early",
+    "in"
+   ],
+   "pattern": "at your earliest convenience"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Hi Mark, I hope this email finds you well. Just following up on the invoice from last month.",
+   "tr": "Привет, Марк, надеюсь, у вас всё хорошо. Напоминаю о счёте за прошлый месяц.",
+   "lang": "en-US"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Thanks for the update. Please find attached the corrected invoice. I'm looping in Sara from finance. Let me know if you have any questions.",
+   "tr": "Спасибо за новости. Во вложении исправленный счёт. Добавляю Сару из финансов. Пишите, если будут вопросы.",
+   "lang": "en-US"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "en.biz.email.s1",
+   "title": "Chasing an invoice by email",
+   "emoji": "📧",
+   "userRole": "Ты",
+   "botRole": "Client",
+   "voice": "en-US",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Hi Alex, sorry, I missed your last email. What was it about?",
+     "tr": "Привет, Алекс, извини, я пропустил(а) твоё последнее письмо. О чём оно было?",
+     "choices": [
+      {
+       "text": "No worries! Just following up on the invoice from October. It was due last week.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Дружелюбно, но по делу 👍"
+      },
+      {
+       "text": "You didn't pay.",
+       "next": "n2",
+       "score": 0,
+       "feedback": "Слишком резко для клиента. Начни с <b>No worries!</b> 🙂"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Ah, right. Could you resend it? I can't find it in my inbox.",
+     "tr": "А, точно. Можешь переслать? Не могу найти в почте.",
+     "choices": [
+      {
+       "text": "Of course. Please find attached the invoice again.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>Please find attached</b> 📎"
+      },
+      {
+       "text": "Sure, here it is again. I've also added the bank details.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Проактивно — меньше вопросов потом 💡"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Thanks. Finance says the billing address has changed. Who should they contact?",
+     "tr": "Спасибо. Финансы говорят, что платёжный адрес изменился. С кем им связаться?",
+     "choices": [
+      {
+       "text": "I'm looping in Sara from our finance team. She'll send an updated version.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>looping in</b> 🔁"
+      },
+      {
+       "text": "Could you clarify the new address, please? I'll update the invoice today.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Уточнил(а) и дал(а) срок ✅"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Perfect. We should be able to pay by Thursday.",
+     "tr": "Отлично. Мы сможем оплатить к четвергу.",
+     "choices": [
+      {
+       "text": "That works. Thanks for sorting this out so quickly. Best regards, Alex",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Благодарность в конце — правильно 🙏"
+      },
+      {
+       "text": "Thursday is fine. Let me know if you have any questions.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Стандартное вежливое завершение 👌"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Will do. Have a great week!",
+     "tr": "Хорошо. Хорошей недели!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
