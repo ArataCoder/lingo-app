@@ -281,3 +281,6 @@ Telegram (WebApp)  ──►  GitHub Pages (статический фронт: i
 - Gradual unlock: content/config.json unlock.mode = "chain", alwaysOpen = []. The first topic of each block is open; the next one opens after ≥60% on the previous one. Hero/nextTopic already respect isOpen.
 - **Deploy rule (bot):** ALWAYS do a full PUT /workers/scripts/lingo-brain-bot with metadata.bindings + keep_bindings:["secret_text","plain_text"]. Never use /content.
 - App deploy: patch the inline worker in place (GET /content/v2 → JSON.parse F → replace changed files → PUT with new BUILD). Build v5.5-2026-11-09T17:51:30Z.
+
+- **REAL root cause (found later in v5.5):** a Cloudflare Workers Builds trigger (GitHub repo lingo-app, branch main, "npx wrangler deploy", root /) was attached to lingo-brain-bot. Every push to main redeployed the bot as a static-assets-only worker. That wiped the code, D1 and all secrets (and the dashboard said "Variables cannot be added to a Worker that only has static assets"). The trigger is DELETED. Do NOT reconnect Workers Builds to lingo-brain-bot without a wrangler.toml (main = "bot/worker.js", d1 binding DB).
+- The bot was redeployed as an ES module with DB + new SETUP_KEY/WEBHOOK_SECRET + keep_bindings. The owner adds BOT_TOKEN (and optionally ADMIN_CHAT_ID) as Secrets in the dashboard, then the agent runs /setup?key=SETUP_KEY.
