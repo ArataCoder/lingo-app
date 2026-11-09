@@ -1,0 +1,266 @@
+{
+ "id": "es.travel.restaurant",
+ "track": "es",
+ "level": "A2",
+ "title": "Ресторан: menú del día",
+ "emoji": "🍽️",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "el menú del día",
+   "tr": "комплексный обед",
+   "ex": "¿Qué hay de menú del día?"
+  },
+  {
+   "term": "de primero / de segundo",
+   "tr": "на первое / на второе",
+   "ex": "De primero, ensalada; de segundo, pescado."
+  },
+  {
+   "term": "el postre",
+   "tr": "десерт",
+   "ex": "¿Qué hay de postre?"
+  },
+  {
+   "term": "para beber",
+   "tr": "из напитков",
+   "ex": "Para beber, agua sin gas."
+  },
+  {
+   "term": "una mesa para dos",
+   "tr": "столик на двоих",
+   "ex": "¿Tiene una mesa para dos?"
+  },
+  {
+   "term": "tengo alergia a…",
+   "tr": "у меня аллергия на…",
+   "ex": "Tengo alergia a los frutos secos."
+  },
+  {
+   "term": "la cuenta",
+   "tr": "счёт",
+   "ex": "La cuenta, por favor."
+  },
+  {
+   "term": "¿Está incluido?",
+   "tr": "это включено?",
+   "ex": "¿El café está incluido?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«Menú del día» — это…",
+   "options": [
+    "Комплексный обед: первое, второе, десерт",
+    "Меню на английском",
+    "Только завтрак"
+   ],
+   "answer": 0,
+   "explain": "Обычно по будням с 13 до 16, около 12–15 € 🍽️"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Хочешь счёт. Что сказать?",
+   "options": [
+    "La cuenta, por favor.",
+    "El cuento, por favor.",
+    "La cuesta, por favor."
+   ],
+   "answer": 0,
+   "explain": "<b>la cuenta</b> — счёт, <b>el cuento</b> — сказка 😄"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "¿Qué hay de postre?",
+   "back": "Что на десерт?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "De primero tenemos gazpacho o ensalada, y de segundo, pollo o merluza.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что на второе?",
+   "options": [
+    "Курица или хек",
+    "Гаспачо или салат",
+    "Только рыба"
+   ],
+   "answer": 0,
+   "explain": "<b>merluza</b> — хек, <b>pollo</b> — курица 🐟"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "El menú incluye pan, bebida y postre o café.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что входит в меню?",
+   "options": [
+    "Хлеб, напиток и десерт или кофе",
+    "Только основное блюдо",
+    "Вино и два десерта"
+   ],
+   "answer": 0,
+   "explain": "<b>incluye</b> — включает ☕"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "У вас есть столик на двоих?",
+   "tokens": [
+    "¿Tiene",
+    "una",
+    "mesa",
+    "para",
+    "dos?"
+   ],
+   "distractors": [
+    "por",
+    "mesas"
+   ],
+   "pattern": "¿Tiene una mesa para + число?"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "На первое — салат, пожалуйста.",
+   "tokens": [
+    "De",
+    "primero,",
+    "ensalada,",
+    "por",
+    "favor."
+   ],
+   "distractors": [
+    "primera",
+    "el"
+   ],
+   "pattern": "De primero / De segundo + блюдо"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Tengo alergia a los frutos secos. ¿Este plato lleva nueces?",
+   "tr": "У меня аллергия на орехи. В этом блюде есть грецкие орехи?",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Hola, una mesa para dos, por favor. Queremos el menú del día. ¿El café está incluido?",
+   "tr": "Здравствуйте, столик на двоих, пожалуйста. Мы хотим комплексный обед. Кофе включён?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.travel.restaurant.s1",
+   "title": "Обед по menú del día",
+   "emoji": "🍽️",
+   "userRole": "Ты",
+   "botRole": "Camarero",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¡Buenas! ¿Cuántos son?",
+     "tr": "Добрый день! Сколько вас?",
+     "choices": [
+      {
+       "text": "Buenas. Somos dos. ¿Tiene una mesa en la terraza?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Сразу и про террасу 👍"
+      },
+      {
+       "text": "Dos.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Поймут. Вежливее: <b>Somos dos, por favor</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Sí, aquí tienen. ¿Van a tomar el menú del día?",
+     "tr": "Да, прошу. Будете комплексный обед?",
+     "choices": [
+      {
+       "text": "Sí. ¿Qué hay de primero?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>de primero</b> ✅"
+      },
+      {
+       "text": "¿Qué incluye el menú?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Полезный вопрос 👌"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Hay gazpacho o ensalada mixta. De segundo, pollo asado o merluza a la plancha.",
+     "tr": "Есть гаспачо или смешанный салат. На второе — запечённая курица или хек на гриле.",
+     "choices": [
+      {
+       "text": "Para mí, gazpacho y merluza. Tengo alergia a los frutos secos, ¿hay algún problema?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Про аллергию надо говорить сразу — молодец ⚠️"
+      },
+      {
+       "text": "Quiero comer.",
+       "next": "n4",
+       "score": 1,
+       "feedback": "Скажи конкретно: <b>Para mí, ensalada y pollo</b>."
+      }
+     ]
+    },
+    "n4": {
+     "say": "Ningún problema. ¿Y para beber?",
+     "tr": "Никаких проблем. А что будете пить?",
+     "choices": [
+      {
+       "text": "Agua sin gas, por favor.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>sin gas</b> — без газа 💧"
+      },
+      {
+       "text": "Una caña, por favor. ¿Está incluida en el menú?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>caña</b> — маленькое разливное пиво 🍺"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Perfecto. Ahora mismo se lo traigo.",
+     "tr": "Отлично. Сейчас принесу.",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

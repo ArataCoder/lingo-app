@@ -1,0 +1,265 @@
+{
+ "id": "es.social.fiestas",
+ "track": "es",
+ "level": "A2",
+ "title": "Праздники и fiestas",
+ "emoji": "🎉",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "las fiestas del pueblo",
+   "tr": "праздники города",
+   "ex": "En agosto son las fiestas del pueblo."
+  },
+  {
+   "term": "la Nochebuena",
+   "tr": "сочельник (24 декабря)",
+   "ex": "En Nochebuena cenamos en familia."
+  },
+  {
+   "term": "las uvas de Nochevieja",
+   "tr": "виноград в новогоднюю ночь",
+   "ex": "Comemos doce uvas en Nochevieja."
+  },
+  {
+   "term": "los Reyes Magos",
+   "tr": "волхвы (6 января, подарки)",
+   "ex": "Los niños esperan a los Reyes Magos."
+  },
+  {
+   "term": "la Semana Santa",
+   "tr": "Страстная неделя",
+   "ex": "En Semana Santa hay procesiones."
+  },
+  {
+   "term": "la noche de San Juan",
+   "tr": "ночь Сан-Хуан (23 июня)",
+   "ex": "En San Juan hacemos hogueras en la playa."
+  },
+  {
+   "term": "los fuegos artificiales",
+   "tr": "фейерверк",
+   "ex": "Los fuegos artificiales empiezan a las doce."
+  },
+  {
+   "term": "¡Felicidades!",
+   "tr": "поздравляю!",
+   "ex": "¡Felicidades por tu cumpleaños!"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "Что едят в Испании в полночь на Новый год?",
+   "options": [
+    "Двенадцать виноградин",
+    "Двенадцать оливок",
+    "Паэлью"
+   ],
+   "answer": 0,
+   "explain": "<b>Las doce uvas</b> — по одной на каждый удар часов 🍇"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Когда в Испании традиционно дарят детям подарки?",
+   "options": [
+    "6 января, Los Reyes Magos",
+    "31 декабря",
+    "1 мая"
+   ],
+   "answer": 0,
+   "explain": "<b>Los Reyes Magos</b> — 6 января, главный день подарков 🎁"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "¡Felicidades!",
+   "back": "Поздравляю!"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "En San Juan vamos a la playa, hacemos una hoguera y saltamos las olas.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что делают в ночь Сан-Хуан?",
+   "options": [
+    "Костёр и прыжки через волны",
+    "Едят виноград",
+    "Идут в церковь"
+   ],
+   "answer": 0,
+   "explain": "<b>hoguera</b> — костёр, <b>olas</b> — волны 🌊"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Los fuegos artificiales empiezan a medianoche en el puerto.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Когда и где фейерверк?",
+   "options": [
+    "В полночь, в порту",
+    "В полдень, на площади",
+    "Завтра вечером"
+   ],
+   "answer": 0,
+   "explain": "<b>medianoche</b> — полночь 🎆"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "В сочельник мы ужинаем семьёй.",
+   "tokens": [
+    "En",
+    "Nochebuena",
+    "cenamos",
+    "en",
+    "familia."
+   ],
+   "distractors": [
+    "cenar",
+    "de"
+   ],
+   "pattern": "En + праздник + глагол"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Поздравляю с днём рождения!",
+   "tokens": [
+    "¡Felicidades",
+    "por",
+    "tu",
+    "cumpleaños!"
+   ],
+   "distractors": [
+    "para",
+    "feliz"
+   ],
+   "pattern": "¡Felicidades por + повод!"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "En Nochevieja comemos doce uvas.",
+   "tr": "В новогоднюю ночь мы едим двенадцать виноградин.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "En mi país también celebramos la Navidad, pero aquí me encantan los Reyes Magos y las fiestas del pueblo.",
+   "tr": "В моей стране мы тоже празднуем Рождество, но здесь я обожаю волхвов и городские праздники.",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.social.fiestas.s1",
+   "title": "Ночь Сан-Хуан на пляже",
+   "emoji": "🎉",
+   "userRole": "Ты",
+   "botRole": "Lucía",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¡Hola! Esta noche es San Juan. ¿Vienes a la playa con nosotros?",
+     "tr": "Привет! Сегодня ночь Сан-Хуан. Пойдёшь с нами на пляж?",
+     "choices": [
+      {
+       "text": "¡Hola! Sí, me encantaría. ¿Qué se hace en San Juan?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "<b>Me encantaría</b> — с удовольствием 🙌"
+      },
+      {
+       "text": "¿San Juan? ¿Qué es?",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Нормально, но с приветствием теплее: <b>¡Hola! ¿Qué es San Juan?</b>"
+      }
+     ]
+    },
+    "n2": {
+     "say": "Hacemos una hoguera, cenamos en la arena y a medianoche saltamos las olas.",
+     "tr": "Разводим костёр, ужинаем на песке, а в полночь прыгаем через волны.",
+     "choices": [
+      {
+       "text": "¡Qué guay! ¿Hay que llevar algo?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>¡Qué guay!</b> — как круто 😎"
+      },
+      {
+       "text": "¿Saltar las olas? ¿Para qué?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Любопытство — это хорошо 😄"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Dicen que trae buena suerte. Tienes que saltar siete olas y pedir un deseo.",
+     "tr": "Говорят, это приносит удачу. Нужно прыгнуть через семь волн и загадать желание.",
+     "choices": [
+      {
+       "text": "Me encanta. En mi país también hay una noche parecida en verano.",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Отлично! Ивана Купала — тоже летняя ночь с костром 🔥"
+      },
+      {
+       "text": "Eso es una tontería.",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Обидно для традиции. Лучше: <b>¡Qué curioso!</b>"
+      }
+     ]
+    },
+    "n4": {
+     "say": "¿En serio? ¿Y cómo se celebra?",
+     "tr": "Серьёзно? А как её празднуют?",
+     "choices": [
+      {
+       "text": "También hacemos hogueras y saltamos por encima del fuego.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "<b>por encima de</b> — поверх, через 🔥"
+      },
+      {
+       "text": "Con flores, música y comida en el campo.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Красиво описал(а) 🌼"
+      }
+     ]
+    },
+    "n5": {
+     "say": "¡Qué bonito! Pues esta noche lo celebramos aquí. ¡Nos vemos a las diez!",
+     "tr": "Как красиво! Тогда сегодня празднуем здесь. Увидимся в десять!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

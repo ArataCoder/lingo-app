@@ -1,0 +1,268 @@
+{
+ "id": "es.travel.car",
+ "track": "es",
+ "level": "B1",
+ "title": "Аренда машины",
+ "emoji": "🚗",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "alquilar un coche",
+   "tr": "арендовать машину",
+   "ex": "Quiero alquilar un coche tres días."
+  },
+  {
+   "term": "el carné de conducir",
+   "tr": "водительские права",
+   "ex": "Aquí tiene mi carné de conducir."
+  },
+  {
+   "term": "el seguro a todo riesgo",
+   "tr": "полная страховка",
+   "ex": "¿El seguro a todo riesgo está incluido?"
+  },
+  {
+   "term": "la fianza",
+   "tr": "залог, депозит",
+   "ex": "La fianza es de trescientos euros."
+  },
+  {
+   "term": "con el depósito lleno",
+   "tr": "с полным баком",
+   "ex": "Hay que devolverlo con el depósito lleno."
+  },
+  {
+   "term": "el kilometraje ilimitado",
+   "tr": "без ограничения пробега",
+   "ex": "¿Tiene kilometraje ilimitado?"
+  },
+  {
+   "term": "un rasguño",
+   "tr": "царапина",
+   "ex": "Hay un rasguño en la puerta."
+  },
+  {
+   "term": "devolver el coche",
+   "tr": "вернуть машину",
+   "ex": "¿Dónde tengo que devolver el coche?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«La fianza» — это…",
+   "options": [
+    "Залог, который вернут",
+    "Штраф за скорость",
+    "Цена бензина"
+   ],
+   "answer": 0,
+   "explain": "<b>fianza</b> блокируют на карте и возвращают после сдачи машины 💳"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Правило «lleno/lleno» значит…",
+   "options": [
+    "Берёшь с полным баком — возвращаешь с полным",
+    "Бак всегда пустой",
+    "Платишь за бензин заранее"
+   ],
+   "answer": 0,
+   "explain": "<b>depósito lleno</b> — полный бак ⛽"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "¿El seguro a todo riesgo está incluido?",
+   "back": "Полная страховка включена?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Sin el seguro a todo riesgo, la franquicia es de mil euros.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что будет без полной страховки?",
+   "options": [
+    "Франшиза 1000 евро",
+    "Машину не дадут",
+    "Страховка бесплатная"
+   ],
+   "answer": 0,
+   "explain": "<b>franquicia</b> — сумма, которую платишь сам(а) при повреждении 🚗"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Antes de salir, haga fotos del coche por fuera y por dentro.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что советуют?",
+   "options": [
+    "Сфотографировать машину снаружи и внутри",
+    "Помыть машину",
+    "Заправиться"
+   ],
+   "answer": 0,
+   "explain": "Фото до выезда защищают от лишних претензий 📸"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Я хочу арендовать машину на три дня.",
+   "tokens": [
+    "Quiero",
+    "alquilar",
+    "un",
+    "coche",
+    "tres",
+    "días."
+   ],
+   "distractors": [
+    "alquilo",
+    "una"
+   ],
+   "pattern": "Quiero alquilar + что + срок"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "На двери есть царапина.",
+   "tokens": [
+    "Hay",
+    "un",
+    "rasguño",
+    "en",
+    "la",
+    "puerta."
+   ],
+   "distractors": [
+    "está",
+    "una"
+   ],
+   "pattern": "Hay + что + где"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "¿Tiene kilometraje ilimitado? Quiero ir a Granada.",
+   "tr": "Пробег без ограничений? Я хочу съездить в Гранаду.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "Antes de firmar, quiero ver el coche. Hay un rasguño en la puerta. ¿Puede apuntarlo en el contrato?",
+   "tr": "Перед подписанием хочу посмотреть машину. На двери царапина. Можете отметить это в договоре?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.travel.car.s1",
+   "title": "Забрать машину в прокате",
+   "emoji": "🚗",
+   "userRole": "Ты",
+   "botRole": "Agente de alquiler",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "Buenos días. ¿Tiene una reserva?",
+     "tr": "Доброе утро. У вас есть бронь?",
+     "choices": [
+      {
+       "text": "Sí, aquí tiene el código de la reserva.",
+       "next": "n2",
+       "score": 2,
+       "feedback": "Чётко 👍"
+      },
+      {
+       "text": "Coche. Reserva. Sí.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Лучше фразой: <b>Sí, tengo una reserva</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Perfecto. Necesito su carné de conducir y una tarjeta de crédito para la fianza.",
+     "tr": "Отлично. Мне нужны ваши права и кредитная карта для залога.",
+     "choices": [
+      {
+       "text": "Aquí tiene. ¿De cuánto es la fianza?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Сумму залога важно знать 💳"
+      },
+      {
+       "text": "Solo tengo tarjeta de débito. ¿Es un problema?",
+       "next": "n3",
+       "score": 2,
+       "feedback": "Очень важный вопрос: многие прокаты не принимают дебетовые карты 💳"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Trescientos euros. ¿Quiere añadir el seguro a todo riesgo? Son quince euros al día.",
+     "tr": "Триста евро. Хотите добавить полную страховку? Пятнадцать евро в день.",
+     "choices": [
+      {
+       "text": "¿Qué cubre exactamente? ¿No hay franquicia?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "Правильные вопросы 🧐"
+      },
+      {
+       "text": "No, gracias. Conduzco con cuidado.",
+       "next": "n4",
+       "score": 1,
+       "feedback": "Можно, но рискованно: без неё франшиза бывает 1000 € ⚠️"
+      }
+     ]
+    },
+    "n4": {
+     "say": "Lo cubre todo, sin franquicia. El coche se devuelve con el depósito lleno.",
+     "tr": "Покрывает всё, без франшизы. Машину возвращают с полным баком.",
+     "choices": [
+      {
+       "text": "Vale, lo añado. Antes de salir, voy a hacer fotos del coche.",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Фото до выезда — лайфхак 📸"
+      },
+      {
+       "text": "Hay un rasguño en la puerta. ¿Puede apuntarlo, por favor?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Отметить царапину сразу — супер 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Claro, lo apunto ahora. ¡Buen viaje!",
+     "tr": "Конечно, сейчас отмечу. Хорошей поездки!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,267 @@
+{
+ "id": "es.social.hobbies",
+ "track": "es",
+ "level": "A2",
+ "title": "Хобби и выходные",
+ "emoji": "🎨",
+ "estMinutes": 4,
+ "cheatsheet": [
+  {
+   "term": "el fin de semana",
+   "tr": "выходные",
+   "ex": "¿Qué haces el fin de semana?"
+  },
+  {
+   "term": "me gusta + infinitivo",
+   "tr": "мне нравится (делать)",
+   "ex": "Me gusta caminar por la playa."
+  },
+  {
+   "term": "me encanta",
+   "tr": "обожаю",
+   "ex": "Me encanta cocinar."
+  },
+  {
+   "term": "hacer deporte",
+   "tr": "заниматься спортом",
+   "ex": "Hago deporte tres veces por semana."
+  },
+  {
+   "term": "quedar con amigos",
+   "tr": "встречаться с друзьями",
+   "ex": "El sábado quedo con amigos."
+  },
+  {
+   "term": "salir a correr",
+   "tr": "выйти на пробежку",
+   "ex": "Salgo a correr por la mañana."
+  },
+  {
+   "term": "ver series",
+   "tr": "смотреть сериалы",
+   "ex": "Los domingos veo series en casa."
+  },
+  {
+   "term": "¿Te apuntas?",
+   "tr": "присоединишься?",
+   "ex": "Vamos a la playa. ¿Te apuntas?"
+  }
+ ],
+ "cards": [
+  {
+   "id": "c1",
+   "type": "choice",
+   "energy": "low",
+   "q": "«¿Te apuntas?» значит…",
+   "options": [
+    "Присоединишься?",
+    "Ты записал(а)?",
+    "Ты устал(а)?"
+   ],
+   "answer": 0,
+   "explain": "<b>apuntarse</b> — присоединиться, вписаться 🙌"
+  },
+  {
+   "id": "c2",
+   "type": "choice",
+   "energy": "low",
+   "q": "Обожаешь готовить. Как сказать?",
+   "options": [
+    "Me encanta cocinar.",
+    "Me encanta cocina yo.",
+    "Yo encanto cocinar."
+   ],
+   "answer": 0,
+   "explain": "<b>Me encanta</b> + инфинитив 🍳"
+  },
+  {
+   "id": "c3",
+   "type": "flash",
+   "energy": "low",
+   "front": "¿Qué haces el fin de semana?",
+   "back": "Что ты делаешь на выходных?"
+  },
+  {
+   "id": "c4",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Los sábados juego al pádel con mis compañeros de trabajo.",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что он делает по субботам?",
+   "options": [
+    "Играет в падел с коллегами",
+    "Работает допоздна",
+    "Смотрит сериалы"
+   ],
+   "answer": 0,
+   "explain": "<b>pádel</b> — очень популярный спорт в Испании 🎾"
+  },
+  {
+   "id": "c5",
+   "type": "listen",
+   "energy": "normal",
+   "audio": {
+    "text": "Este domingo hay un mercadillo en el puerto. ¿Te apuntas?",
+    "lang": "es-ES",
+    "rate": 0.85
+   },
+   "q": "Что предлагают?",
+   "options": [
+    "Пойти на рынок в порту",
+    "Поехать в аэропорт",
+    "Остаться дома"
+   ],
+   "answer": 0,
+   "explain": "<b>mercadillo</b> — уличный рынок 🛍️"
+  },
+  {
+   "id": "c6",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "Мне нравится гулять по пляжу.",
+   "tokens": [
+    "Me",
+    "gusta",
+    "caminar",
+    "por",
+    "la",
+    "playa."
+   ],
+   "distractors": [
+    "gusto",
+    "camino"
+   ],
+   "pattern": "Me gusta + инфинитив"
+  },
+  {
+   "id": "c7",
+   "type": "build",
+   "energy": "normal",
+   "prompt": "В субботу я встречаюсь с друзьями.",
+   "tokens": [
+    "El",
+    "sábado",
+    "quedo",
+    "con",
+    "amigos."
+   ],
+   "distractors": [
+    "queda",
+    "para"
+   ],
+   "pattern": "quedar con + кем"
+  },
+  {
+   "id": "c8",
+   "type": "speak",
+   "energy": "normal",
+   "text": "Me encanta hacer deporte. Salgo a correr casi cada día.",
+   "tr": "Обожаю спорт. Бегаю почти каждый день.",
+   "lang": "es-ES"
+  },
+  {
+   "id": "c9",
+   "type": "speak",
+   "energy": "boost",
+   "text": "El fin de semana me gusta quedar con amigos, ir a la playa y ver series en casa. ¿Y a ti?",
+   "tr": "На выходных я люблю встречаться с друзьями, ходить на пляж и смотреть сериалы дома. А ты?",
+   "lang": "es-ES"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "es.social.hobbies.s1",
+   "title": "Что делаешь на выходных?",
+   "emoji": "🎨",
+   "userRole": "Ты",
+   "botRole": "Javi",
+   "voice": "es-ES",
+   "start": "n1",
+   "nodes": {
+    "n1": {
+     "say": "¡Ey! Por fin es viernes. ¿Qué haces este fin de semana?",
+     "tr": "Эй! Наконец пятница. Что делаешь на этих выходных?",
+     "choices": [
+      {
+       "text": "Pues el sábado quiero ir a la playa. ¿Y tú?",
+       "next": "n2",
+       "score": 2,
+       "feedback": "План + вопрос в ответ 👍"
+      },
+      {
+       "text": "Nada.",
+       "next": "n2",
+       "score": 1,
+       "feedback": "Коротковато. Добавь: <b>Nada especial, descansar</b>."
+      }
+     ]
+    },
+    "n2": {
+     "say": "Yo juego al pádel el sábado por la mañana. ¿Te gusta el deporte?",
+     "tr": "Я играю в падел в субботу утром. Ты любишь спорт?",
+     "choices": [
+      {
+       "text": "Sí, me encanta. Salgo a correr casi cada día.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>Me encanta</b> ✅"
+      },
+      {
+       "text": "No mucho, prefiero leer o ver series.",
+       "next": "n3",
+       "score": 2,
+       "feedback": "<b>prefiero</b> — предпочитаю 👌"
+      }
+     ]
+    },
+    "n3": {
+     "say": "Oye, después del pádel quedamos para comer paella. ¿Te apuntas?",
+     "tr": "Слушай, после падела мы собираемся поесть паэлью. Присоединишься?",
+     "choices": [
+      {
+       "text": "¡Claro que me apunto! ¿A qué hora?",
+       "next": "n4",
+       "score": 2,
+       "feedback": "<b>Me apunto</b> — я в деле 🙌"
+      },
+      {
+       "text": "No me gusta la gente.",
+       "next": "n4",
+       "score": 0,
+       "feedback": "Звучит резко. Если не хочется: <b>Esta vez no puedo, gracias</b>."
+      }
+     ]
+    },
+    "n4": {
+     "say": "A las dos, en el chiringuito de la playa del Cura.",
+     "tr": "В два, в пляжном баре на пляже дель Кура.",
+     "choices": [
+      {
+       "text": "Perfecto. ¿Llevo algo?",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Вежливый вопрос 😊"
+      },
+      {
+       "text": "Genial, allí estaré. ¡Gracias por invitarme!",
+       "next": "n5",
+       "score": 2,
+       "feedback": "Тепло и естественно 👍"
+      }
+     ]
+    },
+    "n5": {
+     "say": "Solo tus ganas de comer. ¡Nos vemos el sábado!",
+     "tr": "Только аппетит. Увидимся в субботу!",
+     "end": true
+    }
+   },
+   "ai": {
+    "enabled": false
+   }
+  }
+ ]
+}
