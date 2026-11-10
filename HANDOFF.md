@@ -345,3 +345,9 @@ LB.handle("share", function () { ... return true; });
 - **Правило:** всё, что выкладывается в Cloudflare, сначала коммитится сюда. Иначе следующий деплой из репозитория откатит прод.
 - **Задеплоено 9 ноя 2026, 23:46 UTC:** `lingo-brain-app` build `v6.0-2026-11-09T23:46:18.158Z` (97 файлов: index.html, css/, js/, content/; старые v*.js и неиспользуемый mascot_frames.js убраны из сборки), `lingo-brain-bot` с закрытым /api/health. Привязки и секреты сохранены (keep_bindings). Зеркало aratacoder.github.io/lingo-app/ осталось на v5.7.
 - **Безопасность:** BOT_TOKEN у `lingo-brain-bot` хранится как Text (plain_text), а не Secret. Владельцу: в Cloudflare → lingo-brain-bot → Settings → Variables and Secrets пересоздать BOT_TOKEN с типом Secret.
+
+
+## v6.1 — чёткий маскот + «живые» детали (10 ноя 2026)
+- `assets/mascot/hd/{start,error,win,tired}.webp` — 480×480, вырезаны из исходников владельца 2048px (Photoroom): квадрат по альфа-контуру +2%, LANCZOS, webp q82. Встроенные маленькие позы в js/mascot-img.js остаются как мгновенная заглушка; js/mascot.js подгружает HD и подменяет картинку (HV = версия HD-файлов).
+- В приложении (воркер `lingo-brain-app`) `/assets/*` проксируются с GitHub Pages, затем с raw.githubusercontent `main` — **HD-файлы появятся только после мержа в main**. Деплоить JS после мержа (воркер кэширует ответы /assets/, в т.ч. 404).
+- js/mascot-fx.js переписан: всё движение конечное (раньше парение/свечение крутились бесконечно), через ~10 с маскот неподвижен. Детали по позам (координаты в % квадрата): start — искорка у подмигивающего глаза; error — капля пота стекает; win — вспышка и блик по кубку, XP подпрыгивает (вырезанные копии позы поверх оригинала, без drop-shadow — иначе видна рамка clip-path); tired — пар из кружки (Zzz убран). prefers-reduced-motion: всё статично.
