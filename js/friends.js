@@ -59,7 +59,8 @@
     if (!force && Date.now() - LAST_SYNC < 15000) return Promise.resolve(FR);
     BUSY = true; LAST_SYNC = Date.now();
     var sp = (tg.initDataUnsafe && tg.initDataUnsafe.start_param) || "";
-    return post("/api/sync", { initData: tg.initData, stats: myStats(), ref: sp }).then(function (j) {
+    var tz = -new Date().getTimezoneOffset(); // minutes east of UTC, used for reminder time
+    return post("/api/sync", { initData: tg.initData, stats: myStats(), ref: sp, tz: tz }).then(function (j) {
       BUSY = false; FR_ERR = !(j && j.ok); FR_EC = FR_ERR ? String((j && (j.error || (j.status ? "http " + j.status : ""))) || "empty") : ""; if (FR_ERR && window.current === "friends") render();
       if (j && j.ok) { FR = { list: j.friends || [], ts: Date.now() }; try { localStorage.setItem(FKEY, JSON.stringify(FR)); } catch (e) {} if (window.current === "friends") render(); }
       if (j && j.ok && j.premium) setPremium(j.premium);

@@ -9,7 +9,8 @@ let sent = [], photos = [], fails = 0;
 globalThis.fetch = async (url, opt) => {
   if (opt.body instanceof FormData) { photos.push({ url, chat: opt.body.get("chat_id"), caption: opt.body.get("caption"), markup: JSON.parse(opt.body.get("reply_markup")), size: (await opt.body.get("photo").arrayBuffer()).byteLength }); }
   else sent.push(JSON.parse(opt.body));
-  return { status: 200, json: async () => ({ ok: true }) };
+  const reply = globalThis.tgReply ? globalThis.tgReply(String(url), JSON.parse(opt.body || "{}")) : null;
+  return { status: 200, json: async () => reply || ({ ok: true }) };
 };
 function mkD1() {
   const db = new DatabaseSync(":memory:");
@@ -136,5 +137,55 @@ ok("enabled: someone else's payload declined", sent.length === 1 && sent[0].ok =
 sent = [];
 await updP({ update_id: 7, pre_checkout_query: { id: "q4", from: { id: 777 }, currency: "XTR", total_amount: 1, invoice_payload: "premium:777" } });
 ok("enabled: wrong amount declined", sent.length === 1 && sent[0].ok === false);
+
+// v6.3 daily reminders
+const db = env.DB.db, nowS = () => Math.floor(Date.now() / 1000), hourUtc = new Date().getUTCHours();
+const cron = () => W.scheduled({ cron: "0 * * * *" }, env, null);
+const toUser = (id) => sent.filter((m) => m.chat_id === id && typeof m.text === "string");
+db.prepare("UPDATE users SET last_seen = 0").run(); // earlier test users must not get reminders
+for (const [id, name] of [[901, "Ana"], [902, "Bo"], [903, "Cy"], [904, "Di"], [905, "Ed"]]) await hook("/start", id, name);
+const setRemind = (id, hour, extra) => db.prepare("INSERT INTO remind (user_id, hour, tz) VALUES (?, ?, 0) ON CONFLICT(user_id) DO UPDATE SET hour = excluded.hour, tz = 0").run(id, hour);
+[901, 902, 903, 905].forEach((id) => setRemind(id, hourUtc));
+setRemind(904, (hourUtc + 5) % 24);
+await post("/api/event", { initData: initData(902, "Bo"), event: "round_completed", xp: 30 });            // 902 already practised today
+db.prepare("INSERT INTO players (id, name, streak) VALUES (905, 'Ed', 5) ON CONFLICT(id) DO UPDATE SET streak = 5").run();
+globalThis.tgReply = (url, b) => (url.endsWith("/sendMessage") && b.chat_id === 903) ? { ok: false, error_code: 403, description: "Forbidden: bot was blocked by the user" } : null;
+const rnd = Math.random; Math.random = () => 0; // first text of each pool
+sent = [];
+await cron();
+const hookCfg = sent.find((m) => Array.isArray(m.allowed_updates));
+ok("cron syncs webhook updates (callback_query) and command menu", hookCfg && hookCfg.allowed_updates.includes("callback_query") && hookCfg.url.endsWith("/webhook") && hookCfg.secret_token === "S"
+  && sent.some((m) => Array.isArray(m.commands) && m.commands.some((c) => c.command === "remind")));
+ok("reminder sent at the user's hour with an app button (no app profile yet -> \"друг\")", toUser(901).length === 1 && /^друг, 2 минуты/.test(toUser(901)[0].text) && toUser(901)[0].reply_markup.inline_keyboard[0][0].web_app);
+ok("no reminder after a round today", toUser(902).length === 0);
+ok("no reminder at another hour", toUser(904).length === 0);
+ok("streak text uses the streak", toUser(905).length === 1 && /Серия 5/.test(toUser(905)[0].text));
+ok("blocked user is marked and skipped later", db.prepare("SELECT blocked FROM remind WHERE user_id = 903").get().blocked === 1);
+sent = []; await cron();
+ok("at most one reminder a day", toUser(901).length === 0 && toUser(905).length === 0 && toUser(903).length === 0);
+ok("bot config synced only once", !sent.some((m) => Array.isArray(m.allowed_updates)));
+db.prepare("UPDATE remind SET last_sent = NULL, last_round = ? WHERE user_id = 901").run(nowS() - 3 * 86400);
+sent = []; await cron();
+ok("after 3 idle days the gentle comeback text is used", toUser(901).length === 1 && /Скучаю/.test(toUser(901)[0].text));
+Math.random = rnd; globalThis.tgReply = null;
+const cb = (id, data) => W.fetch(new Request("https://x.dev/webhook", { method: "POST", headers: { "X-Telegram-Bot-Api-Secret-Token": "S" },
+  body: JSON.stringify({ callback_query: { id: "cb" + data, from: { id, first_name: "Ana" }, data, message: { message_id: 9, chat: { id } } } }) }), env);
+sent = []; await hook("/remind", 901, "Ana");
+ok("/remind shows hour buttons", toUser(901).length === 1 && toUser(901)[0].reply_markup.inline_keyboard[0].length === 4);
+sent = []; await cb(901, "rm:21");
+const r901 = db.prepare("SELECT enabled, hour FROM remind WHERE user_id = 901").get();
+ok("choosing 21:00 saves it and edits the menu", r901.enabled === 1 && r901.hour === 21 && sent.some((m) => m.message_id === 9 && /21:00/.test(m.text)) && sent.some((m) => m.callback_query_id === "cbrm:21"));
+await cb(901, "rm:off");
+ok("turning reminders off", db.prepare("SELECT enabled FROM remind WHERE user_id = 901").get().enabled === 0);
+setRemind(901, hourUtc); db.prepare("UPDATE remind SET last_sent = NULL, last_round = NULL WHERE user_id = 901").run();
+sent = []; await cron();
+ok("disabled user gets nothing", toUser(901).length === 0);
+sent = []; await cb(901, "rm:test");
+ok("example reminder on request", toUser(901).length === 1 && toUser(901)[0].reply_markup.inline_keyboard[0][0].web_app);
+ok("unknown hour ignored", (await cb(901, "rm:7"), db.prepare("SELECT hour FROM remind WHERE user_id = 901").get().hour === hourUtc));
+await post("/api/sync", { initData: initData(901, "Ana"), tz: 120 });
+ok("app reports the time zone", db.prepare("SELECT tz FROM remind WHERE user_id = 901").get().tz === 120);
+await post("/api/sync", { initData: initData(901, "Ana"), tz: null });
+ok("missing tz keeps the stored one", db.prepare("SELECT tz FROM remind WHERE user_id = 901").get().tz === 120);
 console.log(fails ? "WORKER TESTS FAILED: " + fails : "WORKER TESTS ALL PASSED");
 process.exit(fails ? 1 : 0);

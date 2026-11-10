@@ -365,3 +365,12 @@ LB.handle("share", function () { ... return true; });
 - `assets/brand/bot-avatar.png` — аватарка 640×640 PNG: фиолетовый фон, белый «стикерный» контур, лёгкий unsharp. PNG, а не JPEG: Telegram сам пережимает аватарки в JPEG 640, второе сжатие поверх нашего давало «мыло» и блоки на тёмном градиенте. Заменила bot-avatar.jpg.
 - `assets/brand/description-960x540.mp4` (основной, ~0.7 МБ) и `description-640x360.gif` (запасной) — анимация для блока «Что умеет этот бот?» (@BotFather → /mybots → Edit Bot → Edit Description Picture). 6 с, цикл: кошка выпрыгивает и подмигивает (искорка), «Lingo Brain» появляется по буквам, плашка ADHD-FRIENDLY, слоган, чипы ES/EN, точки прогресса «2 минуты в день», затухание.
 - Исходник анимации: `tools/brand/description.html` (CSS-кейфреймы на одной 6-секундной шкале) + `tools/brand/render.cjs` (Playwright покадрово → ffmpeg). Перегенерировать: `node tools/brand/render.cjs`.
+
+
+## v6.3 — ежедневные напоминания (10 ноя 2026)
+- Бот раз в час (Cloudflare Cron Trigger `0 * * * *`, хэндлер `scheduled` в bot/worker.js) шлёт **одно** напоминание в день тем, у кого сейчас выбранный час по их времени и кто сегодня ещё не прошёл раунд. По умолчанию включено, 19:00, часовой пояс CET, пока приложение не пришлёт свой (`tz` в /api/sync = минуты к востоку от UTC).
+- Тексты — `REMIND.regular / streak / comeback` в начале bot/worker.js, плейсхолдеры `{name}`, `{streak}`. streak — если серия ≥ 2, comeback — если ≥ 2 дней без раунда. Не пишем тем, кто не заходил 14 дней (`REMIND.quietAfterDays`), заблокировал бота (403) или никогда его не запускал (400 chat not found) — они помечаются `remind.blocked = 1`.
+- Таблица D1 `remind` (user_id, enabled, hour, tz, last_sent, last_round, blocked). `last_round` пишется из события `round_completed` (/api/event).
+- `/remind`: кнопки 9/13/19/21:00, «Пример», «Выключить» (callback_query `rm:*`). Под каждым напоминанием — «🚀 2 минуты» (открыть приложение) и «⏰ Время / выключить».
+- `syncBotConfig`: при первом апдейте или кроне после деплоя бот сам переставляет `allowed_updates` вебхука (теперь с `callback_query`) и меню команд — `/setup` для этого больше не нужен. Хранится в meta `bot_config`.
+- **Cron Trigger** настраивается в Cloudflare отдельно от кода: `PUT /accounts/{id}/workers/scripts/lingo-brain-bot/schedules` с `[{"cron":"0 * * * *"}]` (или Dashboard → Worker → Settings → Triggers). Без него напоминания не идут. Последняя рассылка видна в `/api/health?key=…` → meta `last_remind`.

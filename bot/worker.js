@@ -25,7 +25,46 @@ const PREMIUM = {
   title: "Lingo Brain Плюс",
   description: "Все темы, режим «Гиперфокус» без лимитов и новые сценарии каждый месяц. Подписка на 30 дней, отменить можно в любой момент в настройках Telegram."
 };
-const WEBHOOK_UPDATES = ["message", "pre_checkout_query"];
+const WEBHOOK_UPDATES = ["message", "pre_checkout_query", "callback_query"];
+const BOT_URL = "https://lingo-brain-bot.lingobrain.workers.dev";
+
+// Daily reminders. One message a day at the user's chosen local hour, only if no round was done today.
+// Placeholders: {name}, {streak}. Owner edits these lists; keep each line short and guilt-free.
+const REMIND = {
+  defaultHour: 19,
+  defaultTz: 60,          // minutes east of UTC until the app reports the real offset (CET)
+  quietAfterDays: 14,     // no reminders to people who have not opened the bot/app for this long
+  comebackAfterDays: 2,   // after this many days without a round, use the gentler "comeback" texts
+  hours: [9, 13, 19, 21],
+  regular: [
+    "{name}, 2 минуты? 🧠 Одна тема, и день засчитан.",
+    "Пара карточек, пока закипает чайник? ☕",
+    "Мозг просит маленькую порцию языка 🍬 2 минуты, и свободен.",
+    "Тук-тук 😺 Я тут. Одна карточка — уже победа.",
+    "Сегодня без подвигов: короткий раунд и отдыхать 💛",
+    "Испанец в тебе скучает 🇪🇸 Заглянешь на минутку?",
+    "Нет сил? Есть режим на 45 секунд 🪫 Серия будет жить.",
+    "Маленький шаг на сегодня: один раунд. Остальное — бонус ✨",
+    "{name}, давай закроем цель дня? Это реально 2 минуты ⏱",
+    "Новые слова сами не выучатся… но почти 😼 Жми кнопку.",
+    "Кофе, карточка, готово ☕ Поехали?",
+    "Я приготовила лёгкую тему. Проверим? 🎧"
+  ],
+  streak: [
+    "Серия {streak} 🔥 Пара карточек, и она цела.",
+    "Уже {streak} дн. подряд! Не дадим огоньку погаснуть 🔥",
+    "{name}, серия {streak} — это круто. 2 минуты, и завтра будет {streak}+1 🙂",
+    "Огонёк {streak} дн. ждёт дров 🔥 Один раунд?",
+    "{streak} дней подряд — твой мозг уже привык. Продолжим? 💪"
+  ],
+  comeback: [
+    "Скучаю 😿 Без давления: одна карточка, и мы снова в деле.",
+    "{name}, привет! Пропуски — это нормально. Вернёмся с лёгкой темы? 🌱",
+    "Никакой вины, только 45 секунд в режиме «Нет сил» 🪫",
+    "Я сохранила твой прогресс 💾 Заглянешь на минутку?",
+    "С возвращением можно и сегодня 💛 Одна карточка."
+  ]
+};
 
 const BOT = {
   menuButtonText: "Учиться",
@@ -33,6 +72,7 @@ const BOT = {
     { command: "start", description: "🚀 Начать" },
     { command: "app", description: "📱 Открыть приложение" },
     { command: "help", description: "❓ Как это работает" },
+    { command: "remind", description: "⏰ Напоминания" },
     { command: "feedback", description: "📝 Написать отзыв" }
   ].concat(PREMIUM.enabled ? [{ command: "paysupport", description: "⭐ Вопросы по оплате" }] : []),
   // Description: экран "Что умеет этот бот?" до нажатия Start (до 512 символов)
@@ -77,7 +117,7 @@ const TEXT = {
     "🎁 Surprise Box: случайный вопрос или мем",
     "🎙 Говори вслух, так мозг запоминает быстрее",
     "",
-    "/app приложение · /feedback отзыв"
+    "/app приложение · /remind напоминания · /feedback отзыв"
   ].join(NL),
   app: "Поехали! Одна кнопка, и ты в деле 👇",
   feedbackAsk: FEEDBACK_MARK + ": что улучшить или что сломалось? Ответь на это сообщение 👇",
@@ -149,7 +189,8 @@ async function ensureSchema(env) {
       env.DB.prepare("CREATE TABLE IF NOT EXISTS cards (id TEXT PRIMARY KEY, user_id INTEGER, data TEXT, ts INTEGER)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS subs (user_id INTEGER PRIMARY KEY, until INTEGER, charge_id TEXT, updated INTEGER)"),
-      env.DB.prepare("CREATE TABLE IF NOT EXISTS payments (charge_id TEXT PRIMARY KEY, user_id INTEGER, amount INTEGER, payload TEXT, until INTEGER, recurring INTEGER, ts INTEGER)")
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS payments (charge_id TEXT PRIMARY KEY, user_id INTEGER, amount INTEGER, payload TEXT, until INTEGER, recurring INTEGER, ts INTEGER)"),
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS remind (user_id INTEGER PRIMARY KEY, enabled INTEGER DEFAULT 1, hour INTEGER, tz INTEGER, last_sent TEXT, last_round INTEGER, blocked INTEGER DEFAULT 0)")
     ]);
     schemaReady = true;
   } catch (e) {
@@ -252,6 +293,9 @@ async function onEvent(request, env) {
     await dbRun(env, "INSERT INTO events (user_id, event, track, xp, ts) VALUES (?1, ?2, ?3, ?4, ?5)",
       [user.id, body.event, track, xp, now()]);
     await touchUser(env, user.id, track);
+    if (body.event === "round_completed") {
+      await dbRun(env, "INSERT INTO remind (user_id, last_round) VALUES (?1, ?2) ON CONFLICT(user_id) DO UPDATE SET last_round = excluded.last_round", [user.id, now()]);
+    }
   } catch (e) {
     console.log("event error", e && e.message);
   }
@@ -379,6 +423,10 @@ async function onSync(request, env) {
   if (!(await ensureSchema(env))) return json({ ok: false, error: "db" }, 503);
   if (body.stats && typeof body.stats === "object") await upsertPlayer(env, user, body.stats);
   else await ensurePlayer(env, user);
+  const tz = typeof body.tz === "number" ? body.tz : NaN;
+  if (Number.isFinite(tz) && Math.abs(tz) <= 14 * 60) {
+    await dbRun(env, "INSERT INTO remind (user_id, tz) VALUES (?1, ?2) ON CONFLICT(user_id) DO UPDATE SET tz = excluded.tz", [user.id, Math.round(tz)]);
+  }
   const ref = parseRef(body.ref);
   if (ref && ref !== user.id && (await link(env, user.id, ref))) await notifyNewFriend(env, ref, user);
   const fl = await listFriends(env, user.id);
@@ -436,6 +484,111 @@ async function onPayment(m, env) {
     "ON CONFLICT(user_id) DO UPDATE SET until = MAX(subs.until, excluded.until), charge_id = excluded.charge_id, updated = excluded.updated",
     [uid, until, String(sp.telegram_payment_charge_id || ""), now()]);
   if (!sp.is_recurring || sp.is_first_recurring) await send(env, m.chat.id, TEXT.premiumThanks(until), { reply_markup: appKeyboard("🚀 Открыть Lingo Brain") });
+}
+
+// ---------- v6.3: daily reminders (Cron Trigger, hourly) ----------
+// Local time = UTC + tz minutes. Day keys are "YYYY-MM-DD" in that local time.
+function localNow(tz, t) {
+  const d = new Date(((t == null ? now() : t) + tz * 60) * 1000);
+  return { hour: d.getUTCHours(), day: d.toISOString().slice(0, 10) };
+}
+function fillText(tpl, p) {
+  return tpl.replace(/\{name\}/g, p.name).replace(/\{streak\}/g, String(p.streak));
+}
+function pickReminder(p) {
+  const pool = p.daysIdle >= REMIND.comebackAfterDays ? REMIND.comeback : (p.streak >= 2 ? REMIND.streak : REMIND.regular);
+  return fillText(pool[Math.floor(Math.random() * pool.length)], p);
+}
+const remindKeyboard = () => ({
+  inline_keyboard: [[{ text: "🚀 2 минуты", web_app: { url: APP_URL } }], [{ text: "⏰ Время / выключить", callback_data: "rm:menu" }]]
+});
+
+async function runReminders(env, t) {
+  if (!(await ensureSchema(env))) return { sent: 0 };
+  t = t == null ? now() : t;
+  const rows = await env.DB.prepare(
+    "SELECT u.id, u.last_seen, r.enabled, r.hour, r.tz, r.last_sent, r.last_round, p.streak, p.name " +
+    "FROM users u LEFT JOIN remind r ON r.user_id = u.id LEFT JOIN players p ON p.id = u.id " +
+    "WHERE COALESCE(r.enabled, 1) = 1 AND COALESCE(r.blocked, 0) = 0 AND u.last_seen > ?1"
+  ).bind(t - REMIND.quietAfterDays * 86400).all().catch((e) => { console.log("remind query", e && e.message); return { results: [] }; });
+  let sent = 0, skipped = 0;
+  for (const r of rows.results || []) {
+    if (sent >= 300) break; // stays well under Telegram's ~30 msg/s and the Worker time limit
+    const tz = r.tz == null ? REMIND.defaultTz : r.tz, hour = r.hour == null ? REMIND.defaultHour : r.hour;
+    const ln = localNow(tz, t);
+    if (ln.hour !== hour || r.last_sent === ln.day) { skipped++; continue; }
+    if (r.last_round && localNow(tz, r.last_round).day === ln.day) { skipped++; continue; }
+    const lastAct = Math.max(r.last_round || 0, r.last_seen || 0);
+    const daysIdle = r.last_round ? Math.floor((t - r.last_round) / 86400) : Math.floor((t - lastAct) / 86400);
+    const text = pickReminder({ name: esc(r.name || "друг"), streak: r.streak || 0, daysIdle: daysIdle });
+    const res = await send(env, r.id, text, { reply_markup: remindKeyboard() });
+    if (res && res.ok) {
+      sent++;
+      await dbRun(env, "INSERT INTO remind (user_id, last_sent) VALUES (?1, ?2) ON CONFLICT(user_id) DO UPDATE SET last_sent = excluded.last_sent", [r.id, ln.day]);
+    } else if (res && (res.error_code === 403 || (res.error_code === 400 && /chat not found/i.test(res.description || "")))) {
+      // blocked the bot / never started it: stop trying. Other 400s (e.g. a broken template) must not block anyone.
+      await dbRun(env, "INSERT INTO remind (user_id, blocked) VALUES (?1, 1) ON CONFLICT(user_id) DO UPDATE SET blocked = 1", [r.id]);
+    }
+  }
+  if (sent) await noteMeta(env, "last_remind", { t: t, sent: sent });
+  return { sent: sent, skipped: skipped };
+}
+
+function remindMenu(cur) {
+  const label = (h) => (cur && cur.enabled !== 0 && (cur.hour == null ? REMIND.defaultHour : cur.hour) === h ? "✅ " : "") + h + ":00";
+  return {
+    inline_keyboard: [
+      REMIND.hours.map((h) => ({ text: label(h), callback_data: "rm:" + h })),
+      [{ text: "👀 Пример", callback_data: "rm:test" }, { text: (cur && cur.enabled === 0 ? "✅ " : "") + "🔕 Выключить", callback_data: "rm:off" }]
+    ]
+  };
+}
+async function remindState(env, id) {
+  return (await dbFirst(env, "SELECT enabled, hour, tz FROM remind WHERE user_id = ?1", [id])) || { enabled: 1, hour: null, tz: null };
+}
+const remindText = (st) => st.enabled === 0
+  ? "🔕 Напоминания выключены. Выбери время, чтобы включить:"
+  : "⏰ Напоминаю раз в день, только если ты ещё не занимался. Сейчас: <b>" + (st.hour == null ? REMIND.defaultHour : st.hour) + ":00</b> по твоему времени.";
+
+async function onRemindCmd(m, env) {
+  if (!(await ensureSchema(env))) return;
+  const st = await remindState(env, m.from.id);
+  return send(env, m.chat.id, remindText(st), { reply_markup: remindMenu(st) });
+}
+
+async function onCallback(q, env) {
+  const data = String(q.data || ""), uid = q.from && q.from.id, msg = q.message;
+  if (!data.startsWith("rm:") || !uid || !(await ensureSchema(env))) return tg(env, "answerCallbackQuery", { callback_query_id: q.id });
+  const v = data.slice(3);
+  if (v === "test") {
+    const p = await dbFirst(env, "SELECT name, streak FROM players WHERE id = ?1", [uid]);
+    await send(env, uid, pickReminder({ name: esc((p && p.name) || (q.from.first_name) || "друг"), streak: (p && p.streak) || 0, daysIdle: 0 }), { reply_markup: remindKeyboard() });
+    return tg(env, "answerCallbackQuery", { callback_query_id: q.id, text: "Вот так это выглядит 👇" });
+  }
+  if (v === "off") {
+    await dbRun(env, "INSERT INTO remind (user_id, enabled) VALUES (?1, 0) ON CONFLICT(user_id) DO UPDATE SET enabled = 0", [uid]);
+  } else if (v !== "menu") {
+    const h = Number(v);
+    if (REMIND.hours.indexOf(h) < 0) return tg(env, "answerCallbackQuery", { callback_query_id: q.id });
+    await dbRun(env, "INSERT INTO remind (user_id, enabled, hour, blocked) VALUES (?1, 1, ?2, 0) ON CONFLICT(user_id) DO UPDATE SET enabled = 1, hour = excluded.hour, blocked = 0", [uid, h]);
+  }
+  const st = await remindState(env, uid);
+  if (v === "menu" || !msg) await send(env, uid, remindText(st), { reply_markup: remindMenu(st) });
+  else await tg(env, "editMessageText", { chat_id: msg.chat.id, message_id: msg.message_id, text: remindText(st), parse_mode: "HTML", reply_markup: remindMenu(st) });
+  return tg(env, "answerCallbackQuery", { callback_query_id: q.id, text: v === "off" ? "Выключено 🔕" : v === "menu" ? "" : "Готово ✅" });
+}
+
+// Keeps the webhook's allowed_updates and the command menu in sync with the code without a manual /setup
+// (same webhook URL and secret). Runs from the webhook and from the cron.
+let botConfigSynced = false;
+async function syncBotConfig(env) {
+  if (botConfigSynced || !env.WEBHOOK_SECRET || !(await ensureSchema(env))) return;
+  const want = JSON.stringify({ u: WEBHOOK_UPDATES, c: BOT.commands });
+  const row = await dbFirst(env, "SELECT v FROM meta WHERE k = 'bot_config'");
+  if (row && row.v === want) { botConfigSynced = true; return; }
+  const wh = await tg(env, "setWebhook", { url: BOT_URL + "/webhook", secret_token: env.WEBHOOK_SECRET, allowed_updates: WEBHOOK_UPDATES });
+  const cm = await tg(env, "setMyCommands", { commands: BOT.commands });
+  if (wh && wh.ok && cm && cm.ok) { await dbRun(env, "INSERT OR REPLACE INTO meta (k, v) VALUES ('bot_config', ?1)", [want]); botConfigSynced = true; }
 }
 
 function b64bytes(b64) {
@@ -548,6 +701,7 @@ async function onFeedback(m, env) {
 
 async function onUpdate(update, env) {
   if (update.pre_checkout_query) return onPreCheckout(update.pre_checkout_query, env);
+  if (update.callback_query) return onCallback(update.callback_query, env);
   const m = update.message;
   if (!m || !m.chat || m.chat.type !== "private") return;
   if (m.successful_payment) return onPayment(m, env);
@@ -579,6 +733,7 @@ async function onUpdate(update, env) {
   }
   if (cmd === "app") return send(env, chatId, TEXT.app, { reply_markup: appKeyboard() });
   if (cmd === "help") return send(env, chatId, TEXT.help, { reply_markup: appKeyboard() });
+  if (cmd === "remind") return onRemindCmd(m, env);
   if (cmd === "paysupport") return send(env, chatId, TEXT.paysupport);
   if (cmd === "feedback") {
     return send(env, chatId, TEXT.feedbackAsk, {
@@ -672,7 +827,7 @@ export default {
         return new Response("forbidden", { status: 403 });
       }
       try {
-        if (ctx && ctx.waitUntil) ctx.waitUntil(syncMenu(env).catch(() => {}));
+        if (ctx && ctx.waitUntil) ctx.waitUntil(Promise.all([syncMenu(env).catch(() => {}), syncBotConfig(env).catch(() => {})]));
         await onUpdate(await request.json(), env);
       } catch (e) {
         console.log("update error", e && e.stack);
@@ -680,5 +835,14 @@ export default {
       return new Response("ok");
     }
     return new Response("Lingo Brain bot is alive 🧠");
+  },
+
+  // Cron Trigger "0 * * * *": every hour, sends reminders to users whose local reminder hour is now.
+  async scheduled(event, env, ctx) {
+    const job = Promise.all([
+      syncBotConfig(env).catch((e) => console.log("bot config", e && e.message)),
+      runReminders(env).catch((e) => console.log("reminders", e && e.stack))
+    ]);
+    if (ctx && ctx.waitUntil) ctx.waitUntil(job); else await job;
   }
 };
