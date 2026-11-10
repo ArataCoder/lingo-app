@@ -131,6 +131,13 @@ const failRes = await W.fetch(new Request("https://x.dev/webhook", { method: "PO
 ok("webhook returns 500 when DB fails during payment so Telegram retries", failRes.status === 500);
 sent = []; await hook("/paysupport", 777, "Aleks");
 ok("/paysupport answers", sent.length === 1 && /оплат/.test(sent[0].text));
+env.ADMIN_CHAT_ID = "777";
+sent = []; await hook("/gift", 777, "Aleks");
+j = await (await post("/api/sync", { initData: initData(777, "Aleks") })).json();
+ok("admin /gift activates free 30-day Plus cosmetics", j.premium.active === true && j.friends.find((f) => f.me).plus === true);
+sent = []; await hook("/gift off", 777, "Aleks");
+j = await (await post("/api/sync", { initData: initData(777, "Aleks") })).json();
+ok("admin /gift off disables test Plus", j.premium.active === false);
 
 // Same worker with PREMIUM.enabled = true
 const WP = await loadWorker("premium-on", (s) => s.replace("  enabled: false,", "  enabled: true,"));

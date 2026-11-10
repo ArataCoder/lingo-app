@@ -88,27 +88,43 @@
   // ---------- v6.2/6.4: Premium & Косметика (поддержка за звёзды) ----------
   // Server is the source of truth; the cached copy only avoids a flash before the first sync.
   var PKEY = "lingo_premium", CKEY = "lingo_cosmetic", PREM = { enabled: false, active: false, until: 0, stars: 150 };
-  var COS = { theme: "classic", badge: true };
+  var COS = { theme: "classic", badge: true, demo: false };
   try { PREM = JSON.parse(localStorage.getItem(PKEY) || "null") || PREM; } catch (e) {}
   try { COS = Object.assign(COS, JSON.parse(localStorage.getItem(CKEY) || "null") || {}); } catch (e) {}
   function saveCos() { try { localStorage.setItem(CKEY, JSON.stringify(COS)); } catch (e) {} }
   function setPremium(p) {
-    var was = !!(PREM.active && PREM.until * 1000 > Date.now());
+    var was = LB.isPremium();
     PREM = { enabled: !!p.enabled, active: !!p.active, until: Number(p.until) || 0, stars: Number(p.stars) || 150 };
     try { localStorage.setItem(PKEY, JSON.stringify(PREM)); } catch (e) {}
-    var now = !!(PREM.active && PREM.until * 1000 > Date.now());
+    var now = LB.isPremium();
     if (now && COS.theme === "classic") { COS.theme = "gold"; saveCos(); }
     applyCosmetics();
     if (now !== was) LB.emit("premium", now);
   }
-  LB.premium = function () { return { enabled: PREM.enabled, active: !!(PREM.active && PREM.until * 1000 > Date.now()), until: PREM.until, stars: PREM.stars || 150 }; };
+  LB.premium = function () {
+    var real = !!(PREM.active && PREM.until * 1000 > Date.now());
+    return { enabled: PREM.enabled, active: real || !!COS.demo, real: real, demo: !!COS.demo, until: PREM.until, stars: PREM.stars || 150 };
+  };
   LB.isPremium = function () { return LB.premium().active; };
   LB.cosmetics = function () { return { theme: LB.isPremium() ? (COS.theme || "gold") : "classic", badge: LB.isPremium() && COS.badge !== false }; };
+  window.lbToggleDemo = function () {
+    COS.demo = !COS.demo;
+    if (COS.demo && COS.theme === "classic") COS.theme = "gold";
+    saveCos(); hap("medium");
+    applyCosmetics();
+    if (window.current === "friends") render();
+    LB.emit("premium", LB.isPremium());
+    note(COS.demo ? "🎁 Тест косметики включён! Рамка, значок ⭐ и 4 стиля карточки открыты" : "🔕 Тест косметики выключен");
+  };
   LB.buyPremium = function () {
-    if (!tg || !tg.openInvoice || !ver("6.1")) { note("Оплата звёздами доступна внутри Telegram ⭐"); return Promise.resolve(false); }
+    if (!tg || !tg.openInvoice || !ver("6.1")) { window.lbToggleDemo(); return Promise.resolve(LB.isPremium()); }
     trk("premium_checkout", {});
     return post("/api/invoice", { initData: tg.initData }).then(function (j) {
-      if (!j || !j.ok || !j.url) { note("Поддержка звёздами скоро заработает ⭐ Спасибо за желание помочь!"); return false; }
+      if (!j || !j.ok || !j.url) {
+        // Пока реальная оплата выключена (PREMIUM.enabled = false), включаем бесплатный тест-режим косметики!
+        window.lbToggleDemo();
+        return LB.isPremium();
+      }
       return new Promise(function (res) {
         tg.openInvoice(j.url, function (status) {
           trk("premium_" + status, {});
@@ -195,14 +211,15 @@
     if (active) {
       var untilStr = pr.until ? new Date(pr.until * 1000).toLocaleDateString("ru-RU", { day: "numeric", month: "short" }) : "";
       box.innerHTML =
-        '<div class="lbsup-h"><span class="lbsup-e">⭐</span><div><b>Спасибо за поддержку Lingo Brain!</b>' +
-        '<p>Все 80 тем бесплатны для всех — в том числе благодаря тебе 💛' + (untilStr ? " Активно до " + esc(untilStr) + "." : "") + '</p></div></div>' +
+        '<div class="lbsup-h"><span class="lbsup-e">⭐</span><div><b>' + (pr.demo ? "Тест-режим косметики активен 🎁" : "Спасибо за поддержку Lingo Brain!") + '</b>' +
+        '<p>Все 80 тем бесплатны для всех — в том числе благодаря тебе 💛' + (untilStr && !pr.demo ? " Активно до " + esc(untilStr) + "." : "") + '</p></div></div>' +
         '<div class="lbsup-perks">' +
         '<span class="lbsup-tag">✨ Золотая рамка и ⭐ в рейтинге</span>' +
         '<span class="lbsup-tag">🎨 4 стиля Карточки игрока</span>' +
         '</div>' +
         '<div class="lbsup-act"><span>✅ Косметика включена</span>' +
-        '<button type="button" class="lbsup-preview" onclick="lbCard()">🎨 Открыть карточку</button></div>';
+        '<div style="display:flex;gap:6px"><button type="button" class="lbsup-preview" onclick="lbCard()">🎨 Карточка</button>' +
+        (pr.demo ? '<button type="button" class="lbsup-preview" onclick="lbToggleDemo()">Выкл тест</button>' : '') + '</div></div>';
     } else {
       box.innerHTML =
         '<div class="lbsup-h"><span class="lbsup-e">⭐</span><div><b>Поддержать Lingo Brain</b>' +
@@ -212,7 +229,8 @@
         '<span class="lbsup-tag">🎨 Стили «Золото», «Аврора», «Неон»</span>' +
         '<span class="lbsup-tag">💛 Плюс в карму</span>' +
         '</div>' +
-        '<button type="button" class="lbsup-btn" id="lbSupBtn">⭐ Поддержать за ' + stars + ' Stars</button>';
+        '<button type="button" class="lbsup-btn" id="lbSupBtn">⭐ Поддержать за ' + stars + ' Stars</button>' +
+        '<button type="button" class="lbsup-preview" style="width:100%;margin-top:8px" onclick="lbToggleDemo()">🎁 Примерить косметику бесплатно (тест)</button>';
       var btn = $("lbSupBtn");
       if (btn) btn.onclick = function () { hap("light"); LB.buyPremium(); };
     }

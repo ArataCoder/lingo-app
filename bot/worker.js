@@ -702,6 +702,26 @@ async function onStats(m, env) {
   return send(env, m.chat.id, lines.join(NL));
 }
 
+// /gift: бесплатное переключение Плюс-косметики для админа (или /gift off)
+async function onGift(m, env) {
+  const fromId = String((m.from && m.from.id) || "");
+  if (!env.ADMIN_CHAT_ID || fromId !== String(env.ADMIN_CHAT_ID).trim()) {
+    return send(env, m.chat.id, TEXT.fallback, { reply_markup: appKeyboard() });
+  }
+  if (!env.DB || !(await ensureSchema(env))) return send(env, m.chat.id, "⚠️ База не подключена.");
+  const arg = String(m.text || "").trim().split(/\s+/)[1] || "";
+  const cur = await dbFirst(env, "SELECT until FROM subs WHERE user_id = ?1", [m.from.id]);
+  const isAct = cur && cur.until > now();
+  const turnOff = arg === "off" || (arg !== "on" && isAct);
+  const until = turnOff ? 0 : now() + PREMIUM.period;
+  await dbRun(env, "INSERT INTO subs (user_id, until, charge_id, updated) VALUES (?1, ?2, 'gift', ?3) ON CONFLICT(user_id) DO UPDATE SET until = excluded.until, charge_id = excluded.charge_id, updated = excluded.updated",
+    [m.from.id, until, now()]);
+  return send(env, m.chat.id, turnOff
+    ? "🔕 Тестовый статус Плюс <b>выключен</b>. Открой приложение (или напиши /gift снова, чтобы включить)."
+    : "🎁 Тестовый статус <b>Lingo Brain Плюс</b> включён на 30 дней! Открой приложение — рамка, значок ⭐ и все 4 стиля карточки уже работают 👇",
+    { reply_markup: appKeyboard("🚀 Проверить косметику") });
+}
+
 function send(env, chatId, text, extra) {
   return tg(env, "sendMessage", Object.assign({
     chat_id: chatId,
@@ -739,6 +759,7 @@ async function onUpdate(update, env) {
 
   const cmd = text.startsWith("/") ? text.split(" ")[0].split("@")[0].slice(1).toLowerCase() : "";
   if (cmd === "stats") return onStats(m, env);
+  if (cmd === "gift") return onGift(m, env);
   if (cmd === "start") {
     let extra = "";
     const ref = parseRef(text.split(" ")[1]);

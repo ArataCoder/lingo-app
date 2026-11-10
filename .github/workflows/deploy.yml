@@ -1,32 +1,27 @@
-name: Deploy Cloudflare Workers
+name: Deploy Everything (Cloudflare + GitHub Pages)
 
 on:
   push:
     branches: [main]
-    paths:
-      - "bot/worker.js"
-      - "index.html"
-      - "css/**"
-      - "js/**"
-      - "content/**"
-      - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
-      - name: Safe Deploy to Cloudflare (preserves D1 & Secrets)
+
+      - name: Deploy Bot & Mini App to Cloudflare Workers (preserves D1 & Secrets)
         env:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: |
           if [ -z "$CF_API_TOKEN" ]; then
-            echo "CF_API_TOKEN secret is not set — skipping automatic Cloudflare deploy."
+            echo "⚠️ CF_API_TOKEN is not set in GitHub Secrets yet — skipping Cloudflare deploy."
             exit 0
           fi
           node - <<'EOF'
@@ -34,7 +29,7 @@ jobs:
           const path = require("node:path");
           const ACC = "6744b480c4663e86edadcfff8ecbeed3";
           const D1_ID = "a6acc254-9562-4724-b94b-f9a8f448a521";
-          const TOKEN = process.env.CF_API_TOKEN;
+          const TOKEN = process.env.CF_API_TOKEN.trim();
           const API = `https://api.cloudflare.com/client/v4/accounts/${ACC}/workers/scripts`;
 
           async function deployBot() {
@@ -55,26 +50,13 @@ jobs:
             });
             const j = await r.json();
             if (!j.success) throw new Error("Bot deploy failed: " + JSON.stringify(j.errors));
-            console.log("Deployed lingo-brain-bot (secrets & D1 preserved)");
+            console.log("✅ Deployed lingo-brain-bot (all secrets & D1 preserved)");
           }
 
           async function deployApp() {
-            const r0 = await fetch(`${API}/lingo-brain-app/content/v2`, {
-              headers: { Authorization: `Bearer ${TOKEN}` }
-            });
-            if (!r0.ok) {
-              console.log("Could not fetch existing lingo-brain-app script, skipping app patch:", r0.status);
-              return;
-            }
-            const raw = await r0.text();
-            // Extract JS module from multipart or plain response
-            const m = raw.match(/const F\s*=\s*(\{[\s\S]*?\});\s*\nconst BUILD/);
-            if (!m) {
-              console.log("Unexpected lingo-brain-app format, skipping app patch");
-              return;
-            }
-            const F = JSON.parse(m[1]);
+            const F = {};
             const walk = (dir) => {
+              if (!fs.existsSync(dir)) return;
               for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
                 const p = path.join(dir, ent.name).replace(/\\/g, "/");
                 if (ent.isDirectory()) walk(p);
@@ -85,17 +67,60 @@ jobs:
             walk("css");
             walk("js");
             walk("content");
-            const build = "v6.4-" + new Date().toISOString();
-            let updated = raw.slice(raw.indexOf("const F ="))
-              .replace(/const F\s*=\s*\{[\s\S]*?\};\s*\nconst BUILD\s*=\s*"[^"]*";/, `const F = ${JSON.stringify(F)};\nconst BUILD = ${JSON.stringify(build)};`);
-            const endIdx = updated.lastIndexOf("export default");
-            const tail = updated.slice(endIdx);
-            const cleanEnd = tail.indexOf("\n--");
-            if (cleanEnd > 0) updated = updated.slice(0, endIdx) + tail.slice(0, cleanEnd);
 
+            const build = "v6.4-" + new Date().toISOString();
+            const appWorkerCode = `const F = ${JSON.stringify(F)};
+const BUILD = ${JSON.stringify(build)};
+const GH_PAGES = "https://aratacoder.github.io/lingo-app";
+const GH_RAW = "https://raw.githubusercontent.com/ArataCoder/lingo-app/main";
+const MIME = { html: "text/html; charset=utf-8", css: "text/css; charset=utf-8", js: "application/javascript; charset=utf-8", json: "application/json; charset=utf-8", mp3: "audio/mpeg", webp: "image/webp", png: "image/png", jpg: "image/jpeg", gif: "image/gif", mp4: "video/mp4", svg: "image/svg+xml" };
+
+export default {
+  async fetch(req) {
+    const u = new URL(req.url);
+    let p = u.pathname;
+    if (p === "/" || p === "") p = "/index.html";
+    if (p === "/__build") {
+      return new Response(JSON.stringify({ build: BUILD, files: Object.keys(F).length, mode: "inline" }), {
+        headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", "access-control-allow-origin": "*" }
+      });
+    }
+    if (Object.prototype.hasOwnProperty.call(F, p)) {
+      const ext = p.split(".").pop().toLowerCase();
+      const isHtml = ext === "html";
+      const isJson = ext === "json";
+      const hasV = u.searchParams.has("v");
+      const cc = isHtml ? "no-cache" : isJson ? "public, max-age=300" : hasV ? "public, max-age=31536000, immutable" : "public, max-age=600, stale-while-revalidate=86400";
+      return new Response(F[p], {
+        headers: {
+          "content-type": MIME[ext] || "text/plain; charset=utf-8",
+          "cache-control": cc,
+          "access-control-allow-origin": "*"
+        }
+      });
+    }
+    if (p.startsWith("/assets/")) {
+      const ext = p.split(".").pop().toLowerCase();
+      let r = await fetch(GH_PAGES + p, { cf: { cacheTtl: 86400, cacheEverything: true } });
+      if (!r.ok) r = await fetch(GH_RAW + p, { cf: { cacheTtl: 86400, cacheEverything: true } });
+      if (r.ok) {
+        return new Response(r.body, {
+          status: 200,
+          headers: {
+            "content-type": MIME[ext] || r.headers.get("content-type") || "application/octet-stream",
+            "cache-control": "public, max-age=86400",
+            "access-control-allow-origin": "*"
+          }
+        });
+      }
+    }
+    return new Response("Not found", { status: 404 });
+  }
+};
+`;
             const fd = new FormData();
             fd.append("metadata", new Blob([JSON.stringify({ main_module: "worker.js", compatibility_date: "2026-11-01", keep_bindings: ["secret_text", "plain_text"] })], { type: "application/json" }));
-            fd.append("worker.js", new Blob([updated], { type: "application/javascript+module" }), "worker.js");
+            fd.append("worker.js", new Blob([appWorkerCode], { type: "application/javascript+module" }), "worker.js");
             const r = await fetch(`${API}/lingo-brain-app`, {
               method: "PUT",
               headers: { Authorization: `Bearer ${TOKEN}` },
@@ -103,7 +128,7 @@ jobs:
             });
             const j = await r.json();
             if (!j.success) throw new Error("App deploy failed: " + JSON.stringify(j.errors));
-            console.log("Deployed lingo-brain-app:", build);
+            console.log("✅ Deployed lingo-brain-app:", build, "files:", Object.keys(F).length);
           }
 
           (async () => {
