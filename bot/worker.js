@@ -23,7 +23,7 @@ const PREMIUM = {
   stars: 150,
   period: 2592000,
   title: "Lingo Brain Плюс",
-  description: "Все темы, режим «Гиперфокус» без лимитов и новые сценарии каждый месяц. Подписка на 30 дней, отменить можно в любой момент в настройках Telegram."
+  description: "Поддержка проекта ⭐ Золотая рамка и значок «⭐» в рейтинге друзей, эксклюзивные темы для Карточки игрока и тёплая благодарность от автора. Все 80 тем обучения всегда бесплатны! Подписка на 30 дней."
 };
 const WEBHOOK_UPDATES = ["message", "pre_checkout_query", "callback_query"];
 const BOT_URL = "https://lingo-brain-bot.lingobrain.workers.dev";
@@ -189,9 +189,10 @@ async function ensureSchema(env) {
       env.DB.prepare("CREATE TABLE IF NOT EXISTS cards (id TEXT PRIMARY KEY, user_id INTEGER, data TEXT, ts INTEGER)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS subs (user_id INTEGER PRIMARY KEY, until INTEGER, charge_id TEXT, updated INTEGER)"),
-      env.DB.prepare("CREATE TABLE IF NOT EXISTS payments (charge_id TEXT PRIMARY KEY, user_id INTEGER, amount INTEGER, payload TEXT, until INTEGER, recurring INTEGER, ts INTEGER)"),
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS payments (charge_id TEXT PRIMARY KEY, user_id INTEGER, amount INTEGER, payload TEXT, until INTEGER, recurring INTEGER, refunded INTEGER DEFAULT 0, ts INTEGER)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS remind (user_id INTEGER PRIMARY KEY, enabled INTEGER DEFAULT 1, hour INTEGER, tz INTEGER, last_sent TEXT, last_round INTEGER, blocked INTEGER DEFAULT 0)")
     ]);
+    try { await env.DB.prepare("ALTER TABLE payments ADD COLUMN refunded INTEGER DEFAULT 0").run(); } catch (e) {}
     schemaReady = true;
   } catch (e) {
     console.log("d1 schema error", e && e.message);
@@ -372,13 +373,14 @@ async function link(env, a, b) {
 }
 
 async function listFriends(env, id) {
-  const wk = weekKey();
+  const wk = weekKey(), t = now();
   try {
-    const r = await env.DB.prepare("SELECT id, name, xp, week_key, week_base, streak, learned, rounds, updated FROM players WHERE id = ?1 OR id IN (SELECT b FROM friends WHERE a = ?1) LIMIT 201").bind(id).all();
+    const r = await env.DB.prepare("SELECT p.id, p.name, p.xp, p.week_key, p.week_base, p.streak, p.learned, p.rounds, p.updated, s.until FROM players p LEFT JOIN subs s ON s.user_id = p.id WHERE p.id = ?1 OR p.id IN (SELECT b FROM friends WHERE a = ?1) LIMIT 201").bind(id).all();
     const rows = ((r && r.results) || []).map((p) => ({
       id: p.id, name: p.name || "Игрок", xp: p.xp || 0,
       week: p.week_key === wk ? Math.max(0, (p.xp || 0) - (p.week_base || 0)) : 0,
-      streak: p.streak || 0, learned: p.learned || 0, rounds: p.rounds || 0, me: p.id === id, seen: p.updated || 0
+      streak: p.streak || 0, learned: p.learned || 0, rounds: p.rounds || 0, me: p.id === id, seen: p.updated || 0,
+      plus: (p.until || 0) > t
     }));
     rows.sort((a, b) => (b.week - a.week) || (b.xp - a.xp));
     return rows;
@@ -473,17 +475,35 @@ async function onPreCheckout(q, env) {
 
 async function onPayment(m, env) {
   const sp = m.successful_payment, uid = m.from && m.from.id;
-  if (!sp || !uid || !(await ensureSchema(env))) return;
-  const old = await dbFirst(env, "SELECT until FROM subs WHERE user_id = ?1", [uid]);
+  if (!sp || !uid) return;
+  const chId = String(sp.telegram_payment_charge_id || "");
+  if (!chId) return;
+  if (!(await ensureSchema(env))) throw new Error("db schema failed");
+  const seen = await env.DB.prepare("SELECT until FROM payments WHERE charge_id = ?1").bind(chId).first();
+  if (seen) return; // duplicate webhook delivery: do not extend subscription or re-send thanks
+  const old = await env.DB.prepare("SELECT until FROM subs WHERE user_id = ?1").bind(uid).first();
   const base = Math.max(now(), (old && old.until) || 0);
   const until = Number(sp.subscription_expiration_date) || base + PREMIUM.period;
   // Every payment is kept (charge id is needed for refunds and for editUserStarSubscription).
-  await dbRun(env, "INSERT OR IGNORE INTO payments (charge_id, user_id, amount, payload, until, recurring, ts) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
-    [String(sp.telegram_payment_charge_id || ""), uid, Number(sp.total_amount) || 0, String(sp.invoice_payload || "").slice(0, 128), until, sp.is_recurring ? 1 : 0, now()]);
-  await dbRun(env, "INSERT INTO subs (user_id, until, charge_id, updated) VALUES (?1, ?2, ?3, ?4) " +
-    "ON CONFLICT(user_id) DO UPDATE SET until = MAX(subs.until, excluded.until), charge_id = excluded.charge_id, updated = excluded.updated",
-    [uid, until, String(sp.telegram_payment_charge_id || ""), now()]);
+  await env.DB.batch([
+    env.DB.prepare("INSERT INTO payments (charge_id, user_id, amount, payload, until, recurring, refunded, ts) VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0, ?7)")
+      .bind(chId, uid, Number(sp.total_amount) || 0, String(sp.invoice_payload || "").slice(0, 128), until, sp.is_recurring ? 1 : 0, now()),
+    env.DB.prepare("INSERT INTO subs (user_id, until, charge_id, updated) VALUES (?1, ?2, ?3, ?4) ON CONFLICT(user_id) DO UPDATE SET until = MAX(subs.until, excluded.until), charge_id = excluded.charge_id, updated = excluded.updated")
+      .bind(uid, until, chId, now())
+  ]);
   if (!sp.is_recurring || sp.is_first_recurring) await send(env, m.chat.id, TEXT.premiumThanks(until), { reply_markup: appKeyboard("🚀 Открыть Lingo Brain") });
+}
+
+async function onRefund(m, env) {
+  const rp = m.refunded_payment, uid = m.from && m.from.id;
+  if (!rp || !uid) return;
+  const chId = String(rp.telegram_payment_charge_id || "");
+  if (!chId) return;
+  if (!(await ensureSchema(env))) throw new Error("db schema failed");
+  await env.DB.batch([
+    env.DB.prepare("UPDATE payments SET refunded = 1 WHERE charge_id = ?1").bind(chId),
+    env.DB.prepare("UPDATE subs SET until = 0, updated = ?2 WHERE user_id = ?1 AND charge_id = ?3").bind(uid, now(), chId)
+  ]);
 }
 
 // ---------- v6.3: daily reminders (Cron Trigger, hourly) ----------
@@ -705,6 +725,7 @@ async function onUpdate(update, env) {
   const m = update.message;
   if (!m || !m.chat || m.chat.type !== "private") return;
   if (m.successful_payment) return onPayment(m, env);
+  if (m.refunded_payment) return onRefund(m, env);
   const chatId = m.chat.id;
   const name = esc((m.from && m.from.first_name) || "друг");
   const text = (m.text || "").trim();
@@ -831,6 +852,7 @@ export default {
         await onUpdate(await request.json(), env);
       } catch (e) {
         console.log("update error", e && e.stack);
+        return new Response("error", { status: 500 });
       }
       return new Response("ok");
     }

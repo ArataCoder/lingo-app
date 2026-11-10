@@ -112,6 +112,13 @@ const SKIP_ONB = `try { if (!localStorage.getItem('lingo_p')) localStorage.setIt
     await p.click('#v51rv'); await p.waitForTimeout(500);
     ok(await p.evaluate(() => window.current !== 'result'), 'review starts from the result screen', await p.evaluate(() => window.current));
   } else ok(false, 'could not seed a review card');
+  // soft monetization & cosmetics
+  await p.evaluate(() => show('profile')); await p.waitForTimeout(250);
+  ok(await p.isVisible('#lbSupBox') && await p.isVisible('#lbSupBtn'), 'support Lingo Brain card shown on profile');
+  await p.evaluate(() => window.lbCard()); await p.waitForTimeout(250);
+  const themeBtns = await p.evaluate(() => Array.from(document.querySelectorAll('#cardThemes button')).map(b => b.getAttribute('data-th')).join(','));
+  ok(themeBtns === 'classic,gold,aurora,cyber', 'player card offers 4 cosmetic themes', themeBtns);
+  await p.click('#cardClose'); await p.waitForTimeout(150);
   ok(errs.length === 0, 'no JS errors (fresh user)', errs.slice(0, 3).join(' | '));
   await ctx.close();
 

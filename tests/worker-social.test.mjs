@@ -110,12 +110,25 @@ ok("successful payment activates premium", j.premium.active === true && j.premiu
 ok("payment thanks sent", sent.some((m) => m.chat_id === 777 && /Плюс/.test(m.text)));
 sent = [];
 await upd({ update_id: 3, message: { message_id: 6, chat: { id: 777, type: "private" }, from: { id: 777, first_name: "Aleks" },
-  successful_payment: { currency: "XTR", total_amount: 150, invoice_payload: "premium:777", telegram_payment_charge_id: "ch_1", subscription_expiration_date: until, is_recurring: true, is_first_recurring: true } } });
-ok("duplicate payment update is stored once", env.DB.db.prepare("SELECT COUNT(*) AS n FROM payments").get().n === 1);
+  successful_payment: { currency: "XTR", total_amount: 150, invoice_payload: "premium:777", telegram_payment_charge_id: "ch_1", is_recurring: true, is_first_recurring: true } } });
+j = await (await post("/api/sync", { initData: initData(777, "Aleks") })).json();
+ok("duplicate payment update is stored once and does not double-extend or re-send thanks",
+  env.DB.db.prepare("SELECT COUNT(*) AS n, SUM(refunded) AS rf FROM payments").get().n === 1 &&
+  env.DB.db.prepare("SELECT refunded FROM payments WHERE charge_id = 'ch_1'").get().refunded === 0 &&
+  j.premium.until === until && j.friends.find((f) => f.me).plus === true && sent.length === 0);
 await upd({ update_id: 4, message: { message_id: 7, chat: { id: 777, type: "private" }, from: { id: 777, first_name: "Aleks" },
   successful_payment: { currency: "XTR", total_amount: 150, invoice_payload: "premium:777", telegram_payment_charge_id: "ch_2", subscription_expiration_date: until + 2592000, is_recurring: true } } });
 j = await (await post("/api/sync", { initData: initData(777, "Aleks") })).json();
 ok("renewal extends premium", j.premium.until === until + 2592000);
+await upd({ update_id: 41, message: { message_id: 71, chat: { id: 777, type: "private" }, from: { id: 777, first_name: "Aleks" },
+  refunded_payment: { currency: "XTR", total_amount: 150, invoice_payload: "premium:777", telegram_payment_charge_id: "ch_2" } } });
+j = await (await post("/api/sync", { initData: initData(777, "Aleks") })).json();
+ok("refunded_payment marks payment refunded and revokes active sub",
+  env.DB.db.prepare("SELECT refunded FROM payments WHERE charge_id = 'ch_2'").get().refunded === 1 && j.premium.active === false);
+const brokenEnv = { ...env, DB: { prepare: () => ({ bind: () => ({ first: async () => { throw new Error("D1 down"); } }) }), batch: async () => { throw new Error("D1 down"); } } };
+const failRes = await W.fetch(new Request("https://x.dev/webhook", { method: "POST", headers: { "X-Telegram-Bot-Api-Secret-Token": "S" },
+  body: JSON.stringify({ update_id: 42, message: { message_id: 72, chat: { id: 777, type: "private" }, from: { id: 777 }, successful_payment: { telegram_payment_charge_id: "ch_fail", total_amount: 150 } } }) }), brokenEnv);
+ok("webhook returns 500 when DB fails during payment so Telegram retries", failRes.status === 500);
 sent = []; await hook("/paysupport", 777, "Aleks");
 ok("/paysupport answers", sent.length === 1 && /оплат/.test(sent[0].text));
 

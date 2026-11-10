@@ -1,0 +1,113 @@
+name: Deploy Cloudflare Workers
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "bot/worker.js"
+      - "index.html"
+      - "css/**"
+      - "js/**"
+      - "content/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Safe Deploy to Cloudflare (preserves D1 & Secrets)
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          if [ -z "$CF_API_TOKEN" ]; then
+            echo "CF_API_TOKEN secret is not set — skipping automatic Cloudflare deploy."
+            exit 0
+          fi
+          node - <<'EOF'
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const ACC = "6744b480c4663e86edadcfff8ecbeed3";
+          const D1_ID = "a6acc254-9562-4724-b94b-f9a8f448a521";
+          const TOKEN = process.env.CF_API_TOKEN;
+          const API = `https://api.cloudflare.com/client/v4/accounts/${ACC}/workers/scripts`;
+
+          async function deployBot() {
+            const code = fs.readFileSync("bot/worker.js", "utf8");
+            const meta = {
+              main_module: "worker.js",
+              compatibility_date: "2026-11-01",
+              bindings: [{ type: "d1", name: "DB", id: D1_ID }],
+              keep_bindings: ["secret_text", "plain_text", "d1"]
+            };
+            const fd = new FormData();
+            fd.append("metadata", new Blob([JSON.stringify(meta)], { type: "application/json" }));
+            fd.append("worker.js", new Blob([code], { type: "application/javascript+module" }), "worker.js");
+            const r = await fetch(`${API}/lingo-brain-bot`, {
+              method: "PUT",
+              headers: { Authorization: `Bearer ${TOKEN}` },
+              body: fd
+            });
+            const j = await r.json();
+            if (!j.success) throw new Error("Bot deploy failed: " + JSON.stringify(j.errors));
+            console.log("Deployed lingo-brain-bot (secrets & D1 preserved)");
+          }
+
+          async function deployApp() {
+            const r0 = await fetch(`${API}/lingo-brain-app/content/v2`, {
+              headers: { Authorization: `Bearer ${TOKEN}` }
+            });
+            if (!r0.ok) {
+              console.log("Could not fetch existing lingo-brain-app script, skipping app patch:", r0.status);
+              return;
+            }
+            const raw = await r0.text();
+            // Extract JS module from multipart or plain response
+            const m = raw.match(/const F\s*=\s*(\{[\s\S]*?\});\s*\nconst BUILD/);
+            if (!m) {
+              console.log("Unexpected lingo-brain-app format, skipping app patch");
+              return;
+            }
+            const F = JSON.parse(m[1]);
+            const walk = (dir) => {
+              for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
+                const p = path.join(dir, ent.name).replace(/\\/g, "/");
+                if (ent.isDirectory()) walk(p);
+                else if (/\.(html|css|js|json)$/.test(p)) F["/" + p] = fs.readFileSync(p, "utf8");
+              }
+            };
+            F["/index.html"] = fs.readFileSync("index.html", "utf8");
+            walk("css");
+            walk("js");
+            walk("content");
+            const build = "v6.4-" + new Date().toISOString();
+            let updated = raw.slice(raw.indexOf("const F ="))
+              .replace(/const F\s*=\s*\{[\s\S]*?\};\s*\nconst BUILD\s*=\s*"[^"]*";/, `const F = ${JSON.stringify(F)};\nconst BUILD = ${JSON.stringify(build)};`);
+            const endIdx = updated.lastIndexOf("export default");
+            const tail = updated.slice(endIdx);
+            const cleanEnd = tail.indexOf("\n--");
+            if (cleanEnd > 0) updated = updated.slice(0, endIdx) + tail.slice(0, cleanEnd);
+
+            const fd = new FormData();
+            fd.append("metadata", new Blob([JSON.stringify({ main_module: "worker.js", compatibility_date: "2026-11-01", keep_bindings: ["secret_text", "plain_text"] })], { type: "application/json" }));
+            fd.append("worker.js", new Blob([updated], { type: "application/javascript+module" }), "worker.js");
+            const r = await fetch(`${API}/lingo-brain-app`, {
+              method: "PUT",
+              headers: { Authorization: `Bearer ${TOKEN}` },
+              body: fd
+            });
+            const j = await r.json();
+            if (!j.success) throw new Error("App deploy failed: " + JSON.stringify(j.errors));
+            console.log("Deployed lingo-brain-app:", build);
+          }
+
+          (async () => {
+            await deployBot();
+            await deployApp();
+          })().catch((e) => { console.error(e); process.exit(1); });
+          EOF
