@@ -228,5 +228,13 @@ ok("missing tz keeps the stored one", db.prepare("SELECT tz FROM remind WHERE us
   const meRow = (sr.friends || []).find((f) => f.me);
   ok("sync stores and returns player frame and title", meRow && meRow.frame === "fire" && meRow.title === "🔥 Машина серии");
 }
+{
+  const lr = await (await post("/api/client-log", { message: "ReferenceError: foo is not defined", source: "js/base.js", lineno: 42, tg_id: 901, build: "v6.5" })).json();
+  ok("POST /api/client-log accepts client error payload", lr.ok === true);
+  const unauth = await W.fetch(new Request("https://x.dev/api/client-logs"), env);
+  ok("GET /api/client-logs rejects missing key with 403", unauth.status === 403);
+  const authRes = await (await W.fetch(new Request("https://x.dev/api/client-logs?key=S"), env)).json();
+  ok("GET /api/client-logs returns recent errors with valid secret", authRes.ok === true && Array.isArray(authRes.logs) && authRes.logs.some((x) => x.message && x.message.includes("foo is not defined")));
+}
 console.log(fails ? "WORKER TESTS FAILED: " + fails : "WORKER TESTS ALL PASSED");
 process.exit(fails ? 1 : 0);

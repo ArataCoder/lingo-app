@@ -190,7 +190,8 @@ async function ensureSchema(env) {
       env.DB.prepare("CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS subs (user_id INTEGER PRIMARY KEY, until INTEGER, charge_id TEXT, updated INTEGER)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS payments (charge_id TEXT PRIMARY KEY, user_id INTEGER, amount INTEGER, payload TEXT, until INTEGER, recurring INTEGER, refunded INTEGER DEFAULT 0, ts INTEGER)"),
-      env.DB.prepare("CREATE TABLE IF NOT EXISTS remind (user_id INTEGER PRIMARY KEY, enabled INTEGER DEFAULT 1, hour INTEGER, tz INTEGER, last_sent TEXT, last_round INTEGER, blocked INTEGER DEFAULT 0)")
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS remind (user_id INTEGER PRIMARY KEY, enabled INTEGER DEFAULT 1, hour INTEGER, tz INTEGER, last_sent TEXT, last_round INTEGER, blocked INTEGER DEFAULT 0)"),
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS app_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, ts INTEGER, kind TEXT, tg_id INTEGER, message TEXT, source TEXT, lineno INTEGER, build TEXT)")
     ]);
     try { await env.DB.prepare("ALTER TABLE payments ADD COLUMN refunded INTEGER DEFAULT 0").run(); } catch (e) {}
     try { await env.DB.prepare("ALTER TABLE players ADD COLUMN frame TEXT").run(); } catch (e) {}
@@ -200,6 +201,32 @@ async function ensureSchema(env) {
     console.log("d1 schema error", e && e.message);
   }
   return schemaReady;
+}
+
+const MEM_LOGS = [];
+async function pushLog(env, item) {
+  const row = {
+    ts: now(),
+    kind: String((item && item.kind) || "client").slice(0, 32),
+    tg_id: Number(item && item.tg_id) || null,
+    message: String((item && item.message) || "").slice(0, 500),
+    source: String((item && item.source) || "").slice(0, 240),
+    lineno: Number(item && item.lineno) || 0,
+    build: String((item && item.build) || "v6.5").slice(0, 24)
+  };
+  MEM_LOGS.unshift(row);
+  if (MEM_LOGS.length > 50) MEM_LOGS.length = 50;
+  try {
+    if (env && env.DB && (await ensureSchema(env))) {
+      await env.DB.batch([
+        env.DB.prepare("INSERT INTO app_logs (ts, kind, tg_id, message, source, lineno, build) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)")
+          .bind(row.ts, row.kind, row.tg_id, row.message, row.source, row.lineno, row.build),
+        env.DB.prepare("DELETE FROM app_logs WHERE id NOT IN (SELECT id FROM app_logs ORDER BY id DESC LIMIT 50)")
+      ]);
+    }
+  } catch (e) {
+    console.error("[LOG_DB_ERR]", e && e.message);
+  }
 }
 
 async function dbFirst(env, sql, args) {
@@ -255,15 +282,30 @@ async function verifyInitData(initData, env) {
 // GET /ava/<id>.jpg — фото профиля игрока из Telegram (через бота, токен наружу не уходит)
 async function onAva(id, env) {
   const h = { "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=43200" };
-  if (!/^[0-9]{1,15}$/.test(id)) return new Response("bad id", { status: 400, headers: h });
+  if (!/^[0-9]{1,15}$/.test(id)) {
+    console.error("[AVA_ERR] bad id", id);
+    return new Response("bad id", { status: 400, headers: h });
+  }
   const ph = await tg(env, "getUserProfilePhotos", { user_id: Number(id), limit: 1 });
   const sizes = ph && ph.ok && ph.result && ph.result.photos && ph.result.photos[0];
-  if (!sizes || !sizes.length) return new Response("no photo", { status: 404, headers: { ...h, "Cache-Control": "public, max-age=600" } });
+  if (!sizes || !sizes.length) {
+    console.error("[AVA_ERR] no photo", { id, ok: ph && ph.ok, desc: ph && ph.description });
+    if (ph && !ph.ok) await pushLog(env, { kind: "ava_err", tg_id: Number(id), message: "getUserProfilePhotos: " + (ph.description || "failed"), source: "/ava/" + id });
+    return new Response("no photo", { status: 404, headers: { ...h, "Cache-Control": "public, max-age=600" } });
+  }
   const ps = sizes.filter(s => s.width >= 160)[0] || sizes[sizes.length - 1];
   const f = await tg(env, "getFile", { file_id: ps.file_id });
-  if (!f || !f.ok || !f.result || !f.result.file_path) return new Response("no file", { status: 404, headers: { ...h, "Cache-Control": "public, max-age=600" } });
+  if (!f || !f.ok || !f.result || !f.result.file_path) {
+    console.error("[AVA_ERR] no file", { id, desc: f && f.description });
+    await pushLog(env, { kind: "ava_err", tg_id: Number(id), message: "getFile failed: " + ((f && f.description) || "no file_path"), source: "/ava/" + id });
+    return new Response("no file", { status: 404, headers: { ...h, "Cache-Control": "public, max-age=600" } });
+  }
   const img = await fetch("https://api.telegram.org/file/bot" + token(env) + "/" + f.result.file_path);
-  if (!img.ok) return new Response("fetch fail", { status: 502, headers: h });
+  if (!img.ok) {
+    console.error("[AVA_ERR] fetch fail", { id, status: img.status });
+    await pushLog(env, { kind: "ava_err", tg_id: Number(id), message: "file fetch HTTP " + img.status, source: "/ava/" + id });
+    return new Response("fetch fail", { status: 502, headers: h });
+  }
   return new Response(await img.arrayBuffer(), { status: 200, headers: { ...h, "content-type": "image/jpeg" } });
 }
 
@@ -486,34 +528,59 @@ async function onPreCheckout(q, env) {
   const isSup = /^support:[0-9]+:(50|150|500)$/.test(p) && p === "support:" + uid + ":" + q.total_amount;
   const isPrem = PREMIUM.enabled && q.total_amount === PREMIUM.stars && p === "premium:" + uid;
   const good = q.currency === "XTR" && (isSup || isPrem);
-  return tg(env, "answerPreCheckoutQuery", good
+  if (!good) {
+    console.error("[STARS_PRECHECKOUT_DECLINED]", { id: q && q.id, uid, currency: q && q.currency, amount: q && q.total_amount, payload: p });
+    await pushLog(env, { kind: "stars_precheckout", tg_id: uid, message: "declined: " + p + " amount=" + (q && q.total_amount) + " cur=" + (q && q.currency), source: "pre_checkout_query" });
+  }
+  const res = await tg(env, "answerPreCheckoutQuery", good
     ? { pre_checkout_query_id: q.id, ok: true }
     : { pre_checkout_query_id: q.id, ok: false, error_message: "Платёж сейчас недоступен. Попробуй позже 🙏" });
+  if (!res || !res.ok) {
+    console.error("[STARS_PRECHECKOUT_ERR]", { id: q && q.id, uid, err: res && res.description });
+    await pushLog(env, { kind: "stars_precheckout", tg_id: uid, message: "answerPreCheckoutQuery failed: " + ((res && res.description) || "no response"), source: "pre_checkout_query" });
+  }
+  return res;
 }
 
 async function onPayment(m, env) {
   const sp = m.successful_payment, uid = m.from && m.from.id;
-  if (!sp || !uid) return;
+  if (!sp || !uid) {
+    console.error("[STARS_PAYMENT_ERR] missing sp or uid", { hasSp: !!sp, uid });
+    return;
+  }
   const chId = String(sp.telegram_payment_charge_id || "");
-  if (!chId) return;
-  if (!(await ensureSchema(env))) throw new Error("db schema failed");
-  const seen = await env.DB.prepare("SELECT until FROM payments WHERE charge_id = ?1").bind(chId).first();
-  if (seen) return; // duplicate webhook delivery: do not extend subscription or re-send thanks
-  const old = await env.DB.prepare("SELECT until FROM subs WHERE user_id = ?1").bind(uid).first();
-  const base = Math.max(now(), (old && old.until) || 0);
-  const isSup = String(sp.invoice_payload || "").startsWith("support:");
-  const until = isSup ? (now() + 100 * 365 * 86400) : (Number(sp.subscription_expiration_date) || base + PREMIUM.period);
-  // Every payment is kept (charge id is needed for refunds and for editUserStarSubscription).
-  await env.DB.batch([
-    env.DB.prepare("INSERT INTO payments (charge_id, user_id, amount, payload, until, recurring, refunded, ts) VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0, ?7)")
-      .bind(chId, uid, Number(sp.total_amount) || 0, String(sp.invoice_payload || "").slice(0, 128), until, sp.is_recurring ? 1 : 0, now()),
-    env.DB.prepare("INSERT INTO subs (user_id, until, charge_id, updated) VALUES (?1, ?2, ?3, ?4) ON CONFLICT(user_id) DO UPDATE SET until = MAX(subs.until, excluded.until), charge_id = excluded.charge_id, updated = excluded.updated")
-      .bind(uid, until, chId, now())
-  ]);
-  const msg = isSup
-    ? ("💛 <b>Огромное спасибо за поддержку Lingo Brain!</b>" + NL + NL + "Золотая VIP-рамка, титул «⭐ Меценат» и все стили карточки игрока открыты для тебя навсегда!")
-    : TEXT.premiumThanks(until);
-  if (!sp.is_recurring || sp.is_first_recurring) await send(env, m.chat.id, msg, { reply_markup: appKeyboard("🚀 Открыть Lingo Brain") });
+  if (!chId) {
+    console.error("[STARS_PAYMENT_ERR] empty charge_id", { uid, payload: sp.invoice_payload });
+    await pushLog(env, { kind: "stars_payment", tg_id: uid, message: "empty charge_id for " + sp.invoice_payload, source: "successful_payment" });
+    return;
+  }
+  try {
+    if (!(await ensureSchema(env))) throw new Error("db schema failed");
+    const seen = await env.DB.prepare("SELECT until FROM payments WHERE charge_id = ?1").bind(chId).first();
+    if (seen) {
+      console.error("[STARS_PAYMENT_DUP] duplicate charge_id skipped", { uid, chId });
+      return; // duplicate webhook delivery: do not extend subscription or re-send thanks
+    }
+    const old = await env.DB.prepare("SELECT until FROM subs WHERE user_id = ?1").bind(uid).first();
+    const base = Math.max(now(), (old && old.until) || 0);
+    const isSup = String(sp.invoice_payload || "").startsWith("support:");
+    const until = isSup ? (now() + 100 * 365 * 86400) : (Number(sp.subscription_expiration_date) || base + PREMIUM.period);
+    // Every payment is kept (charge id is needed for refunds and for editUserStarSubscription).
+    await env.DB.batch([
+      env.DB.prepare("INSERT INTO payments (charge_id, user_id, amount, payload, until, recurring, refunded, ts) VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0, ?7)")
+        .bind(chId, uid, Number(sp.total_amount) || 0, String(sp.invoice_payload || "").slice(0, 128), until, sp.is_recurring ? 1 : 0, now()),
+      env.DB.prepare("INSERT INTO subs (user_id, until, charge_id, updated) VALUES (?1, ?2, ?3, ?4) ON CONFLICT(user_id) DO UPDATE SET until = MAX(subs.until, excluded.until), charge_id = excluded.charge_id, updated = excluded.updated")
+        .bind(uid, until, chId, now())
+    ]);
+    const msg = isSup
+      ? ("💛 <b>Огромное спасибо за поддержку Lingo Brain!</b>" + NL + NL + "Золотая VIP-рамка, титул «⭐ Меценат» и все стили карточки игрока открыты для тебя навсегда!")
+      : TEXT.premiumThanks(until);
+    if (!sp.is_recurring || sp.is_first_recurring) await send(env, m.chat.id, msg, { reply_markup: appKeyboard("🚀 Открыть Lingo Brain") });
+  } catch (e) {
+    console.error("[STARS_PAYMENT_ERR] failed processing payment", { uid, chId, err: (e && (e.stack || e.message)) || String(e) });
+    await pushLog(env, { kind: "stars_payment", tg_id: uid, message: String((e && e.message) || e), source: "successful_payment" });
+    throw e;
+  }
 }
 
 async function onRefund(m, env) {
@@ -530,22 +597,91 @@ async function onRefund(m, env) {
 
 // POST /api/remind {initData, on, hour, tz, lang} -> {ok, enabled, hour}
 async function onRemindApi(request, env) {
-  let body;
-  try { const raw = await request.text(); if (raw.length > 8192) return json({ ok: false, error: "too big" }, 413); body = JSON.parse(raw); }
-  catch (e) { return json({ ok: false, error: "bad json" }, 400); }
-  const user = await verifyInitData(body && body.initData, env);
-  if (!user) return json({ ok: false, error: "auth" }, 401);
-  if (!(await ensureSchema(env))) return json({ ok: false, error: "db" }, 503);
-  const on = body.on ? 1 : 0;
-  const hour = Number.isFinite(Number(body.hour)) ? Math.max(0, Math.min(23, Math.round(Number(body.hour)))) : REMIND.defaultHour;
-  const tz = Number.isFinite(Number(body.tz)) && Math.abs(Number(body.tz)) <= 14 * 60 ? Math.round(Number(body.tz)) : REMIND.defaultTz;
-  const track = body.lang === "es" || body.lang === "en" ? body.lang : null;
-  await touchUser(env, user.id, track);
-  await dbRun(env,
-    "INSERT INTO remind (user_id, enabled, hour, tz, blocked) VALUES (?1, ?2, ?3, ?4, 0) " +
-    "ON CONFLICT(user_id) DO UPDATE SET enabled = excluded.enabled, hour = excluded.hour, tz = excluded.tz, blocked = 0",
-    [user.id, on, hour, tz]);
-  return json({ ok: true, enabled: on, hour: hour });
+  try {
+    let body;
+    try {
+      const raw = await request.text();
+      if (raw.length > 8192) return json({ ok: false, error: "too big" }, 413);
+      body = JSON.parse(raw);
+    } catch (e) {
+      console.error("[REMIND_ERR] bad json:", e && (e.stack || e.message));
+      await pushLog(env, { kind: "remind_err", message: "bad json: " + ((e && e.message) || e), source: "/api/remind" });
+      return json({ ok: false, error: "bad json" }, 400);
+    }
+    const user = await verifyInitData(body && body.initData, env);
+    if (!user) {
+      console.error("[REMIND_ERR] auth failed", { hasInitData: !!(body && body.initData) });
+      await pushLog(env, { kind: "remind_err", message: "auth failed (hasInitData=" + !!(body && body.initData) + ")", source: "/api/remind" });
+      return json({ ok: false, error: "auth" }, 401);
+    }
+    if (!(await ensureSchema(env))) {
+      console.error("[REMIND_ERR] db schema unavailable", { uid: user.id });
+      await pushLog(env, { kind: "remind_err", tg_id: user.id, message: "db schema unavailable", source: "/api/remind" });
+      return json({ ok: false, error: "db" }, 503);
+    }
+    const on = body.on ? 1 : 0;
+    const hour = Number.isFinite(Number(body.hour)) ? Math.max(0, Math.min(23, Math.round(Number(body.hour)))) : REMIND.defaultHour;
+    const tz = Number.isFinite(Number(body.tz)) && Math.abs(Number(body.tz)) <= 14 * 60 ? Math.round(Number(body.tz)) : REMIND.defaultTz;
+    const track = body.lang === "es" || body.lang === "en" ? body.lang : null;
+    await touchUser(env, user.id, track);
+    const saved = await dbRun(env,
+      "INSERT INTO remind (user_id, enabled, hour, tz, blocked) VALUES (?1, ?2, ?3, ?4, 0) " +
+      "ON CONFLICT(user_id) DO UPDATE SET enabled = excluded.enabled, hour = excluded.hour, tz = excluded.tz, blocked = 0",
+      [user.id, on, hour, tz]);
+    if (!saved) {
+      console.error("[REMIND_ERR] dbRun INSERT remind failed", { uid: user.id, on, hour, tz });
+      await pushLog(env, { kind: "remind_err", tg_id: user.id, message: "dbRun INSERT remind failed", source: "/api/remind" });
+      return json({ ok: false, error: "db_write" }, 500);
+    }
+    return json({ ok: true, enabled: on, hour: hour });
+  } catch (e) {
+    console.error("[REMIND_ERR] unhandled exception:", e && (e.stack || e.message || e));
+    await pushLog(env, { kind: "remind_err", message: String((e && (e.stack || e.message)) || e), source: "/api/remind" });
+    return json({ ok: false, error: "server" }, 500);
+  }
+}
+
+// POST /api/client-log { message, source, lineno, tg_id, build }
+async function onClientLog(request, env) {
+  try {
+    const raw = await request.text();
+    if (!raw || raw.length > 8192) return json({ ok: false, error: "size" }, 400);
+    const data = JSON.parse(raw);
+    console.error("[CLIENT_ERR]", data);
+    await pushLog(env, {
+      kind: "client",
+      tg_id: data && data.tg_id,
+      message: data && data.message,
+      source: data && data.source,
+      lineno: data && data.lineno,
+      build: (data && data.build) || "v6.5"
+    });
+    return json({ ok: true });
+  } catch (e) {
+    console.error("[CLIENT_ERR] parse failed:", e && e.message);
+    return json({ ok: false, error: "bad json" }, 400);
+  }
+}
+
+// GET /api/client-logs?key=<SETUP_KEY|WEBHOOK_SECRET|ADMIN_CHAT_ID>
+async function onClientLogsGet(request, url, env) {
+  const k = (url.searchParams.get("key") || (request.headers.get("authorization") || "").replace(/^Bearer\s+/i, "")).trim();
+  const okKey = k && (
+    (env.SETUP_KEY && k === String(env.SETUP_KEY).trim()) ||
+    (env.WEBHOOK_SECRET && k === String(env.WEBHOOK_SECRET).trim()) ||
+    (env.ADMIN_CHAT_ID && k === String(env.ADMIN_CHAT_ID).trim())
+  );
+  if (!okKey) return json({ ok: false, error: "forbidden" }, 403);
+  let dbLogs = [];
+  if (await ensureSchema(env)) {
+    try {
+      const r = await env.DB.prepare("SELECT id, ts, kind, tg_id, message, source, lineno, build FROM app_logs ORDER BY id DESC LIMIT 50").all();
+      dbLogs = (r && r.results) || [];
+    } catch (e) {
+      console.error("[LOGS_GET_ERR]", e && e.message);
+    }
+  }
+  return json({ ok: true, count: (dbLogs.length || MEM_LOGS.length), logs: dbLogs.length ? dbLogs : MEM_LOGS });
 }
 
 // ---------- v6.3: daily reminders (Cron Trigger, hourly) ----------
@@ -879,6 +1015,16 @@ export default {
       if (request.method === "POST") return onEvent(request, env);
       return cors(405);
     }
+    if (url.pathname === "/api/client-log") {
+      if (request.method === "OPTIONS") return cors();
+      if (request.method === "POST") return onClientLog(request, env);
+      return cors(405);
+    }
+    if (url.pathname === "/api/client-logs") {
+      if (request.method === "OPTIONS") return cors();
+      if (request.method === "GET") return onClientLogsGet(request, url, env);
+      return cors(405);
+    }
     if (url.pathname === "/api/health") {
       const hh = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", "Access-Control-Allow-Origin": "*" };
       // Player count and sync diagnostics are admin-only: /api/health?key=<SETUP_KEY>
@@ -899,10 +1045,10 @@ export default {
         if (url.pathname === "/api/remind") return await onRemindApi(request, env);
         return await onCard(request, env);
       }
-      catch (e) { console.log("api error", e && e.stack); await noteMeta(env, "last_sync_err", { t: now(), e: "server", m: String((e && e.message) || e).slice(0, 200), p: url.pathname }); return json({ ok: false, error: "server" }, 500); }
+      catch (e) { console.error("[API_ERR]", url.pathname, e && e.stack); await noteMeta(env, "last_sync_err", { t: now(), e: "server", m: String((e && e.message) || e).slice(0, 200), p: url.pathname }); return json({ ok: false, error: "server" }, 500); }
     }
     if (url.pathname.startsWith("/ava/") && request.method === "GET") {
-      try { return await onAva(url.pathname.slice(5).replace(".jpg", ""), env); } catch (e) { return new Response("err", { status: 500, headers: { "Access-Control-Allow-Origin": "*" } }); }
+      try { return await onAva(url.pathname.slice(5).replace(".jpg", ""), env); } catch (e) { console.error("[AVA_ERR] unhandled:", e && (e.stack || e.message)); return new Response("err", { status: 500, headers: { "Access-Control-Allow-Origin": "*" } }); }
     }
     if (url.pathname.startsWith("/card/") && request.method === "GET") {
       return onCardGet(url.pathname.slice(6).replace(".jpg", ""), env);

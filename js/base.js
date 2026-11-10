@@ -359,6 +359,43 @@ var hr = new Date().getHours();
 $("hello").textContent = hr < 12 ? "Доброе утро ☀️" : hr < 18 ? "Привет 👋" : "Добрый вечер 🌙";
 renderHome(); cloudLoad();
 
+// Сквозное логирование ошибок клиента -> POST /api/client-log (дебаунс 10 сек)
+(function () {
+  var LOG_URL = "https://lingo-brain-bot.lingobrain.workers.dev/api/client-log";
+  var seenErr = {};
+  function sendClientLog(message, source, lineno) {
+    try {
+      var msg = String(message || "unknown").slice(0, 500);
+      if (msg === "Script error.") return;
+      var src = String(source || "").slice(0, 240);
+      var ln = Number(lineno) || 0;
+      var key = msg + "|" + src + "|" + ln;
+      var nowT = Date.now();
+      if (seenErr[key] && nowT - seenErr[key] < 10000) return;
+      seenErr[key] = nowT;
+      var payload = JSON.stringify({
+        message: msg,
+        source: src,
+        lineno: ln,
+        tg_id: (user && user.id) || null,
+        build: "v6.5"
+      });
+      if (navigator.sendBeacon) {
+        try { if (navigator.sendBeacon(LOG_URL, new Blob([payload], { type: "text/plain" }))) return; } catch (e) {}
+      }
+      fetch(LOG_URL, { method: "POST", headers: { "content-type": "text/plain" }, body: payload, keepalive: true }).catch(function () {});
+    } catch (e) {}
+  }
+  window.addEventListener("error", function (e) {
+    sendClientLog((e && (e.message || (e.error && e.error.message))) || "window error", e && e.filename, e && e.lineno);
+  });
+  window.addEventListener("unhandledrejection", function (e) {
+    var r = e && e.reason;
+    sendClientLog((r && (r.stack || r.message)) || String(r || "unhandledrejection"), "promise", 0);
+  });
+  window.lbSendClientLog = sendClientLog;
+})();
+
 // Демо для скриншотов (в Telegram не срабатывает)
 var hs = location.hash;
 if (hs === "#topics") openTrack("en");
