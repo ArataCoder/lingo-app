@@ -90,5 +90,51 @@ const health = async (q) => (await W.fetch(new Request("https://x.dev/api/health
 ok("health without key hides details", JSON.stringify(await health("")) === '{"ok":true}');
 ok("health with wrong key hides details", JSON.stringify(await health("?key=nope")) === '{"ok":true}');
 ok("health with SETUP_KEY shows diagnostics", (await health("?key=K")).players >= 1);
+
+// v6.2 premium groundwork (PREMIUM.enabled = false in the code)
+const upd = (u) => W.fetch(new Request("https://x.dev/webhook", { method: "POST", headers: { "X-Telegram-Bot-Api-Secret-Token": "S" }, body: JSON.stringify(u) }), env);
+j = await (await post("/api/sync", { initData: initData(777, "Aleks") })).json();
+ok("sync reports premium off", j.premium && j.premium.enabled === false && j.premium.active === false);
+r = await post("/api/invoice", { initData: initData(777, "Aleks") });
+ok("invoice disabled -> 404", r.status === 404 && (await r.json()).error === "disabled");
+sent = [];
+await upd({ update_id: 1, pre_checkout_query: { id: "q1", from: { id: 777 }, currency: "XTR", total_amount: 150, invoice_payload: "premium:777" } });
+ok("pre-checkout declined while disabled", sent.length === 1 && sent[0].pre_checkout_query_id === "q1" && sent[0].ok === false && !!sent[0].error_message);
+const until = Math.floor(Date.now() / 1000) + 2592000;
+sent = [];
+await upd({ update_id: 2, message: { message_id: 5, chat: { id: 777, type: "private" }, from: { id: 777, first_name: "Aleks" },
+  successful_payment: { currency: "XTR", total_amount: 150, invoice_payload: "premium:777", telegram_payment_charge_id: "ch_1", subscription_expiration_date: until, is_recurring: true, is_first_recurring: true } } });
+j = await (await post("/api/sync", { initData: initData(777, "Aleks") })).json();
+ok("successful payment activates premium", j.premium.active === true && j.premium.until === until);
+ok("payment thanks sent", sent.some((m) => m.chat_id === 777 && /Плюс/.test(m.text)));
+sent = [];
+await upd({ update_id: 3, message: { message_id: 6, chat: { id: 777, type: "private" }, from: { id: 777, first_name: "Aleks" },
+  successful_payment: { currency: "XTR", total_amount: 150, invoice_payload: "premium:777", telegram_payment_charge_id: "ch_1", subscription_expiration_date: until, is_recurring: true, is_first_recurring: true } } });
+ok("duplicate payment update is stored once", env.DB.db.prepare("SELECT COUNT(*) AS n FROM payments").get().n === 1);
+await upd({ update_id: 4, message: { message_id: 7, chat: { id: 777, type: "private" }, from: { id: 777, first_name: "Aleks" },
+  successful_payment: { currency: "XTR", total_amount: 150, invoice_payload: "premium:777", telegram_payment_charge_id: "ch_2", subscription_expiration_date: until + 2592000, is_recurring: true } } });
+j = await (await post("/api/sync", { initData: initData(777, "Aleks") })).json();
+ok("renewal extends premium", j.premium.until === until + 2592000);
+sent = []; await hook("/paysupport", 777, "Aleks");
+ok("/paysupport answers", sent.length === 1 && /оплат/.test(sent[0].text));
+
+// Same worker with PREMIUM.enabled = true
+const WP = await loadWorker("premium-on", (s) => s.replace("  enabled: false,", "  enabled: true,"));
+const postP = (path, body) => WP.fetch(new Request("https://x.dev" + path, { method: "POST", headers: { "content-type": "text/plain" }, body: JSON.stringify(body) }), env);
+const updP = (u) => WP.fetch(new Request("https://x.dev/webhook", { method: "POST", headers: { "X-Telegram-Bot-Api-Secret-Token": "S" }, body: JSON.stringify(u) }), env);
+sent = [];
+r = await postP("/api/invoice", { initData: initData(777, "Aleks") });
+const inv = sent.find((m) => m.currency === "XTR");
+ok("enabled: invoice link requested as a 30-day Stars subscription", r.status === 200 && inv && inv.subscription_period === 2592000 && inv.provider_token === "" && inv.prices.length === 1 && inv.payload === "premium:777");
+ok("enabled: invoice needs auth", (await postP("/api/invoice", { initData: "x" })).status === 401);
+sent = [];
+await updP({ update_id: 5, pre_checkout_query: { id: "q2", from: { id: 777 }, currency: "XTR", total_amount: inv.prices[0].amount, invoice_payload: "premium:777" } });
+ok("enabled: valid pre-checkout approved", sent.length === 1 && sent[0].ok === true);
+sent = [];
+await updP({ update_id: 6, pre_checkout_query: { id: "q3", from: { id: 778 }, currency: "XTR", total_amount: inv.prices[0].amount, invoice_payload: "premium:777" } });
+ok("enabled: someone else's payload declined", sent.length === 1 && sent[0].ok === false);
+sent = [];
+await updP({ update_id: 7, pre_checkout_query: { id: "q4", from: { id: 777 }, currency: "XTR", total_amount: 1, invoice_payload: "premium:777" } });
+ok("enabled: wrong amount declined", sent.length === 1 && sent[0].ok === false);
 console.log(fails ? "WORKER TESTS FAILED: " + fails : "WORKER TESTS ALL PASSED");
 process.exit(fails ? 1 : 0);

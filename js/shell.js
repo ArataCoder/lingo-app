@@ -26,7 +26,10 @@
     "#v51st{margin-top:4px;font-size:13px;color:var(--muted);font-weight:700}",
     ".v5hero.v51a{position:relative;display:block;text-align:left;background:#24283B;background:color-mix(in srgb,var(--acc) 9%,#24283B);color:var(--text);border:1px solid #3B4261;border-color:color-mix(in srgb,var(--acc) 30%,#3B4261);border-radius:24px;padding:20px 18px 16px;box-shadow:0 14px 30px -14px rgba(0,0,0,.6);transition:transform .18s cubic-bezier(.16,1,.3,1)}",
     ".v5hero.v51a:active{transform:scale(.985)}",
-    ".v51h{display:flex;flex-direction:column;gap:12px;width:100%}",
+    // WebKit (Telegram on iOS) shrink-wraps the content of a block <button>, so width:100% on the inner span
+    // is not enough: make the button a flex column and stretch the content explicitly.
+    ".v5hero.v51a{display:flex;flex-direction:column;align-items:stretch}",
+    ".v51h{display:flex;flex-direction:column;gap:12px;width:100%;align-self:stretch;box-sizing:border-box}",
     ".v51t{display:block;font-size:22px;line-height:1.2;font-weight:800;letter-spacing:-.01em;text-wrap:balance}",
     ".v51m{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:13px;font-weight:700;color:#A9B1D6}",
     ".v51m b{color:var(--text);font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}",
