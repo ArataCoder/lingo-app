@@ -343,11 +343,15 @@ var nm = (user && user.first_name) || "друг";
 $("uname").textContent = nm;
 function setInitial() { var ch = Array.from(nm.trim())[0] || "🙂"; $("avIn").textContent = ch.toUpperCase(); }
 setInitial();
-if (user && user.photo_url) {
+if (user && (user.photo_url || user.id)) {
+  var avaFallback = user.id ? "https://lingo-brain-bot.lingobrain.workers.dev/ava/" + user.id + ".jpg" : "";
   var im = new Image(); im.alt = ""; im.referrerPolicy = "no-referrer";
   im.onload = function () { $("avIn").textContent = ""; $("avIn").appendChild(im); };
-  im.onerror = setInitial;
-  im.src = user.photo_url;
+  im.onerror = function () {
+    if (avaFallback && im.src !== avaFallback) im.src = avaFallback;
+    else setInitial();
+  };
+  im.src = user.photo_url || avaFallback;
 }
 var POKES = ["Ты зашёл — это уже победа 💛", "Привет-привет 👋", "Мозг, мы справимся 🧠", "2 минуты — и день засчитан ⚡", "Горжусь тобой 🔥"];
 function poke() { haptic("soft"); toast(pick(POKES)); }

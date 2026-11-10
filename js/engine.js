@@ -472,7 +472,11 @@
     ".v3chip{padding:11px 14px;border-radius:14px;background:var(--card);border:1px solid var(--line);color:var(--text);font-weight:800;font-size:16px;font-family:inherit;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.25)}" +
     ".v3chip.in{background:rgba(255,255,255,.1);border-color:var(--acc)}.v3chip.used{visibility:hidden}" +
     ".v3big{font-size:28px;font-weight:800;text-align:center;margin:10px 0}.v3sub{text-align:center;color:var(--muted);font-size:15px}" +
-    ".v3play{width:84px;height:84px;border-radius:50%;border:none;background:var(--acc);font-size:34px;cursor:pointer;display:block;margin:6px auto 10px;box-shadow:0 0 0 8px rgba(255,255,255,.05),0 0 30px var(--acc)}" +
+    ".qlabel{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px;text-transform:none;letter-spacing:0}" +
+    ".qmode{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--text);font-size:12px;font-weight:800;white-space:nowrap;flex:none}" +
+    ".qmode.rev{background:rgba(247,160,70,.16);border-color:rgba(247,160,70,.45);color:var(--es)}" +
+    ".qtop-t{font-size:12px;font-weight:700;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;text-align:right}" +
+    ".v3play{width:84px;height:84px;border-radius:50%;border:none;background:var(--acc);font-size:34px;cursor:pointer;display:block;margin:8px auto 12px;box-shadow:0 0 0 8px rgba(255,255,255,.05),0 0 30px var(--acc)}" +
     ".v3center{text-align:center}.v3row2{display:flex;gap:10px}.v3row2 .btn{margin-top:0}" +
     ".v3chat{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}" +
     ".v3msg{max-width:86%;padding:12px 14px;border-radius:18px;font-size:16px;line-height:1.4;animation:fade .25s}" +
@@ -731,8 +735,8 @@
     setTrack(c.track); body.innerHTML = "";
     $("v3dots").innerHTML = dots(r.pos, r.cards.length, true);
     var card = E("div", "qcard glass"); body.appendChild(card);
-    var label = { choice: "🎯 Выбери", flash: "🃏 Вспомни", listen: "👂 Тренажёр уха", build: "🧩 Собери фразу", speak: "🎙 Скажи вслух" }[c.type] || "";
-    card.appendChild(E("div", "qlabel", r.review ? "⚡️ Работа над ошибками (закрепи результат) · " + label : label + " · " + esc(r.title))); if (r.review) card.style.boxShadow = "0 0 0 2px var(--es) inset";
+    var label = { choice: "🎯 Выбор", flash: "🃏 Карточка", listen: "🎧 На слух", build: "🧩 Собери фразу", speak: "🎙 Вслух" }[c.type] || "";
+    card.appendChild(E("div", "qlabel", r.review ? '<span class="qmode rev">⚡️ Ошибки</span><span class="qtop-t">' + label + "</span>" : '<span class="qmode">' + label + '</span><span class="qtop-t">' + esc(r.title) + "</span>")); if (r.review) card.style.boxShadow = "0 0 0 2px var(--es) inset";
 
     if (c.type === "choice") {
       card.appendChild(E("div", "qtext", c.q));

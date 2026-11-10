@@ -53,7 +53,7 @@
 
   // ---------- 2. Navigation: always 4 tabs ----------
   var TABS = [["home", "\uD83C\uDFE0", "\u0413\u043b\u0430\u0432\u043d\u0430\u044f"], ["catalog", "\uD83D\uDDC2", "\u0422\u0435\u043c\u044b"], ["profile", "\uD83D\uDCCA", "\u041f\u0440\u043e\u0433\u0440\u0435\u0441\u0441"], ["friends", "\uD83D\uDC65", "\u0414\u0440\u0443\u0437\u044c\u044f"]];
-  var PARENT = { words: "profile", topic: "catalog", track: "catalog" };
+  var PARENT = { words: "profile", ach: "profile", topic: "catalog", track: "catalog" };
   function nav(g) {
     var n = document.querySelector(".nav"); if (!n) return;
     n.setAttribute("aria-label", "\u041e\u0441\u043d\u043e\u0432\u043d\u043e\u0435 \u043c\u0435\u043d\u044e");

@@ -207,5 +207,26 @@ await post("/api/sync", { initData: initData(901, "Ana"), tz: 120 });
 ok("app reports the time zone", db.prepare("SELECT tz FROM remind WHERE user_id = 901").get().tz === 120);
 await post("/api/sync", { initData: initData(901, "Ana"), tz: null });
 ok("missing tz keeps the stored one", db.prepare("SELECT tz FROM remind WHERE user_id = 901").get().tz === 120);
+
+// v6.5: /api/remind from Mini App, 3-tier support invoices, and frame/title sync
+{
+  const rr = await (await post("/api/remind", { initData: initData(901, "Ana"), on: true, hour: 19, tz: 180, lang: "es" })).json();
+  const row = db.prepare("SELECT enabled, hour, tz, blocked FROM remind WHERE user_id = 901").get();
+  ok("/api/remind saves enabled, hour, tz", rr.ok === true && row.enabled === 1 && row.hour === 19 && row.tz === 180 && row.blocked === 0);
+}
+{
+  sent = [];
+  const ir = await (await post("/api/invoice", { initData: initData(901, "Ana"), tier: 50 })).json();
+  const req = sent[0] || {};
+  ok("one-time support tier invoice works even when subscription disabled", ir.ok === true && req.currency === "XTR" && req.prices[0].amount === 50 && !req.subscription_period);
+  sent = [];
+  await upd({ update_id: 20, pre_checkout_query: { id: "qsup", from: { id: 901 }, currency: "XTR", total_amount: 50, invoice_payload: "support:901:50" } });
+  ok("pre-checkout approves support:901:50", sent.length === 1 && sent[0].ok === true);
+}
+{
+  const sr = await (await post("/api/sync", { initData: initData(901, "Ana"), stats: { xp: 400, streak: 4, learned: 15, rounds: 12, frame: "fire", title: "🔥 Машина серии" } })).json();
+  const meRow = (sr.friends || []).find((f) => f.me);
+  ok("sync stores and returns player frame and title", meRow && meRow.frame === "fire" && meRow.title === "🔥 Машина серии");
+}
 console.log(fails ? "WORKER TESTS FAILED: " + fails : "WORKER TESTS ALL PASSED");
 process.exit(fails ? 1 : 0);

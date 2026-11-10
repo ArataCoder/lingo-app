@@ -184,7 +184,7 @@ async function ensureSchema(env) {
       env.DB.prepare("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, first_seen INTEGER, last_seen INTEGER, track TEXT)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, event TEXT, track TEXT, xp INTEGER, ts INTEGER)"),
       env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_events_event_ts ON events(event, ts)"),
-      env.DB.prepare("CREATE TABLE IF NOT EXISTS players (id INTEGER PRIMARY KEY, name TEXT, username TEXT, xp INTEGER DEFAULT 0, week_key TEXT, week_base INTEGER DEFAULT 0, streak INTEGER DEFAULT 0, learned INTEGER DEFAULT 0, rounds INTEGER DEFAULT 0, updated INTEGER)"),
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS players (id INTEGER PRIMARY KEY, name TEXT, username TEXT, xp INTEGER DEFAULT 0, week_key TEXT, week_base INTEGER DEFAULT 0, streak INTEGER DEFAULT 0, learned INTEGER DEFAULT 0, rounds INTEGER DEFAULT 0, updated INTEGER, frame TEXT, title TEXT)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS friends (a INTEGER, b INTEGER, ts INTEGER, PRIMARY KEY (a, b))"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS cards (id TEXT PRIMARY KEY, user_id INTEGER, data TEXT, ts INTEGER)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT)"),
@@ -193,6 +193,8 @@ async function ensureSchema(env) {
       env.DB.prepare("CREATE TABLE IF NOT EXISTS remind (user_id INTEGER PRIMARY KEY, enabled INTEGER DEFAULT 1, hour INTEGER, tz INTEGER, last_sent TEXT, last_round INTEGER, blocked INTEGER DEFAULT 0)")
     ]);
     try { await env.DB.prepare("ALTER TABLE payments ADD COLUMN refunded INTEGER DEFAULT 0").run(); } catch (e) {}
+    try { await env.DB.prepare("ALTER TABLE players ADD COLUMN frame TEXT").run(); } catch (e) {}
+    try { await env.DB.prepare("ALTER TABLE players ADD COLUMN title TEXT").run(); } catch (e) {}
     schemaReady = true;
   } catch (e) {
     console.log("d1 schema error", e && e.message);
@@ -254,14 +256,12 @@ async function verifyInitData(initData, env) {
 async function onAva(id, env) {
   const h = { "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=43200" };
   if (!/^[0-9]{1,15}$/.test(id)) return new Response("bad id", { status: 400, headers: h });
-  const row = await env.DB.prepare("SELECT id FROM players WHERE id = ?").bind(Number(id)).first();
-  if (!row) return new Response("not found", { status: 404, headers: h });
   const ph = await tg(env, "getUserProfilePhotos", { user_id: Number(id), limit: 1 });
   const sizes = ph && ph.ok && ph.result && ph.result.photos && ph.result.photos[0];
-  if (!sizes || !sizes.length) return new Response("no photo", { status: 404, headers: { ...h, "Cache-Control": "public, max-age=3600" } });
+  if (!sizes || !sizes.length) return new Response("no photo", { status: 404, headers: { ...h, "Cache-Control": "public, max-age=600" } });
   const ps = sizes.filter(s => s.width >= 160)[0] || sizes[sizes.length - 1];
   const f = await tg(env, "getFile", { file_id: ps.file_id });
-  if (!f || !f.ok || !f.result || !f.result.file_path) return new Response("no file", { status: 404, headers: h });
+  if (!f || !f.ok || !f.result || !f.result.file_path) return new Response("no file", { status: 404, headers: { ...h, "Cache-Control": "public, max-age=600" } });
   const img = await fetch("https://api.telegram.org/file/bot" + token(env) + "/" + f.result.file_path);
   if (!img.ok) return new Response("fetch fail", { status: 502, headers: h });
   return new Response(await img.arrayBuffer(), { status: 200, headers: { ...h, "content-type": "image/jpeg" } });
@@ -346,11 +346,14 @@ async function upsertPlayer(env, u, st) {
   else if (old.week_key !== wk) base = old.xp || 0;
   else base = old.week_base || 0;
   if (base > xp) base = xp;
+  const frame = typeof st.frame === "string" && st.frame ? st.frame.slice(0, 24) : null;
+  const title = typeof st.title === "string" && st.title ? st.title.slice(0, 40) : null;
   await dbRun(env,
-    "INSERT INTO players (id, name, username, xp, week_key, week_base, streak, learned, rounds, updated) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10) " +
+    "INSERT INTO players (id, name, username, xp, week_key, week_base, streak, learned, rounds, updated, frame, title) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12) " +
     "ON CONFLICT(id) DO UPDATE SET name = excluded.name, username = excluded.username, xp = excluded.xp, week_key = excluded.week_key, " +
-    "week_base = excluded.week_base, streak = excluded.streak, learned = excluded.learned, rounds = excluded.rounds, updated = excluded.updated",
-    [u.id, cleanName(u), u.username || null, xp, wk, base, clampInt(st.streak, 100000), clampInt(st.learned, 1000000), clampInt(st.rounds, 10000000), now()]);
+    "week_base = excluded.week_base, streak = excluded.streak, learned = excluded.learned, rounds = excluded.rounds, updated = excluded.updated, " +
+    "frame = COALESCE(excluded.frame, players.frame), title = COALESCE(excluded.title, players.title)",
+    [u.id, cleanName(u), u.username || null, xp, wk, base, clampInt(st.streak, 100000), clampInt(st.learned, 1000000), clampInt(st.rounds, 10000000), now(), frame, title]);
 }
 
 // дружба в обе стороны; true, если она новая
@@ -375,12 +378,14 @@ async function link(env, a, b) {
 async function listFriends(env, id) {
   const wk = weekKey(), t = now();
   try {
-    const r = await env.DB.prepare("SELECT p.id, p.name, p.xp, p.week_key, p.week_base, p.streak, p.learned, p.rounds, p.updated, s.until FROM players p LEFT JOIN subs s ON s.user_id = p.id WHERE p.id = ?1 OR p.id IN (SELECT b FROM friends WHERE a = ?1) LIMIT 201").bind(id).all();
+    const r = await env.DB.prepare("SELECT p.id, p.name, p.xp, p.week_key, p.week_base, p.streak, p.learned, p.rounds, p.updated, p.frame, p.title, s.until FROM players p LEFT JOIN subs s ON s.user_id = p.id WHERE p.id = ?1 OR p.id IN (SELECT b FROM friends WHERE a = ?1) LIMIT 201").bind(id).all();
     const rows = ((r && r.results) || []).map((p) => ({
       id: p.id, name: p.name || "Игрок", xp: p.xp || 0,
       week: p.week_key === wk ? Math.max(0, (p.xp || 0) - (p.week_base || 0)) : 0,
       streak: p.streak || 0, learned: p.learned || 0, rounds: p.rounds || 0, me: p.id === id, seen: p.updated || 0,
-      plus: (p.until || 0) > t
+      plus: (p.until || 0) > t,
+      frame: p.frame || null,
+      title: p.title || null
     }));
     rows.sort((a, b) => (b.week - a.week) || (b.xp - a.xp));
     return rows;
@@ -436,22 +441,32 @@ async function onSync(request, env) {
   return json({ ok: true, me: user.id, friends: fl, invite: refLink(user.id), premium: await premiumState(env, user.id) });
 }
 
-// ---------- v6.2: Premium (Telegram Stars subscription) ----------
+// ---------- v6.2: Premium & Support (Telegram Stars) ----------
+const SUPPORT_TIERS = [50, 150, 500];
+
 async function premiumState(env, userId) {
   const row = await dbFirst(env, "SELECT until FROM subs WHERE user_id = ?1", [userId]);
   const until = (row && row.until) || 0;
-  return { enabled: PREMIUM.enabled, active: until > now(), until: until, stars: PREMIUM.stars };
+  return { enabled: PREMIUM.enabled, active: until > now(), until: until, stars: PREMIUM.stars, tiers: SUPPORT_TIERS };
 }
 
-// POST /api/invoice {initData} -> {ok, url}: link for Telegram.WebApp.openInvoice
+// POST /api/invoice {initData, tier?: 50|150|500} -> {ok, url}: link for Telegram.WebApp.openInvoice
 async function onInvoice(request, env) {
-  if (!PREMIUM.enabled) return json({ ok: false, error: "disabled" }, 404);
   let body;
   try { const raw = await request.text(); if (raw.length > 8192) return json({ ok: false, error: "too big" }, 413); body = JSON.parse(raw); }
   catch (e) { return json({ ok: false, error: "bad json" }, 400); }
+  const tier = body && SUPPORT_TIERS.indexOf(Number(body.tier)) >= 0 ? Number(body.tier) : 0;
+  if (!tier && !PREMIUM.enabled) return json({ ok: false, error: "disabled" }, 404);
   const user = await verifyInitData(body && body.initData, env);
   if (!user) return json({ ok: false, error: "auth" }, 401);
-  const r = await tg(env, "createInvoiceLink", {
+  const req = tier ? {
+    title: "Поддержка Lingo Brain (" + tier + " ⭐)",
+    description: "Разовый донат на развитие бесплатного приложения + VIP-рамка, титул «Меценат» и все стили карточки навсегда 💛",
+    payload: "support:" + user.id + ":" + tier,
+    provider_token: "",
+    currency: "XTR",
+    prices: [{ label: "Поддержка Lingo Brain", amount: tier }]
+  } : {
     title: PREMIUM.title,
     description: PREMIUM.description,
     payload: "premium:" + user.id,
@@ -459,18 +474,21 @@ async function onInvoice(request, env) {
     currency: "XTR",
     prices: [{ label: PREMIUM.title, amount: PREMIUM.stars }],
     subscription_period: PREMIUM.period
-  });
+  };
+  const r = await tg(env, "createInvoiceLink", req);
   if (!r || !r.ok) return json({ ok: false, error: (r && r.description) || "invoice" }, 502);
   return json({ ok: true, url: r.result });
 }
 
 // Telegram waits ~10 s for this answer, otherwise the payment fails.
 async function onPreCheckout(q, env) {
-  const p = String(q.invoice_payload || "");
-  const good = PREMIUM.enabled && q.currency === "XTR" && q.total_amount === PREMIUM.stars && p === "premium:" + (q.from && q.from.id);
+  const p = String(q.invoice_payload || ""), uid = q.from && q.from.id;
+  const isSup = /^support:[0-9]+:(50|150|500)$/.test(p) && p === "support:" + uid + ":" + q.total_amount;
+  const isPrem = PREMIUM.enabled && q.total_amount === PREMIUM.stars && p === "premium:" + uid;
+  const good = q.currency === "XTR" && (isSup || isPrem);
   return tg(env, "answerPreCheckoutQuery", good
     ? { pre_checkout_query_id: q.id, ok: true }
-    : { pre_checkout_query_id: q.id, ok: false, error_message: "Эта подписка сейчас недоступна. Попробуй позже 🙏" });
+    : { pre_checkout_query_id: q.id, ok: false, error_message: "Платёж сейчас недоступен. Попробуй позже 🙏" });
 }
 
 async function onPayment(m, env) {
@@ -483,7 +501,8 @@ async function onPayment(m, env) {
   if (seen) return; // duplicate webhook delivery: do not extend subscription or re-send thanks
   const old = await env.DB.prepare("SELECT until FROM subs WHERE user_id = ?1").bind(uid).first();
   const base = Math.max(now(), (old && old.until) || 0);
-  const until = Number(sp.subscription_expiration_date) || base + PREMIUM.period;
+  const isSup = String(sp.invoice_payload || "").startsWith("support:");
+  const until = isSup ? (now() + 100 * 365 * 86400) : (Number(sp.subscription_expiration_date) || base + PREMIUM.period);
   // Every payment is kept (charge id is needed for refunds and for editUserStarSubscription).
   await env.DB.batch([
     env.DB.prepare("INSERT INTO payments (charge_id, user_id, amount, payload, until, recurring, refunded, ts) VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0, ?7)")
@@ -491,7 +510,10 @@ async function onPayment(m, env) {
     env.DB.prepare("INSERT INTO subs (user_id, until, charge_id, updated) VALUES (?1, ?2, ?3, ?4) ON CONFLICT(user_id) DO UPDATE SET until = MAX(subs.until, excluded.until), charge_id = excluded.charge_id, updated = excluded.updated")
       .bind(uid, until, chId, now())
   ]);
-  if (!sp.is_recurring || sp.is_first_recurring) await send(env, m.chat.id, TEXT.premiumThanks(until), { reply_markup: appKeyboard("🚀 Открыть Lingo Brain") });
+  const msg = isSup
+    ? ("💛 <b>Огромное спасибо за поддержку Lingo Brain!</b>" + NL + NL + "Золотая VIP-рамка, титул «⭐ Меценат» и все стили карточки игрока открыты для тебя навсегда!")
+    : TEXT.premiumThanks(until);
+  if (!sp.is_recurring || sp.is_first_recurring) await send(env, m.chat.id, msg, { reply_markup: appKeyboard("🚀 Открыть Lingo Brain") });
 }
 
 async function onRefund(m, env) {
@@ -504,6 +526,26 @@ async function onRefund(m, env) {
     env.DB.prepare("UPDATE payments SET refunded = 1 WHERE charge_id = ?1").bind(chId),
     env.DB.prepare("UPDATE subs SET until = 0, updated = ?2 WHERE user_id = ?1 AND charge_id = ?3").bind(uid, now(), chId)
   ]);
+}
+
+// POST /api/remind {initData, on, hour, tz, lang} -> {ok, enabled, hour}
+async function onRemindApi(request, env) {
+  let body;
+  try { const raw = await request.text(); if (raw.length > 8192) return json({ ok: false, error: "too big" }, 413); body = JSON.parse(raw); }
+  catch (e) { return json({ ok: false, error: "bad json" }, 400); }
+  const user = await verifyInitData(body && body.initData, env);
+  if (!user) return json({ ok: false, error: "auth" }, 401);
+  if (!(await ensureSchema(env))) return json({ ok: false, error: "db" }, 503);
+  const on = body.on ? 1 : 0;
+  const hour = Number.isFinite(Number(body.hour)) ? Math.max(0, Math.min(23, Math.round(Number(body.hour)))) : REMIND.defaultHour;
+  const tz = Number.isFinite(Number(body.tz)) && Math.abs(Number(body.tz)) <= 14 * 60 ? Math.round(Number(body.tz)) : REMIND.defaultTz;
+  const track = body.lang === "es" || body.lang === "en" ? body.lang : null;
+  await touchUser(env, user.id, track);
+  await dbRun(env,
+    "INSERT INTO remind (user_id, enabled, hour, tz, blocked) VALUES (?1, ?2, ?3, ?4, 0) " +
+    "ON CONFLICT(user_id) DO UPDATE SET enabled = excluded.enabled, hour = excluded.hour, tz = excluded.tz, blocked = 0",
+    [user.id, on, hour, tz]);
+  return json({ ok: true, enabled: on, hour: hour });
 }
 
 // ---------- v6.3: daily reminders (Cron Trigger, hourly) ----------
@@ -848,10 +890,15 @@ export default {
       }
       return new Response(JSON.stringify(out), { headers: hh });
     }
-    if (url.pathname === "/api/sync" || url.pathname === "/api/card" || url.pathname === "/api/invoice") {
+    if (url.pathname === "/api/sync" || url.pathname === "/api/card" || url.pathname === "/api/invoice" || url.pathname === "/api/remind") {
       if (request.method === "OPTIONS") return cors();
       if (request.method !== "POST") return cors(405);
-      try { return url.pathname === "/api/sync" ? await onSync(request, env) : url.pathname === "/api/invoice" ? await onInvoice(request, env) : await onCard(request, env); }
+      try {
+        if (url.pathname === "/api/sync") return await onSync(request, env);
+        if (url.pathname === "/api/invoice") return await onInvoice(request, env);
+        if (url.pathname === "/api/remind") return await onRemindApi(request, env);
+        return await onCard(request, env);
+      }
       catch (e) { console.log("api error", e && e.stack); await noteMeta(env, "last_sync_err", { t: now(), e: "server", m: String((e && e.message) || e).slice(0, 200), p: url.pathname }); return json({ ok: false, error: "server" }, 500); }
     }
     if (url.pathname.startsWith("/ava/") && request.method === "GET") {
