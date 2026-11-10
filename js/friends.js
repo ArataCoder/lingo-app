@@ -124,7 +124,7 @@
     "#cardOv.on{display:flex}",
     "#cardImg{width:min(100%,330px);max-height:50vh;object-fit:contain;border-radius:20px;box-shadow:0 16px 44px rgba(0,0,0,.55);display:block}",
     ".cthemes{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:min(100%,350px)}",
-    ".cthm{min-height:40px;padding:6px 4px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(36,40,59,.9);color:var(--text);font:800 11px inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;white-space:nowrap}",
+    ".cthm{min-height:44px;padding:6px 4px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(36,40,59,.9);color:var(--text);font:800 11px inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;white-space:nowrap}",
     ".cthm.on{border-color:#FFD166;background:rgba(255,209,102,.18);color:#FFD166}",
     ".cthm.lk{opacity:.7}",
     ".cacts{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:min(100%,350px)}",
@@ -144,7 +144,7 @@
     ".lbsup-tier strong{font-size:14px;font-weight:900;display:block;color:inherit}",
     ".lbsup-tier small{font-size:11px;font-weight:700;opacity:.85;display:block;color:inherit}",
     ".lbsup-act{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:6px;font-size:13px;color:#10B981;font-weight:800}",
-    ".lbsup-preview{min-height:42px;padding:8px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#EEEEFF;font:800 13px inherit;cursor:pointer}",
+    ".lbsup-preview{min-height:44px;padding:8px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#EEEEFF;font:800 13px inherit;cursor:pointer}",
     /* Achievements & Style Screen (#scr_ach) */
     ".ach-hero{display:flex;align-items:center;gap:14px;padding:16px}",
     ".ach-av{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--acc),#9D7CD8);display:grid;place-items:center;font-weight:900;font-size:24px;color:#12131C;flex:none;position:relative;overflow:hidden}",
@@ -550,7 +550,7 @@
         '<p>Все 80 тем всегда 100% бесплатны. Разовый донат открывает Золотую VIP-рамку, титул «⭐ Меценат» и все стили карточки навсегда:</p></div></div>' +
         '<div class="lbsup-tiers">' +
           '<button type="button" class="lbsup-tier" data-tier="50"><strong>☕ 50 ⭐</strong><small>Спасибо</small></button>' +
-          '<button type="button" class="lbsup-tier hit" data-tier="150"><strong>⭐ 150 ⭐</strong><small>Хит выбора</small></button>' +
+          '<button type="button" class="lbsup-tier hit" id="lbSupBtn" data-tier="150"><strong>⭐ 150 ⭐</strong><small>Хит выбора</small></button>' +
           '<button type="button" class="lbsup-tier" data-tier="500"><strong>🚀 500 ⭐</strong><small>Меценат</small></button>' +
         '</div>' +
         '<button type="button" class="lbsup-preview" style="width:100%" onclick="lbToggleDemo()">🎁 Примерить VIP-косметику бесплатно (тест)</button>';
