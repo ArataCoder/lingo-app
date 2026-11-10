@@ -29,13 +29,14 @@ const WEBHOOK_UPDATES = ["message", "pre_checkout_query", "callback_query"];
 const BOT_URL = "https://lingo-brain-bot.lingobrain.workers.dev";
 
 // Daily reminders. One message a day at the user's chosen local hour, only if no round was done today.
-// Placeholders: {name}, {streak}. Owner edits these lists; keep each line short and guilt-free.
+// Placeholders: {name}, {streak}, {lang} ("Испанский" / "Английский", the track the user studies last).
+// Owner edits these lists; keep each line short and guilt-free.
 const REMIND = {
   defaultHour: 19,
   defaultTz: 60,          // minutes east of UTC until the app reports the real offset (CET)
   quietAfterDays: 14,     // no reminders to people who have not opened the bot/app for this long
-  comebackAfterDays: 2,   // after this many days without a round, use the gentler "comeback" texts
-  hours: [9, 13, 19, 21],
+  comebackAfterDays: 3,   // after this many days without a round, use the "comeback" texts
+  hours: [8, 12, 15, 19, 21], // same choices as the reminder card in the app (js/learn.js HOURS)
   regular: [
     "{name}, 2 минуты? 🧠 Одна тема, и день засчитан.",
     "Пара карточек, пока закипает чайник? ☕",
@@ -58,9 +59,11 @@ const REMIND = {
     "{streak} дней подряд — твой мозг уже привык. Продолжим? 💪"
   ],
   comeback: [
+    "{lang} соскучился по тебе 🥺 Заглянешь на 2 минуты?",
+    "{lang} скучает по тебе, {name} 😿 Одна лёгкая карточка, и мы снова в деле.",
     "Скучаю 😿 Без давления: одна карточка, и мы снова в деле.",
     "{name}, привет! Пропуски — это нормально. Вернёмся с лёгкой темы? 🌱",
-    "Никакой вины, только 45 секунд в режиме «Нет сил» 🪫",
+    "{lang} всё ещё ждёт тебя 💌 Никакой вины, только 45 секунд в режиме «Нет сил».",
     "Я сохранила твой прогресс 💾 Заглянешь на минутку?",
     "С возвращением можно и сегодня 💛 Одна карточка."
   ]
@@ -431,7 +434,33 @@ async function onSync(request, env) {
   if (ref && ref !== user.id && (await link(env, user.id, ref))) await notifyNewFriend(env, ref, user);
   const fl = await listFriends(env, user.id);
   await noteMeta(env, "last_sync_ok", { t: now(), n: (fl || []).length });
-  return json({ ok: true, me: user.id, friends: fl, invite: refLink(user.id), premium: await premiumState(env, user.id) });
+  return json({ ok: true, me: user.id, friends: fl, invite: refLink(user.id), premium: await premiumState(env, user.id), remind: await remindPublic(env, user.id) });
+}
+
+async function remindPublic(env, id) {
+  const r = await dbFirst(env, "SELECT enabled, hour FROM remind WHERE user_id = ?1", [id]);
+  return { enabled: !r || r.enabled !== 0, hour: (r && r.hour != null) ? r.hour : REMIND.defaultHour };
+}
+
+// POST /api/remind {initData, on, hour, tz, lang} -> {ok, enabled, hour}: reminder card in the app (js/learn.js)
+async function onRemindApi(request, env) {
+  let body;
+  try { const raw = await request.text(); if (raw.length > 8192) return json({ ok: false, error: "too big" }, 413); body = JSON.parse(raw); }
+  catch (e) { return json({ ok: false, error: "bad json" }, 400); }
+  const user = await verifyInitData(body && body.initData, env);
+  if (!user) return json({ ok: false, error: "auth" }, 401);
+  if (!(await ensureSchema(env))) return json({ ok: false, error: "db" }, 503);
+  const on = !!body.on, hour = Number(body.hour);
+  if (on && !(Number.isInteger(hour) && hour >= 0 && hour <= 23)) return json({ ok: false, error: "hour" }, 400);
+  const tz = typeof body.tz === "number" && Math.abs(body.tz) <= 14 * 60 ? Math.round(body.tz) : null;
+  const track = body.lang === "es" || body.lang === "en" ? body.lang : null;
+  await touchUser(env, user.id, track);
+  // Turning on from the app also clears "blocked": the app asks for write access (requestWriteAccess) first.
+  await dbRun(env, "INSERT INTO remind (user_id, enabled, hour, tz, blocked) VALUES (?1, ?2, ?3, ?4, 0) ON CONFLICT(user_id) DO UPDATE SET " +
+    "enabled = excluded.enabled, hour = COALESCE(excluded.hour, remind.hour), tz = COALESCE(excluded.tz, remind.tz), blocked = CASE WHEN excluded.enabled = 1 THEN 0 ELSE remind.blocked END",
+    [user.id, on ? 1 : 0, on ? hour : null, tz]);
+  const st = await remindPublic(env, user.id);
+  return json({ ok: true, enabled: st.enabled, hour: st.hour });
 }
 
 // ---------- v6.2: Premium (Telegram Stars subscription) ----------
@@ -492,8 +521,9 @@ function localNow(tz, t) {
   const d = new Date(((t == null ? now() : t) + tz * 60) * 1000);
   return { hour: d.getUTCHours(), day: d.toISOString().slice(0, 10) };
 }
+const LANG_NAME = { es: "Испанский", en: "Английский" };
 function fillText(tpl, p) {
-  return tpl.replace(/\{name\}/g, p.name).replace(/\{streak\}/g, String(p.streak));
+  return tpl.replace(/\{name\}/g, p.name).replace(/\{streak\}/g, String(p.streak)).replace(/\{lang\}/g, LANG_NAME[p.track] || LANG_NAME.es);
 }
 function pickReminder(p) {
   const pool = p.daysIdle >= REMIND.comebackAfterDays ? REMIND.comeback : (p.streak >= 2 ? REMIND.streak : REMIND.regular);
@@ -507,7 +537,7 @@ async function runReminders(env, t) {
   if (!(await ensureSchema(env))) return { sent: 0 };
   t = t == null ? now() : t;
   const rows = await env.DB.prepare(
-    "SELECT u.id, u.last_seen, r.enabled, r.hour, r.tz, r.last_sent, r.last_round, p.streak, p.name " +
+    "SELECT u.id, u.last_seen, u.track, r.enabled, r.hour, r.tz, r.last_sent, r.last_round, p.streak, p.name " +
     "FROM users u LEFT JOIN remind r ON r.user_id = u.id LEFT JOIN players p ON p.id = u.id " +
     "WHERE COALESCE(r.enabled, 1) = 1 AND COALESCE(r.blocked, 0) = 0 AND u.last_seen > ?1"
   ).bind(t - REMIND.quietAfterDays * 86400).all().catch((e) => { console.log("remind query", e && e.message); return { results: [] }; });
@@ -520,7 +550,7 @@ async function runReminders(env, t) {
     if (r.last_round && localNow(tz, r.last_round).day === ln.day) { skipped++; continue; }
     const lastAct = Math.max(r.last_round || 0, r.last_seen || 0);
     const daysIdle = r.last_round ? Math.floor((t - r.last_round) / 86400) : Math.floor((t - lastAct) / 86400);
-    const text = pickReminder({ name: esc(r.name || "друг"), streak: r.streak || 0, daysIdle: daysIdle });
+    const text = pickReminder({ name: esc(r.name || "друг"), streak: r.streak || 0, daysIdle: daysIdle, track: r.track });
     const res = await send(env, r.id, text, { reply_markup: remindKeyboard() });
     if (res && res.ok) {
       sent++;
@@ -561,8 +591,8 @@ async function onCallback(q, env) {
   if (!data.startsWith("rm:") || !uid || !(await ensureSchema(env))) return tg(env, "answerCallbackQuery", { callback_query_id: q.id });
   const v = data.slice(3);
   if (v === "test") {
-    const p = await dbFirst(env, "SELECT name, streak FROM players WHERE id = ?1", [uid]);
-    await send(env, uid, pickReminder({ name: esc((p && p.name) || (q.from.first_name) || "друг"), streak: (p && p.streak) || 0, daysIdle: 0 }), { reply_markup: remindKeyboard() });
+    const p = await dbFirst(env, "SELECT p.name, p.streak, u.track FROM users u LEFT JOIN players p ON p.id = u.id WHERE u.id = ?1", [uid]);
+    await send(env, uid, pickReminder({ name: esc((p && p.name) || (q.from.first_name) || "друг"), streak: (p && p.streak) || 0, daysIdle: 0, track: p && p.track }), { reply_markup: remindKeyboard() });
     return tg(env, "answerCallbackQuery", { callback_query_id: q.id, text: "Вот так это выглядит 👇" });
   }
   if (v === "off") {
@@ -806,10 +836,10 @@ export default {
       }
       return new Response(JSON.stringify(out), { headers: hh });
     }
-    if (url.pathname === "/api/sync" || url.pathname === "/api/card" || url.pathname === "/api/invoice") {
+    if (url.pathname === "/api/sync" || url.pathname === "/api/card" || url.pathname === "/api/invoice" || url.pathname === "/api/remind") {
       if (request.method === "OPTIONS") return cors();
       if (request.method !== "POST") return cors(405);
-      try { return url.pathname === "/api/sync" ? await onSync(request, env) : url.pathname === "/api/invoice" ? await onInvoice(request, env) : await onCard(request, env); }
+      try { return url.pathname === "/api/sync" ? await onSync(request, env) : url.pathname === "/api/invoice" ? await onInvoice(request, env) : url.pathname === "/api/remind" ? await onRemindApi(request, env) : await onCard(request, env); }
       catch (e) { console.log("api error", e && e.stack); await noteMeta(env, "last_sync_err", { t: now(), e: "server", m: String((e && e.message) || e).slice(0, 200), p: url.pathname }); return json({ ok: false, error: "server" }, 500); }
     }
     if (url.pathname.startsWith("/ava/") && request.method === "GET") {

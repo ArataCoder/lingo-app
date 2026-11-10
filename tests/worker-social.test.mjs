@@ -166,12 +166,12 @@ ok("at most one reminder a day", toUser(901).length === 0 && toUser(905).length 
 ok("bot config synced only once", !sent.some((m) => Array.isArray(m.allowed_updates)));
 db.prepare("UPDATE remind SET last_sent = NULL, last_round = ? WHERE user_id = 901").run(nowS() - 3 * 86400);
 sent = []; await cron();
-ok("after 3 idle days the gentle comeback text is used", toUser(901).length === 1 && /Скучаю/.test(toUser(901)[0].text));
+ok("after 3 idle days the comeback text names the language (default Spanish)", toUser(901).length === 1 && /^Испанский соскучился/.test(toUser(901)[0].text));
 Math.random = rnd; globalThis.tgReply = null;
 const cb = (id, data) => W.fetch(new Request("https://x.dev/webhook", { method: "POST", headers: { "X-Telegram-Bot-Api-Secret-Token": "S" },
   body: JSON.stringify({ callback_query: { id: "cb" + data, from: { id, first_name: "Ana" }, data, message: { message_id: 9, chat: { id } } } }) }), env);
 sent = []; await hook("/remind", 901, "Ana");
-ok("/remind shows hour buttons", toUser(901).length === 1 && toUser(901)[0].reply_markup.inline_keyboard[0].length === 4);
+ok("/remind shows the same 5 hours as the app", toUser(901).length === 1 && toUser(901)[0].reply_markup.inline_keyboard[0].map((b) => b.callback_data).join() === "rm:8,rm:12,rm:15,rm:19,rm:21");
 sent = []; await cb(901, "rm:21");
 const r901 = db.prepare("SELECT enabled, hour FROM remind WHERE user_id = 901").get();
 ok("choosing 21:00 saves it and edits the menu", r901.enabled === 1 && r901.hour === 21 && sent.some((m) => m.message_id === 9 && /21:00/.test(m.text)) && sent.some((m) => m.callback_query_id === "cbrm:21"));
@@ -187,5 +187,33 @@ await post("/api/sync", { initData: initData(901, "Ana"), tz: 120 });
 ok("app reports the time zone", db.prepare("SELECT tz FROM remind WHERE user_id = 901").get().tz === 120);
 await post("/api/sync", { initData: initData(901, "Ana"), tz: null });
 ok("missing tz keeps the stored one", db.prepare("SELECT tz FROM remind WHERE user_id = 901").get().tz === 120);
+
+// v6.3.1 reminder card in the app (/api/remind) and {lang} texts
+const postJ = (path, body) => W.fetch(new Request("https://x.dev" + path, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }), env);
+r = await postJ("/api/remind", { initData: initData(906, "Fe"), on: true, hour: 8, tz: 180, lang: "en" });
+j = await r.json();
+const r906 = db.prepare("SELECT enabled, hour, tz FROM remind WHERE user_id = 906").get();
+ok("app turns the reminder on at 08:00", r.status === 200 && j.ok && j.enabled === true && j.hour === 8 && r906.enabled === 1 && r906.hour === 8 && r906.tz === 180);
+ok("app remind stores the studied language", db.prepare("SELECT track FROM users WHERE id = 906").get().track === "en");
+j = await (await postJ("/api/remind", { initData: initData(906, "Fe"), on: false, hour: 8 })).json();
+ok("app turns it off, keeps the hour", j.ok && j.enabled === false && j.hour === 8 && db.prepare("SELECT enabled, hour FROM remind WHERE user_id = 906").get().enabled === 0);
+ok("app remind needs auth", (await postJ("/api/remind", { initData: "x", on: true, hour: 8 })).status === 401);
+ok("bad hour rejected", (await postJ("/api/remind", { initData: initData(906, "Fe"), on: true, hour: 25 })).status === 400);
+ok("CORS preflight for the app", (await W.fetch(new Request("https://x.dev/api/remind", { method: "OPTIONS" }), env)).status === 204);
+j = await (await post("/api/sync", { initData: initData(906, "Fe") })).json();
+ok("sync tells the app the reminder state", j.remind && j.remind.enabled === false && j.remind.hour === 8);
+j = await (await post("/api/sync", { initData: initData(907, "Gi") })).json();
+ok("new user: reminders on at 19:00 by default", j.remind && j.remind.enabled === true && j.remind.hour === 19);
+db.prepare("UPDATE remind SET blocked = 1 WHERE user_id = 906").run();
+await postJ("/api/remind", { initData: initData(906, "Fe"), on: true, hour: 21 });
+ok("turning on in the app clears blocked", db.prepare("SELECT blocked, hour FROM remind WHERE user_id = 906").get().blocked === 0);
+// comeback after 3+ days uses the language name
+db.prepare("UPDATE remind SET hour = ?, tz = 0, last_sent = NULL, last_round = ? WHERE user_id = 906").run(hourUtc, nowS() - 4 * 86400);
+db.prepare("UPDATE users SET last_seen = ? WHERE id = 906").run(nowS());
+Math.random = () => 0; sent = []; await cron(); Math.random = rnd;
+ok("4 idle days: «Английский соскучился»", toUser(906).length === 1 && /^Английский соскучился/.test(toUser(906)[0].text));
+db.prepare("UPDATE remind SET last_sent = NULL, last_round = ? WHERE user_id = 906").run(nowS() - 2 * 86400);
+Math.random = () => 0; sent = []; await cron(); Math.random = rnd;
+ok("2 idle days: still the regular text", toUser(906).length === 1 && !/соскучился/.test(toUser(906)[0].text));
 console.log(fails ? "WORKER TESTS FAILED: " + fails : "WORKER TESTS ALL PASSED");
 process.exit(fails ? 1 : 0);

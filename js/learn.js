@@ -321,6 +321,12 @@
 
   // ---------- навигация: хуки core.js (LB.on / LB.handle) ----------
   LB.on("home", home);
+  // The bot is the source of truth for reminders (they can also be changed with /remind in the chat).
+  LB.on("remind", function (r) {
+    if (remBusy || !r) return;
+    P.rem = { on: !!r.enabled, hour: Number(r.hour) || 19 }; saveP();
+    if (window.current === "profile") renderRem();
+  });
   LB.on("show", function (name) {
     if (name !== "quiz" && name !== "play" && window.hideSheet) window.hideSheet();
     if (name === "words" || name === "friends") navOn("profile");
