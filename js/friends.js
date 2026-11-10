@@ -62,10 +62,40 @@
     return post("/api/sync", { initData: tg.initData, stats: myStats(), ref: sp }).then(function (j) {
       BUSY = false; FR_ERR = !(j && j.ok); FR_EC = FR_ERR ? String((j && (j.error || (j.status ? "http " + j.status : ""))) || "empty") : ""; if (FR_ERR && window.current === "friends") render();
       if (j && j.ok) { FR = { list: j.friends || [], ts: Date.now() }; try { localStorage.setItem(FKEY, JSON.stringify(FR)); } catch (e) {} if (window.current === "friends") render(); }
+      if (j && j.ok && j.premium) setPremium(j.premium);
       return FR;
     }).catch(function (e) { BUSY = false; FR_ERR = true; FR_EC = String((e && e.name) || "network"); if (window.current === "friends") render(); return FR; });
   }
   window.lbSync = sync;
+
+  // ---------- v6.2: Premium (подписка за звёзды) ----------
+  // Server is the source of truth; the cached copy only avoids a flash before the first sync.
+  // UI is not wired yet: gate features with LB.isPremium(), sell with LB.buyPremium().
+  var PKEY = "lingo_premium", PREM = { enabled: false, active: false, until: 0 };
+  try { PREM = JSON.parse(localStorage.getItem(PKEY) || "null") || PREM; } catch (e) {}
+  function setPremium(p) {
+    var was = !!(PREM.active && PREM.until * 1000 > Date.now());
+    PREM = { enabled: !!p.enabled, active: !!p.active, until: Number(p.until) || 0, stars: Number(p.stars) || 0 };
+    try { localStorage.setItem(PKEY, JSON.stringify(PREM)); } catch (e) {}
+    var now = !!(PREM.active && PREM.until * 1000 > Date.now());
+    if (now !== was) LB.emit("premium", now);
+  }
+  LB.premium = function () { return { enabled: PREM.enabled, active: !!(PREM.active && PREM.until * 1000 > Date.now()), until: PREM.until, stars: PREM.stars }; };
+  LB.isPremium = function () { return LB.premium().active; };
+  LB.buyPremium = function () {
+    if (!tg || !tg.openInvoice || !ver("6.1")) { note("Оплата доступна только в Telegram"); return Promise.resolve(false); }
+    trk("premium_checkout", {});
+    return post("/api/invoice", { initData: tg.initData }).then(function (j) {
+      if (!j || !j.ok || !j.url) { note("Подписка пока недоступна"); return false; }
+      return new Promise(function (res) {
+        tg.openInvoice(j.url, function (status) {
+          trk("premium_" + status, {});
+          if (status === "paid") { hap("medium"); setTimeout(function () { sync(true); }, 1500); }
+          res(status === "paid");
+        });
+      });
+    }).catch(function () { note("Нет связи, попробуй ещё раз"); return false; });
+  };
   window.lbFrRetry = function () { FR_ERR = false; render(); sync(true); };
 
   function render() {

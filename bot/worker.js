@@ -15,6 +15,18 @@ const TRACK_NAME = { es: "🇪🇸 Испанский", en: "🇬🇧 Англи
 const NL = String.fromCharCode(10);
 const FEEDBACK_MARK = "📝 Отзыв";
 
+// Premium subscription in Telegram Stars. Off until enabled: no invoice can be created and the app gets
+// premium.enabled = false. To launch: set enabled to true, deploy, open /setup?key=SETUP_KEY once
+// (re-registers the webhook with pre_checkout_query). Telegram allows only a 30-day period, max 10000 Stars.
+const PREMIUM = {
+  enabled: false,
+  stars: 150,
+  period: 2592000,
+  title: "Lingo Brain Плюс",
+  description: "Все темы, режим «Гиперфокус» без лимитов и новые сценарии каждый месяц. Подписка на 30 дней, отменить можно в любой момент в настройках Telegram."
+};
+const WEBHOOK_UPDATES = ["message", "pre_checkout_query"];
+
 const BOT = {
   menuButtonText: "Учиться",
   commands: [
@@ -22,7 +34,7 @@ const BOT = {
     { command: "app", description: "📱 Открыть приложение" },
     { command: "help", description: "❓ Как это работает" },
     { command: "feedback", description: "📝 Написать отзыв" }
-  ],
+  ].concat(PREMIUM.enabled ? [{ command: "paysupport", description: "⭐ Вопросы по оплате" }] : []),
   // Description: экран "Что умеет этот бот?" до нажатия Start (до 512 символов)
   description: [
     "🧠 Lingo Brain: языки для СДВГ-мозга.",
@@ -70,6 +82,15 @@ const TEXT = {
   app: "Поехали! Одна кнопка, и ты в деле 👇",
   feedbackAsk: FEEDBACK_MARK + ": что улучшить или что сломалось? Ответь на это сообщение 👇",
   feedbackThanks: "Спасибо! 💛 Прочитаю лично. Ты делаешь Lingo Brain лучше.",
+  paysupport: [
+    "<b>Вопросы по оплате</b> ⭐",
+    "",
+    "Подписка оплачивается звёздами Telegram и продлевается раз в 30 дней.",
+    "Отменить: Настройки Telegram → Мои звёзды → подписка Lingo Brain. Доступ остаётся до конца оплаченного периода.",
+    "",
+    "Если что-то не так с оплатой, напиши /feedback и опиши проблему, разберусь лично."
+  ].join(NL),
+  premiumThanks: (until) => "Спасибо за поддержку! ⭐ Lingo Brain Плюс активен до <b>" + new Date(until * 1000).toISOString().slice(0, 10) + "</b>.",
   fallback: "Я пока не болтаю в чате 🙂 Вся магия в приложении 👇"
 };
 
@@ -126,7 +147,9 @@ async function ensureSchema(env) {
       env.DB.prepare("CREATE TABLE IF NOT EXISTS players (id INTEGER PRIMARY KEY, name TEXT, username TEXT, xp INTEGER DEFAULT 0, week_key TEXT, week_base INTEGER DEFAULT 0, streak INTEGER DEFAULT 0, learned INTEGER DEFAULT 0, rounds INTEGER DEFAULT 0, updated INTEGER)"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS friends (a INTEGER, b INTEGER, ts INTEGER, PRIMARY KEY (a, b))"),
       env.DB.prepare("CREATE TABLE IF NOT EXISTS cards (id TEXT PRIMARY KEY, user_id INTEGER, data TEXT, ts INTEGER)"),
-      env.DB.prepare("CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT)")
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT)"),
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS subs (user_id INTEGER PRIMARY KEY, until INTEGER, charge_id TEXT, updated INTEGER)"),
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS payments (charge_id TEXT PRIMARY KEY, user_id INTEGER, amount INTEGER, payload TEXT, until INTEGER, recurring INTEGER, ts INTEGER)")
     ]);
     schemaReady = true;
   } catch (e) {
@@ -360,7 +383,59 @@ async function onSync(request, env) {
   if (ref && ref !== user.id && (await link(env, user.id, ref))) await notifyNewFriend(env, ref, user);
   const fl = await listFriends(env, user.id);
   await noteMeta(env, "last_sync_ok", { t: now(), n: (fl || []).length });
-  return json({ ok: true, me: user.id, friends: fl, invite: refLink(user.id) });
+  return json({ ok: true, me: user.id, friends: fl, invite: refLink(user.id), premium: await premiumState(env, user.id) });
+}
+
+// ---------- v6.2: Premium (Telegram Stars subscription) ----------
+async function premiumState(env, userId) {
+  const row = await dbFirst(env, "SELECT until FROM subs WHERE user_id = ?1", [userId]);
+  const until = (row && row.until) || 0;
+  return { enabled: PREMIUM.enabled, active: until > now(), until: until, stars: PREMIUM.stars };
+}
+
+// POST /api/invoice {initData} -> {ok, url}: link for Telegram.WebApp.openInvoice
+async function onInvoice(request, env) {
+  if (!PREMIUM.enabled) return json({ ok: false, error: "disabled" }, 404);
+  let body;
+  try { const raw = await request.text(); if (raw.length > 8192) return json({ ok: false, error: "too big" }, 413); body = JSON.parse(raw); }
+  catch (e) { return json({ ok: false, error: "bad json" }, 400); }
+  const user = await verifyInitData(body && body.initData, env);
+  if (!user) return json({ ok: false, error: "auth" }, 401);
+  const r = await tg(env, "createInvoiceLink", {
+    title: PREMIUM.title,
+    description: PREMIUM.description,
+    payload: "premium:" + user.id,
+    provider_token: "",
+    currency: "XTR",
+    prices: [{ label: PREMIUM.title, amount: PREMIUM.stars }],
+    subscription_period: PREMIUM.period
+  });
+  if (!r || !r.ok) return json({ ok: false, error: (r && r.description) || "invoice" }, 502);
+  return json({ ok: true, url: r.result });
+}
+
+// Telegram waits ~10 s for this answer, otherwise the payment fails.
+async function onPreCheckout(q, env) {
+  const p = String(q.invoice_payload || "");
+  const good = PREMIUM.enabled && q.currency === "XTR" && q.total_amount === PREMIUM.stars && p === "premium:" + (q.from && q.from.id);
+  return tg(env, "answerPreCheckoutQuery", good
+    ? { pre_checkout_query_id: q.id, ok: true }
+    : { pre_checkout_query_id: q.id, ok: false, error_message: "Эта подписка сейчас недоступна. Попробуй позже 🙏" });
+}
+
+async function onPayment(m, env) {
+  const sp = m.successful_payment, uid = m.from && m.from.id;
+  if (!sp || !uid || !(await ensureSchema(env))) return;
+  const old = await dbFirst(env, "SELECT until FROM subs WHERE user_id = ?1", [uid]);
+  const base = Math.max(now(), (old && old.until) || 0);
+  const until = Number(sp.subscription_expiration_date) || base + PREMIUM.period;
+  // Every payment is kept (charge id is needed for refunds and for editUserStarSubscription).
+  await dbRun(env, "INSERT OR IGNORE INTO payments (charge_id, user_id, amount, payload, until, recurring, ts) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
+    [String(sp.telegram_payment_charge_id || ""), uid, Number(sp.total_amount) || 0, String(sp.invoice_payload || "").slice(0, 128), until, sp.is_recurring ? 1 : 0, now()]);
+  await dbRun(env, "INSERT INTO subs (user_id, until, charge_id, updated) VALUES (?1, ?2, ?3, ?4) " +
+    "ON CONFLICT(user_id) DO UPDATE SET until = MAX(subs.until, excluded.until), charge_id = excluded.charge_id, updated = excluded.updated",
+    [uid, until, String(sp.telegram_payment_charge_id || ""), now()]);
+  if (!sp.is_recurring || sp.is_first_recurring) await send(env, m.chat.id, TEXT.premiumThanks(until), { reply_markup: appKeyboard("🚀 Открыть Lingo Brain") });
 }
 
 function b64bytes(b64) {
@@ -472,8 +547,10 @@ async function onFeedback(m, env) {
 }
 
 async function onUpdate(update, env) {
+  if (update.pre_checkout_query) return onPreCheckout(update.pre_checkout_query, env);
   const m = update.message;
   if (!m || !m.chat || m.chat.type !== "private") return;
+  if (m.successful_payment) return onPayment(m, env);
   const chatId = m.chat.id;
   const name = esc((m.from && m.from.first_name) || "друг");
   const text = (m.text || "").trim();
@@ -502,6 +579,7 @@ async function onUpdate(update, env) {
   }
   if (cmd === "app") return send(env, chatId, TEXT.app, { reply_markup: appKeyboard() });
   if (cmd === "help") return send(env, chatId, TEXT.help, { reply_markup: appKeyboard() });
+  if (cmd === "paysupport") return send(env, chatId, TEXT.paysupport);
   if (cmd === "feedback") {
     return send(env, chatId, TEXT.feedbackAsk, {
       reply_markup: { force_reply: true, input_field_placeholder: "Мне бы хотелось…" }
@@ -535,7 +613,7 @@ async function setup(url, env) {
   out.setWebhook = await tg(env, "setWebhook", {
     url: url.origin + "/webhook",
     secret_token: env.WEBHOOK_SECRET,
-    allowed_updates: ["message"],
+    allowed_updates: WEBHOOK_UPDATES,
     drop_pending_updates: true
   });
   out.setMyCommands = await tg(env, "setMyCommands", { commands: BOT.commands });
@@ -573,10 +651,10 @@ export default {
       }
       return new Response(JSON.stringify(out), { headers: hh });
     }
-    if (url.pathname === "/api/sync" || url.pathname === "/api/card") {
+    if (url.pathname === "/api/sync" || url.pathname === "/api/card" || url.pathname === "/api/invoice") {
       if (request.method === "OPTIONS") return cors();
       if (request.method !== "POST") return cors(405);
-      try { return url.pathname === "/api/sync" ? await onSync(request, env) : await onCard(request, env); }
+      try { return url.pathname === "/api/sync" ? await onSync(request, env) : url.pathname === "/api/invoice" ? await onInvoice(request, env) : await onCard(request, env); }
       catch (e) { console.log("api error", e && e.stack); await noteMeta(env, "last_sync_err", { t: now(), e: "server", m: String((e && e.message) || e).slice(0, 200), p: url.pathname }); return json({ ok: false, error: "server" }, 500); }
     }
     if (url.pathname.startsWith("/ava/") && request.method === "GET") {
