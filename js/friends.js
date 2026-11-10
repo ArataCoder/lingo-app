@@ -85,7 +85,7 @@
     { id: "s7",   icon: "🗓", title: "Неделя без пропусков", desc: "Держать серию 7 дней подряд",           max: 7,    val: function (s) { return s.bestStreak; }, reward: "Титул «Легенда Lingo»" },
     { id: "w10",  icon: "📗", title: "Первая десятка",      desc: "Выучить 10 слов в карточках",           max: 10,   val: function (s) { return s.learned; }, reward: "Рамка «Изумрудная» + титул «Полиглот»" },
     { id: "w50",  icon: "🎓", title: "Словарь в голове",    desc: "Выучить 50 слов",                       max: 50,   val: function (s) { return s.learned; } },
-    { id: "x300", icon: "💎", title: "300 XP",              desc: "Набрать 300 очков опыта",               max: 300,  val: function (s) { return s.xp; } },
+    { id: "x300", icon: "💎", title: "300 XP",              desc: "Набрать 300 очков опыта",               max: 300,  val: function (s) { return s.xp; }, reward: "Рамка «Неоновая» + титул «Кибермозг»" },
     { id: "x1k",  icon: "🏆", title: "Тысячник",            desc: "Набрать 1000 очков опыта",              max: 1000, val: function (s) { return s.xp; }, reward: "Титул «Легенда Lingo»" },
     { id: "t5",   icon: "🗺", title: "Первооткрыватель",    desc: "Пройти 5 тем на 60% и выше",            max: 5,    val: function (s) { return s.topics; } },
     { id: "sup",  icon: "💛", title: "Меценат Lingo Brain", desc: "Поддержать проект звёздами Telegram",   max: 1,    val: function () { return LB.isPremium() ? 1 : 0; }, reward: "Золотая VIP-рамка + титул «Меценат» + 4 темы карточки" }
@@ -94,7 +94,7 @@
   // ---------- стили ----------
   var css = document.createElement("style");
   css.textContent = [
-    ".fr{padding:18px 16px 120px}.fr h2{margin:4px 0 2px;font-size:26px}.frsub{color:var(--dim);margin:0 0 14px;font-size:14px}",
+    ".fr{padding:18px 16px 120px}.fr h2{margin:4px 0 6px;font-size:26px}.frsub{color:var(--dim);margin:0 0 14px;font-size:14px}",
     ".seg{display:flex;gap:6px;padding:4px;border-radius:16px;background:rgba(255,255,255,.05);margin-bottom:14px}",
     ".seg button{flex:1;border:none;background:none;color:var(--dim);font:800 14px inherit;font-family:inherit;padding:10px;border-radius:12px;cursor:pointer}",
     ".seg button.on{background:rgba(255,255,255,.1);color:var(--text)}",
@@ -109,7 +109,12 @@
     ".fr-emerald{box-shadow:0 0 0 2.5px #10B981,0 0 12px rgba(16,185,129,.55)}",
     ".fr-neon{box-shadow:0 0 0 2.5px #9D7CD8,0 0 14px rgba(157,124,216,.65)}",
     ".fr-gold{box-shadow:0 0 0 2.5px #FFD166,0 0 16px rgba(255,209,102,.7)}",
-    ".utitle{display:inline-flex;align-items:center;gap:4px;margin-top:2px;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:var(--text);font-size:11px;font-weight:800;cursor:pointer;max-width:fit-content}",
+    ".avatar.fr-default::before{background:conic-gradient(#7AA2F7,#3B4261,#7AA2F7)}",
+    ".avatar.fr-fire::before{background:conic-gradient(#F7A046,#F7768E,#FFD166,#F7A046)}",
+    ".avatar.fr-emerald::before{background:conic-gradient(#10B981,#2DD4BF,#6EE7B7,#10B981)}",
+    ".avatar.fr-neon::before{background:conic-gradient(#9D7CD8,#38BDF8,#F472B6,#9D7CD8)}",
+    ".avatar.fr-gold::before{background:conic-gradient(#FFD166,#F7A046,#FFF3B0,#FFD166)}",
+    ".utitle{display:inline-flex;align-items:center;gap:4px;margin-top:4px;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:var(--text);font-size:11px;font-weight:800;cursor:pointer;max-width:fit-content}",
     ".utitle.vip{background:rgba(255,209,102,.15);border-color:rgba(255,209,102,.45);color:#FFD166}",
     ".ftitle{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#D6D9F0;font-size:11px;font-weight:800;vertical-align:1px}",
     ".ftitle.vip{background:rgba(255,209,102,.16);border-color:rgba(255,209,102,.45);color:#FFD166}",
@@ -119,12 +124,12 @@
     ".frec{display:block;margin-top:10px;font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums}",
     ".frempty{text-align:center;color:var(--dim);padding:22px 8px;line-height:1.5}.frhint{color:var(--dim);font-size:13px;text-align:center;line-height:1.45;margin-top:10px}",
     ".nav button{font-size:11px;padding:8px 2px}",
-    /* Fixed #cardOv modal: #cardImg selector prevents Twemoji .emj from stretching! */
+    /* Fixed #cardOv modal: #cardImg selector prevents Twemoji .emj from stretching, 2x2 .cthemes prevents X overflow! */
     "#cardOv{position:fixed;inset:0;z-index:80;background:rgba(10,11,18,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;flex-direction:column;align-items:center;justify-content:center;padding:14px 16px calc(16px + env(safe-area-inset-bottom));gap:10px;overflow-y:auto}",
     "#cardOv.on{display:flex}",
-    "#cardImg{width:min(100%,330px);max-height:50vh;object-fit:contain;border-radius:20px;box-shadow:0 16px 44px rgba(0,0,0,.55);display:block}",
-    ".cthemes{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:min(100%,350px)}",
-    ".cthm{min-height:44px;padding:6px 4px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(36,40,59,.9);color:var(--text);font:800 11px inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;white-space:nowrap}",
+    "#cardImg{width:min(100%,320px);max-height:48vh;object-fit:contain;border-radius:20px;box-shadow:0 16px 44px rgba(0,0,0,.55);display:block}",
+    ".cthemes{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;width:min(100%,350px)}",
+    ".cthm{min-height:44px;padding:6px 8px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(36,40,59,.9);color:var(--text);font:800 12px inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap}",
     ".cthm.on{border-color:#FFD166;background:rgba(255,209,102,.18);color:#FFD166}",
     ".cthm.lk{opacity:.7}",
     ".cacts{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:min(100%,350px)}",
@@ -139,10 +144,10 @@
     ".lbsup-perks{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}",
     ".lbsup-tag{padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:12px;font-weight:700;color:#EEEEFF}",
     ".lbsup-tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}",
-    ".lbsup-tier{min-height:54px;padding:8px 6px;border-radius:14px;border:1px solid rgba(255,209,102,.35);background:rgba(255,209,102,.1);color:#EEEEFF;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:transform .1s}",
+    ".lbsup-tier{min-height:56px;padding:8px 6px;border-radius:14px;border:1px solid rgba(255,209,102,.35);background:rgba(255,209,102,.1);color:#EEEEFF;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:transform .1s}",
     ".lbsup-tier.hit{background:linear-gradient(135deg,#F7A046,#FFD166);color:#12131C;border-color:transparent;box-shadow:0 6px 16px -4px rgba(247,160,70,.45)}",
-    ".lbsup-tier strong{font-size:14px;font-weight:900;display:block;color:inherit}",
-    ".lbsup-tier small{font-size:11px;font-weight:700;opacity:.85;display:block;color:inherit}",
+    ".lbsup-tier strong{font-size:14px;font-weight:900;display:block;color:inherit;line-height:1.15}",
+    ".lbsup-tier small{font-size:11px;font-weight:700;opacity:.85;display:block;color:inherit;line-height:1.15}",
     ".lbsup-act{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:6px;font-size:13px;color:#10B981;font-weight:800}",
     ".lbsup-preview{min-height:44px;padding:8px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#EEEEFF;font:800 13px inherit;cursor:pointer}",
     /* Achievements & Style Screen (#scr_ach) */
@@ -151,15 +156,15 @@
     ".ach-av img:not(.emj){position:absolute;inset:0;width:100%;height:100%;object-fit:cover}",
     ".ach-info{flex:1;min-width:0}.ach-info h3{font-size:19px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#EEEEFF}",
     ".ach-info p{font-size:12px;color:var(--muted);margin:4px 0 0;font-weight:700}",
-    ".ach-sec{font-size:15px;font-weight:800;margin:16px 2px 8px;display:flex;align-items:center;justify-content:space-between;color:#EEEEFF}",
+    ".ach-sec{font-size:15px;font-weight:800;margin:16px 2px 8px;display:flex;align-items:center;justify-content:space-between;gap:8px;color:#EEEEFF}",
     ".ach-sec span{font-size:12px;color:var(--muted);font-weight:700}",
     ".ach-frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:6px}",
     ".ach-fr{padding:10px 8px;border-radius:16px;background:var(--card);border:1.5px solid var(--line);text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;color:#EEEEFF;font-family:inherit}",
     ".ach-fr.on{border-color:var(--acc);background:rgba(247,160,70,.12)}",
     ".ach-fr.lk{opacity:.58}",
     ".ach-fr-ring{width:36px;height:36px;border-radius:50%;background:#1A1B26;display:grid;place-items:center;font-size:17px}",
-    ".ach-fr strong{font-size:12px;font-weight:800;color:#EEEEFF;display:block}",
-    ".ach-fr small{font-size:10px;color:var(--muted);font-weight:700;line-height:1.2;display:block}",
+    ".ach-fr strong{font-size:12px;font-weight:800;color:#EEEEFF;display:block;margin-bottom:2px}",
+    ".ach-fr small{font-size:10px;color:var(--muted);font-weight:700;line-height:1.25;display:block}",
     ".ach-titles{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px}",
     ".ach-tl{padding:8px 12px;border-radius:13px;background:var(--card);border:1.5px solid var(--line);color:#EEEEFF;font:800 13px inherit;cursor:pointer;display:inline-flex;align-items:center;gap:5px}",
     ".ach-tl.on{border-color:var(--acc);background:rgba(247,160,70,.14);color:#FFD166}",
@@ -174,7 +179,7 @@
     ".ach-top strong{font-size:14px;font-weight:800;color:#EEEEFF}",
     ".ach-top span{font-size:12px;font-weight:800;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}",
     ".ach-item.done .ach-top span{color:#10B981}",
-    ".ach-bd p{font-size:12px;color:var(--muted);margin:2px 0 6px;line-height:1.3}",
+    ".ach-bd p{font-size:12px;color:var(--muted);margin:3px 0 6px;line-height:1.3}",
     ".ach-rw{display:inline-block;font-size:11px;font-weight:700;color:#FFD166;background:rgba(255,209,102,.12);padding:2px 7px;border-radius:6px;margin-bottom:6px}",
     ".ach-bar{height:6px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}",
     ".ach-bar i{display:block;height:100%;border-radius:99px;background:var(--acc);transition:width .3s}",
@@ -196,28 +201,34 @@
   LB.isPremium = function () { return LB.premium().active; };
 
   function rawStats() {
-    var S = window.S || {}, learned = 0, streak = 0;
+    var S = window.S || {}, learned = 0, streak = 0, meRow = null;
     try { learned = window.__v3.wCounts().learned || 0; } catch (e) {}
     try { streak = window.currentStreak ? currentStreak() : (S.streak || 0); } catch (e) {}
-    return { xp: S.xp || 0, streak: streak, bestStreak: Math.max(S.bestStreak || 0, streak), learned: learned, rounds: S.rounds || 0, topics: passedCount() };
+    try { if (FR && FR.list) meRow = FR.list.filter(function (x) { return x && x.me; })[0] || null; } catch (e) {}
+    var xp = Math.max(Number(S.xp) || 0, (meRow && Number(meRow.xp)) || 0);
+    var rds = Math.max(Number(S.rounds) || 0, (meRow && Number(meRow.rounds)) || 0);
+    var lrn = Math.max(learned, (meRow && Number(meRow.learned)) || 0);
+    var str = Math.max(streak, (meRow && Number(meRow.streak)) || 0);
+    var bst = Math.max(Number(S.bestStreak) || 0, str);
+    return { xp: xp, streak: str, bestStreak: bst, learned: lrn, rounds: rds, topics: passedCount() };
   }
   function equippedCos() {
     var st = rawStats();
     var fr = FRAMES.filter(function (f) { return f.id === COS.frame && f.check(st); })[0];
     if (!fr) {
       if (LB.isPremium()) fr = FRAMES[4]; // gold
-      else if (st.bestStreak >= 3) fr = FRAMES[1];
-      else if (st.learned >= 10) fr = FRAMES[2];
-      else if (st.rounds >= 10 || st.xp >= 300) fr = FRAMES[3];
+      else if (st.rounds >= 10 || st.xp >= 300) fr = FRAMES[3]; // neon (300+ XP or 10+ rounds)
+      else if (st.learned >= 10) fr = FRAMES[2]; // emerald
+      else if (st.bestStreak >= 3) fr = FRAMES[1]; // fire
       else fr = FRAMES[0];
     }
     var tl = TITLES.filter(function (t) { return t.id === COS.title && t.check(st); })[0];
     if (!tl) {
       if (LB.isPremium()) tl = TITLES[5]; // vip
       else if (st.xp >= 1000 || st.bestStreak >= 7) tl = TITLES[4];
+      else if (st.rounds >= 10 || st.xp >= 300) tl = TITLES[3];
       else if (st.learned >= 10) tl = TITLES[2];
       else if (st.bestStreak >= 3) tl = TITLES[1];
-      else if (st.rounds >= 10 || st.xp >= 300) tl = TITLES[3];
       else tl = TITLES[0];
     }
     return { frame: fr.id, frameObj: fr, title: tl.label, titleId: tl.id, titleObj: tl };
@@ -290,7 +301,7 @@
     var tz = -new Date().getTimezoneOffset();
     return post("/api/sync", { initData: tg.initData, stats: myStats(), ref: sp, tz: tz }).then(function (j) {
       BUSY = false; FR_ERR = !(j && j.ok); FR_EC = FR_ERR ? String((j && (j.error || (j.status ? "http " + j.status : ""))) || "empty") : ""; if (FR_ERR && window.current === "friends") render();
-      if (j && j.ok) { FR = { list: j.friends || [], ts: Date.now() }; try { localStorage.setItem(FKEY, JSON.stringify(FR)); } catch (e) {} if (window.current === "friends") render(); }
+      if (j && j.ok) { FR = { list: j.friends || [], ts: Date.now() }; try { localStorage.setItem(FKEY, JSON.stringify(FR)); } catch (e) {} applyCosmetics(); if (window.current === "friends") render(); if (window.current === "ach") renderAchScreen(); }
       if (j && j.ok && j.premium) setPremium(j.premium);
       return FR;
     }).catch(function (e) { BUSY = false; FR_ERR = true; FR_EC = String((e && e.name) || "network"); if (window.current === "friends") render(); return FR; });
