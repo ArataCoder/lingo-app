@@ -64,6 +64,7 @@
       BUSY = false; FR_ERR = !(j && j.ok); FR_EC = FR_ERR ? String((j && (j.error || (j.status ? "http " + j.status : ""))) || "empty") : ""; if (FR_ERR && window.current === "friends") render();
       if (j && j.ok) { FR = { list: j.friends || [], ts: Date.now() }; try { localStorage.setItem(FKEY, JSON.stringify(FR)); } catch (e) {} if (window.current === "friends") render(); }
       if (j && j.ok && j.premium) setPremium(j.premium);
+      if (j && j.ok && j.remind) LB.emit("remind", j.remind);
       return FR;
     }).catch(function (e) { BUSY = false; FR_ERR = true; FR_EC = String((e && e.name) || "network"); if (window.current === "friends") render(); return FR; });
   }
